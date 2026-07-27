@@ -1,0 +1,38 @@
+{
+  "schema": "propertydealdesk-public-inventory",
+  "schema_version": "1.0",
+  "inventoryVersion": "sample-2026-07-27-001",
+  "generated_at": "2026-07-27T01:30:00Z",
+  "publishedAt": "2026-07-27T01:30:00Z",
+  "isMockData": false,
+  "notice": "Sample Stable public export contract; not production inventory.",
+  "listings": [
+    {
+      "public_id": "sample-wts1004",
+      "code": "WTS1004",
+      "intent": "WTS",
+      "slug": "wts1004-family-home-bukit-tinggi",
+      "title": "Family Home in Bukit Tinggi",
+      "property_type": "Terrace House",
+      "location": "Bukit Tinggi, Klang",
+      "price": 680000,
+      "bedroom_count": 4,
+      "bathroom_count": 3,
+      "built_up_sqft": 1900,
+      "land_size": "20 × 70 ft",
+      "furnishing": "Partly Furnished",
+      "facing_direction": "East",
+      "unit_type": "2-storey intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-07-01",
+      "updated_at": "2026-07-27T01:20:00Z",
+      "cover_photo": null,
+      "photos": [],
+      "description": "Public-safe sample listing.",
+      "features": ["Public feature"],
+      "amenities": ["Public amenity"],
+      "why_this_property": ["Public reason"]
+    }
+  ]
+}

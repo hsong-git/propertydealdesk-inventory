@@ -1,0 +1,26 @@
+{
+  "name": "propertydealdesk-inventory",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "test": "node --test src/data/inventoryContract.test.js src/data/downloadGrantContract.test.js scripts/image-policy.test.mjs",
+    "validate:inventory": "node scripts/validate-inventory.mjs",
+    "prebuild": "npm run validate:inventory",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "7.18.1",
+    "vite": "^6.0.7"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}

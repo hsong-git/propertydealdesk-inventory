@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://propertydealdesk.example/schemas/public-download-grants-1.0.json",
+  "title": "PropertyDealDesk unlisted static download grants",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "generated_at", "grants"],
+  "properties": {
+    "schema": { "const": "propertydealdesk-public-download-grants" },
+    "schema_version": { "const": "1.0" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "grants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["token", "smi_code", "title", "package_path", "generated_at"],
+        "properties": {
+          "token": { "type": "string", "pattern": "^[A-Za-z0-9_-]{32,128}$" },
+          "smi_code": { "type": "string", "pattern": "^(WTS|WTL)[A-Za-z0-9-]+$" },
+          "title": { "type": "string", "minLength": 1, "maxLength": 180 },
+          "package_path": { "type": "string", "pattern": "^/downloads/[A-Za-z0-9_-]{32,128}/[A-Za-z0-9][A-Za-z0-9._-]*\\.zip$" },
+          "generated_at": { "type": "string", "format": "date-time" },
+          "expires_at": { "type": ["string", "null"], "format": "date-time" },
+          "file_count": { "type": ["integer", "null"], "minimum": 1 },
+          "notice": { "type": ["string", "null"], "maxLength": 500 }
+        }
+      }
+    }
+  }
+}

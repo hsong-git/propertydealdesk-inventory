@@ -1,0 +1,26 @@
+import { BadgeCheck, BriefcaseBusiness, CreditCard, MapPin } from "lucide-react";
+import { useState } from "react";
+import { agentProfile } from "../config/agentProfile";
+import { ContactActions } from "./ContactActions";
+import { NameCardModal } from "./NameCardModal";
+
+export function ProfilePanel({ expanded = false }) {
+  const [cardOpen, setCardOpen] = useState(false);
+  return (
+    <>
+      <section className={`profile-panel ${expanded ? "expanded" : ""}`}>
+        <div className="portrait-wrap"><img src={agentProfile.portrait} alt={`${agentProfile.displayName}, ${agentProfile.title}`} /></div>
+        <div className="profile-copy">
+          <span className="eyebrow"><BadgeCheck size={15} /> Registered property professional</span>
+          <h1>{expanded ? agentProfile.name : agentProfile.displayName}</h1>
+          <p className="profile-role">{agentProfile.title} · {agentProfile.renNumber}</p>
+          <p className="profile-agency"><BriefcaseBusiness size={16} /> {agentProfile.agency}</p>
+          <p>{expanded ? agentProfile.professionalIntroduction : agentProfile.shortIntroduction}</p>
+          <div className="area-list" aria-label="Main service areas"><MapPin size={16} /> {agentProfile.serviceAreas.map((area) => <span key={area}>{area}</span>)}</div>
+          <div className="profile-actions"><ContactActions compact /><button className="button tertiary" type="button" onClick={() => setCardOpen(true)}><CreditCard size={18} /> View Name Card</button></div>
+        </div>
+      </section>
+      <NameCardModal open={cardOpen} onClose={() => setCardOpen(false)} />
+    </>
+  );
+}

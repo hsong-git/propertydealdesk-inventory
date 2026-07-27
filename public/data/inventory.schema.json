@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://propertydealdesk.example/schemas/public-inventory-1.0.json",
+  "title": "PropertyDealDesk public inventory export",
+  "description": "Strict public-safe static export contract for separately PUBLIC-approved WTS and WTL SMI records from Production Stable.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "inventoryVersion",
+    "generated_at",
+    "publishedAt",
+    "isMockData",
+    "listings"
+  ],
+  "properties": {
+    "schema": { "const": "propertydealdesk-public-inventory" },
+    "schema_version": { "const": "1.0" },
+    "inventoryVersion": { "type": "string", "minLength": 1 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "publishedAt": { "type": ["string", "null"], "format": "date-time" },
+    "isMockData": { "type": "boolean" },
+    "notice": { "type": "string" },
+    "listings": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "$ref": "#/$defs/stablePublicListing" },
+          { "$ref": "#/$defs/mockDevelopmentListing" }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "nullableNonNegativeNumber": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "nullableNonNegativeInteger": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "dateOrDateTime": {
+      "oneOf": [
+        { "type": "string", "format": "date" },
+        { "type": "string", "format": "date-time" }
+      ]
+    },
+    "nullableDateOrDateTime": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/$defs/dateOrDateTime" }
+      ]
+    },
+    "publicStringList": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "stablePhotoPath": {
+      "type": "string",
+      "pattern": "^/inventory/(WTS|WTL)[A-Za-z0-9-]+/[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "stablePublicListing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "intent",
+        "slug",
+        "title",
+        "property_type",
+        "location",
+        "price",
+        "availability",
+        "updated_at",
+        "cover_photo",
+        "photos"
+      ],
+      "properties": {
+        "public_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional opaque public identity; never a local database primary key."
+        },
+        "code": { "type": "string", "pattern": "^(WTS|WTL)[A-Za-z0-9-]+$" },
+        "intent": { "type": "string", "enum": ["WTS", "WTL"] },
+        "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "title": { "type": "string", "minLength": 1 },
+        "property_type": { "type": "string", "minLength": 1 },
+        "location": { "type": "string", "minLength": 1 },
+        "price": { "$ref": "#/$defs/nullableNonNegativeNumber" },
+        "bedroom_count": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "bathroom_count": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "built_up_sqft": { "$ref": "#/$defs/nullableNonNegativeNumber" },
+        "land_size": { "type": ["string", "null"] },
+        "furnishing": { "type": ["string", "null"] },
+        "facing_direction": { "type": ["string", "null"] },
+        "unit_type": { "type": ["string", "null"] },
+        "availability": {
+          "type": "string",
+          "enum": ["Available", "Available Soon", "Viewing by Appointment", "Under Offer", "Reserved"]
+        },
+        "featured": { "type": "boolean" },
+        "created_at": { "$ref": "#/$defs/nullableDateOrDateTime" },
+        "updated_at": { "$ref": "#/$defs/dateOrDateTime" },
+        "cover_photo": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/stablePhotoPath" }
+          ]
+        },
+        "photos": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/stablePhotoPath" }
+        },
+        "description": { "type": ["string", "null"] },
+        "features": { "$ref": "#/$defs/publicStringList" },
+        "amenities": { "$ref": "#/$defs/publicStringList" },
+        "why_this_property": { "$ref": "#/$defs/publicStringList" }
+      }
+    },
+    "mockPhotoPath": {
+      "type": "string",
+      "pattern": "^/properties/[A-Za-z0-9._-]+$"
+    },
+    "mockDevelopmentListing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "publicId",
+        "publicationStatus",
+        "code",
+        "slug",
+        "intent",
+        "title",
+        "propertyType",
+        "location",
+        "price",
+        "bedrooms",
+        "bathrooms",
+        "builtUpSqFt",
+        "landSize",
+        "furnishing",
+        "facing",
+        "unitType",
+        "availability",
+        "featured",
+        "createdAt",
+        "updatedAt",
+        "photos",
+        "description",
+        "features",
+        "amenities",
+        "whyThisProperty"
+      ],
+      "properties": {
+        "publicId": { "type": "string", "pattern": "^mock-" },
+        "publicationStatus": { "const": "development-placeholder" },
+        "code": { "type": "string", "pattern": "^(WTS|WTL|WTB|WTR)[A-Za-z0-9-]+$" },
+        "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+        "intent": { "type": "string", "enum": ["WTS", "WTL", "WTB", "WTR"] },
+        "title": { "type": "string", "minLength": 1 },
+        "propertyType": { "type": "string", "minLength": 1 },
+        "location": { "type": "string", "minLength": 1 },
+        "price": { "$ref": "#/$defs/nullableNonNegativeNumber" },
+        "bedrooms": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "bathrooms": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "builtUpSqFt": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "landSize": { "type": ["string", "null"] },
+        "furnishing": { "type": "string" },
+        "facing": { "type": ["string", "null"] },
+        "unitType": { "type": ["string", "null"] },
+        "availability": { "type": "string", "minLength": 1 },
+        "featured": { "type": "boolean" },
+        "createdAt": { "$ref": "#/$defs/dateOrDateTime" },
+        "updatedAt": { "$ref": "#/$defs/dateOrDateTime" },
+        "photos": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/mockPhotoPath" }
+        },
+        "description": { "type": "string" },
+        "features": { "$ref": "#/$defs/publicStringList" },
+        "amenities": { "$ref": "#/$defs/publicStringList" },
+        "whyThisProperty": { "$ref": "#/$defs/publicStringList" }
+      }
+    }
+  }
+}

@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.0",
-  "inventoryVersion": "2026.07.27.12",
-  "generated_at": "2026-07-27T06:48:09Z",
-  "publishedAt": "2026-07-27T06:48:09Z",
+  "inventoryVersion": "2026.07.27.13",
+  "generated_at": "2026-07-27T07:00:49Z",
+  "publishedAt": "2026-07-27T07:00:49Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [

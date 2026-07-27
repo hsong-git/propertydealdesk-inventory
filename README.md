@@ -81,7 +81,7 @@ The canonical production contract uses this exact envelope:
 }
 ```
 
-Production listing fields use a strict snake_case allowlist. Only separately PUBLIC-approved active `WTS` and `WTL` supply listings belong in `listings[]`. See [the Stable export handoff](docs/STABLE_EXPORT_HANDOFF.md) and `public/data/inventory.schema.json` for the complete required/optional field contract.
+Production listing fields use a strict snake_case allowlist. Only separately PUBLIC-approved active `WTS` and `WTL` supply listings belong in `listings[]`. See [the Stable export handoff](docs/STABLE_EXPORT_HANDOFF.md) and `public/data/inventory.schema.json` for the complete required/optional field contract. The optional `posting_copy` field is the preferred source for the detail-page Posting details block; it must contain public-safe Stable SMI Copy text and is rendered/copied verbatim when present.
 
 Unknown fields fail pre-build schema validation. The browser loader also constructs a fresh allowlisted object and ignores all unknown source keys, so internal notes, contact details, database IDs and other accidental source fields are never used by the UI.
 

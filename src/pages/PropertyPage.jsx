@@ -67,7 +67,7 @@ export function PropertyPage() {
         <aside className="agent-contact-card">
           <img src={agentProfile.portrait} alt={agentProfile.displayName} /><div><span className="eyebrow">Enquire directly</span><h2>{agentProfile.displayName}</h2><p>{agentProfile.title} · {agentProfile.renNumber}</p><small>{agentProfile.agency}</small></div>
           <a className="button primary" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><MessageCircle size={18} /> WhatsApp enquiry</a>
-          <a className="button secondary" href={whatsappUrl(agentProfile.whatsapp, photoDownloadRequestText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><Download size={18} /> PM for photos download</a>
+          <a className="button secondary" href={whatsappUrl(agentProfile.whatsapp, photoDownloadRequestText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><Download size={18} /> PM for photos</a>
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} /> Call {agentProfile.phoneDisplay}</a>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {copied ? "Link copied" : "Share property"}</button>
           <OwnerPhotoGrantControl listing={listing} />

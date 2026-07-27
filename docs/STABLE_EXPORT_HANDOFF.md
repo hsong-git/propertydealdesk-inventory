@@ -16,7 +16,7 @@ The Stable publisher should replace the complete generated snapshot. Files for l
 | Key | Type | Rule |
 | --- | --- | --- |
 | `schema` | string | Exactly `propertydealdesk-public-inventory` |
-| `schema_version` | string | Exactly `1.0` |
+| `schema_version` | string | `1.0` or `1.1`; new Stable snapshots with `posting_copy` use `1.1` |
 | `inventoryVersion` | string | Non-empty public version; UTC publication timestamp or monotonic export ID recommended |
 | `generated_at` | ISO date-time | Time Stable generated the snapshot |
 | `publishedAt` | ISO date-time | Time the snapshot was published; may equal `generated_at` |
@@ -62,11 +62,14 @@ Canonical listing keys use snake_case.
 | `unit_type` | string or null | |
 | `featured` | boolean | Defaults to false |
 | `created_at` | ISO date/date-time or null | |
+| `posting_copy` | string or null | Public-safe Stable SMI Copy output. When present, the catalogue renders and copies this text verbatim in Posting details. Maximum 8000 characters. |
 | `features` | string[] | Public content only |
 | `amenities` | string[] | Public content only |
 | `why_this_property` | string[] | Public content only |
 
 No other listing keys are accepted by pre-build validation.
+
+`posting_copy` is the preferred source for the detail-page Posting details block. Production Stable should populate it from the actual approved SMI Copy output after removing internal/private content. The catalogue keeps a reconstructed public-field fallback only for older snapshots that do not yet include this key.
 
 ## Publication and lifecycle rules
 

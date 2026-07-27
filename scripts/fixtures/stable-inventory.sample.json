@@ -1,6 +1,6 @@
 {
   "schema": "propertydealdesk-public-inventory",
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "inventoryVersion": "sample-2026-07-27-001",
   "generated_at": "2026-07-27T01:30:00Z",
   "publishedAt": "2026-07-27T01:30:00Z",
@@ -29,6 +29,7 @@
       "updated_at": "2026-07-27T01:20:00Z",
       "cover_photo": null,
       "photos": [],
+      "posting_copy": "Actual public-safe Stable SMI Copy text belongs here when available. The catalogue renders and copies this text verbatim.",
       "description": "Public-safe sample listing.",
       "features": ["Public feature"],
       "amenities": ["Public amenity"],

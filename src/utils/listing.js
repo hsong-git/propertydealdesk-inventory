@@ -44,7 +44,7 @@ export const enquiryText = (listing, displayName) => {
 };
 
 export const photoDownloadRequestText = (listing, displayName) => [
-  `Hi ${displayName}, PM for photos download.`,
+  `Hi ${displayName}, PM for photos.`,
   "",
   `Property code: ${listing.code}`,
   `Title: ${listing.title}`,
@@ -55,6 +55,8 @@ export const photoDownloadRequestText = (listing, displayName) => [
 export const whatsappUrl = (number, message) => `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 
 export const postingText = (listing, profile) => {
+  if (listing.postingCopy) return listing.postingCopy;
+
   const facts = [
     listing.propertyType && `Property type: ${listing.propertyType}`,
     listing.unitType && `Unit type: ${listing.unitType}`,

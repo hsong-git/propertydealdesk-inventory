@@ -16,7 +16,7 @@
   ],
   "properties": {
     "schema": { "const": "propertydealdesk-public-inventory" },
-    "schema_version": { "const": "1.0" },
+    "schema_version": { "enum": ["1.0", "1.1"] },
     "inventoryVersion": { "type": "string", "minLength": 1 },
     "generated_at": { "type": "string", "format": "date-time" },
     "publishedAt": { "type": ["string", "null"], "format": "date-time" },
@@ -113,6 +113,11 @@
         "photos": {
           "type": "array",
           "items": { "$ref": "#/$defs/stablePhotoPath" }
+        },
+        "posting_copy": {
+          "type": ["string", "null"],
+          "maxLength": 8000,
+          "description": "Optional public-safe SMI Copy text exported by Production Stable. Rendered and copied verbatim by the catalogue when present."
         },
         "description": { "type": ["string", "null"] },
         "features": { "$ref": "#/$defs/publicStringList" },

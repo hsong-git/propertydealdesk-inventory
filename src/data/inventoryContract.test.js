@@ -34,6 +34,7 @@ const stableListing = {
 test("normalizes the Stable snake_case contract into the browser allowlist", () => {
   const raw = {
     ...stableListing,
+    posting_copy: "Actual Stable SMI Copy\n\nPublic-safe owner-approved copy.",
     internal_note: "must never reach the browser model",
     contact_no: "private-number",
     database_id: 987,
@@ -43,6 +44,7 @@ test("normalizes the Stable snake_case contract into the browser allowlist", () 
   assert.equal(items[0].propertyType, "Terrace House");
   assert.equal(items[0].bedrooms, 4);
   assert.deepEqual(items[0].photos, stableListing.photos);
+  assert.equal(items[0].postingCopy, "Actual Stable SMI Copy\n\nPublic-safe owner-approved copy.");
   assert.equal(meta.inventoryVersion, "2026-07-27T01:30:00Z");
   assert.equal("internal_note" in items[0], false);
   assert.equal("contact_no" in items[0], false);
@@ -71,7 +73,29 @@ test("drops photo paths outside the listing public inventory directory", () => {
   assert.deepEqual(items[0].photos, []);
 });
 
-test("builds copyable posting details from the public listing allowlist", () => {
+test("uses Stable-provided posting copy verbatim when present", () => {
+  const { items } = normalizeInventoryFeed(productionFeed([{
+    ...stableListing,
+    posting_copy: "Stable SMI Copy\nLine 2 exactly as approved.",
+  }]));
+  const text = postingText(items[0], {
+    displayName: "HS Ong",
+    renNumber: "REN 81340",
+    phoneDisplay: "016-313 2865",
+  });
+  assert.equal(text, "Stable SMI Copy\nLine 2 exactly as approved.");
+});
+
+test("accepts Stable schema 1.1 posting copy snapshots", () => {
+  const { items, meta } = normalizeInventoryFeed({
+    ...productionFeed([{ ...stableListing, posting_copy: "Stable 1.1 SMI Copy" }]),
+    schema_version: "1.1",
+  });
+  assert.equal(meta.schemaVersion, "1.1");
+  assert.equal(items[0].postingCopy, "Stable 1.1 SMI Copy");
+});
+
+test("falls back to reconstructed posting details for old snapshots", () => {
   const { items } = normalizeInventoryFeed(productionFeed([stableListing]));
   const text = postingText(items[0], {
     displayName: "HS Ong",
@@ -89,7 +113,7 @@ test("builds a photo-download WhatsApp request from public listing details", () 
   const { items } = normalizeInventoryFeed(productionFeed([stableListing]));
   const text = photoDownloadRequestText(items[0], "HS Ong");
   assert.equal(text, [
-    "Hi HS Ong, PM for photos download.",
+    "Hi HS Ong, PM for photos.",
     "",
     "Property code: WTS1004",
     "Title: Family Home in Bukit Tinggi",

@@ -49,7 +49,7 @@
 - Spacing and layout rhythm: existing 16px detail-card rhythm retained; lightbox controls maintain safe edge spacing; mobile copy action stacks to full width.
 - Colors and visual tokens: only existing primary, surface, border, text, radius, and shadow tokens are used.
 - Image quality and asset fidelity: original sanitized WebP assets are shown with `object-fit: contain` in fullscreen; no replacement or generated imagery is used. Portraits preserve their original asset and aspect treatment.
-- Copy and content: Nearby amenities and Why this property are removed. Posting details derives solely from the normalized public listing and public agent profile.
+- Copy and content: Nearby amenities and Why this property are removed. Posting details uses Stable-provided public `posting_copy` verbatim when exported, with the normalized public listing fallback retained for older snapshots.
 
 ## Interaction verification
 
@@ -60,6 +60,7 @@
 - The photo-download WhatsApp URL contains the expected WTL0010 code, title, location, and `RM 1,800 / month` price.
 - Featured listing order begins WTL0010, WTL0027, WTL0036 before non-Featured WTL0011.
 - Name-card image bounds remain within the 970 × 912 viewport and the modal uses hidden overflow rather than scrollbars.
+- Home, About, and Contact profile/hero sections validate cleanly at 390 × 844, 506 × 912, and 970 × 912 with no horizontal overflow, no action overlap, and the expected mobile action order.
 - Nearby amenities and Why this property heading counts are both zero.
 - Browser console: zero warnings and zero errors.
 

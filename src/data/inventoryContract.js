@@ -1,5 +1,5 @@
 const CONTRACT_SCHEMA = "propertydealdesk-public-inventory";
-const SUPPORTED_SCHEMA_VERSIONS = new Set(["1", "1.0"]);
+const SUPPORTED_SCHEMA_VERSIONS = new Set(["1", "1.0", "1.1"]);
 const SUPPLY_INTENTS = new Set(["WTS", "WTL"]);
 const MOCK_INTENTS = new Set(["WTS", "WTL", "WTB", "WTR"]);
 const PUBLIC_AVAILABILITY = new Set([
@@ -85,6 +85,7 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
     createdAt,
     updatedAt,
     photos: normalizePhotoPaths(raw, code, isMockData),
+    postingCopy: cleanNullableText(firstValue(raw.postingCopy, raw.posting_copy)),
     description: cleanText(raw.description, "Contact HS Ong for current public listing details."),
     features: cleanStringList(raw.features),
     amenities: cleanStringList(raw.amenities),

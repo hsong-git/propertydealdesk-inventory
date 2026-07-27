@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.0",
-  "inventoryVersion": "2026.07.27.10",
-  "generated_at": "2026-07-27T05:51:44Z",
-  "publishedAt": "2026-07-27T05:51:44Z",
+  "inventoryVersion": "2026.07.27.11",
+  "generated_at": "2026-07-27T06:37:02Z",
+  "publishedAt": "2026-07-27T06:37:02Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -961,6 +961,47 @@
       ],
       "features": [
         "Ready To Move In NOW!"
+      ],
+      "amenities": [],
+      "why_this_property": []
+    },
+    {
+      "public_id": "pub_745971f7bcb74e364d735783",
+      "code": "WTL0055",
+      "intent": "WTL",
+      "slug": "wtl0055-condominium-apartment-at-huni-eco-ardence-setia-alam-huni-eco-ardence-setia-alam",
+      "title": "Condominium/Apartment at Huni @ Eco Ardence, Setia Alam",
+      "property_type": "Condominium/Apartment",
+      "location": "Huni @ Eco Ardence, Setia Alam",
+      "price": 2700,
+      "description": "Condominium/Apartment at Huni @ Eco Ardence, Setia Alam. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 3,
+      "bathroom_count": 2,
+      "built_up_sqft": 1000,
+      "land_size": null,
+      "furnishing": "Full",
+      "facing_direction": null,
+      "unit_type": "Intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-07-27",
+      "updated_at": "2026-07-27",
+      "cover_photo": "/inventory/WTL0055/cover.webp",
+      "photos": [
+        "/inventory/WTL0055/cover.webp",
+        "/inventory/WTL0055/photo-02.webp",
+        "/inventory/WTL0055/photo-03.webp",
+        "/inventory/WTL0055/photo-04.webp",
+        "/inventory/WTL0055/photo-05.webp",
+        "/inventory/WTL0055/photo-06.webp",
+        "/inventory/WTL0055/photo-07.webp",
+        "/inventory/WTL0055/photo-08.webp",
+        "/inventory/WTL0055/photo-09.webp",
+        "/inventory/WTL0055/photo-10.webp",
+        "/inventory/WTL0055/photo-11.webp"
+      ],
+      "features": [
+        "**AAA Stock*** Comfortable Sofa & Coffee Table for Living Area Television & TV Cabinet Dining Table & Chairs Complete Kitchen Cabinet with Fridge Washing Machine Bed Frames & Premium Mattresses in all rooms Built-in Wardrobes & Curtains Full Air-conditioning High Floor Available 1st September onwards *Accept any type of good tenant, subject to profile review.*"
       ],
       "amenities": [],
       "why_this_property": []

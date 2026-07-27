@@ -41,7 +41,7 @@ main { flex: 1; }
 .portrait-wrap { align-self: end; height: 226px; overflow: hidden; }
 .portrait-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
 .profile-panel:not(.expanded) .portrait-wrap { align-self: center; height: 301px; min-height: 0; display: grid; place-items: center; }
-.profile-panel:not(.expanded) .portrait-wrap img { object-fit: contain; object-position: center bottom; }
+.profile-panel:not(.expanded) .portrait-wrap img { object-fit: cover; object-position: center 8%; transform: scale(1.75); transform-origin: center top; }
 .profile-copy { align-self: center; padding-block: 14px 22px; }
 .profile-copy h1 { margin: 7px 0 2px; font-size: clamp(26px,3vw,36px); line-height: 1.06; letter-spacing: -.035em; }
 .profile-role { margin: 0; color: var(--color-primary); font-size: 14px; font-weight: 800; }
@@ -272,7 +272,7 @@ main { flex: 1; }
   .profile-panel, .profile-panel.expanded { min-height: 0; padding: 16px; grid-template-columns: 1fr; gap: 14px; overflow: visible; background: linear-gradient(155deg,#fff 0%,#fff 54%,var(--color-primary-soft) 100%); }
   .portrait-wrap, .profile-panel.expanded .portrait-wrap, .profile-panel:not(.expanded) .portrait-wrap { justify-self: center; align-self: center; width: min(48vw,178px); height: 204px; min-height: 0; border-radius: 12px; overflow: hidden; background: var(--color-surface-muted); box-shadow: 0 12px 26px rgba(24,33,29,.09); }
   .profile-panel:not(.expanded) .portrait-wrap { display: grid; place-items: center; }
-  .profile-panel:not(.expanded) .portrait-wrap img { object-fit: contain; object-position: center bottom; }
+  .profile-panel:not(.expanded) .portrait-wrap img { object-fit: cover; object-position: center 8%; transform: scale(1.7); transform-origin: center top; }
   .profile-copy, .profile-panel.expanded .profile-copy { min-width: 0; padding: 0; display: grid; gap: 8px; }
   .profile-copy h1 { font-size: 23px; }
   .profile-copy > .eyebrow { font-size: 9px; }

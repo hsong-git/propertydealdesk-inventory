@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.0",
-  "inventoryVersion": "2026.07.27.3",
-  "generated_at": "2026-07-27T01:17:14Z",
-  "publishedAt": "2026-07-27T01:17:14Z",
+  "inventoryVersion": "2026.07.27.4",
+  "generated_at": "2026-07-27T01:29:15Z",
+  "publishedAt": "2026-07-27T01:29:15Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -635,35 +635,6 @@
       ],
       "features": [
         "This fully built-up double storey terrace house features 3 bedrooms and 3 bathrooms with a kitchen table top and installed grills."
-      ],
-      "amenities": [],
-      "why_this_property": []
-    },
-    {
-      "public_id": "pub_9782e40a36ec5645b19ffe6e",
-      "code": "WTL0046",
-      "intent": "WTL",
-      "slug": "wtl0046-terrace-house-2-storey-at-bandar-bukit-tinggi-bandar-bukit-tinggi",
-      "title": "Terrace House - 2 Storey at Bandar Bukit Tinggi",
-      "property_type": "Terrace House - 2 Storey",
-      "location": "Bandar Bukit Tinggi",
-      "price": 2200,
-      "description": "Terrace House - 2 Storey at Bandar Bukit Tinggi. Contact HS Ong to confirm current availability and viewing details.",
-      "bedroom_count": 4,
-      "bathroom_count": 3,
-      "built_up_sqft": null,
-      "land_size": "20 × 70 ft",
-      "furnishing": "Partial",
-      "facing_direction": null,
-      "unit_type": "Intermediate",
-      "availability": "Available",
-      "featured": false,
-      "created_at": "2026-07-14",
-      "updated_at": "2026-07-26",
-      "cover_photo": null,
-      "photos": [],
-      "features": [
-        "Kitchen Cabinet Air Conditioner (Master Bedroom) Ceiling Fan in all rooms 24 hrs security in gated guarded community"
       ],
       "amenities": [],
       "why_this_property": []

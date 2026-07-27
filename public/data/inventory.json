@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.0",
-  "inventoryVersion": "2026.07.27.7",
-  "generated_at": "2026-07-27T03:53:39Z",
-  "publishedAt": "2026-07-27T03:53:39Z",
+  "inventoryVersion": "2026.07.27.8",
+  "generated_at": "2026-07-27T05:11:16Z",
+  "publishedAt": "2026-07-27T05:11:16Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -1558,6 +1558,7 @@
         "/inventory/WTS0027/photo-12.webp"
       ],
       "features": [
+        "Selling Price Lot 1 - *RM4 Millions* Lot 2 - *RM3.4 Millions*",
         "Approx. 5 acres each",
         "Flat, rectangular land",
         "Accessible from main road",

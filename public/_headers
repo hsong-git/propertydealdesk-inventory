@@ -1,0 +1,5 @@
+/data/inventory.json
+  Cache-Control: no-store, max-age=0, must-revalidate
+
+/data/download-grants.json
+  Cache-Control: no-store, max-age=0, must-revalidate

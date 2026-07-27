@@ -1,0 +1,19 @@
+name = "propertydealdesk-inventory"
+pages_build_output_dir = "./dist"
+compatibility_date = "2026-07-27"
+
+[[kv_namespaces]]
+binding = "PHOTO_GRANTS"
+id = "REPLACE_WITH_PRODUCTION_KV_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_PREVIEW_KV_NAMESPACE_ID"
+
+[[r2_buckets]]
+binding = "PHOTO_PACKAGES"
+bucket_name = "propertydealdesk-inventory-photo-packages"
+preview_bucket_name = "propertydealdesk-inventory-photo-packages-preview"
+
+[vars]
+CF_ACCESS_TEAM_DOMAIN = "REPLACE_WITH_TEAM.cloudflareaccess.com"
+CF_ACCESS_AUD = "REPLACE_WITH_ACCESS_APPLICATION_AUD"
+ADMIN_EMAILS = "REPLACE_WITH_OWNER_LOGIN_EMAIL"
+CURRENT_INVENTORY_VERSION = "REPLACE_WITH_CURRENT_INVENTORY_VERSION"

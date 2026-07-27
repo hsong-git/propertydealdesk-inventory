@@ -1,8 +1,7 @@
-import { Menu, MessageCircle, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
-import { whatsappUrl } from "../utils/listing";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -21,7 +20,6 @@ export function Header() {
           <NavLink to="/" onClick={close}>Properties</NavLink>
           <NavLink to="/about" onClick={close}>About Me</NavLink>
           <NavLink to="/contact" onClick={close}>Contact</NavLink>
-          <a className="nav-whatsapp" href={whatsappUrl(agentProfile.whatsapp, `Hi ${agentProfile.displayName}, I would like to enquire about your property inventory.`)} target="_blank" rel="noreferrer"><MessageCircle size={17} /> WhatsApp</a>
         </nav>
       </div>
     </header>

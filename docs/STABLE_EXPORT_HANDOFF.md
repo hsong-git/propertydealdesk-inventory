@@ -84,29 +84,11 @@ No other listing keys are accepted by pre-build validation.
 - Filenames may contain letters, digits, dots, underscores and hyphens; no spaces, URLs, drive paths or `..` segments.
 - Production display output is WebP-only: quality 82, Pillow method 4, EXIF orientation applied before resize, and a 1920px longest edge. Omit EXIF, GPS, device, date, ICC and XMP metadata. The catalogue defensively rejects metadata, non-WebP production files, unreadable images and dimensions above 2560px; it warns above 2 MiB per file or 150 MiB total.
 
-## Optional static image-download grant contract
+## Private photo package handoff
 
-Download grants do not alter `inventory.json` 1.0. Stable may generate `public/data/download-grants.json` plus token-scoped ZIP files only after HS Ong explicitly authorizes a particular SMI.
+Static grants are disabled; `public/data/download-grants.json` must remain empty. Secure six-hour grants are created at runtime by Access-authenticated Pages Functions, stored as token hashes in KV, and streamed from private R2. Stable does not generate tokens or place ZIP files below `public`.
 
-```json
-{
-  "schema": "propertydealdesk-public-download-grants",
-  "schema_version": "1.0",
-  "generated_at": "2026-07-27T01:03:15Z",
-  "grants": [{
-    "token": "random_url_safe_value_at_least_32_chars",
-    "smi_code": "WTL0010",
-    "title": "Authorized WTL0010 image package",
-    "package_path": "/downloads/random_url_safe_value_at_least_32_chars/WTL0010-images.zip",
-    "generated_at": "2026-07-27T01:03:15Z",
-    "expires_at": "2026-08-03T01:03:15Z",
-    "file_count": 12,
-    "notice": "Optional public-safe instructions"
-  }]
-}
-```
-
-Tokens must be random URL-safe values of 32–128 characters, never the SMI code, and package paths must remain under `/downloads/<same-token>/`. The catalogue never links grants from normal pages. Invalid, absent or expired tokens render a neutral unavailable page. Stable removes revoked/expired entries and ZIP folders on the next atomic publication. This unlisted static workflow is not authentication; stronger control requires a backend or signed expiring object-storage URLs.
+The controlled publication pipeline may run `npm run package:photos` after the catalogue snapshot is written. Upload each ignored ZIP according to `artifacts/photo-packages/upload-manifest.json`, using the exact R2 key and `sanitized`, `smiCode` and public-safe `title` custom metadata. See [Cloudflare photo grants](CLOUDFLARE_PHOTO_GRANTS.md) for the full contract. R2 credentials, object URLs and internal Stable data must never enter this repository or browser payloads.
 - `cover_photo` may be null and `photos` may be empty. The catalogue shows a neutral no-photo placeholder.
 - Missing referenced files fail `npm run build` before Vite builds.
 

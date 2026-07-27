@@ -38,16 +38,8 @@ if (!validateGrants(grants)) {
   process.exit(1);
 }
 
-const grantTokens = new Set();
-for (const grant of grants.grants) {
-  if (grantTokens.has(grant.token)) throw new Error(`Duplicate download-grant token: ${grant.token}`);
-  grantTokens.add(grant.token);
-  if (grant.token.toLowerCase().includes(grant.smi_code.toLowerCase())) throw new Error(`Download token must not contain its SMI code: ${grant.smi_code}`);
-  const expectedPrefix = `/downloads/${grant.token}/`;
-  if (!grant.package_path.startsWith(expectedPrefix)) throw new Error(`Download package for ${grant.smi_code} must start with ${expectedPrefix}`);
-  const packagePath = path.join(projectRoot, "public", grant.package_path.replace(/^\//, ""));
-  if (!fs.existsSync(packagePath)) throw new Error(`Missing authorized download package: ${grant.package_path}`);
-  if (grant.expires_at && new Date(grant.expires_at).getTime() <= Date.now()) throw new Error(`Expired download grant must be removed before build: ${grant.smi_code}`);
+if (grants.grants.length) {
+  throw new Error("Static download grants are disabled. Keep download-grants.json empty and use the Access + KV + R2 backend.");
 }
 
 const publicIds = new Set();
@@ -111,4 +103,4 @@ if (!inventory.isMockData) {
 }
 
 console.log(`Inventory valid: ${inventory.listings.length} ${inventory.isMockData ? "development placeholder" : "published Stable"} listings, ${referencedPhotos.size} metadata-free display images (${(totalPhotoBytes / 1024 / 1024).toFixed(1)} MiB), schema ${inventory.schema_version}, version ${inventory.inventoryVersion}.`);
-console.log(`Download grants valid: ${grants.grants.length} active unlisted grant${grants.grants.length === 1 ? "" : "s"}.`);
+console.log("Static download grants disabled: legacy manifest is empty; runtime grants require Access + KV + R2.");

@@ -11,6 +11,7 @@
     "generated_at": { "type": "string", "format": "date-time" },
     "grants": {
       "type": "array",
+      "maxItems": 0,
       "items": {
         "type": "object",
         "additionalProperties": false,

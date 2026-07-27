@@ -1,11 +1,11 @@
-import { AlertTriangle, Handshake, LoaderCircle, MessageCircle } from "lucide-react";
+import { AlertTriangle, Handshake, LoaderCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 import { agentProfile } from "../config/agentProfile";
 import { CatalogueFilters } from "../components/CatalogueFilters";
 import { ProfilePanel } from "../components/ProfilePanel";
 import { PropertyCard } from "../components/PropertyCard";
 import { useInventory } from "../hooks";
-import { compareFeaturedRecentlyUpdated, formatDateTime, whatsappUrl } from "../utils/listing";
+import { compareFeaturedRecentlyUpdated, formatDateTime } from "../utils/listing";
 
 const defaults = { keyword: "", intent: "", propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", availability: "", sort: "recent" };
 
@@ -70,7 +70,6 @@ export function HomePage() {
         <section className="co-broke-panel">
           <span className="co-broke-icon"><Handshake size={27} /></span>
           <div><span className="eyebrow">Working together</span><h2>Co-broke agents are welcome</h2><p>{agentProfile.coBrokeMessage}</p></div>
-          <a className="button primary" href={whatsappUrl(agentProfile.whatsapp, `Hi ${agentProfile.displayName}, I am a real estate agent interested in discussing a co-broke opportunity from your public inventory.`)} target="_blank" rel="noreferrer"><MessageCircle size={18} /> Discuss co-broke</a>
         </section>
       </div>
     </main>

@@ -5,3 +5,7 @@ dist/
 *.log
 .runtime/
 public/.inventory-publish-*/
+artifacts/
+wrangler.toml
+.dev.vars
+.dev.vars.*

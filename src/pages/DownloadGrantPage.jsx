@@ -1,16 +1,16 @@
 import { ArrowLeft, Download, ShieldAlert } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { resolveDownloadGrant } from "../data/downloadGrantContract";
+import { normalizePhotoGrantStatus } from "../data/downloadGrantContract";
 
 export function DownloadGrantPage() {
   const { grantToken = "" } = useParams();
   const [state, setState] = useState({ loading: true, grant: null });
   useEffect(() => {
     let active = true;
-    fetch("/data/download-grants.json", { cache: "no-store" })
+    fetch(`/api/photo-grants/${encodeURIComponent(grantToken)}`, { cache: "no-store" })
       .then((response) => response.ok ? response.json() : Promise.reject())
-      .then((payload) => active && setState({ loading: false, grant: resolveDownloadGrant(payload, grantToken) }))
+      .then((payload) => active && setState({ loading: false, grant: normalizePhotoGrantStatus(payload, grantToken) }))
       .catch(() => active && setState({ loading: false, grant: null }));
     return () => { active = false; };
   }, [grantToken]);
@@ -24,10 +24,9 @@ export function DownloadGrantPage() {
       <span className="download-grant-icon"><Download size={30} /></span>
       <span className="eyebrow">Owner-authorized image package</span>
       <h1>{grant.title}</h1>
-      <p className="download-grant-code">Listing {grant.smiCode}{grant.fileCount ? ` · ${grant.fileCount} files` : ""}</p>
-      {grant.notice ? <p>{grant.notice}</p> : null}
-      <a className="button primary" href={grant.packagePath} download><Download size={18} /> Download authorized ZIP</a>
-      <div className="download-grant-warning"><ShieldAlert size={18} /><p>This is an unlisted static link, not authenticated access. Do not forward it. HS Ong may revoke it on the next publication.</p></div>
+      <p className="download-grant-code">Listing {grant.code}</p>
+      <a className="button primary" href={grant.downloadPath} download><Download size={18} /> Download sanitized photos</a>
+      <div className="download-grant-warning"><ShieldAlert size={18} /><p>This private link expires at {new Date(grant.expiresAt).toLocaleString("en-MY")}. Anyone who receives it can download the package until expiry.</p></div>
       <Link className="back-link" to="/"><ArrowLeft size={17} /> Back to Catalogue</Link>
     </section>
   </main>;

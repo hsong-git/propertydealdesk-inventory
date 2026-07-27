@@ -47,15 +47,16 @@ Create a production build with:
 npm run build
 ```
 
-The build automatically runs `npm run validate:inventory` first. Validation checks the JSON contracts, unique public IDs and slugs, publication mode, all referenced photo files, the public image privacy/size policy, and any static download grants. The static output is written to `dist`.
+The build automatically runs `npm run validate:inventory` first. Validation checks the JSON contracts, unique public IDs and slugs, publication mode, all referenced photo files and the public image privacy/size policy. It also rejects any legacy static download grant. The static output is written to `dist`.
 
 ## Main content locations
 
 - `src/config/agentProfile.js` — single source for agent identity, contact details, service areas and public copy.
 - `public/data/inventory.json` — current Stable-generated, public-safe inventory snapshot.
 - `public/data/inventory.schema.json` — strict machine-readable contract for Stable-generated public exports.
-- `public/data/download-grants.json` — unlisted, opaque-token download grants; empty unless HS Ong explicitly grants one.
-- `public/data/download-grants.schema.json` — strict manifest contract for authorized ZIP packages.
+- `public/data/download-grants.json` — deprecated legacy manifest; it must remain empty.
+- `functions` — Cloudflare Pages Functions for Access-authenticated six-hour photo grants and private R2 delivery.
+- `docs/CLOUDFLARE_PHOTO_GRANTS.md` — secure grant architecture, Cloudflare setup and private package contract.
 - `public/profile` — copied and optimized portrait and name card assets.
 - `public/inventory/<SMI_CODE>` — Stable-generated public photo directories.
 - `public/properties` — development-only mock photo assets.
@@ -102,15 +103,13 @@ Property images have no visible download button, cannot normally be dragged, and
 
 ### Owner-granted image download links
 
-HS Ong may separately authorize an unlisted static link for one SMI. Stable generates a random URL-safe token (32–128 characters), a ZIP under `public/downloads/<token>/`, and one entry in `public/data/download-grants.json`. The catalogue route is `/download/<token>`; it is never linked from a property card, gallery, navigation or public index.
+Secure owner-only generation and precise six-hour expiry require Cloudflare Pages Functions, Access, Workers KV and a private R2 bucket. There is no separate owner page. After Access authentication, a listing detail page shows `Generate photo download link`; normal visitors do not see it, and the Function independently rejects unauthorized calls. Random tokens are stored only as SHA-256 hashes in KV with a 21,600-second TTL. The `/download/<token>` page streams only a prebuilt sanitized ZIP from private R2 and shows a neutral message for invalid or expired links.
 
-Each grant contains only `token`, `smi_code`, `title`, `package_path`, `generated_at`, and optional `expires_at`, `file_count` and `notice`. The package path must be `/downloads/<same-token>/<safe-file>.zip`. Invalid, absent, expired or revoked grants show the same neutral unavailable page. Revocation or expiry takes effect on the next static publication by removing the manifest entry and package.
-
-An opaque token is difficult to guess but is not authentication. Anyone who receives the link can use or forward it until it is removed. If genuine access control is required later, use a backend or object storage with identity checks and signed expiring download URLs.
+Run `npm run package:photos` to build ignored, sanitized per-SMI ZIPs and an R2 upload manifest. Full resource setup and security boundaries are documented in [Cloudflare photo grants](docs/CLOUDFLARE_PHOTO_GRANTS.md). Links are still bearer credentials: anyone receiving one can use it until expiry.
 
 ## Cloudflare Pages deployment
 
-This project is a static Vite site and requires no permanent backend.
+Public catalogue browsing is static. Secure photo grants use narrowly routed Cloudflare Pages Functions and managed Access/KV/R2 services; no permanent Node server or connection to Stable is required.
 
 - Build command: `npm run build`
 - Build output directory: `dist`
@@ -142,9 +141,9 @@ Implementing the Production Stable export control or generator is deliberately o
 - [ ] Every property card opens its shareable `/property/:slug` route.
 - [ ] Detail galleries, back links and missing-property states work.
 - [ ] Property display images reject drag-save and context-menu actions without losing useful alt text.
-- [ ] No `/download/` link is exposed by normal catalogue pages when the grant manifest is empty.
-- [ ] Invalid, missing, expired and revoked grant tokens show the neutral unavailable page.
-- [ ] Every active grant resolves only to its token-scoped ZIP and disappears on the next publish after revocation.
+- [ ] Unauthenticated visitors render no `Generate photo download link` control and direct admin API calls are rejected.
+- [ ] An Access-authenticated allowlisted owner can generate a 256-bit link from a listing detail page.
+- [ ] Invalid, missing and expired tokens show the neutral unavailable page; live tokens stream only the matching private sanitized R2 ZIP.
 - [ ] WhatsApp links contain the correct agent number, listing code and title.
 - [ ] Call buttons appear on mobile layouts and email links open an email client.
 - [ ] Share uses the device share sheet or copies the listing URL.

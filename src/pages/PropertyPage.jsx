@@ -5,6 +5,7 @@ import { agentProfile } from "../config/agentProfile";
 import { useInventory } from "../hooks";
 import { enquiryText, formatDate, formatPrice, intentLabels, photoDownloadRequestText, postingText, shareListing, whatsappUrl } from "../utils/listing";
 import { PublicPropertyImage } from "../components/PublicPropertyImage";
+import { OwnerPhotoGrantControl } from "../components/OwnerPhotoGrantControl";
 
 export function PropertyPage() {
   const { slug } = useParams();
@@ -69,6 +70,7 @@ export function PropertyPage() {
           <a className="button secondary" href={whatsappUrl(agentProfile.whatsapp, photoDownloadRequestText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><Download size={18} /> PM for photos download</a>
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} /> Call {agentProfile.phoneDisplay}</a>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {copied ? "Link copied" : "Share property"}</button>
+          <OwnerPhotoGrantControl listing={listing} />
         </aside>
       </div>
       {lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={`${listing.title} photo viewer`}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label="Close full photo view" autoFocus><X size={24} /></button>{listing.photos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label="Previous photo"><ChevronLeft size={32} /></button> : null}<div className="lightbox-image"><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1} fullscreen`} /><span>{activePhoto + 1} / {listing.photos.length}</span></div>{listing.photos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label="Next photo"><ChevronRight size={32} /></button> : null}</div> : null}

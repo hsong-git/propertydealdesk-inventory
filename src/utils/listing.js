@@ -23,6 +23,14 @@ export const formatDateTime = (value) => {
   }).format(date);
 };
 
+export const compareFeaturedRecentlyUpdated = (a, b) => {
+  const featuredOrder = Number(Boolean(b.featured)) - Number(Boolean(a.featured));
+  if (featuredOrder) return featuredOrder;
+  const updatedOrder = (Date.parse(b.updatedAt) || 0) - (Date.parse(a.updatedAt) || 0);
+  if (updatedOrder) return updatedOrder;
+  return String(a.code || "").localeCompare(String(b.code || ""));
+};
+
 export const intentLabels = {
   WTS: "Want to Sell",
   WTL: "Want to Let",
@@ -35,7 +43,43 @@ export const enquiryText = (listing, displayName) => {
   return `Hi ${displayName}, I am interested in listing ${listing.code}, ${listing.title} at ${listing.location}. Could you share the latest availability and details for ${action}?`;
 };
 
+export const photoDownloadRequestText = (listing, displayName) => [
+  `Hi ${displayName}, PM for photos download.`,
+  "",
+  `Property code: ${listing.code}`,
+  `Title: ${listing.title}`,
+  `Location: ${listing.location}`,
+  `Price: ${formatPrice(listing.price, listing.intent)}`,
+].join("\n");
+
 export const whatsappUrl = (number, message) => `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+
+export const postingText = (listing, profile) => {
+  const facts = [
+    listing.propertyType && `Property type: ${listing.propertyType}`,
+    listing.unitType && `Unit type: ${listing.unitType}`,
+    Number.isFinite(listing.bedrooms) && `Bedrooms: ${listing.bedrooms}`,
+    Number.isFinite(listing.bathrooms) && `Bathrooms: ${listing.bathrooms}`,
+    listing.builtUpSqFt && `Built-up: ${Number(listing.builtUpSqFt).toLocaleString("en-MY")} sq ft`,
+    listing.landSize && `Land size: ${listing.landSize}`,
+    listing.furnishing && `Furnishing: ${listing.furnishing}`,
+    listing.facing && `Facing: ${listing.facing}`,
+  ].filter(Boolean);
+  const features = (listing.features || []).filter(Boolean);
+  return [
+    `${listing.intent} | ${listing.code}`,
+    listing.title,
+    `Location: ${listing.location}`,
+    `Price: ${formatPrice(listing.price, listing.intent)}`,
+    "",
+    ...facts,
+    ...(listing.description ? ["", listing.description] : []),
+    ...(features.length ? ["", "Features:", ...features.map((item) => `- ${item}`)] : []),
+    "",
+    `Contact ${profile.displayName} (${profile.renNumber})`,
+    `WhatsApp: ${profile.phoneDisplay}`,
+  ].join("\n");
+};
 
 export async function shareListing(listing) {
   const url = `${window.location.origin}/property/${listing.slug}`;

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { normalizeInventoryFeed } from "./inventoryContract.js";
+import { compareFeaturedRecentlyUpdated, photoDownloadRequestText, postingText } from "../utils/listing.js";
 
 const productionFeed = (listings) => ({
   schema: "propertydealdesk-public-inventory",
@@ -68,4 +69,44 @@ test("drops photo paths outside the listing public inventory directory", () => {
   };
   const { items } = normalizeInventoryFeed(productionFeed([raw]));
   assert.deepEqual(items[0].photos, []);
+});
+
+test("builds copyable posting details from the public listing allowlist", () => {
+  const { items } = normalizeInventoryFeed(productionFeed([stableListing]));
+  const text = postingText(items[0], {
+    displayName: "HS Ong",
+    renNumber: "REN 81340",
+    phoneDisplay: "016-313 2865",
+  });
+  assert.match(text, /^WTS \| WTS1004/m);
+  assert.match(text, /Location: Bukit Tinggi, Klang/);
+  assert.match(text, /Price: RM 680,000/);
+  assert.match(text, /Contact HS Ong \(REN 81340\)/);
+  assert.doesNotMatch(text, /database_id|contact_no|raw_json/);
+});
+
+test("builds a photo-download WhatsApp request from public listing details", () => {
+  const { items } = normalizeInventoryFeed(productionFeed([stableListing]));
+  const text = photoDownloadRequestText(items[0], "HS Ong");
+  assert.equal(text, [
+    "Hi HS Ong, PM for photos download.",
+    "",
+    "Property code: WTS1004",
+    "Title: Family Home in Bukit Tinggi",
+    "Location: Bukit Tinggi, Klang",
+    "Price: RM 680,000",
+  ].join("\n"));
+});
+
+test("orders Featured listings first and then by most recent update", () => {
+  const listings = [
+    { code: "WTS0003", featured: false, updatedAt: "2026-07-27T12:00:00Z" },
+    { code: "WTS0001", featured: true, updatedAt: "2026-07-25T12:00:00Z" },
+    { code: "WTS0002", featured: true, updatedAt: "2026-07-26T12:00:00Z" },
+    { code: "WTS0004", featured: false, updatedAt: "2026-07-26T12:00:00Z" },
+  ];
+  assert.deepEqual(
+    listings.sort(compareFeaturedRecentlyUpdated).map((item) => item.code),
+    ["WTS0002", "WTS0001", "WTS0003", "WTS0004"],
+  );
 });

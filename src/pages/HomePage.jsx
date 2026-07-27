@@ -5,7 +5,7 @@ import { CatalogueFilters } from "../components/CatalogueFilters";
 import { ProfilePanel } from "../components/ProfilePanel";
 import { PropertyCard } from "../components/PropertyCard";
 import { useInventory } from "../hooks";
-import { formatDateTime, whatsappUrl } from "../utils/listing";
+import { compareFeaturedRecentlyUpdated, formatDateTime, whatsappUrl } from "../utils/listing";
 
 const defaults = { keyword: "", intent: "", propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", availability: "", sort: "recent" };
 
@@ -40,7 +40,7 @@ export function HomePage() {
       if (filters.sort === "price-asc") return a.price - b.price;
       if (filters.sort === "price-desc") return b.price - a.price;
       if (filters.sort === "title") return a.title.localeCompare(b.title);
-      return new Date(b.updatedAt) - new Date(a.updatedAt);
+      return compareFeaturedRecentlyUpdated(a, b);
     });
   }, [items, filters]);
   const reset = () => { setFilters(defaults); setVisible(6); };

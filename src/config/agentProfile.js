@@ -8,7 +8,7 @@ export const agentProfile = {
   phoneDisplay: "016-313 2865",
   whatsapp: "60163132865",
   email: "hsong@myeviv.com",
-  serviceAreas: ["Klang", "Bukit Tinggi", "Bandar Botanic", "Bayu Perdana", "Shah Alam"],
+  serviceAreas: ["Klang", "Bukit Tinggi", "Bandar Botanic", "Bayu Perdana", "Shah Alam", "Setia Alam"],
   portrait: "/profile/hs-ong-portrait.webp",
   nameCard: "/profile/hs-ong-name-card.webp",
   shortIntroduction:

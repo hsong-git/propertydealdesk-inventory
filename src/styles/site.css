@@ -302,8 +302,8 @@ main { flex: 1; }
   .apply-filter-button { display: inline-flex; }
   .filter-backdrop { position: fixed; inset: 0; z-index: 55; border: 0; display: block; background: rgba(15,31,26,.55); }
   .property-grid { grid-template-columns: 1fr; }
-  .property-card { display: flex; flex-direction: column; }
-  .property-photo { aspect-ratio: 16/10; min-height: 0; }
+  .property-card { display: grid; grid-template-columns: 154px minmax(0,1fr); }
+  .property-photo { aspect-ratio: 1; min-height: 0; align-self: start; }
   .property-photo .intent { left: 7px; top: 7px; }
   .intent small, .featured-badge { display: none; }
   .property-content { padding: 11px; gap: 5px; }
@@ -356,8 +356,8 @@ main { flex: 1; }
   .mobile-filter-button { min-width: 45px; padding-inline: 9px; font-size: 0; }
   .mobile-filter-button svg { width: 19px; }
   .filter-grid { grid-template-columns: 1fr; }
-  .property-card { display: grid; grid-template-columns: 118px minmax(0,1fr); }
-  .property-photo { aspect-ratio: auto; min-height: 168px; }
+  .property-card { grid-template-columns: 118px minmax(0,1fr); }
+  .property-photo { aspect-ratio: 1; }
   .property-reference { font-size: 10px; }
   .availability { max-width: 88px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .property-facts span { font-size: 10px; }

@@ -118,13 +118,20 @@ Public catalogue browsing is static. Secure photo grants use narrowly routed Clo
 - Build output directory: `dist`
 - Framework preset: Vite
 
-`public/_redirects` ensures React Router paths such as `/property/example-slug` resolve to the SPA entry point on Cloudflare Pages.
+`public/_redirects` provides the SPA fallback for routes that do not have an exact generated file. During `npm run build`, exact static HTML files are generated for public property routes and short-link routes before deployment, so crawlers can read listing-specific metadata while human visitors still hydrate into the React app.
 
 ### SEO, social previews and sitemap
 
 The public canonical domain is `https://property.myeviv.com/`. Global SEO defaults, Open Graph tags, Twitter card tags, favicon links, the app manifest and public-safe Real Estate Negotiator JSON-LD are defined in `index.html` and updated in the browser by `src/components/Seo.jsx`.
 
-Property detail routes update the browser document title, canonical URL, description and social image from the public inventory record, using the listing cover photo when available. Because this is a static React SPA, crawlers or social preview bots that do not execute JavaScript may only see the homepage/default metadata from `index.html`. If fully crawler-visible per-property metadata becomes important, add a static prerender step or static route HTML generation later.
+Property detail routes update the browser document title, canonical URL, description and social image from the public inventory record, using the listing cover photo when available. The build also runs `scripts/prerender-property-og.mjs` after Vite and emits crawler-visible static HTML for:
+
+- `dist/property/<slug>/index.html` — canonical property URL with listing-specific OG/Twitter metadata.
+- `dist/i/<SMI_CODE>/index.html` — short sharing URL with the same listing-specific preview metadata and canonical pointing back to the full property URL.
+
+The short public URL format is `https://property.myeviv.com/i/<SMI_CODE>`, for example `https://property.myeviv.com/i/WTL0010`. The short URL is intended for convenient sharing and is not listed in the sitemap to avoid duplicate SEO signals. Property share/copy actions use the short URL, while canonical metadata and sitemap entries continue to use `/property/<slug>`.
+
+Per-listing social descriptions are derived only from public-safe `posting_copy`/description fields in `public/data/inventory.json`, with contact-style lines trimmed. Per-listing OG images use sanitized public display images such as `/inventory/<SMI_CODE>/cover.webp`; if a listing has no public cover, the default public inventory OG image is used. WhatsApp and other social apps cache previews, so testing may require waiting, using a newly published URL, or changing the share target after metadata changes.
 
 `npm run generate:sitemap` reads `public/data/inventory.json` and writes `public/sitemap.xml` with the homepage, About, Contact and current property routes. `npm run build` runs inventory validation and regenerates the sitemap before Vite builds `dist`. `public/robots.txt` points search engines to the sitemap.
 
@@ -150,6 +157,9 @@ Implementing the Production Stable export control or generator is deliberately o
 - [ ] The matching count equals the current Stable feed and Load More reveals all matching records.
 - [ ] A production snapshot does not show the development mock-inventory notice.
 - [ ] Every property card opens its shareable `/property/:slug` route.
+- [ ] Property detail raw HTML contains listing-specific OG/Twitter tags before JavaScript runs.
+- [ ] Short links such as `/i/WTL0010` render listing-specific OG/Twitter tags, then route human visitors to the full property detail page.
+- [ ] Property Share and Copy short link actions use `https://property.myeviv.com/i/<SMI_CODE>`.
 - [ ] Detail galleries, back links and missing-property states work.
 - [ ] Property display images reject drag-save and context-menu actions without losing useful alt text.
 - [ ] Unauthenticated visitors render no `Generate photo download link` control and direct admin API calls are rejected.

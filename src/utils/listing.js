@@ -1,3 +1,5 @@
+import { SITE_ORIGIN } from "./seo.js";
+
 export const formatPrice = (value, intent) => {
   if (!value) return "Price on request";
   const suffix = intent === "WTL" ? " / month" : "";
@@ -55,6 +57,10 @@ export const photoDownloadRequestText = (listing, displayName) => [
 
 export const whatsappUrl = (number, message) => `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 
+export const listingDetailUrl = (listing, origin = SITE_ORIGIN) => `${origin}/property/${listing.slug}`;
+
+export const listingShortUrl = (listing, origin = SITE_ORIGIN) => `${origin}/i/${listing.code}`;
+
 export const postingText = (listing, profile) => {
   if (listing.postingCopy) return listing.postingCopy;
 
@@ -85,7 +91,7 @@ export const postingText = (listing, profile) => {
 };
 
 export async function shareListing(listing) {
-  const url = `${window.location.origin}/property/${listing.slug}`;
+  const url = listingShortUrl(listing);
   const data = { title: `${listing.code} · ${listing.title}`, text: `${listing.title} at ${listing.location}`, url };
   if (navigator.share) return navigator.share(data);
   await navigator.clipboard.writeText(url);

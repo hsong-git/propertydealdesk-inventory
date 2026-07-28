@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
 import { useInventory } from "../hooks";
-import { enquiryText, formatDate, formatPrice, intentLabels, photoDownloadRequestText, postingText, shareListing, whatsappUrl } from "../utils/listing";
+import { enquiryText, formatDate, formatPrice, intentLabels, listingShortUrl, photoDownloadRequestText, postingText, shareListing, whatsappUrl } from "../utils/listing";
 import { PublicPropertyImage } from "../components/PublicPropertyImage";
 import { OwnerPhotoGrantControl } from "../components/OwnerPhotoGrantControl";
 import { Seo } from "../components/Seo";
@@ -15,6 +15,8 @@ export function PropertyPage() {
   const listing = items.find((item) => item.slug === slug);
   const [activePhoto, setActivePhoto] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [shortLinkCopied, setShortLinkCopied] = useState(false);
+  const [shortLinkError, setShortLinkError] = useState(false);
   const [postingCopied, setPostingCopied] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const seoTitle = listing ? `${listing.title} | ${listing.code} | HS Ong Property Inventory` : "Property Details | HS Ong Property Inventory";
@@ -41,6 +43,18 @@ export function PropertyPage() {
   ];
   const onShare = async () => {
     try { if (await shareListing(listing) === "copied") { setCopied(true); window.setTimeout(() => setCopied(false), 1800); } } catch { /* cancelled */ }
+  };
+  const onCopyShortLink = async () => {
+    try {
+      await navigator.clipboard.writeText(listingShortUrl(listing));
+      setShortLinkCopied(true);
+      setShortLinkError(false);
+      window.setTimeout(() => setShortLinkCopied(false), 1800);
+    } catch {
+      setShortLinkCopied(false);
+      setShortLinkError(true);
+      window.setTimeout(() => setShortLinkError(false), 2200);
+    }
   };
   const onCopyPosting = async () => {
     await navigator.clipboard.writeText(postingText(listing, agentProfile));
@@ -83,6 +97,7 @@ export function PropertyPage() {
           <a className="button primary" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><MessageCircle size={18} /> WhatsApp enquiry</a>
           <a className="button secondary" href={whatsappUrl(agentProfile.whatsapp, photoDownloadRequestText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><Download size={18} /> PM for photos</a>
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} /> Call {agentProfile.phoneDisplay}</a>
+          <button className="button secondary" type="button" onClick={onCopyShortLink}><Copy size={18} /> {shortLinkCopied ? "Short link copied" : shortLinkError ? "Copy failed" : "Copy short link"}</button>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {copied ? "Link copied" : "Share property"}</button>
           <OwnerPhotoGrantControl listing={listing} />
         </aside>

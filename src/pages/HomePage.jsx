@@ -2,6 +2,7 @@ import { AlertTriangle, Handshake, LoaderCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 import { agentProfile } from "../config/agentProfile";
 import { CatalogueFilters } from "../components/CatalogueFilters";
+import { ContactActions } from "../components/ContactActions";
 import { ProfilePanel } from "../components/ProfilePanel";
 import { PropertyCard } from "../components/PropertyCard";
 import { useInventory } from "../hooks";
@@ -77,6 +78,11 @@ export function HomePage() {
         <section className="co-broke-panel">
           <span className="co-broke-icon"><Handshake size={27} /></span>
           <div><span className="eyebrow">Working together</span><h2>Co-broke agents are welcome</h2><p>{agentProfile.coBrokeMessage}</p></div>
+          <ContactActions
+            includeCall={false}
+            includeWhatsApp
+            message={`Hi ${agentProfile.displayName}, I am a real estate agent and would like to ask about current co-broke opportunities, available listings and viewing arrangements.`}
+          />
         </section>
       </div>
     </main>

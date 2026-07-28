@@ -1,5 +1,5 @@
-import { AlertTriangle, ExternalLink, Handshake, LoaderCircle } from "lucide-react";
-import { useMemo, useState } from "react";
+import { AlertTriangle, ExternalLink, Handshake, LoaderCircle, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { agentProfile } from "../config/agentProfile";
 import { CatalogueFilters } from "../components/CatalogueFilters";
 import { ContactActions } from "../components/ContactActions";
@@ -17,6 +17,7 @@ export function HomePage() {
   const [catalogueMode, setCatalogueMode] = useState("all");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [visible, setVisible] = useState(6);
+  const [agentToolsPreviewOpen, setAgentToolsPreviewOpen] = useState(false);
   const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && value).length
     + (catalogueMode === "featured" ? 1 : 0);
   const options = useMemo(() => ({
@@ -53,6 +54,18 @@ export function HomePage() {
     setCatalogueMode(mode);
     setVisible(6);
   };
+  useEffect(() => {
+    if (!agentToolsPreviewOpen) return undefined;
+    document.body.classList.add("modal-open");
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setAgentToolsPreviewOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.classList.remove("modal-open");
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [agentToolsPreviewOpen]);
 
   return (
     <main>
@@ -102,9 +115,28 @@ export function HomePage() {
             </a>
           </div>
           <figure className="agent-tools-visual">
-            <img src="/agent-tools/match-edition-infographic.png" alt="PropertyDealDesk Match Edition workflow illustration" loading="lazy" />
+            <button className="agent-tools-visual-button" type="button" onClick={() => setAgentToolsPreviewOpen(true)} aria-label="Open larger PropertyDealDesk Match Edition workflow illustration">
+              <img src="/agent-tools/match-edition-infographic.png" alt="PropertyDealDesk Match Edition workflow illustration" loading="lazy" />
+              <span>Tap to enlarge</span>
+            </button>
           </figure>
         </section>
+        {agentToolsPreviewOpen ? (
+          <div className="agent-tools-lightbox" role="presentation" onMouseDown={() => setAgentToolsPreviewOpen(false)}>
+            <section className="agent-tools-lightbox-card" role="dialog" aria-modal="true" aria-labelledby="agent-tools-preview-title" onMouseDown={(event) => event.stopPropagation()}>
+              <div className="agent-tools-lightbox-heading">
+                <div>
+                  <span className="eyebrow">Agent Tools preview</span>
+                  <h2 id="agent-tools-preview-title">PropertyDealDesk Match Edition workflow</h2>
+                </div>
+                <button className="icon-button" type="button" onClick={() => setAgentToolsPreviewOpen(false)} aria-label="Close Agent Tools infographic preview" autoFocus>
+                  <X size={20} />
+                </button>
+              </div>
+              <img src="/agent-tools/match-edition-infographic.png" alt="PropertyDealDesk Match Edition workflow illustration enlarged preview" />
+            </section>
+          </div>
+        ) : null}
       </div>
     </main>
   );

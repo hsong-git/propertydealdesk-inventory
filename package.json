@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "test": "node --test src/data/inventoryContract.test.js src/data/inventoryRefresh.test.js src/data/downloadGrantContract.test.js scripts/image-policy.test.mjs functions/_lib/grants.test.js functions/api/security.test.js",
+    "test": "node --test src/data/inventoryContract.test.js src/data/inventoryRefresh.test.js src/data/downloadGrantContract.test.js src/config/watermark.test.js scripts/image-policy.test.mjs functions/_lib/grants.test.js functions/api/security.test.js",
     "validate:inventory": "node scripts/validate-inventory.mjs",
     "package:photos": "npm run validate:inventory && node scripts/build-photo-packages.mjs",
     "prebuild": "npm run validate:inventory",

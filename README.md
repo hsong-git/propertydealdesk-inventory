@@ -57,6 +57,7 @@ The build automatically runs `npm run validate:inventory` first. Validation chec
 - `public/data/download-grants.json` — deprecated legacy manifest; it must remain empty.
 - `functions` — Cloudflare Pages Functions for Access-authenticated six-hour photo grants and private R2 delivery.
 - `docs/CLOUDFLARE_PHOTO_GRANTS.md` — secure grant architecture, Cloudflare setup and private package contract.
+- `docs/PUBLIC_PHOTO_WATERMARKS.md` — public property-photo watermark modes, exclusions, limitations and future embedded workflow.
 - `public/profile` — copied and optimized portrait and name card assets.
 - `public/inventory/<SMI_CODE>` — Stable-generated public photo directories.
 - `public/properties` — development-only mock photo assets.
@@ -100,6 +101,8 @@ The files in `public/properties` are retained development-only fixtures and are 
 Production display assets must be WebP copies with EXIF orientation applied before resizing, a longest edge no greater than 1920px from Stable (the catalogue rejects anything above its defensive 2560px ceiling), and no EXIF, GPS, device, date, ICC or XMP metadata. Stable currently exports at WebP quality 82. Build validation rejects metadata, non-WebP production assets, unreadable files, and over-dimension images. It warns when a file exceeds 2 MiB or the referenced display package exceeds 150 MiB.
 
 Property images have no visible download button, cannot normally be dragged, and suppress the browser context menu. These are deterrents only. Any image delivered to a public browser can still be saved through screenshots, browser developer tools, network requests, cache inspection or other means. True protection requires authenticated storage and signed, expiring URLs; a static Cloudflare Pages site cannot provide that security.
+
+Public property photos also render a centralized browser watermark by default: `TRR HS Ong` over `property.myeviv.com`. The current overlay is a deterrent and is not applied to profile portraits, name cards, logos, icons, placeholders or decorative imagery. The future Production Stable publication pipeline should embed the same watermark into sanitized public photo copies and downloadable packages, then set the catalogue watermark mode to `embedded` so the browser overlay is automatically suppressed. See [public photo watermarks](docs/PUBLIC_PHOTO_WATERMARKS.md).
 
 ### Owner-granted image download links
 

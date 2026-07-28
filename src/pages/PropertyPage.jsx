@@ -50,7 +50,7 @@ export function PropertyPage() {
         <div className="detail-main">
           <section className="gallery" aria-label="Property photos">
             <div className="gallery-main">{listing.photos[activePhoto]
-              ? <button className="gallery-open" type="button" onClick={() => setLightboxOpen(true)} aria-label={`Open photo ${activePhoto + 1} of ${listing.photos.length} fullscreen`}><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1}`} /><span><Maximize2 size={17} /> Full view</span></button>
+              ? <button className="gallery-open" type="button" onClick={() => setLightboxOpen(true)} aria-label={`Open photo ${activePhoto + 1} of ${listing.photos.length} fullscreen`}><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1}`} /><span className="gallery-open-label"><Maximize2 size={17} /> Full view</span></button>
               : <span className="property-photo-placeholder detail-placeholder"><ImageOff size={38} /><small>No public photo supplied</small></span>}
               <span className={`intent intent-${listing.intent.toLowerCase()}`}>{listing.intent}<small>{intentLabels[listing.intent]}</small></span></div>
             {listing.photos.length > 1 ? <div className="gallery-thumbnails">{listing.photos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
@@ -73,7 +73,7 @@ export function PropertyPage() {
           <OwnerPhotoGrantControl listing={listing} />
         </aside>
       </div>
-      {lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={`${listing.title} photo viewer`}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label="Close full photo view" autoFocus><X size={24} /></button>{listing.photos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label="Previous photo"><ChevronLeft size={32} /></button> : null}<div className="lightbox-image"><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1} fullscreen`} /><span>{activePhoto + 1} / {listing.photos.length}</span></div>{listing.photos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label="Next photo"><ChevronRight size={32} /></button> : null}</div> : null}
+      {lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={`${listing.title} photo viewer`}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label="Close full photo view" autoFocus><X size={24} /></button>{listing.photos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label="Previous photo"><ChevronLeft size={32} /></button> : null}<div className="lightbox-image"><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1} fullscreen`} /><span className="lightbox-counter">{activePhoto + 1} / {listing.photos.length}</span></div>{listing.photos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label="Next photo"><ChevronRight size={32} /></button> : null}</div> : null}
     </main>
   );
 }

@@ -53,7 +53,7 @@ main { flex: 1; }
 .contact-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .profile-panel.expanded { min-height: 360px; grid-template-columns: minmax(220px,310px) minmax(0,1fr); padding-inline: clamp(22px,4vw,54px); }
 .profile-panel.expanded .portrait-wrap { height: 335px; }
-.profile-panel.expanded .portrait-wrap img { object-position: center 8%; transform: scale(1.8); transform-origin: center top; }
+.profile-panel.expanded .portrait-wrap img { object-position: center 0%; transform: translateY(-26px) scale(1.8); transform-origin: center top; }
 
 .catalogue-section { display: grid; gap: 16px; }
 .development-data-notice { margin-top: -8px; padding: 12px 14px; border: 1px solid rgba(166,107,0,.25); border-radius: var(--radius-small); display: flex; align-items: flex-start; gap: 10px; color: var(--color-warning); background: #fff8e8; }
@@ -280,7 +280,7 @@ main { flex: 1; }
   .portrait-wrap, .profile-panel.expanded .portrait-wrap, .profile-panel:not(.expanded) .portrait-wrap { justify-self: center; align-self: center; width: min(48vw,178px); height: 204px; min-height: 0; border-radius: 12px; overflow: hidden; background: var(--color-surface-muted); box-shadow: 0 12px 26px rgba(24,33,29,.09); }
   .profile-panel:not(.expanded) .portrait-wrap { display: grid; place-items: center; }
   .profile-panel:not(.expanded) .portrait-wrap img { object-fit: cover; object-position: center 8%; transform: scale(1.7); transform-origin: center top; }
-  .profile-panel.expanded .portrait-wrap img { object-position: center 8%; transform: scale(1.65); transform-origin: center top; }
+  .profile-panel.expanded .portrait-wrap img { object-position: center 0%; transform: translateY(-16px) scale(1.65); transform-origin: center top; }
   .profile-copy, .profile-panel.expanded .profile-copy { min-width: 0; padding: 0; display: grid; gap: 8px; }
   .profile-copy h1 { font-size: 23px; }
   .profile-copy > .eyebrow { font-size: 9px; }

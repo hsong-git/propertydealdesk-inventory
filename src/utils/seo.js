@@ -8,11 +8,17 @@ export const defaultSeo = {
   ogTitle: "HS Ong Property Inventory",
   ogDescription:
     "Current public property listings by Ong Hua Seong (HS Ong), Real Estate Negotiator REN 81340.",
-  image: `${SITE_ORIGIN}/og/property-inventory-og.png`,
+  image: `${SITE_ORIGIN}/og/property-inventory-social-card.png`,
+  imageWidth: "1200",
+  imageHeight: "630",
+  imageType: "image/png",
 };
 
 const upsertMeta = (selector, createAttributes, value) => {
-  if (!value) return;
+  if (!value) {
+    document.head.querySelector(selector)?.remove();
+    return;
+  }
   let element = document.head.querySelector(selector);
   if (!element) {
     element = document.createElement("meta");
@@ -48,8 +54,14 @@ export function applySeo({
   ogTitle = title,
   ogDescription = description,
   image = defaultSeo.image,
+  imageWidth,
+  imageHeight,
+  imageType,
   type = "website",
 } = {}) {
+  const absoluteImage = absoluteUrl(image);
+  const isDefaultImage = absoluteImage === defaultSeo.image;
+  const resolvedImageType = imageType || (absoluteImage.toLowerCase().endsWith(".webp") ? "image/webp" : defaultSeo.imageType);
   document.title = title;
   upsertMeta('meta[name="description"]', { name: "description" }, description);
   upsertLink("canonical", canonical);
@@ -57,12 +69,15 @@ export function applySeo({
   upsertMeta('meta[property="og:description"]', { property: "og:description" }, ogDescription);
   upsertMeta('meta[property="og:url"]', { property: "og:url" }, canonical);
   upsertMeta('meta[property="og:type"]', { property: "og:type" }, type);
-  upsertMeta('meta[property="og:image"]', { property: "og:image" }, absoluteUrl(image));
+  upsertMeta('meta[property="og:image"]', { property: "og:image" }, absoluteImage);
+  upsertMeta('meta[property="og:image:width"]', { property: "og:image:width" }, imageWidth || (isDefaultImage ? defaultSeo.imageWidth : ""));
+  upsertMeta('meta[property="og:image:height"]', { property: "og:image:height" }, imageHeight || (isDefaultImage ? defaultSeo.imageHeight : ""));
+  upsertMeta('meta[property="og:image:type"]', { property: "og:image:type" }, resolvedImageType);
   upsertMeta('meta[property="og:site_name"]', { property: "og:site_name" }, "HS Ong Property Inventory");
   upsertMeta('meta[name="twitter:card"]', { name: "twitter:card" }, "summary_large_image");
   upsertMeta('meta[name="twitter:title"]', { name: "twitter:title" }, ogTitle);
   upsertMeta('meta[name="twitter:description"]', { name: "twitter:description" }, ogDescription);
-  upsertMeta('meta[name="twitter:image"]', { name: "twitter:image" }, absoluteUrl(image));
+  upsertMeta('meta[name="twitter:image"]', { name: "twitter:image" }, absoluteImage);
 }
 
 export function applyJsonLd(id, payload) {

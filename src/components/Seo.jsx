@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { agentProfile } from "../config/agentProfile";
-import { agentJsonLd, applyJsonLd, applySeo, defaultSeo } from "../utils/seo";
+import { agentJsonLd, applyJsonLd, applySeo } from "../utils/seo";
 
 export function Seo(props) {
   useEffect(() => {
-    applySeo({ ...defaultSeo, ...props });
+    applySeo(props);
     applyJsonLd("agent-jsonld", agentJsonLd(agentProfile));
   }, [
     props.title,

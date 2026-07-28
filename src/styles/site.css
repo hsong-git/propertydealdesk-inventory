@@ -145,9 +145,13 @@ main { flex: 1; }
 .co-broke-icon { width: 54px; height: 54px; border-radius: 13px; display: grid; place-items: center; color: #fff; background: var(--color-primary); }
 .co-broke-panel h2 { margin: 5px 0; font-size: 21px; }
 .co-broke-panel p { margin: 0; color: var(--color-text-muted); font-size: 13px; line-height: 1.5; }
-.agent-tools-panel { margin-top: -8px; padding: clamp(18px,2.6vw,26px); border: 1px solid var(--color-border); border-radius: var(--radius-large); display: grid; grid-template-columns: minmax(0,1.15fr) minmax(220px,.85fr) auto; align-items: center; gap: 16px; background: #fff; box-shadow: var(--shadow-card); }
+.agent-tools-panel { margin-top: -8px; padding: clamp(18px,2.8vw,30px); border: 1px solid var(--color-border); border-radius: var(--radius-large); display: grid; grid-template-columns: minmax(0,.9fr) minmax(320px,1.1fr); align-items: center; gap: clamp(18px,3vw,34px); background: #fff; box-shadow: var(--shadow-card); }
+.agent-tools-copy { min-width: 0; display: grid; justify-items: start; gap: 12px; }
 .agent-tools-panel h2 { margin: 5px 0 7px; font-size: 20px; }
 .agent-tools-panel p { margin: 0; color: var(--color-text-muted); font-size: 13px; line-height: 1.55; }
+.agent-tools-points { margin: 2px 0 0; padding-left: 18px; color: var(--color-text-muted); font-size: 12px; line-height: 1.5; }
+.agent-tools-visual { min-width: 0; margin: 0; padding: clamp(10px,1.8vw,16px); border: 1px solid var(--color-border); border-radius: var(--radius-medium); background: linear-gradient(145deg,#fff,var(--color-primary-soft)); }
+.agent-tools-visual img { width: 100%; height: auto; border-radius: var(--radius-small); display: block; box-shadow: 0 12px 28px rgba(24,33,29,.08); }
 .agent-tools-points { margin: 0; padding: 0; display: grid; gap: 7px; color: var(--color-text-muted); font-size: 12px; line-height: 1.35; list-style: none; }
 .agent-tools-points li { position: relative; padding-left: 16px; }
 .agent-tools-points li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); opacity: .68; }

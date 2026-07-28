@@ -88,19 +88,22 @@ export function HomePage() {
           />
         </section>
         <section className="agent-tools-panel" aria-labelledby="agent-tools-heading">
-          <div>
+          <div className="agent-tools-copy">
             <span className="eyebrow">For active co-broke agents</span>
             <h2 id="agent-tools-heading">PropertyDealDesk Match Edition</h2>
             <p>A private agent-facing workflow to help review possible matches faster, stay organised around active requests, and receive phone alerts when follow-up matters.</p>
+            <ul className="agent-tools-points">
+              <li>Review matching opportunities faster</li>
+              <li>Keep co-broke follow-up focused</li>
+              <li>Use alongside the public inventory catalogue</li>
+            </ul>
+            <a className="button primary" href="https://agenttools.myeviv.com/" target="_blank" rel="noopener noreferrer">
+              <ExternalLink size={18} /> Learn about Agent Tools
+            </a>
           </div>
-          <ul className="agent-tools-points">
-            <li>Review matching opportunities faster</li>
-            <li>Keep co-broke follow-up focused</li>
-            <li>Use alongside the public inventory catalogue</li>
-          </ul>
-          <a className="button primary" href="https://agenttools.myeviv.com/" target="_blank" rel="noopener noreferrer">
-            <ExternalLink size={18} /> Learn about Agent Tools
-          </a>
+          <figure className="agent-tools-visual">
+            <img src="/agent-tools/match-edition-infographic.png" alt="PropertyDealDesk Match Edition workflow illustration" loading="lazy" />
+          </figure>
         </section>
       </div>
     </main>

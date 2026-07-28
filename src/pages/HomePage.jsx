@@ -8,10 +8,6 @@ import { useInventory } from "../hooks";
 import { compareRecentlyUpdated, formatDateTime } from "../utils/listing";
 
 const defaults = { keyword: "", intent: "", propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", availability: "", sort: "recent" };
-const catalogueModes = [
-  { key: "all", label: "All" },
-  { key: "featured", label: "Featured" },
-];
 
 export function HomePage() {
   const { items, meta, loading, error } = useInventory();
@@ -19,7 +15,8 @@ export function HomePage() {
   const [catalogueMode, setCatalogueMode] = useState("all");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [visible, setVisible] = useState(6);
-  const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && value).length;
+  const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && value).length
+    + (catalogueMode === "featured" ? 1 : 0);
   const options = useMemo(() => ({
     propertyTypes: [...new Set(items.map((item) => item.propertyType))].sort(),
     locations: [...new Set(items.map((item) => item.location))].sort(),
@@ -70,20 +67,7 @@ export function HomePage() {
             <div><span className="eyebrow">Public property listings</span><h2>{agentProfile.catalogueHeading}</h2><p>Explore current opportunities and contact me directly to confirm details or arrange a viewing.</p></div>
             <div className="catalogue-count"><strong>{results.length}</strong><span>matching {results.length === 1 ? "property" : "properties"}</span>{meta ? <small>Inventory {meta.inventoryVersion} · {meta.isMockData ? "generated" : "published"} {formatDateTime(meta.publishedAt || meta.generatedAt)}</small> : null}</div>
           </div>
-          <div className="catalogue-mode-toggle" aria-label="Inventory view">
-            {catalogueModes.map((mode) => (
-              <button
-                key={mode.key}
-                className={catalogueMode === mode.key ? "active" : ""}
-                type="button"
-                aria-pressed={catalogueMode === mode.key}
-                onClick={() => updateCatalogueMode(mode.key)}
-              >
-                {mode.label}
-              </button>
-            ))}
-          </div>
-          <CatalogueFilters filters={filters} setFilters={setFilters} options={options} activeCount={activeCount} onReset={reset} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+          <CatalogueFilters filters={filters} setFilters={setFilters} options={options} activeCount={activeCount} onReset={reset} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} catalogueMode={catalogueMode} setCatalogueMode={updateCatalogueMode} />
           {loading ? <div className="state-card"><LoaderCircle className="spin" /><strong>Loading public inventory…</strong></div> : null}
           {error ? <div className="state-card error"><strong>{error}</strong><span>Please refresh the page or contact HS Ong directly.</span></div> : null}
           {!loading && !error && results.length ? <div className="property-grid">{results.slice(0, visible).map((listing) => <PropertyCard key={listing.publicId} listing={listing} />)}</div> : null}

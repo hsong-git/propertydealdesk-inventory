@@ -1,8 +1,12 @@
 import { ChevronDown, RotateCcw, Search, SlidersHorizontal, X } from "lucide-react";
 
 const intentOptions = ["WTS", "WTL"];
+const catalogueModes = [
+  { key: "all", label: "All" },
+  { key: "featured", label: "Featured" },
+];
 
-export function CatalogueFilters({ filters, setFilters, options, activeCount, onReset, mobileOpen, setMobileOpen }) {
+export function CatalogueFilters({ filters, setFilters, options, activeCount, onReset, mobileOpen, setMobileOpen, catalogueMode, setCatalogueMode }) {
   const update = (key, value) => setFilters((current) => ({ ...current, [key]: value }));
   return (
     <section className="catalogue-controls" aria-label="Property search and filters">
@@ -24,6 +28,22 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
           <label>Availability<select value={filters.availability} onChange={(event) => update("availability", event.target.value)}><option value="">Any status</option>{options.availability.map((value) => <option key={value}>{value}</option>)}</select></label>
         </div>
         <div className="filter-footer"><button className="reset-button" type="button" onClick={onReset} disabled={!activeCount}><RotateCcw size={16} /> Reset Filters</button><button className="button primary apply-filter-button" type="button" onClick={() => setMobileOpen(false)}>Show results</button></div>
+        <div className="filter-view-control">
+          <span>Inventory view</span>
+          <div className="catalogue-mode-toggle" aria-label="Inventory view">
+            {catalogueModes.map((mode) => (
+              <button
+                key={mode.key}
+                className={catalogueMode === mode.key ? "active" : ""}
+                type="button"
+                aria-pressed={catalogueMode === mode.key}
+                onClick={() => setCatalogueMode(mode.key)}
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
       {mobileOpen ? <button className="filter-backdrop" type="button" aria-label="Close filters" onClick={() => setMobileOpen(false)} /> : null}
     </section>

@@ -6,10 +6,11 @@ import { NameCardModal } from "./NameCardModal";
 
 export function ProfilePanel({ expanded = false }) {
   const [cardOpen, setCardOpen] = useState(false);
+  const portrait = expanded ? agentProfile.aboutPortrait || agentProfile.portrait : agentProfile.portrait;
   return (
     <>
       <section className={`profile-panel ${expanded ? "expanded" : ""}`}>
-        <div className="portrait-wrap"><img src={agentProfile.portrait} alt={`${agentProfile.displayName}, ${agentProfile.title}`} /></div>
+        <div className="portrait-wrap"><img src={portrait} alt={`${agentProfile.displayName}, ${agentProfile.title}`} /></div>
         <div className="profile-copy">
           <span className="eyebrow"><BadgeCheck size={15} /> Registered property professional</span>
           <h1>{expanded ? agentProfile.name : agentProfile.displayName}</h1>

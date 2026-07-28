@@ -10,6 +10,7 @@ export const agentProfile = {
   email: "hsong@myeviv.com",
   serviceAreas: ["Klang", "Bukit Tinggi", "Bandar Botanic", "Bayu Perdana", "Shah Alam", "Setia Alam"],
   portrait: "/profile/hs-ong-full-body-portrait.webp",
+  aboutPortrait: "/profile/hs-ong-about-portrait.webp",
   nameCard: "/profile/hs-ong-name-card.webp",
   shortIntroduction:
     "Helping buyers, tenants, owners and fellow agents connect with suitable property opportunities across Klang and Shah Alam.",

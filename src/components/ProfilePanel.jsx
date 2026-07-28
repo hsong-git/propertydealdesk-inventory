@@ -13,7 +13,7 @@ export function ProfilePanel({ expanded = false }) {
         <div className="portrait-wrap"><img src={portrait} alt={`${agentProfile.displayName}, ${agentProfile.title}`} /></div>
         <div className="profile-copy">
           <span className="eyebrow"><BadgeCheck size={15} /> Registered property professional</span>
-          <h1>{expanded ? agentProfile.name : agentProfile.displayName}</h1>
+          <h1>{agentProfile.profilePanelName || (expanded ? agentProfile.name : agentProfile.displayName)}</h1>
           <p className="profile-role">{agentProfile.title} · {agentProfile.renNumber}</p>
           <p className="profile-agency"><BriefcaseBusiness size={16} /> {agentProfile.agency}</p>
           <p>{expanded ? agentProfile.professionalIntroduction : agentProfile.shortIntroduction}</p>

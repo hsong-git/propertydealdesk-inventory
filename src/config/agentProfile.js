@@ -1,6 +1,7 @@
 export const agentProfile = {
   name: "Ong Hua Seong",
   displayName: "HS Ong",
+  profilePanelName: "Ong Hua Seong (HS Ong)",
   title: "Real Estate Negotiator",
   renNumber: "REN 81340",
   agency: "The Roof Realty Sdn Bhd",

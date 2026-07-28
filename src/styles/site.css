@@ -318,7 +318,6 @@ main { flex: 1; }
   .profile-actions .contact-actions { display: contents; }
   .profile-actions .button { width: 100%; min-width: 0; }
   .profile-actions > .button.tertiary { grid-column: 1 / -1; }
-  .profile-panel.expanded .profile-actions > .button.tertiary { grid-column: auto; }
   .section-heading { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: start; gap: 8px 12px; }
   .section-heading h2 { margin-top: 3px; font-size: 25px; line-height: 1.08; }
   .section-heading p { display: none; }
@@ -362,6 +361,8 @@ main { flex: 1; }
   .footer-disclaimer { grid-column: auto; }
   .footer-links { grid-row: 2; }
   .about-grid, .contact-grid, .detail-layout, .detail-columns { grid-template-columns: 1fr; }
+  .about-grid .content-card.accent .contact-actions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+  .about-grid .content-card.accent .contact-actions .button { width: 100%; min-width: 0; padding-inline: 9px; }
   .contact-hero { min-height: 0; padding: 20px; grid-template-columns: 1fr; gap: 14px; overflow: visible; background: linear-gradient(155deg,var(--color-primary-soft) 0%,#fff 64%); }
   .contact-hero > div { grid-column: auto; padding-bottom: 0; display: grid; gap: 10px; }
   .contact-hero > img { grid-column: auto; grid-row: 1; justify-self: center; width: min(48vw,178px); height: 204px; border-radius: 12px; object-fit: cover; object-position: center top; background: var(--color-surface-muted); box-shadow: 0 12px 26px rgba(24,33,29,.09); }
@@ -390,7 +391,9 @@ main { flex: 1; }
   .profile-agency { font-size: 11px; }
   .profile-actions, .contact-hero .contact-actions { grid-template-columns: 1fr; gap: 7px; }
   .profile-panel.expanded .profile-actions { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .about-grid .content-card.accent .contact-actions { gap: 6px; }
   .profile-actions .button, .contact-hero .contact-actions .button { min-height: 38px; padding-inline: 10px; gap: 6px; font-size: 12px; white-space: normal; }
+  .about-grid .content-card.accent .contact-actions .button { min-height: 38px; padding-inline: 6px; gap: 5px; font-size: 12px; white-space: normal; }
   .profile-actions .button svg { width: 16px; height: 16px; }
   .section-heading { grid-template-columns: 1fr; gap: 6px; }
   .section-heading p { grid-column: auto; }

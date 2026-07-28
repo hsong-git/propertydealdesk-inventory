@@ -19,7 +19,7 @@ export function ProfilePanel({ expanded = false }) {
           <p>{expanded ? agentProfile.professionalIntroduction : agentProfile.shortIntroduction}</p>
           <div className="area-list" aria-label="Main service areas"><MapPin size={16} /> {agentProfile.serviceAreas.map((area) => <span key={area}>{area}</span>)}</div>
           <div className="profile-actions">
-            {expanded ? <ContactActions compact /> : <ContactActions compact includeWhatsApp includeEmail includeCall={false} />}
+            {expanded ? null : <ContactActions compact includeWhatsApp includeEmail includeCall={false} />}
             <button className="button tertiary" type="button" onClick={() => setCardOpen(true)}><CreditCard size={18} /> View Name Card</button>
           </div>
         </div>

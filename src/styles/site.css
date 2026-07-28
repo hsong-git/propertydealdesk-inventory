@@ -318,11 +318,13 @@ main { flex: 1; }
   .profile-actions .contact-actions { display: contents; }
   .profile-actions .button { width: 100%; min-width: 0; }
   .profile-actions > .button.tertiary { grid-column: 1 / -1; }
-  .section-heading { align-items: start; }
-  .section-heading h2 { font-size: 25px; }
-  .section-heading p { font-size: 12px; }
-  .catalogue-count { padding-top: 6px; }
+  .section-heading { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: start; gap: 8px 12px; }
+  .section-heading h2 { margin-top: 3px; font-size: 25px; line-height: 1.08; }
+  .section-heading p { display: none; }
+  .catalogue-count { min-width: 86px; padding-top: 2px; text-align: right; }
   .catalogue-count strong { font-size: 22px; }
+  .catalogue-count span { display: block; font-size: 10px; line-height: 1.15; }
+  .catalogue-count small { max-width: 150px; margin-top: 2px; font-size: 8px; line-height: 1.25; }
   .search-row { grid-template-columns: minmax(0,1fr) auto; }
   .sort-field { grid-column: 1 / -1; min-height: 44px; }
   .mobile-filter-button { display: inline-flex; padding-inline: 11px; }
@@ -336,8 +338,8 @@ main { flex: 1; }
   .apply-filter-button { display: inline-flex; }
   .filter-backdrop { position: fixed; inset: 0; z-index: 55; border: 0; display: block; background: rgba(15,31,26,.55); }
   .property-grid { grid-template-columns: 1fr; }
-  .property-card { display: grid; grid-template-columns: 154px minmax(0,1fr); }
-  .property-photo { aspect-ratio: 1; min-height: 0; align-self: start; }
+  .property-card { display: grid; grid-template-columns: 154px minmax(0,1fr); align-items: stretch; }
+  .property-photo { height: 100%; min-height: 0; aspect-ratio: auto; align-self: stretch; }
   .property-photo .intent { left: 7px; top: 7px; }
   .intent small, .featured-badge { display: none; }
   .property-content { padding: 11px; gap: 5px; }
@@ -388,8 +390,12 @@ main { flex: 1; }
   .profile-actions, .contact-hero .contact-actions { grid-template-columns: 1fr; gap: 7px; }
   .profile-actions .button, .contact-hero .contact-actions .button { min-height: 38px; padding-inline: 10px; gap: 6px; font-size: 12px; white-space: normal; }
   .profile-actions .button svg { width: 16px; height: 16px; }
-  .section-heading { display: grid; grid-template-columns: 1fr auto; }
-  .section-heading p { grid-column: 1 / -1; }
+  .section-heading { grid-template-columns: 1fr; gap: 6px; }
+  .section-heading p { grid-column: auto; }
+  .catalogue-count { width: 100%; max-width: none; padding: 8px 10px; border: 1px solid var(--color-border); border-radius: var(--radius-small); display: grid; grid-template-columns: auto minmax(0,1fr); align-items: center; gap: 1px 8px; text-align: left; background: rgba(255,255,255,.72); }
+  .catalogue-count strong { grid-row: 1 / span 2; font-size: 24px; }
+  .catalogue-count span { font-size: 11px; }
+  .catalogue-count small { grid-column: 2; max-width: none; margin-top: 0; font-size: 8px; }
   .search-row { padding: 9px; gap: 7px; }
   .search-field { min-height: 46px; }
   .search-field input { font-size: 12px; }
@@ -399,8 +405,8 @@ main { flex: 1; }
   .filter-view-control { align-items: stretch; flex-direction: column; }
   .filter-view-control .catalogue-mode-toggle { width: 100%; }
   .filter-view-control .catalogue-mode-toggle button { flex: 1; }
-  .property-card { grid-template-columns: 118px minmax(0,1fr); }
-  .property-photo { aspect-ratio: 1; }
+  .property-card { grid-template-columns: clamp(132px,38vw,154px) minmax(0,1fr); }
+  .property-photo { height: 100%; aspect-ratio: auto; }
   .property-reference { font-size: 10px; }
   .availability { max-width: 88px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .property-facts span { font-size: 10px; }

@@ -396,4 +396,16 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://property.myeviv.com/property/wts1018-condominium-apartment-at-pelangi-heights-klang-pelangi-heights-klang</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://property.myeviv.com/property/wts1019-condominium-apartment-at-regency-condominium-klang-klang-regency-condominium-klang-klang</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

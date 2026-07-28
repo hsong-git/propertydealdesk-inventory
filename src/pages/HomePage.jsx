@@ -103,12 +103,12 @@ export function HomePage() {
         <section className="agent-tools-panel" aria-labelledby="agent-tools-heading">
           <div className="agent-tools-copy">
             <span className="eyebrow">For active co-broke agents</span>
-            <h2 id="agent-tools-heading">PropertyDealDesk Match Edition</h2>
-            <p>A private agent-facing workflow to help review possible matches faster, stay organised around active requests, and receive phone alerts when follow-up matters.</p>
+            <h2 id="agent-tools-heading">Never Miss a Match Again</h2>
+            <p>PropertyDealDesk Match Edition automatically scans WhatsApp property messages and alerts you when it finds a matching buyer, seller, landlord, tenant or property.</p>
             <ul className="agent-tools-points">
-              <li>Review matching opportunities faster</li>
-              <li>Keep co-broke follow-up focused</li>
-              <li>Use alongside the public inventory catalogue</li>
+              <li>Works while you focus on your clients</li>
+              <li>Get notified only when there&apos;s a match</li>
+              <li>Spend less time searching, more time closing</li>
             </ul>
             <a className="button primary" href="https://agenttools.myeviv.com/" target="_blank" rel="noopener noreferrer">
               <ExternalLink size={18} /> Learn about Agent Tools

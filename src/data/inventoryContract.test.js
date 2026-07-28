@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { normalizeInventoryFeed } from "./inventoryContract.js";
-import { compareFeaturedRecentlyUpdated, photoDownloadRequestText, postingText } from "../utils/listing.js";
+import { compareRecentlyUpdated, photoDownloadRequestText, postingText } from "../utils/listing.js";
 
 const productionFeed = (listings) => ({
   schema: "propertydealdesk-public-inventory",
@@ -57,9 +57,9 @@ test("treats listings array membership as authoritative and accepts an empty fee
 });
 
 test("drops non-supply and closed records defensively from a production payload", () => {
-  const buyerRequest = { ...stableListing, code: "WTB1001", intent: "WTB" };
+  const nonSupplyRequest = { ...stableListing, code: "REQ1001", intent: "REQUEST" };
   const closedSupply = { ...stableListing, availability: "Closed" };
-  const { items } = normalizeInventoryFeed(productionFeed([buyerRequest, closedSupply]));
+  const { items } = normalizeInventoryFeed(productionFeed([nonSupplyRequest, closedSupply]));
   assert.deepEqual(items, []);
 });
 
@@ -122,15 +122,15 @@ test("builds a photo-download WhatsApp request from public listing details", () 
   ].join("\n"));
 });
 
-test("orders Featured listings first and then by most recent update", () => {
+test("orders by most recent added or updated timestamp without featured priority", () => {
   const listings = [
     { code: "WTS0003", featured: false, updatedAt: "2026-07-27T12:00:00Z" },
     { code: "WTS0001", featured: true, updatedAt: "2026-07-25T12:00:00Z" },
     { code: "WTS0002", featured: true, updatedAt: "2026-07-26T12:00:00Z" },
-    { code: "WTS0004", featured: false, updatedAt: "2026-07-26T12:00:00Z" },
+    { code: "WTS0004", featured: false, createdAt: "2026-07-28T09:15:00Z", updatedAt: "2026-07-24T12:00:00Z" },
   ];
   assert.deepEqual(
-    listings.sort(compareFeaturedRecentlyUpdated).map((item) => item.code),
-    ["WTS0002", "WTS0001", "WTS0003", "WTS0004"],
+    listings.sort(compareRecentlyUpdated).map((item) => item.code),
+    ["WTS0004", "WTS0003", "WTS0002", "WTS0001"],
   );
 });

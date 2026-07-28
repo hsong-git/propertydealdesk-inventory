@@ -162,9 +162,9 @@
       "properties": {
         "publicId": { "type": "string", "pattern": "^mock-" },
         "publicationStatus": { "const": "development-placeholder" },
-        "code": { "type": "string", "pattern": "^(WTS|WTL|WTB|WTR)[A-Za-z0-9-]+$" },
+        "code": { "type": "string", "pattern": "^(WTS|WTL)[A-Za-z0-9-]+$" },
         "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
-        "intent": { "type": "string", "enum": ["WTS", "WTL", "WTB", "WTR"] },
+        "intent": { "type": "string", "enum": ["WTS", "WTL"] },
         "title": { "type": "string", "minLength": 1 },
         "propertyType": { "type": "string", "minLength": 1 },
         "location": { "type": "string", "minLength": 1 },

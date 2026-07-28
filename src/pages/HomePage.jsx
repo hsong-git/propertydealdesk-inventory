@@ -5,13 +5,18 @@ import { CatalogueFilters } from "../components/CatalogueFilters";
 import { ProfilePanel } from "../components/ProfilePanel";
 import { PropertyCard } from "../components/PropertyCard";
 import { useInventory } from "../hooks";
-import { compareFeaturedRecentlyUpdated, formatDateTime } from "../utils/listing";
+import { compareRecentlyUpdated, formatDateTime } from "../utils/listing";
 
 const defaults = { keyword: "", intent: "", propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", availability: "", sort: "recent" };
+const catalogueModes = [
+  { key: "all", label: "All" },
+  { key: "featured", label: "Featured" },
+];
 
 export function HomePage() {
   const { items, meta, loading, error } = useInventory();
   const [filters, setFilters] = useState(defaults);
+  const [catalogueMode, setCatalogueMode] = useState("all");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [visible, setVisible] = useState(6);
   const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && value).length;
@@ -25,7 +30,8 @@ export function HomePage() {
     const term = filters.keyword.trim().toLowerCase();
     const filtered = items.filter((item) => {
       const searchable = [item.code, item.title, item.propertyType, item.location, item.description, ...(item.features || [])].join(" ").toLowerCase();
-      return (!term || searchable.includes(term))
+      return (catalogueMode !== "featured" || item.featured)
+        && (!term || searchable.includes(term))
         && (!filters.intent || item.intent === filters.intent)
         && (!filters.propertyType || item.propertyType === filters.propertyType)
         && (!filters.location || item.location === filters.location)
@@ -40,10 +46,14 @@ export function HomePage() {
       if (filters.sort === "price-asc") return a.price - b.price;
       if (filters.sort === "price-desc") return b.price - a.price;
       if (filters.sort === "title") return a.title.localeCompare(b.title);
-      return compareFeaturedRecentlyUpdated(a, b);
+      return compareRecentlyUpdated(a, b);
     });
-  }, [items, filters]);
-  const reset = () => { setFilters(defaults); setVisible(6); };
+  }, [items, filters, catalogueMode]);
+  const reset = () => { setFilters(defaults); setCatalogueMode("all"); setVisible(6); };
+  const updateCatalogueMode = (mode) => {
+    setCatalogueMode(mode);
+    setVisible(6);
+  };
 
   return (
     <main>
@@ -59,6 +69,19 @@ export function HomePage() {
           <div className="section-heading">
             <div><span className="eyebrow">Public property listings</span><h2>{agentProfile.catalogueHeading}</h2><p>Explore current opportunities and contact me directly to confirm details or arrange a viewing.</p></div>
             <div className="catalogue-count"><strong>{results.length}</strong><span>matching {results.length === 1 ? "property" : "properties"}</span>{meta ? <small>Inventory {meta.inventoryVersion} · {meta.isMockData ? "generated" : "published"} {formatDateTime(meta.publishedAt || meta.generatedAt)}</small> : null}</div>
+          </div>
+          <div className="catalogue-mode-toggle" aria-label="Inventory view">
+            {catalogueModes.map((mode) => (
+              <button
+                key={mode.key}
+                className={catalogueMode === mode.key ? "active" : ""}
+                type="button"
+                aria-pressed={catalogueMode === mode.key}
+                onClick={() => updateCatalogueMode(mode.key)}
+              >
+                {mode.label}
+              </button>
+            ))}
           </div>
           <CatalogueFilters filters={filters} setFilters={setFilters} options={options} activeCount={activeCount} onReset={reset} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
           {loading ? <div className="state-card"><LoaderCircle className="spin" /><strong>Loading public inventory…</strong></div> : null}

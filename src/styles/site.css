@@ -67,6 +67,10 @@ main { flex: 1; }
 .catalogue-count strong { display: block; color: var(--color-primary); font-size: 26px; line-height: 1; }
 .catalogue-count span { color: var(--color-text-muted); font-size: 11px; }
 .catalogue-count small { max-width: 260px; margin-top: 5px; display: block; color: var(--color-text-muted); font-size: 9px; line-height: 1.35; }
+.catalogue-mode-toggle { display: inline-flex; justify-self: start; gap: 7px; padding: 5px; border: 1px solid var(--color-border); border-radius: var(--radius-pill); background: rgba(255,255,255,.82); box-shadow: 0 3px 12px rgba(24,33,29,.04); }
+.catalogue-mode-toggle button { min-height: 34px; min-width: 82px; padding: 0 16px; border: 1px solid transparent; border-radius: var(--radius-pill); color: var(--color-text-muted); background: transparent; font-size: 12px; font-weight: 850; }
+.catalogue-mode-toggle button:hover { color: var(--color-primary); background: var(--color-primary-soft); }
+.catalogue-mode-toggle button.active { color: #fff; border-color: var(--color-primary); background: var(--color-primary); box-shadow: 0 8px 18px rgba(17,124,91,.14); }
 
 .catalogue-controls { position: relative; border: 1px solid var(--color-border); border-radius: var(--radius-medium); background: var(--color-surface); box-shadow: 0 3px 12px rgba(24,33,29,.03); }
 .search-row { padding: 12px; display: grid; grid-template-columns: minmax(260px,1fr) 230px; gap: 10px; }
@@ -98,9 +102,9 @@ main { flex: 1; }
 .intent { min-height: 24px; padding: 0 8px; border-radius: 7px; display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 900; }
 .intent small { font-size: 9px; font-weight: 750; opacity: .86; }
 .property-photo .intent, .gallery-main .intent { position: absolute; left: 11px; top: 11px; box-shadow: 0 4px 14px rgba(24,33,29,.16); }
-.intent-wts, .intent-wtb { color: var(--color-primary); background: #ecf7e8; }
-.intent-wtl, .intent-wtr { color: #215a9b; background: var(--color-info-soft); }
-.featured-badge { position: absolute; right: 11px; top: 11px; padding: 5px 8px; border-radius: var(--radius-pill); color: #fff; background: rgba(24,33,29,.82); font-size: 10px; font-weight: 800; backdrop-filter: blur(8px); }
+.intent-wts { color: var(--color-primary); background: #ecf7e8; }
+.intent-wtl { color: #215a9b; background: var(--color-info-soft); }
+.featured-badge { position: absolute; right: 11px; top: 11px; padding: 5px 8px; border: 1px solid #dc2626; border-radius: var(--radius-pill); color: #b91c1c; background: #ffe4ec; font-size: 10px; font-weight: 850; backdrop-filter: blur(8px); }
 .property-content { padding: 14px; display: grid; gap: 8px; }
 .property-reference { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--color-primary); font-size: 11px; font-weight: 850; letter-spacing: .03em; }
 .availability { padding: 4px 7px; border-radius: var(--radius-pill); color: var(--color-text-muted); background: var(--color-surface-muted); font-size: 9px; letter-spacing: 0; }

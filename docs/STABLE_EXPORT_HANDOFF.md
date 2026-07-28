@@ -43,7 +43,7 @@ Canonical listing keys use snake_case.
 | `location` | string | Public-safe locality; no private exact address unless explicitly approved |
 | `price` | number or null | Non-negative asking price/rent; null means price on request |
 | `availability` | enum | `Available`, `Available Soon`, `Viewing by Appointment`, `Under Offer`, or `Reserved` |
-| `updated_at` | ISO date/date-time | Public record update time |
+| `updated_at` | ISO date/date-time | Public record update time. ISO date-time with at least minute precision is preferred so `Recently updated` can order the latest Stable upload/update above older records. |
 | `cover_photo` | string or null | Matching `/inventory/<SMI_CODE>/<file>` path, or null |
 | `photos` | string[] | Matching public paths; when cover exists, `photos[0]` must equal `cover_photo` |
 
@@ -61,7 +61,7 @@ Canonical listing keys use snake_case.
 | `facing_direction` | string or null | |
 | `unit_type` | string or null | |
 | `featured` | boolean | Defaults to false |
-| `created_at` | ISO date/date-time or null | |
+| `created_at` | ISO date/date-time or null | ISO date-time with at least minute precision is preferred when available. The catalogue's default recent sort uses the later of `created_at` and `updated_at`. |
 | `posting_copy` | string or null | Public-safe Stable SMI Copy output. When present, the catalogue renders and copies this text verbatim in Posting details. Maximum 8000 characters. |
 | `features` | string[] | Public content only |
 | `amenities` | string[] | Public content only |
@@ -76,7 +76,7 @@ No other listing keys are accepted by pre-build validation.
 - PUBLIC approval is a separate explicit publication state in Stable. It must not reuse the remote-client Approved SMI state.
 - Stable exports only PUBLIC-approved active `WTS` and `WTL` supply records.
 - Do not export the internal approval flag or state. Presence in `listings[]` is authoritative.
-- WTB, WTR, closed, sold, rented, unpublished and deleted records are absent.
+- Buyer/tenant request records, closed, sold, rented, unpublished and deleted records are absent.
 - If a record is absent from the next generated snapshot, it disappears from catalogue results after the next build. Its old detail route returns Property not found.
 - The loader requests `inventory.json` without browser caching and rebuilds its inventory solely from the current array; it keeps no historical listing state.
 

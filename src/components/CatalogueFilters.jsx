@@ -1,6 +1,6 @@
 import { ChevronDown, RotateCcw, Search, SlidersHorizontal, X } from "lucide-react";
 
-const intentOptions = ["WTS", "WTL", "WTB", "WTR"];
+const intentOptions = ["WTS", "WTL"];
 
 export function CatalogueFilters({ filters, setFilters, options, activeCount, onReset, mobileOpen, setMobileOpen }) {
   const update = (key, value) => setFilters((current) => ({ ...current, [key]: value }));

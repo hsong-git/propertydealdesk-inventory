@@ -1,6 +1,6 @@
 export const formatPrice = (value, intent) => {
-  if (!value) return intent === "WTB" || intent === "WTR" ? "Budget on request" : "Price on request";
-  const suffix = intent === "WTL" || intent === "WTR" ? " / month" : "";
+  if (!value) return "Price on request";
+  const suffix = intent === "WTL" ? " / month" : "";
   return `RM ${Number(value).toLocaleString("en-MY")}${suffix}`;
 };
 
@@ -23,10 +23,13 @@ export const formatDateTime = (value) => {
   }).format(date);
 };
 
-export const compareFeaturedRecentlyUpdated = (a, b) => {
-  const featuredOrder = Number(Boolean(b.featured)) - Number(Boolean(a.featured));
-  if (featuredOrder) return featuredOrder;
-  const updatedOrder = (Date.parse(b.updatedAt) || 0) - (Date.parse(a.updatedAt) || 0);
+export const recentActivityTime = (listing) => Math.max(
+  Date.parse(listing.updatedAt) || 0,
+  Date.parse(listing.createdAt) || 0,
+);
+
+export const compareRecentlyUpdated = (a, b) => {
+  const updatedOrder = recentActivityTime(b) - recentActivityTime(a);
   if (updatedOrder) return updatedOrder;
   return String(a.code || "").localeCompare(String(b.code || ""));
 };
@@ -34,12 +37,10 @@ export const compareFeaturedRecentlyUpdated = (a, b) => {
 export const intentLabels = {
   WTS: "Want to Sell",
   WTL: "Want to Let",
-  WTB: "Want to Buy",
-  WTR: "Want to Rent",
 };
 
 export const enquiryText = (listing, displayName) => {
-  const action = listing.intent === "WTL" || listing.intent === "WTR" ? "renting" : "this property";
+  const action = listing.intent === "WTL" ? "renting" : "this property";
   return `Hi ${displayName}, I am interested in listing ${listing.code}, ${listing.title} at ${listing.location}. Could you share the latest availability and details for ${action}?`;
 };
 

@@ -98,7 +98,7 @@ export function HomePage() {
             <li>Keep co-broke follow-up focused</li>
             <li>Use alongside the public inventory catalogue</li>
           </ul>
-          <a className="button secondary" href="https://agenttools.myeviv.com/" target="_blank" rel="noopener noreferrer">
+          <a className="button primary" href="https://agenttools.myeviv.com/" target="_blank" rel="noopener noreferrer">
             <ExternalLink size={18} /> Learn about Agent Tools
           </a>
         </section>

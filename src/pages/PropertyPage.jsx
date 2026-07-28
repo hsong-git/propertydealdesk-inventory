@@ -6,6 +6,8 @@ import { useInventory } from "../hooks";
 import { enquiryText, formatDate, formatPrice, intentLabels, photoDownloadRequestText, postingText, shareListing, whatsappUrl } from "../utils/listing";
 import { PublicPropertyImage } from "../components/PublicPropertyImage";
 import { OwnerPhotoGrantControl } from "../components/OwnerPhotoGrantControl";
+import { Seo } from "../components/Seo";
+import { propertySeoDescription, SITE_ORIGIN } from "../utils/seo";
 
 export function PropertyPage() {
   const { slug } = useParams();
@@ -15,6 +17,9 @@ export function PropertyPage() {
   const [copied, setCopied] = useState(false);
   const [postingCopied, setPostingCopied] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const seoTitle = listing ? `${listing.title} | ${listing.code} | HS Ong Property Inventory` : "Property Details | HS Ong Property Inventory";
+  const seoDescription = listing ? propertySeoDescription(listing, formatPrice(listing.price, listing.intent)) : "Public property details from HS Ong Property Inventory.";
+  const seoCanonical = `${SITE_ORIGIN}/property/${slug}`;
   useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); }, [slug]);
   useEffect(() => {
     if (!lightboxOpen) return undefined;
@@ -27,8 +32,8 @@ export function PropertyPage() {
     window.addEventListener("keydown", onKeyDown);
     return () => { document.body.classList.remove("modal-open"); window.removeEventListener("keydown", onKeyDown); };
   }, [lightboxOpen, listing?.photos.length]);
-  if (loading) return <main className="page-width page-state"><strong>Loading property details…</strong></main>;
-  if (error || !listing) return <main className="page-width page-state"><strong>Property not found</strong><p>{error || "This listing may no longer be in the public inventory."}</p><Link className="button secondary" to="/"><ArrowLeft size={18} /> Back to Catalogue</Link></main>;
+  if (loading) return <main className="page-width page-state"><Seo title="Loading property details | HS Ong Property Inventory" canonical={seoCanonical} /><strong>Loading property details…</strong></main>;
+  if (error || !listing) return <main className="page-width page-state"><Seo title="Property not found | HS Ong Property Inventory" description="This listing may no longer be in the public HS Ong Property Inventory." canonical={seoCanonical} /><strong>Property not found</strong><p>{error || "This listing may no longer be in the public inventory."}</p><Link className="button secondary" to="/"><ArrowLeft size={18} /> Back to Catalogue</Link></main>;
   const detailItems = [
     [Building2, "Property type", listing.propertyType], [BedDouble, "Bedrooms", listing.bedrooms ?? "N/A"], [Bath, "Bathrooms", listing.bathrooms ?? "N/A"],
     [Expand, "Built-up", listing.builtUpSqFt ? `${listing.builtUpSqFt.toLocaleString()} sq ft` : "N/A"], [Warehouse, "Land size", listing.landSize || "N/A"],
@@ -45,6 +50,15 @@ export function PropertyPage() {
   const movePhoto = (direction) => setActivePhoto((current) => (current + direction + listing.photos.length) % listing.photos.length);
   return (
     <main className="page-width property-page">
+      <Seo
+        title={seoTitle}
+        description={seoDescription}
+        canonical={seoCanonical}
+        ogTitle={`${listing.title} | ${listing.code}`}
+        ogDescription={seoDescription}
+        image={listing.photos[0]}
+        type="article"
+      />
       <Link className="back-link" to="/"><ArrowLeft size={17} /> Back to Catalogue</Link>
       <div className="detail-layout">
         <div className="detail-main">

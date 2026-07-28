@@ -120,6 +120,14 @@ Public catalogue browsing is static. Secure photo grants use narrowly routed Clo
 
 `public/_redirects` ensures React Router paths such as `/property/example-slug` resolve to the SPA entry point on Cloudflare Pages.
 
+### SEO, social previews and sitemap
+
+The public canonical domain is `https://property.myeviv.com/`. Global SEO defaults, Open Graph tags, Twitter card tags, favicon links, the app manifest and public-safe Real Estate Negotiator JSON-LD are defined in `index.html` and updated in the browser by `src/components/Seo.jsx`.
+
+Property detail routes update the browser document title, canonical URL, description and social image from the public inventory record, using the listing cover photo when available. Because this is a static React SPA, crawlers or social preview bots that do not execute JavaScript may only see the homepage/default metadata from `index.html`. If fully crawler-visible per-property metadata becomes important, add a static prerender step or static route HTML generation later.
+
+`npm run generate:sitemap` reads `public/data/inventory.json` and writes `public/sitemap.xml` with the homepage, About, Contact and current property routes. `npm run build` runs inventory validation and regenerates the sitemap before Vite builds `dist`. `public/robots.txt` points search engines to the sitemap.
+
 ## Future approved SMI export checklist
 
 1. In Production Stable, select SMI records explicitly approved for public publication.

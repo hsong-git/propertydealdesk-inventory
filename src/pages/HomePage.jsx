@@ -5,6 +5,7 @@ import { CatalogueFilters } from "../components/CatalogueFilters";
 import { ContactActions } from "../components/ContactActions";
 import { ProfilePanel } from "../components/ProfilePanel";
 import { PropertyCard } from "../components/PropertyCard";
+import { Seo } from "../components/Seo";
 import { useInventory } from "../hooks";
 import { compareRecentlyUpdated, formatDateTime } from "../utils/listing";
 
@@ -55,6 +56,7 @@ export function HomePage() {
 
   return (
     <main>
+      <Seo />
       <div className="page-width home-stack">
         <ProfilePanel />
         {meta?.isMockData ? (

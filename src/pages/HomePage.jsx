@@ -1,4 +1,4 @@
-import { AlertTriangle, Handshake, LoaderCircle } from "lucide-react";
+import { AlertTriangle, ExternalLink, Handshake, LoaderCircle } from "lucide-react";
 import { useMemo, useState } from "react";
 import { agentProfile } from "../config/agentProfile";
 import { CatalogueFilters } from "../components/CatalogueFilters";
@@ -81,8 +81,24 @@ export function HomePage() {
           <ContactActions
             includeCall={false}
             includeWhatsApp
+            whatsappLabel="Contact HS Ong"
             message={`Hi ${agentProfile.displayName}, I am a real estate agent and would like to ask about current co-broke opportunities, available listings and viewing arrangements.`}
           />
+        </section>
+        <section className="agent-tools-panel" aria-labelledby="agent-tools-heading">
+          <div>
+            <span className="eyebrow">For active co-broke agents</span>
+            <h2 id="agent-tools-heading">PropertyDealDesk Match Edition</h2>
+            <p>A private agent-facing workflow to help review possible matches faster, stay organised around active requests, and receive phone alerts when follow-up matters.</p>
+          </div>
+          <ul className="agent-tools-points">
+            <li>Review matching opportunities faster</li>
+            <li>Keep co-broke follow-up focused</li>
+            <li>Use alongside the public inventory catalogue</li>
+          </ul>
+          <a className="button secondary" href="https://agenttools.myeviv.com/" target="_blank" rel="noopener noreferrer">
+            <ExternalLink size={18} /> Learn about Agent Tools
+          </a>
         </section>
       </div>
     </main>

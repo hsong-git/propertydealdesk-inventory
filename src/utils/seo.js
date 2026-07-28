@@ -8,7 +8,7 @@ export const defaultSeo = {
   ogTitle: "HS Ong Property Inventory",
   ogDescription:
     "Current public property listings by Ong Hua Seong (HS Ong), Real Estate Negotiator REN 81340.",
-  image: `${SITE_ORIGIN}/og/property-inventory-whatsapp-card.png`,
+  image: `${SITE_ORIGIN}/og/property-inventory-card-white.png`,
   imageWidth: "1200",
   imageHeight: "630",
   imageType: "image/png",

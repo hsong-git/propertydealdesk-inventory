@@ -73,7 +73,7 @@ test("drops photo paths outside the listing public inventory directory", () => {
   assert.deepEqual(items[0].photos, []);
 });
 
-test("uses Stable-provided posting copy verbatim when present", () => {
+test("uses Stable-provided posting copy and appends the standard short-link footnote", () => {
   const { items } = normalizeInventoryFeed(productionFeed([{
     ...stableListing,
     posting_copy: "Stable SMI Copy\nLine 2 exactly as approved.",
@@ -83,7 +83,14 @@ test("uses Stable-provided posting copy verbatim when present", () => {
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(text, "Stable SMI Copy\nLine 2 exactly as approved.");
+  assert.equal(text, [
+    "Stable SMI Copy",
+    "Line 2 exactly as approved.",
+    "",
+    "🤝 Co-broke welcome",
+    "🏠 Listing details & photos:",
+    "https://property.myeviv.com/i/WTS1004",
+  ].join("\n"));
 });
 
 test("accepts Stable schema 1.1 posting copy snapshots", () => {
@@ -106,7 +113,27 @@ test("falls back to reconstructed posting details for old snapshots", () => {
   assert.match(text, /Location: Bukit Tinggi, Klang/);
   assert.match(text, /Price: RM 680,000/);
   assert.match(text, /Contact HS Ong \(REN 81340\)/);
+  assert.match(text, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004$/);
   assert.doesNotMatch(text, /database_id|contact_no|raw_json/);
+});
+
+test("does not duplicate an existing standard short-link footnote", () => {
+  const footnote = [
+    "🤝 Co-broke welcome",
+    "🏠 Listing details & photos:",
+    "https://property.myeviv.com/i/WTS1004",
+  ].join("\n");
+  const { items } = normalizeInventoryFeed(productionFeed([{
+    ...stableListing,
+    posting_copy: ["Stable SMI Copy", "", footnote, "", footnote].join("\n"),
+  }]));
+  const text = postingText(items[0], {
+    displayName: "HS Ong",
+    renNumber: "REN 81340",
+    phoneDisplay: "016-313 2865",
+  });
+  assert.equal(text, ["Stable SMI Copy", "", footnote].join("\n"));
+  assert.equal(text.match(/https:\/\/property\.myeviv\.com\/i\/WTS1004/g).length, 1);
 });
 
 test("builds a photo-download WhatsApp request from public listing details", () => {

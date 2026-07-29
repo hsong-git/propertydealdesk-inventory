@@ -61,8 +61,25 @@ export const listingDetailUrl = (listing, origin = SITE_ORIGIN) => `${origin}/pr
 
 export const listingShortUrl = (listing, origin = SITE_ORIGIN) => `${origin}/i/${listing.code}`;
 
+export const postingShortLinkFootnote = (listing) => [
+  "🤝 Co-broke welcome",
+  "🏠 Listing details & photos:",
+  listingShortUrl(listing),
+].join("\n");
+
+export const withPostingShortLinkFootnote = (text, listing) => {
+  const footnote = postingShortLinkFootnote(listing);
+  const escapedUrl = listingShortUrl(listing).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const standardFootnotePattern = new RegExp(
+    String.raw`(?:\r?\n){0,3}🤝\s*Co-broke welcome\s*(?:\r?\n)🏠\s*Listing details & photos:\s*(?:\r?\n)${escapedUrl}`,
+    "gi",
+  );
+  const cleaned = String(text || "").replace(standardFootnotePattern, "").trim();
+  return [cleaned, footnote].filter(Boolean).join("\n\n");
+};
+
 export const postingText = (listing, profile) => {
-  if (listing.postingCopy) return listing.postingCopy;
+  if (listing.postingCopy) return withPostingShortLinkFootnote(listing.postingCopy, listing);
 
   const facts = [
     listing.propertyType && `Property type: ${listing.propertyType}`,
@@ -75,7 +92,7 @@ export const postingText = (listing, profile) => {
     listing.facing && `Facing: ${listing.facing}`,
   ].filter(Boolean);
   const features = (listing.features || []).filter(Boolean);
-  return [
+  return withPostingShortLinkFootnote([
     `${listing.intent} | ${listing.code}`,
     listing.title,
     `Location: ${listing.location}`,
@@ -87,7 +104,7 @@ export const postingText = (listing, profile) => {
     "",
     `Contact ${profile.displayName} (${profile.renNumber})`,
     `WhatsApp: ${profile.phoneDisplay}`,
-  ].join("\n");
+  ].join("\n"), listing);
 };
 
 export async function shareListing(listing) {

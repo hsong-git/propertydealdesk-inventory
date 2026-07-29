@@ -62,14 +62,22 @@ Canonical listing keys use snake_case.
 | `unit_type` | string or null | |
 | `featured` | boolean | Defaults to false |
 | `created_at` | ISO date/date-time or null | ISO date-time with at least minute precision is preferred when available. The catalogue's default recent sort uses the later of `created_at` and `updated_at`. |
-| `posting_copy` | string or null | Public-safe Stable SMI Copy output. When present, the catalogue renders and copies this text verbatim in Posting details. Maximum 8000 characters. |
+| `posting_copy` | string or null | Public-safe Stable SMI Copy output. When present, the catalogue preserves this copy body and ensures the standard `/i/<SMI_CODE>` co-broke short-link footnote exists exactly once in Posting details. Maximum 8000 characters. |
 | `features` | string[] | Public content only |
 | `amenities` | string[] | Public content only |
 | `why_this_property` | string[] | Public content only |
 
 No other listing keys are accepted by pre-build validation.
 
-`posting_copy` is the preferred source for the detail-page Posting details block. Production Stable should populate it from the actual approved SMI Copy output after removing internal/private content. The catalogue keeps a reconstructed public-field fallback only for older snapshots that do not yet include this key.
+`posting_copy` is the preferred source for the detail-page Posting details block. Production Stable should populate it from the actual approved SMI Copy output after removing internal/private content. Stable may include the standard footnote itself, but the catalogue also appends/deduplicates it as a backward-compatible safety net. The required footnote is:
+
+```text
+🤝 Co-broke welcome
+🏠 Listing details & photos:
+https://property.myeviv.com/i/<SMI_CODE>
+```
+
+The catalogue keeps a reconstructed public-field fallback only for older snapshots that do not yet include this key, and that fallback also includes the same footnote.
 
 ## Publication and lifecycle rules
 

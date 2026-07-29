@@ -62,7 +62,7 @@ Canonical listing keys use snake_case.
 | `unit_type` | string or null | |
 | `featured` | boolean | Defaults to false |
 | `created_at` | ISO date/date-time or null | ISO date-time with at least minute precision is preferred when available. The catalogue's default recent sort uses the later of `created_at` and `updated_at`. |
-| `posting_copy` | string or null | Public-safe Stable SMI Copy output. When present, the catalogue preserves this copy body and ensures the standard co-broke footer exists exactly once in Posting details. WTS/WTL use `/i/<SMI_CODE>`; defensive WTR/WTB/unknown fallback text uses `https://property.myeviv.com`. Maximum 8000 characters. |
+| `posting_copy` | string or null | Public-safe Stable SMI Copy output. When present, the catalogue preserves this copy body and ensures the standard co-broke footer exists exactly once in Posting details. WTS/WTL use `/i/<SMI_CODE>`; defensive WTR/WTB/unknown fallback text uses `https://agenttools.myeviv.com`. Maximum 8000 characters. |
 | `features` | string[] | Public content only |
 | `amenities` | string[] | Public content only |
 | `why_this_property` | string[] | Public content only |
@@ -77,12 +77,12 @@ No other listing keys are accepted by pre-build validation.
 https://property.myeviv.com/i/<SMI_CODE>
 ```
 
-For WTR/WTB/request-side or unknown-intent fallback text, the URL line must be the catalogue homepage instead:
+For WTR/WTB/request-side or unknown-intent fallback text, the URL line must be the Agent Tools page instead:
 
 ```text
 🤝 Co-broke welcome
 🏠 Listing details & photos:
-https://property.myeviv.com
+https://agenttools.myeviv.com
 ```
 
 The catalogue keeps a reconstructed public-field fallback only for older snapshots that do not yet include this key, and that fallback also includes the intent-appropriate footnote. Current public production exports remain WTS/WTL only.

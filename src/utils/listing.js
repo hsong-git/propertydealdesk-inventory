@@ -1,5 +1,7 @@
 import { SITE_ORIGIN } from "./seo.js";
 
+const AGENT_TOOLS_ORIGIN = "https://agenttools.myeviv.com";
+
 export const formatPrice = (value, intent) => {
   if (!value) return "Price on request";
   const suffix = intent === "WTL" ? " / month" : "";
@@ -65,7 +67,7 @@ export const listingShortUrl = (listing, origin = SITE_ORIGIN) => `${origin}/i/$
 
 export const postingFootnoteUrl = (listing) => {
   const intent = String(listing.intent || "").toUpperCase();
-  return supplyIntents.has(intent) ? listingShortUrl(listing) : SITE_ORIGIN;
+  return supplyIntents.has(intent) ? listingShortUrl(listing) : AGENT_TOOLS_ORIGIN;
 };
 
 export const postingShortLinkFootnote = (listing) => [
@@ -77,7 +79,7 @@ export const postingShortLinkFootnote = (listing) => [
 export const withPostingShortLinkFootnote = (text, listing) => {
   const footnote = postingShortLinkFootnote(listing);
   const standardFootnotePattern = new RegExp(
-    String.raw`(?:\r?\n){0,3}🤝\s*Co-broke welcome\s*(?:\r?\n)🏠\s*Listing details & photos:\s*(?:\r?\n)\s*https:\/\/property\.myeviv\.com(?:\/i\/[A-Z0-9_-]+)?\/?`,
+    String.raw`(?:\r?\n){0,3}🤝\s*Co-broke welcome\s*(?:\r?\n)🏠\s*Listing details & photos:\s*(?:\r?\n)\s*https:\/\/(?:property|agenttools)\.myeviv\.com(?:\/i\/[A-Z0-9_-]+)?\/?`,
     "gi",
   );
   const cleaned = String(text || "").replace(standardFootnotePattern, "").trim();

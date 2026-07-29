@@ -139,17 +139,21 @@ test("does not duplicate an existing standard short-link footnote", () => {
 test("uses short-link posting footers only for public supply intents", () => {
   assert.equal(postingFootnoteUrl({ code: "wts1004", intent: "WTS" }), "https://property.myeviv.com/i/WTS1004");
   assert.equal(postingFootnoteUrl({ code: "wtl1005", intent: "WTL" }), "https://property.myeviv.com/i/WTL1005");
-  assert.equal(postingFootnoteUrl({ code: "wtr1006", intent: "WTR" }), "https://property.myeviv.com");
-  assert.equal(postingFootnoteUrl({ code: "wtb1007", intent: "WTB" }), "https://property.myeviv.com");
-  assert.equal(postingFootnoteUrl({ code: "abc1008", intent: "REQUEST" }), "https://property.myeviv.com");
+  assert.equal(postingFootnoteUrl({ code: "wtr1006", intent: "WTR" }), "https://agenttools.myeviv.com");
+  assert.equal(postingFootnoteUrl({ code: "wtb1007", intent: "WTB" }), "https://agenttools.myeviv.com");
+  assert.equal(postingFootnoteUrl({ code: "abc1008", intent: "REQUEST" }), "https://agenttools.myeviv.com");
 });
 
-test("normalizes incorrect request-side posting footers to the homepage", () => {
-  const text = postingText({
+test("normalizes incorrect request-side posting footers to Agent Tools", () => {
+  const baseListing = {
     code: "WTR1006",
     intent: "WTR",
     title: "Tenant request in Klang",
     location: "Klang",
+    features: [],
+  };
+  const text = postingText({
+    ...baseListing,
     postingCopy: [
       "Stable request copy",
       "",
@@ -157,7 +161,6 @@ test("normalizes incorrect request-side posting footers to the homepage", () => 
       "🏠 Listing details & photos:",
       "https://property.myeviv.com/i/WTR1006",
     ].join("\n"),
-    features: [],
   }, {
     displayName: "HS Ong",
     renNumber: "REN 81340",
@@ -168,9 +171,31 @@ test("normalizes incorrect request-side posting footers to the homepage", () => 
     "",
     "🤝 Co-broke welcome",
     "🏠 Listing details & photos:",
-    "https://property.myeviv.com",
+    "https://agenttools.myeviv.com",
   ].join("\n"));
-  assert.doesNotMatch(text, /\/i\/WTR1006/);
+  assert.doesNotMatch(text, /property\.myeviv\.com|\/i\/WTR1006/);
+
+  const oldHomepageText = postingText({
+    ...baseListing,
+    postingCopy: [
+      "Stable request copy",
+      "",
+      "🤝 Co-broke welcome",
+      "🏠 Listing details & photos:",
+      "https://property.myeviv.com",
+    ].join("\n"),
+  }, {
+    displayName: "HS Ong",
+    renNumber: "REN 81340",
+    phoneDisplay: "016-313 2865",
+  });
+  assert.equal(oldHomepageText, [
+    "Stable request copy",
+    "",
+    "🤝 Co-broke welcome",
+    "🏠 Listing details & photos:",
+    "https://agenttools.myeviv.com",
+  ].join("\n"));
 });
 
 test("builds a photo-download WhatsApp request from public listing details", () => {

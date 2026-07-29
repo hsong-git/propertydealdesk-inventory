@@ -1,5 +1,5 @@
 import { ArrowLeft, Bath, BedDouble, Building2, CalendarDays, Check, ChevronLeft, ChevronRight, Compass, Copy, Download, Expand, ImageOff, MapPin, Maximize2, MessageCircle, Phone, Share2, Sofa, Warehouse, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
 import { useInventory } from "../hooks";
@@ -8,6 +8,7 @@ import { PublicPropertyImage } from "../components/PublicPropertyImage";
 import { OwnerPhotoGrantControl } from "../components/OwnerPhotoGrantControl";
 import { Seo } from "../components/Seo";
 import { propertySeoDescription, SITE_ORIGIN } from "../utils/seo";
+import { photoSwipeDirection } from "../utils/photoSwipe";
 
 export function PropertyPage() {
   const { slug } = useParams();
@@ -19,6 +20,7 @@ export function PropertyPage() {
   const [shortLinkError, setShortLinkError] = useState(false);
   const [postingCopied, setPostingCopied] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const swipeStart = useRef(null);
   const seoTitle = listing ? `${listing.title} | ${listing.code} | HS Ong Property Inventory` : "Property Details | HS Ong Property Inventory";
   const seoDescription = listing ? propertySeoDescription(listing, formatPrice(listing.price, listing.intent)) : "Public property details from HS Ong Property Inventory.";
   const seoCanonical = `${SITE_ORIGIN}/property/${slug}`;
@@ -62,6 +64,16 @@ export function PropertyPage() {
     window.setTimeout(() => setPostingCopied(false), 1800);
   };
   const movePhoto = (direction) => setActivePhoto((current) => (current + direction + listing.photos.length) % listing.photos.length);
+  const onLightboxTouchStart = (event) => {
+    const touch = event.changedTouches?.[0];
+    if (touch) swipeStart.current = { x: touch.clientX, y: touch.clientY };
+  };
+  const onLightboxTouchEnd = (event) => {
+    const touch = event.changedTouches?.[0];
+    const direction = photoSwipeDirection(swipeStart.current, touch && { x: touch.clientX, y: touch.clientY });
+    swipeStart.current = null;
+    if (direction && listing.photos.length > 1) movePhoto(direction);
+  };
   return (
     <main className="page-width property-page">
       <Seo
@@ -102,7 +114,7 @@ export function PropertyPage() {
           <OwnerPhotoGrantControl listing={listing} />
         </aside>
       </div>
-      {lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={`${listing.title} photo viewer`}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label="Close full photo view" autoFocus><X size={24} /></button>{listing.photos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label="Previous photo"><ChevronLeft size={32} /></button> : null}<div className="lightbox-image"><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1} fullscreen`} /><span className="lightbox-counter">{activePhoto + 1} / {listing.photos.length}</span></div>{listing.photos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label="Next photo"><ChevronRight size={32} /></button> : null}</div> : null}
+      {lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={`${listing.title} photo viewer`}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label="Close full photo view" autoFocus><X size={24} /></button>{listing.photos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label="Previous photo"><ChevronLeft size={32} /></button> : null}<div className="lightbox-image" onTouchStart={onLightboxTouchStart} onTouchEnd={onLightboxTouchEnd} onTouchCancel={() => { swipeStart.current = null; }}><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1} fullscreen`} /><span className="lightbox-counter">{activePhoto + 1} / {listing.photos.length}</span></div>{listing.photos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label="Next photo"><ChevronRight size={32} /></button> : null}</div> : null}
     </main>
   );
 }

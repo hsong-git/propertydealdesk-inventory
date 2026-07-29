@@ -241,7 +241,7 @@ main { flex: 1; }
 .posting-heading h2 { margin: 4px 0 0; }
 .posting-details pre { margin: 0; padding: 16px; border: 1px solid var(--color-border); border-radius: var(--radius-small); overflow: auto; color: var(--color-text); background: var(--color-surface-muted); font: 500 12px/1.65 var(--font-family); white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; }
 .photo-lightbox { position: fixed; inset: 0; z-index: 100; padding: 24px 76px; display: grid; place-items: center; color: #fff; background: rgba(7,13,11,.94); backdrop-filter: blur(12px); }
-.lightbox-image { width: 100%; height: 100%; display: grid; place-items: center; }
+.lightbox-image { width: 100%; height: 100%; display: grid; place-items: center; touch-action: pan-y; }
 .lightbox-image .watermarked-image { width: auto; height: auto; max-width: 100%; max-height: calc(100vh - 48px); display: inline-block; background: transparent; }
 .lightbox-image .watermarked-image > img { max-width: 100%; max-height: calc(100vh - 48px); width: auto; height: auto; object-fit: contain; display: block; }
 .lightbox-counter { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); padding: 6px 10px; border-radius: var(--radius-pill); background: rgba(0,0,0,.56); font-size: 11px; font-weight: 750; }

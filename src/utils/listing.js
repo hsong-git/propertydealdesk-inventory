@@ -59,19 +59,25 @@ export const whatsappUrl = (number, message) => `https://wa.me/${number}?text=${
 
 export const listingDetailUrl = (listing, origin = SITE_ORIGIN) => `${origin}/property/${listing.slug}`;
 
-export const listingShortUrl = (listing, origin = SITE_ORIGIN) => `${origin}/i/${listing.code}`;
+const supplyIntents = new Set(["WTS", "WTL"]);
+
+export const listingShortUrl = (listing, origin = SITE_ORIGIN) => `${origin}/i/${String(listing.code || "").toUpperCase()}`;
+
+export const postingFootnoteUrl = (listing) => {
+  const intent = String(listing.intent || "").toUpperCase();
+  return supplyIntents.has(intent) ? listingShortUrl(listing) : SITE_ORIGIN;
+};
 
 export const postingShortLinkFootnote = (listing) => [
   "🤝 Co-broke welcome",
   "🏠 Listing details & photos:",
-  listingShortUrl(listing),
+  postingFootnoteUrl(listing),
 ].join("\n");
 
 export const withPostingShortLinkFootnote = (text, listing) => {
   const footnote = postingShortLinkFootnote(listing);
-  const escapedUrl = listingShortUrl(listing).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const standardFootnotePattern = new RegExp(
-    String.raw`(?:\r?\n){0,3}🤝\s*Co-broke welcome\s*(?:\r?\n)🏠\s*Listing details & photos:\s*(?:\r?\n)${escapedUrl}`,
+    String.raw`(?:\r?\n){0,3}🤝\s*Co-broke welcome\s*(?:\r?\n)🏠\s*Listing details & photos:\s*(?:\r?\n)\s*https:\/\/property\.myeviv\.com(?:\/i\/[A-Z0-9_-]+)?\/?`,
     "gi",
   );
   const cleaned = String(text || "").replace(standardFootnotePattern, "").trim();

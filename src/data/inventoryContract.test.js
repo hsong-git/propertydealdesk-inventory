@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { normalizeInventoryFeed } from "./inventoryContract.js";
-import { compareRecentlyUpdated, photoDownloadRequestText, postingText } from "../utils/listing.js";
+import { compareRecentlyUpdated, photoDownloadRequestText, postingFootnoteUrl, postingText } from "../utils/listing.js";
 
 const productionFeed = (listings) => ({
   schema: "propertydealdesk-public-inventory",
@@ -134,6 +134,43 @@ test("does not duplicate an existing standard short-link footnote", () => {
   });
   assert.equal(text, ["Stable SMI Copy", "", footnote].join("\n"));
   assert.equal(text.match(/https:\/\/property\.myeviv\.com\/i\/WTS1004/g).length, 1);
+});
+
+test("uses short-link posting footers only for public supply intents", () => {
+  assert.equal(postingFootnoteUrl({ code: "wts1004", intent: "WTS" }), "https://property.myeviv.com/i/WTS1004");
+  assert.equal(postingFootnoteUrl({ code: "wtl1005", intent: "WTL" }), "https://property.myeviv.com/i/WTL1005");
+  assert.equal(postingFootnoteUrl({ code: "wtr1006", intent: "WTR" }), "https://property.myeviv.com");
+  assert.equal(postingFootnoteUrl({ code: "wtb1007", intent: "WTB" }), "https://property.myeviv.com");
+  assert.equal(postingFootnoteUrl({ code: "abc1008", intent: "REQUEST" }), "https://property.myeviv.com");
+});
+
+test("normalizes incorrect request-side posting footers to the homepage", () => {
+  const text = postingText({
+    code: "WTR1006",
+    intent: "WTR",
+    title: "Tenant request in Klang",
+    location: "Klang",
+    postingCopy: [
+      "Stable request copy",
+      "",
+      "🤝 Co-broke welcome",
+      "🏠 Listing details & photos:",
+      "https://property.myeviv.com/i/WTR1006",
+    ].join("\n"),
+    features: [],
+  }, {
+    displayName: "HS Ong",
+    renNumber: "REN 81340",
+    phoneDisplay: "016-313 2865",
+  });
+  assert.equal(text, [
+    "Stable request copy",
+    "",
+    "🤝 Co-broke welcome",
+    "🏠 Listing details & photos:",
+    "https://property.myeviv.com",
+  ].join("\n"));
+  assert.doesNotMatch(text, /\/i\/WTR1006/);
 });
 
 test("builds a photo-download WhatsApp request from public listing details", () => {

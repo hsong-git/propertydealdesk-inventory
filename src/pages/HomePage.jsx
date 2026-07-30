@@ -8,6 +8,7 @@ import { PropertyCard } from "../components/PropertyCard";
 import { Seo } from "../components/Seo";
 import { useInventory } from "../hooks";
 import { compareRecentlyUpdated, formatDateTime } from "../utils/listing";
+import { buildLocationOptions, matchesKeywordSearch, matchesLocationFilter } from "../utils/locationFilter";
 
 const defaults = { keyword: "", intent: "", propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", availability: "", sort: "recent" };
 
@@ -22,19 +23,17 @@ export function HomePage() {
     + (catalogueMode === "featured" ? 1 : 0);
   const options = useMemo(() => ({
     propertyTypes: [...new Set(items.map((item) => item.propertyType))].sort(),
-    locations: [...new Set(items.map((item) => item.location))].sort(),
+    locations: buildLocationOptions(items),
     furnishing: [...new Set(items.map((item) => item.furnishing))].sort(),
     availability: [...new Set(items.map((item) => item.availability))].sort(),
   }), [items]);
   const results = useMemo(() => {
-    const term = filters.keyword.trim().toLowerCase();
     const filtered = items.filter((item) => {
-      const searchable = [item.code, item.title, item.propertyType, item.location, item.description, ...(item.features || [])].join(" ").toLowerCase();
       return (catalogueMode !== "featured" || item.featured)
-        && (!term || searchable.includes(term))
+        && matchesKeywordSearch(item, filters.keyword)
         && (!filters.intent || item.intent === filters.intent)
         && (!filters.propertyType || item.propertyType === filters.propertyType)
-        && (!filters.location || item.location === filters.location)
+        && matchesLocationFilter(item, filters.location)
         && (!filters.minPrice || item.price >= Number(filters.minPrice))
         && (!filters.maxPrice || item.price <= Number(filters.maxPrice))
         && (!filters.bedrooms || Number(item.bedrooms || 0) >= Number(filters.bedrooms))

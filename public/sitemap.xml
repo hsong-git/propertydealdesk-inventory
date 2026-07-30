@@ -166,6 +166,12 @@
     <loc>https://property.myeviv.com/property/wtl0058-condominium-apartment-at-trio-by-setia-bandar-bukit-tinggi-trio-by-setia-bandar-bukit-tinggi</loc>
     <lastmod>2026-07-30</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://property.myeviv.com/property/wtl0059-semi-detached-house-at-taman-sri-andalas-klang-taman-sri-andalas-klang</loc>
+    <lastmod>2026-07-30</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
@@ -435,6 +441,18 @@
   <url>
     <loc>https://property.myeviv.com/property/wts1020-condominium-apartment-at-gravit8-bandar-parklands-gravit8-bandar-parklands</loc>
     <lastmod>2026-07-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://property.myeviv.com/property/wts1021-terrace-house-2-storey-at-taman-sri-gadong-off-telok-gadong-besar-klang-taman-sri-gadong-off-telok-gadong-besar</loc>
+    <lastmod>2026-07-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://property.myeviv.com/property/wts1022-semi-detached-house-at-taman-sri-andalas-klang-taman-sri-andalas-klang</loc>
+    <lastmod>2026-07-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

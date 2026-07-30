@@ -20,18 +20,24 @@ export function PropertyPage() {
   const [copied, setCopied] = useState(false);
   const [postingCopied, setPostingCopied] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxSlide, setLightboxSlide] = useState("");
   const swipeStart = useRef(null);
   const seoTitle = listing ? `${listing.title} | ${listing.code} | HS Ong Property Inventory` : "Property Details | HS Ong Property Inventory";
   const seoDescription = listing ? propertySeoDescription(listing, formatPrice(listing.price, listing.intent)) : "Public property details from HS Ong Property Inventory.";
   const seoCanonical = `${SITE_ORIGIN}/property/${slug}`;
-  useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); }, [slug]);
+  function movePhoto(direction) {
+    if (!listing?.photos.length) return;
+    setLightboxSlide(direction > 0 ? "next" : "previous");
+    setActivePhoto((current) => (current + direction + listing.photos.length) % listing.photos.length);
+  }
+  useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); setLightboxSlide(""); }, [slug]);
   useEffect(() => {
     if (!lightboxOpen) return undefined;
     document.body.classList.add("modal-open");
     const onKeyDown = (event) => {
       if (event.key === "Escape") setLightboxOpen(false);
-      if (event.key === "ArrowLeft") setActivePhoto((current) => (current - 1 + (listing?.photos.length || 1)) % (listing?.photos.length || 1));
-      if (event.key === "ArrowRight") setActivePhoto((current) => (current + 1) % (listing?.photos.length || 1));
+      if (event.key === "ArrowLeft") movePhoto(-1);
+      if (event.key === "ArrowRight") movePhoto(1);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => { document.body.classList.remove("modal-open"); window.removeEventListener("keydown", onKeyDown); };
@@ -51,7 +57,6 @@ export function PropertyPage() {
     setPostingCopied(true);
     window.setTimeout(() => setPostingCopied(false), 1800);
   };
-  const movePhoto = (direction) => setActivePhoto((current) => (current + direction + listing.photos.length) % listing.photos.length);
   const relatedListings = getRelatedListings(listing, items, 8, locationDictionary);
   const onLightboxTouchStart = (event) => {
     const touch = event.changedTouches?.[0];
@@ -103,7 +108,7 @@ export function PropertyPage() {
         </aside>
       </div>
       <RelatedListings listings={relatedListings} />
-      {lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={`${listing.title} photo viewer`}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label="Close full photo view" autoFocus><X size={24} /></button>{listing.photos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label="Previous photo"><ChevronLeft size={32} /></button> : null}<div className="lightbox-image" onTouchStart={onLightboxTouchStart} onTouchEnd={onLightboxTouchEnd} onTouchCancel={() => { swipeStart.current = null; }}><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1} fullscreen`} /><span className="lightbox-counter">{activePhoto + 1} / {listing.photos.length}</span></div>{listing.photos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label="Next photo"><ChevronRight size={32} /></button> : null}</div> : null}
+      {lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={`${listing.title} photo viewer`}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label="Close full photo view" autoFocus><X size={24} /></button>{listing.photos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label="Previous photo"><ChevronLeft size={32} /></button> : null}<div className={`lightbox-image${lightboxSlide ? ` slide-${lightboxSlide}` : ""}`} onTouchStart={onLightboxTouchStart} onTouchEnd={onLightboxTouchEnd} onTouchCancel={() => { swipeStart.current = null; }} onAnimationEnd={() => setLightboxSlide("")}><PublicPropertyImage key={listing.photos[activePhoto]} src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1} fullscreen`} /><span className="lightbox-counter">{activePhoto + 1} / {listing.photos.length}</span></div>{listing.photos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label="Next photo"><ChevronRight size={32} /></button> : null}</div> : null}
     </main>
   );
 }

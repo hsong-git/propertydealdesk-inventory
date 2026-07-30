@@ -244,6 +244,8 @@ main { flex: 1; }
 .lightbox-image { width: 100%; height: 100%; display: grid; place-items: center; touch-action: pan-y; }
 .lightbox-image .watermarked-image { width: auto; height: auto; max-width: 100%; max-height: calc(100vh - 48px); display: inline-block; background: transparent; }
 .lightbox-image .watermarked-image > img { max-width: 100%; max-height: calc(100vh - 48px); width: auto; height: auto; object-fit: contain; display: block; }
+.lightbox-image.slide-next .watermarked-image { animation: lightbox-slide-next .22s ease-out both; }
+.lightbox-image.slide-previous .watermarked-image { animation: lightbox-slide-previous .22s ease-out both; }
 .lightbox-counter { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); padding: 6px 10px; border-radius: var(--radius-pill); background: rgba(0,0,0,.56); font-size: 11px; font-weight: 750; }
 .lightbox-close, .lightbox-arrow { position: fixed; z-index: 1; width: 46px; height: 46px; padding: 0; border: 1px solid rgba(255,255,255,.22); border-radius: 50%; display: grid; place-items: center; color: #fff; background: rgba(24,33,29,.7); }
 .lightbox-close { top: 18px; right: 18px; }
@@ -251,6 +253,20 @@ main { flex: 1; }
 .lightbox-arrow.previous { left: 18px; }
 .lightbox-arrow.next { right: 18px; }
 .lightbox-close:hover, .lightbox-arrow:hover { background: var(--color-primary); }
+
+@keyframes lightbox-slide-next {
+  from { opacity: .72; transform: translateX(34px) scale(.985); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes lightbox-slide-previous {
+  from { opacity: .72; transform: translateX(-34px) scale(.985); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-image.slide-next .watermarked-image,
+  .lightbox-image.slide-previous .watermarked-image { animation: none; }
+}
 .updated-line { margin: 0; display: flex; align-items: center; gap: 6px; color: var(--color-text-muted); font-size: 11px; }
 .agent-contact-card { position: sticky; top: 90px; padding: 20px; display: grid; grid-template-columns: 64px minmax(0,1fr); gap: 13px; }
 .agent-contact-card > img { width: 64px; height: 72px; border-radius: var(--radius-small); object-fit: cover; object-position: center 10%; background: var(--color-surface-muted); }

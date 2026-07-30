@@ -13,6 +13,17 @@ test("property page does not render a separate Copy short link action", () => {
   assert.match(source, /Share property/);
 });
 
+test("fullscreen photo viewer applies direction-aware slide classes", () => {
+  const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
+  const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
+  assert.match(source, /setLightboxSlide\(direction > 0 \? "next" : "previous"\)/);
+  assert.match(source, /slide-\$\{lightboxSlide\}/);
+  assert.match(source, /onAnimationEnd=\{\(\) => setLightboxSlide\(""\)\}/);
+  assert.match(css, /\.lightbox-image\.slide-next/);
+  assert.match(css, /@keyframes lightbox-slide-previous/);
+  assert.match(css, /prefers-reduced-motion: reduce/);
+});
+
 test("Share property falls back to copying the public short URL", async () => {
   const previousNavigator = globalThis.navigator;
   const writes = [];

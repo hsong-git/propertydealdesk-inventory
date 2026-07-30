@@ -14,7 +14,7 @@ import { RelatedListings } from "../components/RelatedListings";
 
 export function PropertyPage() {
   const { slug } = useParams();
-  const { items, loading, error } = useInventory();
+  const { items, locationDictionary, loading, error } = useInventory();
   const listing = items.find((item) => item.slug === slug);
   const [activePhoto, setActivePhoto] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -52,7 +52,7 @@ export function PropertyPage() {
     window.setTimeout(() => setPostingCopied(false), 1800);
   };
   const movePhoto = (direction) => setActivePhoto((current) => (current + direction + listing.photos.length) % listing.photos.length);
-  const relatedListings = getRelatedListings(listing, items);
+  const relatedListings = getRelatedListings(listing, items, 8, locationDictionary);
   const onLightboxTouchStart = (event) => {
     const touch = event.changedTouches?.[0];
     if (touch) swipeStart.current = { x: touch.clientX, y: touch.clientY };

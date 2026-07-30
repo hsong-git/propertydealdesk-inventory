@@ -54,6 +54,7 @@ The build automatically runs `npm run validate:inventory` first. Validation chec
 - `src/config/agentProfile.js` — single source for agent identity, contact details, service areas and public copy.
 - `public/data/inventory.json` — current Stable-generated, public-safe inventory snapshot.
 - `public/data/inventory.schema.json` — strict machine-readable contract for Stable-generated public exports.
+- `public/data/location_dictionary.json` — public-safe canonical area/alias dictionary used by the Location filter and related-listing location relevance.
 - `public/data/download-grants.json` — deprecated legacy manifest; it must remain empty.
 - `functions` — Cloudflare Pages Functions for Access-authenticated six-hour photo grants and private R2 delivery.
 - `docs/CLOUDFLARE_PHOTO_GRANTS.md` — secure grant architecture, Cloudflare setup and private package contract.
@@ -87,6 +88,29 @@ Production listing fields use a strict snake_case allowlist. Only separately PUB
 Unknown fields fail pre-build schema validation. The browser loader also constructs a fresh allowlisted object and ignores all unknown source keys, so internal notes, contact details, database IDs and other accidental source fields are never used by the UI.
 
 The first real Stable snapshot was published on 27 July 2026 as inventory version `2026.07.27.1`, with `isMockData: false`. Any future development fixture must remain clearly marked as mock data and must not be presented as HS Ong's real inventory.
+
+### Public location dictionary
+
+The catalogue reads `public/data/location_dictionary.json` as a static public-safe dictionary for canonical area names, aliases and broad-region flags. The Location dropdown and property-detail Related Listings use the same dictionary so filtering and relevance scoring understand variants consistently.
+
+Expected envelope:
+
+```json
+{
+  "schema": "propertydealdesk-public-location-dictionary",
+  "schema_version": "1.0",
+  "generated_at": "2026-07-30T00:00:00+08:00",
+  "locations": [
+    {
+      "label": "Bukit Tinggi",
+      "aliases": ["bukit tinggi", "bandar bukit tinggi", "batu nilam"],
+      "broad": false
+    }
+  ]
+}
+```
+
+`label` is the user-facing canonical dropdown/relevance label. `aliases` are public-safe keywords exported from Stable or maintained in the catalogue seed. `broad: true` should be used only for wider regions such as `Klang` or `Shah Alam`; broad matches count less than specific locality matches to avoid noisy false positives. If this file is missing or invalid, the site falls back to its built-in public alias seed rather than failing the catalogue.
 
 ## Replacing images
 
@@ -141,7 +165,7 @@ Per-listing social descriptions are derived only from public-safe `posting_copy`
 2. Generate a static feed matching `public/data/inventory.schema.json` with `isMockData: false` and the exact schema/version envelope documented above.
 3. Export only the documented public-safe snake_case fields; use `public_id` only when it is an opaque public identity rather than a database key.
 4. Copy and optimize only approved property photos into `public/inventory/<SMI_CODE>` using `/inventory/<SMI_CODE>/...` paths.
-5. Place the reviewed JSON and photo copies in this standalone repository through a manual synchronization or deployment step.
+5. Place the reviewed JSON, optional location dictionary and photo copies in this standalone repository through a manual synchronization or deployment step.
 6. Validate the schema, image paths, public content and absence of private data before building.
 7. Build and deploy the static catalogue independently.
 8. Never add a browser-to-Stable connection or a public-to-local write path.
@@ -159,7 +183,8 @@ Implementing the Production Stable export control or generator is deliberately o
 - [ ] Every property card opens its shareable `/property/:slug` route.
 - [ ] Property detail raw HTML contains listing-specific OG/Twitter tags before JavaScript runs.
 - [ ] Short links such as `/i/WTL0010` render listing-specific OG/Twitter tags, then route human visitors to the full property detail page.
-- [ ] Property Share and Copy short link actions use `https://property.myeviv.com/i/<SMI_CODE>`.
+- [ ] Property Share uses `https://property.myeviv.com/i/<SMI_CODE>`.
+- [ ] Location filter options are clean canonical areas and related listings use the same public location dictionary.
 - [ ] Detail galleries, back links and missing-property states work.
 - [ ] Property display images reject drag-save and context-menu actions without losing useful alt text.
 - [ ] Unauthenticated visitors render no `Generate photo download link` control and direct admin API calls are rejected.

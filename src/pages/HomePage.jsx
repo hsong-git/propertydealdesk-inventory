@@ -13,7 +13,7 @@ import { buildLocationOptions, matchesKeywordSearch, matchesLocationFilter } fro
 const defaults = { keyword: "", intent: "", propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", availability: "", sort: "recent" };
 
 export function HomePage() {
-  const { items, meta, loading, error } = useInventory();
+  const { items, meta, locationDictionary, loading, error } = useInventory();
   const [filters, setFilters] = useState(defaults);
   const [catalogueMode, setCatalogueMode] = useState("all");
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -23,17 +23,17 @@ export function HomePage() {
     + (catalogueMode === "featured" ? 1 : 0);
   const options = useMemo(() => ({
     propertyTypes: [...new Set(items.map((item) => item.propertyType))].sort(),
-    locations: buildLocationOptions(items),
+    locations: buildLocationOptions(items, locationDictionary),
     furnishing: [...new Set(items.map((item) => item.furnishing))].sort(),
     availability: [...new Set(items.map((item) => item.availability))].sort(),
-  }), [items]);
+  }), [items, locationDictionary]);
   const results = useMemo(() => {
     const filtered = items.filter((item) => {
       return (catalogueMode !== "featured" || item.featured)
         && matchesKeywordSearch(item, filters.keyword)
         && (!filters.intent || item.intent === filters.intent)
         && (!filters.propertyType || item.propertyType === filters.propertyType)
-        && matchesLocationFilter(item, filters.location)
+        && matchesLocationFilter(item, filters.location, locationDictionary)
         && (!filters.minPrice || item.price >= Number(filters.minPrice))
         && (!filters.maxPrice || item.price <= Number(filters.maxPrice))
         && (!filters.bedrooms || Number(item.bedrooms || 0) >= Number(filters.bedrooms))

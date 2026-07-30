@@ -1,15 +1,13 @@
 import { compareRecentlyUpdated } from "./listing.js";
-import { canonicalLocationsForListing } from "./locationFilter.js";
+import { canonicalLocationsForListing, isBroadLocationLabel } from "./locationFilter.js";
 
-const BROAD_LOCATION_LABELS = new Set(["Klang", "Shah Alam"]);
-
-const locationScore = (current, candidate) => {
-  const currentLocations = canonicalLocationsForListing(current);
-  const candidateLocations = new Set(canonicalLocationsForListing(candidate));
+const locationScore = (current, candidate, dictionary) => {
+  const currentLocations = canonicalLocationsForListing(current, dictionary);
+  const candidateLocations = new Set(canonicalLocationsForListing(candidate, dictionary));
   if (!currentLocations.length || !candidateLocations.size) return 0;
   const matches = currentLocations.filter((location) => candidateLocations.has(location));
   if (!matches.length) return 0;
-  const specificMatches = matches.filter((location) => !BROAD_LOCATION_LABELS.has(location)).length;
+  const specificMatches = matches.filter((location) => !isBroadLocationLabel(location, dictionary)).length;
   const broadMatches = matches.length - specificMatches;
   return Math.min(15_000, specificMatches * 10_000 + broadMatches * 1_500);
 };
@@ -40,21 +38,21 @@ const propertyTypeScore = (current, candidate) => {
   return currentType === candidateType ? 1_000 : 0;
 };
 
-export function relatedListingScore(current, candidate) {
+export function relatedListingScore(current, candidate, dictionary) {
   if (!current || !candidate) return 0;
   let score = 0;
   if (current.intent === candidate.intent) score += 1_000_000;
-  score += locationScore(current, candidate);
+  score += locationScore(current, candidate, dictionary);
   score += propertyTypeScore(current, candidate);
   score += priceScore(current, candidate);
   return Number(score.toFixed(4));
 }
 
-export function getRelatedListings(current, listings, limit = 8) {
+export function getRelatedListings(current, listings, limit = 8, dictionary) {
   if (!current || !Array.isArray(listings)) return [];
   return listings
     .filter((candidate) => candidate && candidate.slug !== current.slug && candidate.code !== current.code && candidate.publicId !== current.publicId)
-    .map((candidate) => ({ listing: candidate, score: relatedListingScore(current, candidate) }))
+    .map((candidate) => ({ listing: candidate, score: relatedListingScore(current, candidate, dictionary) }))
     .filter((item) => item.score > 0)
     .sort((a, b) => {
       const scoreOrder = b.score - a.score;

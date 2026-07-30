@@ -71,6 +71,37 @@ test("within the same intent, normalized location decides before property type",
   assert.ok(relatedListingScore(current, specificAreaWrongType) > relatedListingScore(current, sameTypeNoArea));
 });
 
+test("dictionary aliases influence related listing location sorting", () => {
+  const dictionary = [
+    { label: "Dictionary Heights", aliases: ["dh residence", "old dh"] },
+    { label: "Klang", broad: true, aliases: ["klang"] },
+  ];
+  const dictionaryCurrent = {
+    ...current,
+    location: "DH Residence, Klang",
+    title: "Current Apartment",
+    propertyType: "Condominium/Apartment",
+  };
+  const dictionaryAliasMatch = listing({
+    code: "WTS0023",
+    location: "Old DH",
+    propertyType: "Factory / Warehouse",
+    price: 2500000,
+  });
+  const sameTypeNoDictionaryLocation = listing({
+    code: "WTS0024",
+    location: "Puchong",
+    propertyType: "Condominium",
+    price: 700000,
+  });
+
+  assert.ok(
+    relatedListingScore(dictionaryCurrent, dictionaryAliasMatch, dictionary)
+      > relatedListingScore(dictionaryCurrent, sameTypeNoDictionaryLocation, dictionary),
+  );
+  assert.equal(getRelatedListings(dictionaryCurrent, [sameTypeNoDictionaryLocation, dictionaryAliasMatch], 2, dictionary)[0].code, "WTS0023");
+});
+
 test("within the same intent and location tier, property type decides before price", () => {
   const sameTypeFarPrice = listing({
     code: "WTS0030",

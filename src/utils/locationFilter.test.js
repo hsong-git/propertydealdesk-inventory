@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildLocationOptions, canonicalLocationsForListing, matchesKeywordSearch, matchesLocationFilter } from "./locationFilter.js";
+import { buildLocationOptions, canonicalLocationsForListing, matchesKeywordSearch, matchesLocationFilter, normalizeLocationDictionary } from "./locationFilter.js";
 
 test("location options normalize duplicated raw Klang variants into one canonical option", () => {
   const options = buildLocationOptions([
@@ -53,4 +53,34 @@ test("unknown locations remain available as one cleaned fallback and still filte
 
   assert.deepEqual(options, ["Desa Unique Heights, Somewhere"]);
   assert.equal(matchesLocationFilter(listing, "Desa Unique Heights, Somewhere"), true);
+});
+
+test("published location dictionary aliases drive options and matching when provided", () => {
+  const dictionary = normalizeLocationDictionary({
+    schema: "propertydealdesk-public-location-dictionary",
+    schema_version: "1.0",
+    locations: [
+      { label: "Dictionary Heights", aliases: ["dh residence", "old dh"] },
+      { label: "Klang", broad: true, aliases: ["klang"] },
+    ],
+  });
+  const listing = {
+    title: "Apartment at DH Residence",
+    location: "Old DH, Klang",
+    description: "",
+  };
+
+  assert.deepEqual(canonicalLocationsForListing(listing, dictionary), ["Dictionary Heights", "Klang"]);
+  assert.deepEqual(buildLocationOptions([listing], dictionary), ["Dictionary Heights", "Klang"]);
+  assert.equal(matchesLocationFilter(listing, "Dictionary Heights", dictionary), true);
+});
+
+test("invalid or absent dictionary falls back to built-in public aliases", () => {
+  const listing = {
+    title: "Apartment at Huni Eco Ardence",
+    location: "Setia Alam",
+    description: "",
+  };
+
+  assert.deepEqual(canonicalLocationsForListing(listing, { schema: "wrong", locations: [] }), ["Setia Alam"]);
 });

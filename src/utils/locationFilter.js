@@ -1,12 +1,14 @@
-const CANONICAL_AREAS = [
-  { label: "Klang", aliases: ["klang", "pelangi heights", "regency condominium", "trifolis apartment", "bayu villa"] },
+const LOCATION_DICTIONARY_SCHEMA = "propertydealdesk-public-location-dictionary";
+
+const FALLBACK_AREAS = [
+  { label: "Klang", broad: true, aliases: ["klang", "pelangi heights", "regency condominium", "trifolis apartment", "bayu villa"] },
   { label: "Bukit Tinggi", aliases: ["bukit tinggi", "batu nilam", "lotus"] },
   { label: "Bandar Botanic", aliases: ["bandar botanic", "botanic", "jenaris"] },
   { label: "Bayu Perdana", aliases: ["bayu perdana"] },
   { label: "Bandar Parklands", aliases: ["bandar parklands", "parklands", "gravit8", "the tresor"] },
   { label: "Bayuemas", aliases: ["bayuemas", "bayumas", "bayu emas", "setia bayuemas", "laelia"] },
   { label: "Setia Alam", aliases: ["setia alam", "eco ardence", "huni", "sunsuria forum", "trefoil", "edusentral", "princeton", "impian 8"] },
-  { label: "Shah Alam", aliases: ["shah alam"] },
+  { label: "Shah Alam", broad: true, aliases: ["shah alam"] },
   { label: "Bandar Bukit Raja", aliases: ["bandar bukit raja", "bukit raja", "serunai"] },
   { label: "Bandar Puteri Klang", aliases: ["bandar puteri", "bandar puteri klang", "jalan gelang"] },
   { label: "Taman Sentosa", aliases: ["taman sentosa"] },
@@ -46,10 +48,43 @@ const cleanFallbackLabel = (value) => String(value || "")
   .replace(/,+$/g, "")
   .trim();
 
-export function canonicalLocationsForListing(listing) {
+const cleanAliasList = (value, label) => [
+  label,
+  ...(Array.isArray(value) ? value : []),
+].map((item) => String(item || "").trim()).filter(Boolean);
+
+export function normalizeLocationDictionary(payload) {
+  const source = Array.isArray(payload)
+    ? payload
+    : Array.isArray(payload?.locations)
+      ? payload.locations
+      : [];
+  if (!Array.isArray(source) || (payload?.schema && payload.schema !== LOCATION_DICTIONARY_SCHEMA)) return FALLBACK_AREAS;
+  const seen = new Set();
+  const areas = source
+    .map((item) => ({
+      label: String(item?.label || item?.canonical || item?.name || "").trim(),
+      aliases: cleanAliasList(item?.aliases || item?.keywords, item?.label || item?.canonical || item?.name),
+      broad: item?.broad === true || item?.is_broad === true,
+      cluster: String(item?.cluster || item?.parent || "").trim(),
+    }))
+    .filter((area) => area.label && area.aliases.length)
+    .filter((area) => {
+      const key = area.label.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  return areas.length ? areas : FALLBACK_AREAS;
+}
+
+export const fallbackLocationDictionary = FALLBACK_AREAS;
+
+export function canonicalLocationsForListing(listing, dictionary = FALLBACK_AREAS) {
   const raw = [listing.location, listing.title, listing.description].filter(Boolean).join(" ");
   const normalized = normalize(raw);
-  const matches = CANONICAL_AREAS
+  const areas = normalizeLocationDictionary(dictionary);
+  const matches = areas
     .filter((area) => area.aliases.some((alias) => normalized.includes(normalize(alias))))
     .map((area) => area.label);
 
@@ -58,20 +93,26 @@ export function canonicalLocationsForListing(listing) {
   return fallback ? [fallback] : [];
 }
 
-export function buildLocationOptions(listings) {
+export function buildLocationOptions(listings, dictionary = FALLBACK_AREAS) {
+  const areas = normalizeLocationDictionary(dictionary);
   const available = new Set();
   for (const listing of listings || []) {
-    for (const location of canonicalLocationsForListing(listing)) available.add(location);
+    for (const location of canonicalLocationsForListing(listing, areas)) available.add(location);
   }
   return [
-    ...CANONICAL_AREAS.map((area) => area.label).filter((label) => available.has(label)),
-    ...[...available].filter((label) => !CANONICAL_AREAS.some((area) => area.label === label)).sort((a, b) => a.localeCompare(b)),
+    ...areas.map((area) => area.label).filter((label) => available.has(label)),
+    ...[...available].filter((label) => !areas.some((area) => area.label === label)).sort((a, b) => a.localeCompare(b)),
   ];
 }
 
-export function matchesLocationFilter(listing, selectedLocation) {
+export function matchesLocationFilter(listing, selectedLocation, dictionary = FALLBACK_AREAS) {
   if (!selectedLocation) return true;
-  return canonicalLocationsForListing(listing).includes(selectedLocation);
+  return canonicalLocationsForListing(listing, dictionary).includes(selectedLocation);
+}
+
+export function isBroadLocationLabel(label, dictionary = FALLBACK_AREAS) {
+  const area = normalizeLocationDictionary(dictionary).find((item) => item.label === label);
+  return area?.broad === true;
 }
 
 export function matchesKeywordSearch(listing, keyword) {

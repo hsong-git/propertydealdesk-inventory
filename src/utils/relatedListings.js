@@ -11,7 +11,7 @@ const locationScore = (current, candidate) => {
   if (!matches.length) return 0;
   const specificMatches = matches.filter((location) => !BROAD_LOCATION_LABELS.has(location)).length;
   const broadMatches = matches.length - specificMatches;
-  return Math.min(130, specificMatches * 95 + broadMatches * 18);
+  return Math.min(15_000, specificMatches * 10_000 + broadMatches * 1_500);
 };
 
 const priceScore = (current, candidate) => {
@@ -19,7 +19,7 @@ const priceScore = (current, candidate) => {
   const candidatePrice = Number(candidate.price);
   if (!Number.isFinite(currentPrice) || !Number.isFinite(candidatePrice) || currentPrice <= 0 || candidatePrice <= 0) return 0;
   const differenceRatio = Math.abs(currentPrice - candidatePrice) / Math.max(currentPrice, candidatePrice);
-  return Math.max(0, 20 - differenceRatio * 40);
+  return Math.max(0, 90 - differenceRatio * 180);
 };
 
 const normalizePropertyType = (propertyType) => {
@@ -37,15 +37,15 @@ const propertyTypeScore = (current, candidate) => {
   const currentType = normalizePropertyType(current.propertyType);
   const candidateType = normalizePropertyType(candidate.propertyType);
   if (!currentType || !candidateType) return 0;
-  return currentType === candidateType ? 80 : 0;
+  return currentType === candidateType ? 1_000 : 0;
 };
 
 export function relatedListingScore(current, candidate) {
   if (!current || !candidate) return 0;
   let score = 0;
+  if (current.intent === candidate.intent) score += 1_000_000;
   score += locationScore(current, candidate);
   score += propertyTypeScore(current, candidate);
-  if (current.intent === candidate.intent) score += 32;
   score += priceScore(current, candidate);
   return Number(score.toFixed(4));
 }

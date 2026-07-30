@@ -27,9 +27,9 @@ const listing = (overrides) => ({
   ...overrides,
 });
 
-test("scores related listings with location and property type ahead of intent and price", () => {
+test("scores related listings with intent ahead of location, type and price", () => {
   const closest = listing({ code: "WTS0002" });
-  const differentIntent = listing({ code: "WTL0003", intent: "WTL" });
+  const differentIntentPerfectMatch = listing({ code: "WTL0003", intent: "WTL" });
   const differentArea = listing({ code: "WTS0004", location: "Setia Alam Shah Alam" });
   const differentType = listing({ code: "WTS0005", propertyType: "Condominium" });
   const farPrice = listing({ code: "WTS0006", price: 1600000 });
@@ -39,45 +39,68 @@ test("scores related listings with location and property type ahead of intent an
     location: "Puchong",
     price: 2500000,
   });
-  const sameLocationDifferentIntent = listing({
-    code: "WTL0008",
-    intent: "WTL",
-    propertyType: "Factory / Warehouse",
-    location: "Bukit Tinggi",
-    price: 2500000,
-  });
-  const sameTypeDifferentIntent = listing({
-    code: "WTL0009",
-    intent: "WTL",
-    propertyType: "2 Storey Terrace House",
-    location: "Setia Alam",
-    price: 2500000,
-  });
 
-  assert.ok(relatedListingScore(current, closest) > relatedListingScore(current, differentIntent));
+  assert.ok(relatedListingScore(current, sameIntentOnly) > relatedListingScore(current, differentIntentPerfectMatch));
+  assert.ok(relatedListingScore(current, closest) > relatedListingScore(current, differentIntentPerfectMatch));
   assert.ok(relatedListingScore(current, closest) > relatedListingScore(current, differentArea));
   assert.ok(relatedListingScore(current, closest) > relatedListingScore(current, differentType));
   assert.ok(relatedListingScore(current, closest) > relatedListingScore(current, farPrice));
-  assert.ok(relatedListingScore(current, sameLocationDifferentIntent) > relatedListingScore(current, sameIntentOnly));
-  assert.ok(relatedListingScore(current, sameTypeDifferentIntent) > relatedListingScore(current, sameIntentOnly));
 });
 
-test("prioritizes specific normalized location overlap over generic region matches", () => {
+test("within the same intent, normalized location decides before property type", () => {
   const genericKlangOnly = listing({
     code: "WTS0020",
     propertyType: "Factory / Warehouse",
     location: "Klang",
     price: 2500000,
   });
-  const specificArea = listing({
-    code: "WTL0021",
-    intent: "WTL",
+  const specificAreaWrongType = listing({
+    code: "WTS0021",
     propertyType: "Factory / Warehouse",
     location: "Bukit Tinggi",
     price: 2500000,
   });
+  const sameTypeNoArea = listing({
+    code: "WTS0022",
+    propertyType: "2 Storey Terrace House",
+    location: "Puchong",
+    price: 700000,
+  });
 
-  assert.ok(relatedListingScore(current, specificArea) > relatedListingScore(current, genericKlangOnly));
+  assert.ok(relatedListingScore(current, specificAreaWrongType) > relatedListingScore(current, genericKlangOnly));
+  assert.ok(relatedListingScore(current, specificAreaWrongType) > relatedListingScore(current, sameTypeNoArea));
+});
+
+test("within the same intent and location tier, property type decides before price", () => {
+  const sameTypeFarPrice = listing({
+    code: "WTS0030",
+    propertyType: "2 Storey Terrace House",
+    location: "Puchong",
+    price: 2500000,
+  });
+  const differentTypeClosePrice = listing({
+    code: "WTS0031",
+    propertyType: "Factory / Warehouse",
+    location: "Puchong",
+    price: 705000,
+  });
+
+  assert.ok(relatedListingScore(current, sameTypeFarPrice) > relatedListingScore(current, differentTypeClosePrice));
+});
+
+test("within the same intent, location and property type tier, price similarity decides", () => {
+  const closePrice = listing({
+    code: "WTS0040",
+    location: "Puchong",
+    price: 720000,
+  });
+  const farPrice = listing({
+    code: "WTS0041",
+    location: "Puchong",
+    price: 1600000,
+  });
+
+  assert.ok(relatedListingScore(current, closePrice) > relatedListingScore(current, farPrice));
 });
 
 test("selects deterministic related listings, excludes current and caps at eight", () => {

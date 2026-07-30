@@ -27,17 +27,57 @@ const listing = (overrides) => ({
   ...overrides,
 });
 
-test("scores related listings by intent, location, property type and price", () => {
+test("scores related listings with location and property type ahead of intent and price", () => {
   const closest = listing({ code: "WTS0002" });
   const differentIntent = listing({ code: "WTL0003", intent: "WTL" });
   const differentArea = listing({ code: "WTS0004", location: "Setia Alam Shah Alam" });
   const differentType = listing({ code: "WTS0005", propertyType: "Condominium" });
   const farPrice = listing({ code: "WTS0006", price: 1600000 });
+  const sameIntentOnly = listing({
+    code: "WTS0007",
+    propertyType: "Factory / Warehouse",
+    location: "Puchong",
+    price: 2500000,
+  });
+  const sameLocationDifferentIntent = listing({
+    code: "WTL0008",
+    intent: "WTL",
+    propertyType: "Factory / Warehouse",
+    location: "Bukit Tinggi",
+    price: 2500000,
+  });
+  const sameTypeDifferentIntent = listing({
+    code: "WTL0009",
+    intent: "WTL",
+    propertyType: "2 Storey Terrace House",
+    location: "Setia Alam",
+    price: 2500000,
+  });
 
   assert.ok(relatedListingScore(current, closest) > relatedListingScore(current, differentIntent));
   assert.ok(relatedListingScore(current, closest) > relatedListingScore(current, differentArea));
   assert.ok(relatedListingScore(current, closest) > relatedListingScore(current, differentType));
   assert.ok(relatedListingScore(current, closest) > relatedListingScore(current, farPrice));
+  assert.ok(relatedListingScore(current, sameLocationDifferentIntent) > relatedListingScore(current, sameIntentOnly));
+  assert.ok(relatedListingScore(current, sameTypeDifferentIntent) > relatedListingScore(current, sameIntentOnly));
+});
+
+test("prioritizes specific normalized location overlap over generic region matches", () => {
+  const genericKlangOnly = listing({
+    code: "WTS0020",
+    propertyType: "Factory / Warehouse",
+    location: "Klang",
+    price: 2500000,
+  });
+  const specificArea = listing({
+    code: "WTL0021",
+    intent: "WTL",
+    propertyType: "Factory / Warehouse",
+    location: "Bukit Tinggi",
+    price: 2500000,
+  });
+
+  assert.ok(relatedListingScore(current, specificArea) > relatedListingScore(current, genericKlangOnly));
 });
 
 test("selects deterministic related listings, excludes current and caps at eight", () => {

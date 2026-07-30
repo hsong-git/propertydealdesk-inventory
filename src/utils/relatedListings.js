@@ -1,20 +1,17 @@
 import { compareRecentlyUpdated } from "./listing.js";
+import { canonicalLocationsForListing } from "./locationFilter.js";
 
-const STOP_WORDS = new Set(["at", "and", "the", "of", "in", "to", "for", "near"]);
-
-const tokenize = (value) => String(value || "")
-  .toLowerCase()
-  .split(/[^a-z0-9]+/)
-  .map((token) => token.trim())
-  .filter((token) => token.length > 2 && !STOP_WORDS.has(token));
+const BROAD_LOCATION_LABELS = new Set(["Klang", "Shah Alam"]);
 
 const locationScore = (current, candidate) => {
-  const currentTokens = new Set(tokenize(current.location));
-  const candidateTokens = new Set(tokenize(candidate.location));
-  if (!currentTokens.size || !candidateTokens.size) return 0;
-  const matches = [...currentTokens].filter((token) => candidateTokens.has(token)).length;
-  if (!matches) return 0;
-  return Math.min(30, 12 + matches * 6);
+  const currentLocations = canonicalLocationsForListing(current);
+  const candidateLocations = new Set(canonicalLocationsForListing(candidate));
+  if (!currentLocations.length || !candidateLocations.size) return 0;
+  const matches = currentLocations.filter((location) => candidateLocations.has(location));
+  if (!matches.length) return 0;
+  const specificMatches = matches.filter((location) => !BROAD_LOCATION_LABELS.has(location)).length;
+  const broadMatches = matches.length - specificMatches;
+  return Math.min(130, specificMatches * 95 + broadMatches * 18);
 };
 
 const priceScore = (current, candidate) => {
@@ -25,12 +22,30 @@ const priceScore = (current, candidate) => {
   return Math.max(0, 20 - differenceRatio * 40);
 };
 
+const normalizePropertyType = (propertyType) => {
+  const value = String(propertyType || "").toLowerCase();
+  if (/condo|condominium|apartment|serviced/.test(value)) return "highrise";
+  if (/terrace|link|superlink/.test(value)) return "terrace";
+  if (/semi/.test(value)) return "semi-detached";
+  if (/bungalow|detached/.test(value)) return "detached";
+  if (/shop|office|retail|commercial/.test(value)) return "commercial";
+  if (/factory|warehouse|industrial/.test(value)) return "industrial";
+  return value.replace(/[^a-z0-9]+/g, " ").trim();
+};
+
+const propertyTypeScore = (current, candidate) => {
+  const currentType = normalizePropertyType(current.propertyType);
+  const candidateType = normalizePropertyType(candidate.propertyType);
+  if (!currentType || !candidateType) return 0;
+  return currentType === candidateType ? 80 : 0;
+};
+
 export function relatedListingScore(current, candidate) {
   if (!current || !candidate) return 0;
   let score = 0;
-  if (current.intent === candidate.intent) score += 40;
   score += locationScore(current, candidate);
-  if (String(current.propertyType || "").toLowerCase() === String(candidate.propertyType || "").toLowerCase()) score += 18;
+  score += propertyTypeScore(current, candidate);
+  if (current.intent === candidate.intent) score += 32;
   score += priceScore(current, candidate);
   return Number(score.toFixed(4));
 }

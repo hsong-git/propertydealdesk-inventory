@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "test": "node --test src/data/inventoryContract.test.js src/data/inventoryRefresh.test.js src/data/downloadGrantContract.test.js src/config/watermark.test.js src/hooks/useAppVersionReload.test.js src/utils/photoSwipe.test.js src/utils/relatedListings.test.js src/utils/locationFilter.test.js scripts/image-policy.test.mjs scripts/property-og.test.mjs scripts/property-page-actions.test.mjs functions/_lib/grants.test.js functions/api/security.test.js",
+    "test": "node --test src/data/inventoryContract.test.js src/data/inventoryRefresh.test.js src/data/downloadGrantContract.test.js src/config/watermark.test.js src/hooks/useAppVersionReload.test.js src/utils/photoSwipe.test.js src/utils/relatedListings.test.js src/utils/locationFilter.test.js scripts/image-policy.test.mjs scripts/property-og.test.mjs scripts/property-page-actions.test.mjs functions/_lib/grants.test.js functions/api/security.test.js functions/i/shortcut.test.js",
     "validate:inventory": "node scripts/validate-inventory.mjs",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "package:photos": "npm run validate:inventory && node scripts/build-photo-packages.mjs",

@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.1",
-  "inventoryVersion": "2026.07.31.3",
-  "generated_at": "2026-07-31T08:37:00Z",
-  "publishedAt": "2026-07-31T08:37:00Z",
+  "inventoryVersion": "2026.07.31.4",
+  "generated_at": "2026-07-31T09:35:33Z",
+  "publishedAt": "2026-07-31T09:35:33Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -609,50 +609,6 @@
       ],
       "features": [
         "With Balcony Link to Sunsuria Mall & retail"
-      ],
-      "amenities": [],
-      "why_this_property": []
-    },
-    {
-      "public_id": "pub_78c82c5f2d44862e491e1a26",
-      "code": "WTL0050",
-      "intent": "WTL",
-      "slug": "wtl0050-3r2b-condo-bayu-villa-klang-bayu-villa-klang",
-      "title": "3R2B Condo @ Bayu Villa, Klang",
-      "property_type": "Condominium/Apartment",
-      "location": "Bayu Villa, Klang",
-      "price": 1300,
-      "description": "Condominium/Apartment at Bayu Villa, Klang. Contact HS Ong to confirm current availability and viewing details.",
-      "bedroom_count": 3,
-      "bathroom_count": 2,
-      "built_up_sqft": 926,
-      "land_size": null,
-      "furnishing": "Full",
-      "facing_direction": null,
-      "unit_type": "Intermediate",
-      "availability": "Available",
-      "featured": false,
-      "created_at": "2026-07-22T02:37:50Z",
-      "posting_copy": "*WTL*\n\n*3R2B Condo @ Bayu Villa, Klang*\nRental *RM1,300*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bayu Villa, Klang\n- Furnishing: Full\n- Size Approx. 926.0 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 1\n- Located at First Floor\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0050*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0050",
-      "updated_at": "2026-07-30T23:30:58Z",
-      "cover_photo": "/inventory/WTL0050/cover.webp",
-      "photos": [
-        "/inventory/WTL0050/cover.webp",
-        "/inventory/WTL0050/photo-02.webp",
-        "/inventory/WTL0050/photo-03.webp",
-        "/inventory/WTL0050/photo-04.webp",
-        "/inventory/WTL0050/photo-05.webp",
-        "/inventory/WTL0050/photo-06.webp",
-        "/inventory/WTL0050/photo-07.webp",
-        "/inventory/WTL0050/photo-08.webp",
-        "/inventory/WTL0050/photo-09.webp",
-        "/inventory/WTL0050/photo-10.webp",
-        "/inventory/WTL0050/photo-11.webp",
-        "/inventory/WTL0050/photo-12.webp",
-        "/inventory/WTL0050/photo-13.webp"
-      ],
-      "features": [
-        "Located at First Floor"
       ],
       "amenities": [],
       "why_this_property": []

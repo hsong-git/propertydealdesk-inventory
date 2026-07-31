@@ -17,7 +17,8 @@ export function ListingUnavailableState({ code, error }) {
         <span className="eyebrow">Listing unavailable</span>
         <h1>This property is no longer available</h1>
         <p>
-          {error || "This property may have been sold, rented, withdrawn, or removed from the public catalogue."}
+          {error ||
+            "This property may already be sold, rented, withdrawn, or no longer available in the public catalogue."}
         </p>
         <p className="listing-unavailable-note">
           You can browse the latest active listings or contact HS Ong for similar options.

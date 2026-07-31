@@ -53,7 +53,7 @@ test("missing property and short-link routes show unavailable listing guidance",
   assert.doesNotMatch(shortRoute, /Property shortcut not found/);
   assert.match(propertyRoute, /ListingUnavailableState/);
   assert.match(state, /This property is no longer available/);
-  assert.match(state, /sold, rented, withdrawn, or removed/);
+  assert.match(state, /sold, rented, withdrawn, or no longer available/);
   assert.match(state, /Browse current listings/);
   assert.match(state, /Contact HS Ong/);
   assert.match(css, /\.listing-unavailable-card/);

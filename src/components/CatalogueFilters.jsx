@@ -43,24 +43,24 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
           <label>Maximum price<input type="number" min="0" step="100" value={filters.maxPrice} onChange={(event) => update("maxPrice", event.target.value)} placeholder="No maximum" /></label>
           <label>Bedrooms<select value={filters.bedrooms} onChange={(event) => update("bedrooms", event.target.value)}><option value="">Any bedrooms</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></label>
           <label>Furnishing<select value={filters.furnishing} onChange={(event) => update("furnishing", event.target.value)}><option value="">Any furnishing</option>{options.furnishing.map((value) => <option key={value}>{value}</option>)}</select></label>
+          <fieldset className="filter-toggle-field filter-view-field">
+            <legend>Inventory view</legend>
+            <div className="catalogue-mode-toggle inventory-view-toggle" aria-label="Inventory view">
+              {catalogueModes.map((mode) => (
+                <button
+                  key={mode.key}
+                  className={catalogueMode === mode.key ? "active" : ""}
+                  type="button"
+                  aria-pressed={catalogueMode === mode.key}
+                  onClick={() => setCatalogueMode(mode.key)}
+                >
+                  {mode.label}
+                </button>
+              ))}
+            </div>
+          </fieldset>
         </div>
         <div className="filter-footer"><button className="reset-button" type="button" onClick={onReset} disabled={!activeCount}><RotateCcw size={16} /> Reset Filters</button><button className="button primary apply-filter-button" type="button" onClick={() => setMobileOpen(false)}>Show results</button></div>
-        <div className="filter-view-control">
-          <span>Inventory view</span>
-          <div className="catalogue-mode-toggle" aria-label="Inventory view">
-            {catalogueModes.map((mode) => (
-              <button
-                key={mode.key}
-                className={catalogueMode === mode.key ? "active" : ""}
-                type="button"
-                aria-pressed={catalogueMode === mode.key}
-                onClick={() => setCatalogueMode(mode.key)}
-              >
-                {mode.label}
-              </button>
-            ))}
-          </div>
-        </div>
       </div>
       {mobileOpen ? <button className="filter-backdrop" type="button" aria-label="Close filters" onClick={() => setMobileOpen(false)} /> : null}
     </section>

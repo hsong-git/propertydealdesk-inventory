@@ -13,6 +13,16 @@ test("property page does not render a separate Copy short link action", () => {
   assert.match(source, /Share property/);
 });
 
+test("property cards expose a compact Copy posting action", () => {
+  const source = fs.readFileSync(path.join(projectRoot, "src", "components", "PropertyCard.jsx"), "utf8");
+  const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
+  assert.match(source, /postingText\(listing, agentProfile\)/);
+  assert.match(source, /copy-posting-card-button/);
+  assert.match(source, /Copy posting/);
+  assert.match(css, /\.copy-posting-card-button/);
+  assert.match(css, /grid-column: 1 \/ -1/);
+});
+
 test("fullscreen photo viewer applies direction-aware slide classes", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");

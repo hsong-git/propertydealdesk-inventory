@@ -134,6 +134,7 @@ main { flex: 1; }
 .property-actions .button { min-width: 0; min-height: 38px; padding-inline: 9px; }
 .share-button { width: 40px; padding: 0 !important; }
 .share-button span { display: none; }
+.copy-posting-card-button { grid-column: 1 / -1; min-height: 34px !important; gap: 7px; color: var(--color-primary); background: var(--color-primary-soft); }
 .load-more { display: flex; justify-content: center; padding-top: 4px; }
 .state-card { min-height: 190px; padding: 28px; border: 1px dashed var(--color-border-strong); border-radius: var(--radius-medium); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; color: var(--color-text-muted); background: rgba(255,255,255,.6); }
 .state-card strong { color: var(--color-text); }

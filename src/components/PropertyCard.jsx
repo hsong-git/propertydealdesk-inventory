@@ -1,12 +1,13 @@
-import { Bath, BedDouble, Building2, CalendarDays, Expand, MapPin, MessageCircle, Share2 } from "lucide-react";
+import { Bath, BedDouble, Building2, CalendarDays, Copy, Expand, MapPin, MessageCircle, Share2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
 import { PublicPropertyImage } from "./PublicPropertyImage";
-import { enquiryText, formatDate, formatPrice, intentLabels, shareListing, whatsappUrl } from "../utils/listing";
+import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing, whatsappUrl } from "../utils/listing";
 
 export function PropertyCard({ listing }) {
   const [shared, setShared] = useState(false);
+  const [postingCopied, setPostingCopied] = useState(false);
   const share = async () => {
     try {
       const result = await shareListing(listing);
@@ -15,6 +16,11 @@ export function PropertyCard({ listing }) {
         window.setTimeout(() => setShared(false), 1800);
       }
     } catch { /* Visitor cancelled the native share sheet. */ }
+  };
+  const copyPosting = async () => {
+    await navigator.clipboard.writeText(postingText(listing, agentProfile));
+    setPostingCopied(true);
+    window.setTimeout(() => setPostingCopied(false), 1800);
   };
   return (
     <article className="property-card">
@@ -42,6 +48,7 @@ export function PropertyCard({ listing }) {
         <Link className="button secondary" to={`/property/${listing.slug}`}>View Details</Link>
         <a className="button primary icon-only-mobile" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><MessageCircle size={18} /><span>Enquire</span></a>
         <button className="button tertiary share-button" type="button" onClick={share} aria-label={`Share ${listing.code}`}><Share2 size={18} /><span>{shared ? "Copied" : "Share"}</span></button>
+        <button className="button tertiary copy-posting-card-button" type="button" onClick={copyPosting}><Copy size={16} /> {postingCopied ? "Posting copied" : "Copy posting"}</button>
       </div>
     </article>
   );

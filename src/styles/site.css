@@ -87,6 +87,10 @@ main { flex: 1; }
 .advanced-filter-shell { padding: 12px; border-top: 1px solid var(--color-border); }
 .filter-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
 .filter-grid label { display: grid; gap: 5px; color: var(--color-text-muted); font-size: 11px; font-weight: 800; }
+.filter-toggle-field { display: grid; gap: 5px; min-width: 0; margin: 0; padding: 0; border: 0; color: var(--color-text-muted); font-size: 11px; font-weight: 800; }
+.filter-toggle-field legend { padding: 0; }
+.intent-toggle { width: 100%; min-height: 40px; padding: 4px; border-radius: var(--radius-small); }
+.intent-toggle button { flex: 1; min-width: 0; min-height: 30px; }
 .filter-view-control { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--color-text-muted); font-size: 11px; font-weight: 800; }
 .filter-view-control .catalogue-mode-toggle { justify-self: start; }
 .filter-grid input, .filter-grid select { width: 100%; min-height: 40px; padding: 0 10px; border: 1px solid var(--color-border); border-radius: var(--radius-small); outline: 0; color: var(--color-text); background: #fff; font-size: 12px; }

@@ -10,7 +10,8 @@ import { useInventory } from "../hooks";
 import { compareRecentlyUpdated, formatDateTime } from "../utils/listing";
 import { buildLocationOptions, matchesKeywordSearch, matchesLocationFilter } from "../utils/locationFilter";
 
-const defaults = { keyword: "", intent: "", propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", availability: "", sort: "recent" };
+const defaultIntent = "WTL";
+const defaults = { keyword: "", intent: defaultIntent, propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", sort: "recent" };
 
 export function HomePage() {
   const { items, meta, locationDictionary, loading, error } = useInventory();
@@ -19,13 +20,13 @@ export function HomePage() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [visible, setVisible] = useState(6);
   const [agentToolsPreviewOpen, setAgentToolsPreviewOpen] = useState(false);
-  const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && value).length
+  const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && key !== "intent" && value).length
+    + (filters.intent !== defaultIntent ? 1 : 0)
     + (catalogueMode === "featured" ? 1 : 0);
   const options = useMemo(() => ({
     propertyTypes: [...new Set(items.map((item) => item.propertyType))].sort(),
     locations: buildLocationOptions(items, locationDictionary),
     furnishing: [...new Set(items.map((item) => item.furnishing))].sort(),
-    availability: [...new Set(items.map((item) => item.availability))].sort(),
   }), [items, locationDictionary]);
   const results = useMemo(() => {
     const filtered = items.filter((item) => {
@@ -37,8 +38,7 @@ export function HomePage() {
         && (!filters.minPrice || item.price >= Number(filters.minPrice))
         && (!filters.maxPrice || item.price <= Number(filters.maxPrice))
         && (!filters.bedrooms || Number(item.bedrooms || 0) >= Number(filters.bedrooms))
-        && (!filters.furnishing || item.furnishing === filters.furnishing)
-        && (!filters.availability || item.availability === filters.availability);
+        && (!filters.furnishing || item.furnishing === filters.furnishing);
     });
     return [...filtered].sort((a, b) => {
       if (filters.sort === "newest") return new Date(b.createdAt) - new Date(a.createdAt);
@@ -47,7 +47,7 @@ export function HomePage() {
       if (filters.sort === "title") return a.title.localeCompare(b.title);
       return compareRecentlyUpdated(a, b);
     });
-  }, [items, filters, catalogueMode]);
+  }, [items, filters, catalogueMode, locationDictionary]);
   const reset = () => { setFilters(defaults); setCatalogueMode("all"); setVisible(6); };
   const updateCatalogueMode = (mode) => {
     setCatalogueMode(mode);

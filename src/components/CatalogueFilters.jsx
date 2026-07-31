@@ -1,6 +1,9 @@
 import { ChevronDown, RotateCcw, Search, SlidersHorizontal, X } from "lucide-react";
 
-const intentOptions = ["WTS", "WTL"];
+const intentOptions = [
+  { key: "WTL", label: "WTL" },
+  { key: "WTS", label: "WTS" },
+];
 const catalogueModes = [
   { key: "all", label: "All" },
   { key: "featured", label: "Featured" },
@@ -18,14 +21,28 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
       <div className={`advanced-filter-shell ${mobileOpen ? "mobile-open" : ""}`}>
         <div className="filter-drawer-heading"><strong>Filter properties</strong><button className="icon-button" type="button" onClick={() => setMobileOpen(false)} aria-label="Close filters"><X size={20} /></button></div>
         <div className="filter-grid">
-          <label>Intent<select value={filters.intent} onChange={(event) => update("intent", event.target.value)}><option value="">All intents</option>{intentOptions.map((value) => <option key={value}>{value}</option>)}</select></label>
+          <fieldset className="filter-toggle-field">
+            <legend>Intent</legend>
+            <div className="catalogue-mode-toggle intent-toggle" aria-label="Intent">
+              {intentOptions.map((intent) => (
+                <button
+                  key={intent.key}
+                  className={filters.intent === intent.key ? "active" : ""}
+                  type="button"
+                  aria-pressed={filters.intent === intent.key}
+                  onClick={() => update("intent", intent.key)}
+                >
+                  {intent.label}
+                </button>
+              ))}
+            </div>
+          </fieldset>
           <label>Property type<select value={filters.propertyType} onChange={(event) => update("propertyType", event.target.value)}><option value="">All types</option>{options.propertyTypes.map((value) => <option key={value}>{value}</option>)}</select></label>
           <label>Location<select value={filters.location} onChange={(event) => update("location", event.target.value)}><option value="">All locations</option>{options.locations.map((value) => <option key={value}>{value}</option>)}</select></label>
           <label>Minimum price<input type="number" min="0" step="100" value={filters.minPrice} onChange={(event) => update("minPrice", event.target.value)} placeholder="No minimum" /></label>
           <label>Maximum price<input type="number" min="0" step="100" value={filters.maxPrice} onChange={(event) => update("maxPrice", event.target.value)} placeholder="No maximum" /></label>
           <label>Bedrooms<select value={filters.bedrooms} onChange={(event) => update("bedrooms", event.target.value)}><option value="">Any bedrooms</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></label>
           <label>Furnishing<select value={filters.furnishing} onChange={(event) => update("furnishing", event.target.value)}><option value="">Any furnishing</option>{options.furnishing.map((value) => <option key={value}>{value}</option>)}</select></label>
-          <label>Availability<select value={filters.availability} onChange={(event) => update("availability", event.target.value)}><option value="">Any status</option>{options.availability.map((value) => <option key={value}>{value}</option>)}</select></label>
         </div>
         <div className="filter-footer"><button className="reset-button" type="button" onClick={onReset} disabled={!activeCount}><RotateCcw size={16} /> Reset Filters</button><button className="button primary apply-filter-button" type="button" onClick={() => setMobileOpen(false)}>Show results</button></div>
         <div className="filter-view-control">

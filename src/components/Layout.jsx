@@ -1,8 +1,11 @@
 import { Link, Outlet } from "react-router-dom";
 import { Header } from "./Header";
 import { agentProfile } from "../config/agentProfile";
+import { useAppVersionReload } from "../hooks/useAppVersionReload";
 
 export function Layout() {
+  useAppVersionReload();
+
   return (
     <div className="site-shell">
       <Header />

@@ -37,9 +37,12 @@ export function PropertyCard({ listing }) {
         <p className="property-location"><MapPin size={15} /> {listing.location}</p>
         <div className="property-price-row">
           <strong className="property-price">{formatPrice(listing.price, listing.intent)}</strong>
-          <button className="copy-posting-icon-button" type="button" onClick={copyPosting} aria-label={`Copy posting for ${listing.code}`} title={postingCopied ? "Posting copied" : "Copy posting"}>
-            <Copy size={16} />
-          </button>
+          <span className="copy-posting-control">
+            {postingCopied ? <span className="copy-posting-prompt">Copied</span> : null}
+            <button className="copy-posting-icon-button" type="button" onClick={copyPosting} aria-label={`Copy posting for ${listing.code}`} title={postingCopied ? "Copied" : "Copy posting"}>
+              <Copy size={16} />
+            </button>
+          </span>
         </div>
         <div className="property-facts">
           <span><Building2 size={16} /> {listing.propertyType}</span>

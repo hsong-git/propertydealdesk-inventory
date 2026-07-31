@@ -18,10 +18,16 @@ test("property cards expose a compact Copy posting action", () => {
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
   assert.match(source, /postingText\(listing, agentProfile\)/);
   assert.match(source, /property-price-row/);
+  assert.match(source, /copy-posting-control/);
   assert.match(source, /copy-posting-icon-button/);
+  assert.match(source, /copy-posting-prompt/);
+  assert.match(source, />Copied</);
   assert.match(source, /Copy posting/);
   assert.match(css, /\.property-price-row/);
+  assert.match(css, /\.copy-posting-control/);
   assert.match(css, /\.copy-posting-icon-button/);
+  assert.match(css, /\.copy-posting-prompt/);
+  assert.match(css, /right: 38px/);
   assert.match(css, /width: 32px/);
 });
 

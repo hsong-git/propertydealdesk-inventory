@@ -42,6 +42,23 @@ test("fullscreen photo viewer applies direction-aware slide classes", () => {
   assert.match(css, /prefers-reduced-motion: reduce/);
 });
 
+test("missing property and short-link routes show unavailable listing guidance", () => {
+  const shortRoute = fs.readFileSync(path.join(projectRoot, "src", "pages", "ShortListingRedirect.jsx"), "utf8");
+  const propertyRoute = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
+  const state = fs.readFileSync(path.join(projectRoot, "src", "components", "ListingUnavailableState.jsx"), "utf8");
+  const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
+
+  assert.match(shortRoute, /Property no longer available/);
+  assert.match(shortRoute, /ListingUnavailableState/);
+  assert.doesNotMatch(shortRoute, /Property shortcut not found/);
+  assert.match(propertyRoute, /ListingUnavailableState/);
+  assert.match(state, /This property is no longer available/);
+  assert.match(state, /sold, rented, withdrawn, or removed/);
+  assert.match(state, /Browse current listings/);
+  assert.match(state, /Contact HS Ong/);
+  assert.match(css, /\.listing-unavailable-card/);
+});
+
 test("Share property falls back to copying the public short URL", async () => {
   const previousNavigator = globalThis.navigator;
   const writes = [];

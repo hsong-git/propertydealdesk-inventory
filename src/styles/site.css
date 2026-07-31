@@ -304,6 +304,13 @@ main { flex: 1; }
 .page-state { min-height: 60vh; padding-block: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center; }
 .page-state > strong { font-size: 25px; }
 .page-state p { margin: 0 0 8px; color: var(--color-text-muted); }
+.listing-unavailable-state { min-height: 68vh; padding-block: clamp(44px,8vw,84px); }
+.listing-unavailable-card { width: min(100%,640px); padding: clamp(26px,5vw,40px); border: 1px solid rgba(17,124,91,.16); border-radius: var(--radius-large); display: grid; justify-items: center; gap: 12px; background: linear-gradient(145deg,#fff 0%,#fff 62%,var(--color-primary-soft) 100%); box-shadow: var(--shadow-elevated); }
+.listing-unavailable-icon { width: 58px; height: 58px; border-radius: 18px; display: grid; place-items: center; color: var(--color-primary); background: var(--color-primary-soft); }
+.listing-unavailable-card h1 { max-width: 520px; margin: 0; font-size: clamp(28px,4vw,42px); line-height: 1.08; letter-spacing: -.04em; }
+.listing-unavailable-card p { max-width: 500px; margin: 0; color: var(--color-text-muted); font-size: 14px; line-height: 1.65; }
+.listing-unavailable-card .listing-unavailable-note { font-size: 13px; }
+.listing-unavailable-actions { margin-top: 8px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; }
 .property-photo img, .gallery img, .watermarked-image { -webkit-user-drag: none; user-select: none; }
 .download-grant-page { min-height: 68vh; padding-block: 52px; display: grid; place-items: center; }
 .download-grant-card { width: min(100%,620px); padding: 30px; border: 1px solid var(--color-border); border-radius: var(--radius-large); background: #fff; box-shadow: var(--shadow-elevated); text-align: center; }

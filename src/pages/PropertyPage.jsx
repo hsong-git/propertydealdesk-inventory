@@ -7,6 +7,7 @@ import { enquiryText, formatDate, formatPrice, intentLabels, photoDownloadReques
 import { PublicPropertyImage } from "../components/PublicPropertyImage";
 import { OwnerPhotoGrantControl } from "../components/OwnerPhotoGrantControl";
 import { Seo } from "../components/Seo";
+import { ListingUnavailableState } from "../components/ListingUnavailableState";
 import { propertySeoDescription, SITE_ORIGIN } from "../utils/seo";
 import { photoSwipeDirection } from "../utils/photoSwipe";
 import { getRelatedListings } from "../utils/relatedListings";
@@ -43,7 +44,7 @@ export function PropertyPage() {
     return () => { document.body.classList.remove("modal-open"); window.removeEventListener("keydown", onKeyDown); };
   }, [lightboxOpen, listing?.photos.length]);
   if (loading) return <main className="page-width page-state"><Seo title="Loading property details | HS Ong Property Inventory" canonical={seoCanonical} /><strong>Loading property details…</strong></main>;
-  if (error || !listing) return <main className="page-width page-state"><Seo title="Property not found | HS Ong Property Inventory" description="This listing may no longer be in the public HS Ong Property Inventory." canonical={seoCanonical} /><strong>Property not found</strong><p>{error || "This listing may no longer be in the public inventory."}</p><Link className="button secondary" to="/"><ArrowLeft size={18} /> Back to Catalogue</Link></main>;
+  if (error || !listing) return <><Seo title="Property no longer available | HS Ong Property Inventory" description="This property may have been sold, rented, withdrawn, or removed from HS Ong Property Inventory." canonical={seoCanonical} /><ListingUnavailableState code={slug} error={error} /></>;
   const detailItems = [
     [Building2, "Property type", listing.propertyType], [BedDouble, "Bedrooms", listing.bedrooms ?? "N/A"], [Bath, "Bathrooms", listing.bathrooms ?? "N/A"],
     [Expand, "Built-up", listing.builtUpSqFt ? `${listing.builtUpSqFt.toLocaleString()} sq ft` : "N/A"], [Warehouse, "Land size", listing.landSize || "N/A"],

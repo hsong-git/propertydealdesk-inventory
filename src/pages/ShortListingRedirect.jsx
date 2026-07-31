@@ -1,5 +1,5 @@
-import { ArrowLeft } from "lucide-react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
+import { ListingUnavailableState } from "../components/ListingUnavailableState";
 import { Seo } from "../components/Seo";
 import { useInventory } from "../hooks";
 import { SITE_ORIGIN } from "../utils/seo";
@@ -23,15 +23,13 @@ export function ShortListingRedirect() {
   }
 
   return (
-    <main className="page-width page-state">
+    <>
       <Seo
-        title="Property shortcut not found | HS Ong Property Inventory"
-        description="This short property link may no longer be in the public HS Ong Property Inventory."
+        title="Property no longer available | HS Ong Property Inventory"
+        description="This property may have been sold, rented, withdrawn, or removed from HS Ong Property Inventory."
         canonical={canonical}
       />
-      <strong>Property shortcut not found</strong>
-      <p>{error || "This listing may no longer be in the public inventory."}</p>
-      <Link className="button secondary" to="/"><ArrowLeft size={18} /> Back to Catalogue</Link>
-    </main>
+      <ListingUnavailableState code={normalizedCode || code} error={error} />
+    </>
   );
 }

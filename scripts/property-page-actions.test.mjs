@@ -17,10 +17,12 @@ test("property cards expose a compact Copy posting action", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "components", "PropertyCard.jsx"), "utf8");
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
   assert.match(source, /postingText\(listing, agentProfile\)/);
-  assert.match(source, /copy-posting-card-button/);
+  assert.match(source, /property-price-row/);
+  assert.match(source, /copy-posting-icon-button/);
   assert.match(source, /Copy posting/);
-  assert.match(css, /\.copy-posting-card-button/);
-  assert.match(css, /grid-column: 1 \/ -1/);
+  assert.match(css, /\.property-price-row/);
+  assert.match(css, /\.copy-posting-icon-button/);
+  assert.match(css, /width: 32px/);
 });
 
 test("fullscreen photo viewer applies direction-aware slide classes", () => {

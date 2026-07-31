@@ -124,7 +124,10 @@ main { flex: 1; }
 .property-content h3 a:hover { color: var(--color-primary); }
 .property-location { margin: 0; display: flex; align-items: flex-start; gap: 5px; color: var(--color-text-muted); font-size: 12px; }
 .property-location svg { flex: 0 0 auto; margin-top: 1px; }
-.property-price { color: var(--color-text); font-size: 19px; letter-spacing: -.025em; }
+.property-price-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.property-price { min-width: 0; color: var(--color-text); font-size: 19px; letter-spacing: -.025em; }
+.copy-posting-icon-button { width: 32px; height: 32px; flex: 0 0 auto; border: 1px solid var(--color-border); border-radius: var(--radius-small); display: inline-grid; place-items: center; color: var(--color-primary); background: #fff; box-shadow: none; }
+.copy-posting-icon-button:hover { border-color: rgba(17,124,91,.28); background: var(--color-primary-soft); }
 .property-facts { display: flex; flex-wrap: wrap; gap: 7px 12px; padding-block: 9px; border-block: 1px solid var(--color-border); color: var(--color-text-muted); }
 .property-facts span { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; }
 .property-facts svg { color: var(--color-primary); }
@@ -134,7 +137,6 @@ main { flex: 1; }
 .property-actions .button { min-width: 0; min-height: 38px; padding-inline: 9px; }
 .share-button { width: 40px; padding: 0 !important; }
 .share-button span { display: none; }
-.copy-posting-card-button { grid-column: 1 / -1; min-height: 34px !important; gap: 7px; color: var(--color-primary); background: var(--color-primary-soft); }
 .load-more { display: flex; justify-content: center; padding-top: 4px; }
 .state-card { min-height: 190px; padding: 28px; border: 1px dashed var(--color-border-strong); border-radius: var(--radius-medium); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; color: var(--color-text-muted); background: rgba(255,255,255,.6); }
 .state-card strong { color: var(--color-text); }

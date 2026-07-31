@@ -35,7 +35,12 @@ export function PropertyCard({ listing }) {
         <div className="property-reference"><span>{listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
         <h3><Link to={`/property/${listing.slug}`}>{listing.title}</Link></h3>
         <p className="property-location"><MapPin size={15} /> {listing.location}</p>
-        <strong className="property-price">{formatPrice(listing.price, listing.intent)}</strong>
+        <div className="property-price-row">
+          <strong className="property-price">{formatPrice(listing.price, listing.intent)}</strong>
+          <button className="copy-posting-icon-button" type="button" onClick={copyPosting} aria-label={`Copy posting for ${listing.code}`} title={postingCopied ? "Posting copied" : "Copy posting"}>
+            <Copy size={16} />
+          </button>
+        </div>
         <div className="property-facts">
           <span><Building2 size={16} /> {listing.propertyType}</span>
           {listing.bedrooms != null ? <span><BedDouble size={16} /> {listing.bedrooms} beds</span> : null}
@@ -48,7 +53,6 @@ export function PropertyCard({ listing }) {
         <Link className="button secondary" to={`/property/${listing.slug}`}>View Details</Link>
         <a className="button primary icon-only-mobile" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><MessageCircle size={18} /><span>Enquire</span></a>
         <button className="button tertiary share-button" type="button" onClick={share} aria-label={`Share ${listing.code}`}><Share2 size={18} /><span>{shared ? "Copied" : "Share"}</span></button>
-        <button className="button tertiary copy-posting-card-button" type="button" onClick={copyPosting}><Copy size={16} /> {postingCopied ? "Posting copied" : "Copy posting"}</button>
       </div>
     </article>
   );

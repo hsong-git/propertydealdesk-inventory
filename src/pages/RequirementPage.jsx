@@ -274,6 +274,10 @@ export function RequirementPage() {
       }
       const nextResult = { ...saved, submission: validation.value, matches, matchingError };
       setResult(nextResult);
+      if (isMobileOrTabletDevice()) {
+        const whatsappUrl = buildWhatsAppUrl(agentProfile.whatsapp, requirementWhatsAppMessage(validation.value, saved.reference));
+        if (whatsappUrl) globalThis.location?.assign?.(whatsappUrl);
+      }
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       setSubmitError(error.message);

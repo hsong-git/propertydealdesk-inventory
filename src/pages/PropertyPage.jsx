@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
 import { useInventory } from "../hooks";
-import { enquiryText, formatDate, formatPrice, intentLabels, photoDownloadRequestText, postingText, shareListing, whatsappUrl } from "../utils/listing";
+import { enquiryText, formatDate, formatPrice, intentLabels, photoDownloadRequestText, postingText, shareListing } from "../utils/listing";
+import { openWhatsApp } from "../utils/whatsapp";
 import { PublicPropertyImage } from "../components/PublicPropertyImage";
 import { OwnerPhotoGrantControl } from "../components/OwnerPhotoGrantControl";
 import { Seo } from "../components/Seo";
@@ -101,8 +102,8 @@ export function PropertyPage() {
         </div>
         <aside className="agent-contact-card">
           <img src={agentProfile.portrait} alt={agentProfile.displayName} /><div><span className="eyebrow">Enquire directly</span><h2>{agentProfile.displayName}</h2><p>{agentProfile.title} · {agentProfile.renNumber}</p><small>{agentProfile.agency}</small></div>
-          <a className="button primary" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><MessageCircle size={18} /> WhatsApp enquiry</a>
-          <a className="button secondary" href={whatsappUrl(agentProfile.whatsapp, photoDownloadRequestText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><Download size={18} /> PM for photos</a>
+          <button className="button primary" type="button" onClick={() => openWhatsApp({ phone: agentProfile.whatsapp, message: enquiryText(listing, agentProfile.displayName), onError: (error) => window.alert(error) })}><MessageCircle size={18} /> WhatsApp enquiry</button>
+          <button className="button secondary" type="button" onClick={() => openWhatsApp({ phone: agentProfile.whatsapp, message: photoDownloadRequestText(listing, agentProfile.displayName), onError: (error) => window.alert(error) })}><Download size={18} /> PM for photos</button>
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} /> Call {agentProfile.phoneDisplay}</a>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {copied ? "Link copied" : "Share property"}</button>
           <OwnerPhotoGrantControl listing={listing} />

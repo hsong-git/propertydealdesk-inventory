@@ -100,12 +100,22 @@ export function renderUnavailableShortcutHtml(code = "") {
           ${normalizedCode ? `<span class="code">${escapeHtml(normalizedCode)}</span>` : ""}
           <div class="actions">
             <a class="button primary" href="/">Browse current listings</a>
-            <a class="button" href="https://wa.me/${WHATSAPP}?text=${message}" target="_blank" rel="noopener noreferrer">Contact HS Ong</a>
+            <button class="button" type="button" id="contact-hs-ong">Contact HS Ong</button>
           </div>
           <p class="note">For similar properties, check the latest active listings or contact HS Ong directly.</p>
         </section>
       </div>
     </main>
+    <script>
+      document.getElementById("contact-hs-ong")?.addEventListener("click", () => {
+        const mobile = /Android|iPhone|iPod|iPad|Mobile|Tablet|Windows Phone/i.test(navigator.userAgent)
+          || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+        const url = mobile
+          ? "https://wa.me/${WHATSAPP}?text=${message}"
+          : "https://web.whatsapp.com/send?phone=${WHATSAPP}&text=${message}";
+        window.open(url, mobile ? "_blank" : "propertydealdesk-whatsapp-business", mobile ? "noopener,noreferrer" : undefined);
+      });
+    </script>
     <footer class="footer">
       <div class="wrap footer-inner">
         <div><strong>HS Ong Property Inventory</strong>Real Estate Negotiator &middot; REN 81340</div>

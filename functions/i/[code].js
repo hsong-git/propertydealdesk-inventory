@@ -41,17 +41,21 @@ export function renderUnavailableShortcutHtml(code = "") {
       :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #17231f; background: #f7faf8; }
       body { margin: 0; min-height: 100vh; background: #f7faf8; }
       a { color: inherit; }
-      .header, .footer { border-bottom: 1px solid #d8e1dc; background: #fff; }
+      .header { position: sticky; top: 0; z-index: 20; border-bottom: 1px solid rgba(203, 212, 207, 0.85); background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(14px); }
+      .footer { border-bottom: 1px solid #d8e1dc; background: #fff; }
       .footer { border-top: 1px solid #d8e1dc; border-bottom: 0; }
-      .wrap { width: min(960px, calc(100% - 48px)); margin: 0 auto; }
-      .header-inner, .footer-inner { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
-      .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 800; }
+      .wrap { width: min(100% - 64px, 1240px); margin: 0 auto; }
+      .header-inner, .footer-inner { min-height: 70px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+      .brand { min-width: 0; display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; }
       .brand img { width: 42px; height: 42px; object-fit: contain; }
-      .brand small { display: block; margin-top: 2px; color: #63716b; font-weight: 500; }
-      .nav { display: flex; gap: 18px; color: #53615b; font-weight: 700; font-size: 14px; }
-      .nav a { text-decoration: none; }
+      .brand span { min-width: 0; display: grid; gap: 2px; }
+      .brand strong { color: #17231f; font-size: 14px; line-height: 1.2; }
+      .brand small { color: #63716b; font-size: 11px; font-weight: 500; }
+      .nav { display: flex; align-items: center; gap: 6px; color: #53615b; font-weight: 700; font-size: 13px; }
+      .nav a { min-height: 38px; padding: 0 12px; border-radius: 8px; display: inline-flex; align-items: center; text-decoration: none; }
+      .nav .agent-tools-link { color: #fff; background: #0c8768; box-shadow: 0 8px 18px rgba(17, 124, 91, 0.16); }
       main { min-height: calc(100vh - 166px); display: grid; place-items: center; padding: 52px 0; }
-      .card { width: min(760px, 100%); border: 1px solid #cfe5dc; border-radius: 18px; background: linear-gradient(135deg, #ffffff 0%, #f0fbf7 100%); box-shadow: 0 22px 58px rgba(21, 82, 61, 0.11); padding: clamp(28px, 5vw, 52px); text-align: center; box-sizing: border-box; }
+      .card { width: min(760px, 100%); margin-inline: auto; border: 1px solid #cfe5dc; border-radius: 18px; background: linear-gradient(135deg, #ffffff 0%, #f0fbf7 100%); box-shadow: 0 22px 58px rgba(21, 82, 61, 0.11); padding: clamp(28px, 5vw, 52px); text-align: center; box-sizing: border-box; }
       .icon { width: 58px; height: 58px; margin: 0 auto 18px; border-radius: 16px; display: grid; place-items: center; background: #e1f4ed; color: #087a5f; font-size: 28px; }
       .eyebrow { display: block; color: #087a5f; font-size: 12px; line-height: 1; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
       h1 { margin: 14px 0 12px; font-size: clamp(30px, 5vw, 48px); line-height: 1.05; letter-spacing: 0; }
@@ -64,8 +68,11 @@ export function renderUnavailableShortcutHtml(code = "") {
       .footer-inner { align-items: flex-start; padding: 24px 0; color: #5c6964; font-size: 13px; }
       .footer strong { display: block; color: #17231f; font-size: 15px; margin-bottom: 6px; }
       @media (max-width: 620px) {
-        .wrap { width: min(100% - 28px, 960px); }
+        .wrap { width: min(100% - 28px, 1240px); }
         .header-inner { min-height: 62px; }
+        .brand img { width: 36px; height: 36px; }
+        .brand strong { font-size: 13px; }
+        .brand small { display: none; }
         .nav { display: none; }
         main { min-height: calc(100vh - 138px); padding: 28px 0; }
         .card { border-radius: 14px; padding: 28px 20px; }
@@ -79,14 +86,14 @@ export function renderUnavailableShortcutHtml(code = "") {
     <header class="header">
       <div class="wrap header-inner">
         <a class="brand" href="/">
-          <img src="/propertydealdesk-logo.png" alt="PropertyDealDesk" />
-          <span>PropertyDealDesk Inventory<small>HS Ong &middot; REN 81340</small></span>
+          <img src="/propertydealdesk-mark.png" alt="" />
+          <span><strong>PropertyDealDesk Inventory</strong><small>HS Ong &middot; REN 81340</small></span>
         </a>
         <nav class="nav" aria-label="Main navigation">
           <a href="/">Properties</a>
           <a href="/about">About Me</a>
           <a href="/contact">Contact</a>
-          <a href="${AGENT_TOOLS_URL}">Agent Tools</a>
+          <a class="agent-tools-link" href="${AGENT_TOOLS_URL}">Agent Tools</a>
         </nav>
       </div>
     </header>

@@ -1,11 +1,12 @@
-import { Bath, BedDouble, Building2, CalendarDays, Copy, Expand, MapPin, MessageCircle, Share2 } from "lucide-react";
+import { BedDouble, Building2, CalendarDays, Copy, Expand, MapPin, MessageCircle, Share2 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
 import { PublicPropertyImage } from "./PublicPropertyImage";
 import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing, whatsappUrl } from "../utils/listing";
+import { formatRoomSummary } from "../data/requirementContract";
 
-export function PropertyCard({ listing }) {
+export function PropertyCard({ listing, viewOnly = false }) {
   const [shared, setShared] = useState(false);
   const [postingCopied, setPostingCopied] = useState(false);
   const share = async () => {
@@ -46,16 +47,15 @@ export function PropertyCard({ listing }) {
         </div>
         <div className="property-facts">
           <span><Building2 size={16} /> {listing.propertyType}</span>
-          {listing.bedrooms != null ? <span><BedDouble size={16} /> {listing.bedrooms} beds</span> : null}
-          {listing.bathrooms != null ? <span><Bath size={16} /> {listing.bathrooms} baths</span> : null}
+          {listing.bedrooms != null || listing.bathrooms != null ? <span><BedDouble size={16} /> {formatRoomSummary(listing.bedrooms, listing.bathrooms)}</span> : null}
           {listing.builtUpSqFt ? <span><Expand size={16} /> {listing.builtUpSqFt.toLocaleString()} sq ft</span> : null}
         </div>
         <div className="property-meta"><span>{listing.furnishing}</span><span><CalendarDays size={14} /> Updated {formatDate(listing.updatedAt)}</span></div>
       </div>
-      <div className="property-actions">
+      <div className={`property-actions ${viewOnly ? "view-only" : ""}`}>
         <Link className="button secondary" to={`/property/${listing.slug}`}>View Details</Link>
-        <a className="button primary icon-only-mobile" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><MessageCircle size={18} /><span>Enquire</span></a>
-        <button className="button tertiary share-button" type="button" onClick={share} aria-label={`Share ${listing.code}`}><Share2 size={18} /><span>{shared ? "Copied" : "Share"}</span></button>
+        {viewOnly ? null : <a className="button primary icon-only-mobile" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><MessageCircle size={18} /><span>Enquire</span></a>}
+        {viewOnly ? null : <button className="button tertiary share-button" type="button" onClick={share} aria-label={`Share ${listing.code}`}><Share2 size={18} /><span>{shared ? "Copied" : "Share"}</span></button>}
       </div>
     </article>
   );

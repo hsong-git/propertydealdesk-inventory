@@ -20,6 +20,7 @@ export function Header() {
           <NavLink to="/" onClick={close}>Properties</NavLink>
           <NavLink to="/about" onClick={close}>About Me</NavLink>
           <NavLink to="/contact" onClick={close}>Contact</NavLink>
+          <NavLink className="nav-requirements" to="/requirements" onClick={close}>Find a Property</NavLink>
           <a className="button primary nav-agent-tools" href="https://agenttools.myeviv.com/" target="_blank" rel="noopener noreferrer" onClick={close}>Agent Tools</a>
         </nav>
       </div>

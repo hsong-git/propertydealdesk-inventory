@@ -16,6 +16,12 @@
 /contact
   Cache-Control: no-store, max-age=0, must-revalidate
 
+/requirements
+  Cache-Control: no-store, max-age=0, must-revalidate
+
+/admin/*
+  Cache-Control: no-store, max-age=0, must-revalidate
+
 /data/inventory.json
   Cache-Control: no-store, max-age=0, must-revalidate
 

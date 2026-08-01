@@ -249,6 +249,10 @@ export function RequirementPage() {
       setSubmitError(`Please complete the following before submitting: ${validationSummary(validation.errors)}`);
       return;
     }
+    const mobile = isMobileOrTabletDevice();
+    const desktopWhatsAppWindow = mobile
+      ? null
+      : globalThis.open?.("about:blank", "propertydealdesk-whatsapp-business");
     setSubmitting(true);
     setSubmitError("");
     try {
@@ -274,12 +278,20 @@ export function RequirementPage() {
       }
       const nextResult = { ...saved, submission: validation.value, matches, matchingError };
       setResult(nextResult);
-      if (isMobileOrTabletDevice()) {
-        const whatsappUrl = buildWhatsAppUrl(agentProfile.whatsapp, requirementWhatsAppMessage(validation.value, saved.reference));
+      const whatsappMessage = requirementWhatsAppMessage(validation.value, saved.reference);
+      if (mobile) {
+        const whatsappUrl = buildWhatsAppUrl(agentProfile.whatsapp, whatsappMessage);
         if (whatsappUrl) globalThis.location?.assign?.(whatsappUrl);
+      } else if (desktopWhatsAppWindow) {
+        const whatsappUrl = buildWhatsAppUrl(agentProfile.whatsapp, whatsappMessage, { desktop: true });
+        if (whatsappUrl) {
+          desktopWhatsAppWindow.location.href = whatsappUrl;
+          desktopWhatsAppWindow.focus?.();
+        }
       }
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
+      desktopWhatsAppWindow?.close?.();
       setSubmitError(error.message);
     } finally {
       setSubmitting(false);

@@ -13,7 +13,7 @@ import { useInventory } from "../hooks";
 import { buildLocationOptions } from "../utils/locationFilter";
 import { formatPrice } from "../utils/listing";
 import { matchRequirements } from "../utils/requirementMatching";
-import { buildWhatsAppUrl, isMobileOrTabletDevice, openWhatsApp } from "../utils/whatsapp";
+import { buildWhatsAppUrl, isMobileOrTabletDevice } from "../utils/whatsapp";
 
 const makeSubmissionKey = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}_${Math.random().toString(36).slice(2)}`;
 const RENT_BUDGETS = [1000, 1500, 2000, 2500, 3000, 3500, 4000];
@@ -274,21 +274,12 @@ export function RequirementPage() {
       }
       const nextResult = { ...saved, submission: validation.value, matches, matchingError };
       setResult(nextResult);
-      whatsApp(nextResult);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       setSubmitError(error.message);
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const whatsApp = (whatsAppResult = result) => {
-    if (!whatsAppResult) return;
-    const { submission, reference } = whatsAppResult;
-    const message = requirementWhatsAppMessage(submission, reference);
-    setWhatsAppError("");
-    openWhatsApp({ phone: agentProfile.whatsapp, message, onError: setWhatsAppError });
   };
 
   if (result) {
@@ -300,7 +291,7 @@ export function RequirementPage() {
       <div className="page-width requirement-result">
         <section className="requirement-success"><span className="success-sparkle">✦</span><CheckCircle2 size={36} /><span className="eyebrow">Your search is underway</span><h1>We&apos;ve got you, {result.submission.profile.name}.</h1><p>Your reference is <strong>{result.reference}</strong>. We found a few places to get you started.</p></section>
         {result.matchingError ? <div className="requirement-alert warning">{result.matchingError}</div> : null}
-        <section className="requirement-whatsapp requirement-next-step" aria-labelledby="requirement-whatsapp-title"><MessageCircle size={28} aria-hidden="true" /><div><span className="eyebrow">Next step</span><h2 id="requirement-whatsapp-title">Send this requirement to HS Ong</h2><p>The destination is fixed to the configured PropertyDealDesk agent number.</p></div><a className="button primary" href={resultWhatsAppUrl || undefined} target={resultWhatsAppDesktop ? "propertydealdesk-whatsapp-business" : "_blank"} rel={resultWhatsAppDesktop ? undefined : "noopener noreferrer"} onClick={() => setWhatsAppError("")}><MessageCircle size={17} aria-hidden="true" /> WhatsApp Agent</a></section>
+        <section className="requirement-whatsapp requirement-next-step" aria-labelledby="requirement-whatsapp-title"><MessageCircle size={28} aria-hidden="true" /><div><span className="eyebrow">Next step</span><h2 id="requirement-whatsapp-title">Send this requirement to HS Ong</h2><p>The destination is fixed to the configured PropertyDealDesk agent number.</p></div><a className="button primary" href={resultWhatsAppUrl || undefined} target={resultWhatsAppDesktop ? "propertydealdesk-whatsapp-business" : "_self"} rel={resultWhatsAppDesktop ? undefined : undefined} onClick={() => setWhatsAppError("")}><MessageCircle size={17} aria-hidden="true" /> WhatsApp Agent</a></section>
         <section className="requirement-matches"><div className="section-heading"><div><span className="eyebrow">Recommended properties</span><h2>{result.matches.length ? "A few places worth a look" : "We'll keep an eye out"}</h2><p>{result.matches.length ? "These are drawn from the current published inventory and matched to your brief." : "Your requirement is saved. HS Ong can help check for suitable options."}</p></div></div>
           {result.matches.length ? <div className="property-grid result-grid">{result.matches.map((listing, index) => <div className="result-card-reveal" style={{ "--result-delay": `${index * 55}ms` }} key={listing.publicId}><PropertyCard listing={listing} viewOnly /></div>)}</div> : null}
         </section>

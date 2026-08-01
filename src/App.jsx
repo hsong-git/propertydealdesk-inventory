@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { AboutPage } from "./pages/AboutPage";
 import { ContactPage } from "./pages/ContactPage";
@@ -18,8 +18,10 @@ export default function App() {
           <Route index element={<HomePage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />
-          <Route path="requirements" element={<RequirementPage />} />
-          <Route path="admin/requirements" element={<RequirementsAdminPage />} />
+          <Route path="inquiries" element={<RequirementPage />} />
+          <Route path="requirements" element={<Navigate to="/inquiries" replace />} />
+          <Route path="admin/inquiries" element={<RequirementsAdminPage />} />
+          <Route path="admin/requirements" element={<Navigate to="/admin/inquiries" replace />} />
           <Route path="i/:code" element={<ShortListingRedirect />} />
           <Route path="property/:slug" element={<PropertyPage />} />
           <Route path="download/:grantToken" element={<DownloadGrantPage />} />

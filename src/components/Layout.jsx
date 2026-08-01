@@ -13,7 +13,7 @@ export function Layout() {
       <footer className="site-footer">
         <div className="page-width footer-grid">
           <div><strong>{agentProfile.websiteTitle}</strong><p>{agentProfile.title} · {agentProfile.renNumber}</p></div>
-          <div className="footer-links"><Link to="/">Properties</Link><Link to="/requirements">Find a Property</Link><Link to="/about">About Me</Link><Link to="/contact">Contact</Link></div>
+          <div className="footer-links"><Link to="/">Properties</Link><Link to="/inquiries">Find a Property</Link><Link to="/about">About Me</Link><Link to="/contact">Contact</Link></div>
           <p className="footer-disclaimer">Property information is provided for general reference and is subject to confirmation, availability and change without notice.</p>
         </div>
       </footer>

@@ -14,7 +14,7 @@ preview_bucket_name = "propertydealdesk-inventory-photo-packages-preview"
 
 [[d1_databases]]
 binding = "REQUIREMENTS_DB"
-database_name = "propertydealdesk-requirements"
+database_name = "propertydealdesk-inquiries"
 database_id = "REPLACE_WITH_PRODUCTION_D1_DATABASE_ID"
 preview_database_id = "REPLACE_WITH_PREVIEW_D1_DATABASE_ID"
 

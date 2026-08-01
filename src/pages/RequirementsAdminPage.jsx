@@ -62,9 +62,9 @@ export function RequirementsAdminPage() {
   };
 
   return (
-    <main className="admin-requirements-page"><Seo title="Property Requirements Admin" />
+    <main className="admin-requirements-page"><Seo title="Property Inquiries Admin" />
       <div className="page-width admin-requirements-shell">
-        <header><span className="eyebrow">Protected administration</span><h1>Property Requirements</h1><p>View submitted Rent and Buy enquiries. This page and its APIs require the configured administrator login.</p></header>
+        <header><span className="eyebrow">Protected administration</span><h1>Property Inquiries</h1><p>View submitted Rent and Buy enquiries. This page and its APIs require the configured administrator login.</p></header>
         {state.loading ? <div className="state-card"><LoaderCircle className="spin" /><strong>Checking administrator access…</strong></div> : null}
         {!state.loading && !state.authenticated ? <div className="state-card error"><strong>Administrator access required</strong><span>{state.error || "You are not authorized to view submissions."}</span></div> : null}
         {state.authenticated && state.error ? <div className="requirement-alert error">{state.error}</div> : null}

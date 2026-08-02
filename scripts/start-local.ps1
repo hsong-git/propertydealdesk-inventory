@@ -6,6 +6,7 @@ $pidFile = Join-Path $runtimeDir "inventory-catalogue.pid"
 $outputLog = Join-Path $runtimeDir "inventory-catalogue.log"
 $errorLog = Join-Path $runtimeDir "inventory-catalogue-error.log"
 $wranglerScript = Join-Path $projectRoot "node_modules\wrangler\bin\wrangler.js"
+$requirementsDatabaseName = "propertydealdesk-inquiries"
 $bundledNode = "C:\Users\onghu\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe"
 $pagesPort = 5277
 $url = "http://127.0.0.1:$pagesPort/"
@@ -42,7 +43,7 @@ if (-not (Test-Path -LiteralPath $wranglerScript)) {
 if (-not (Test-Path -LiteralPath $wranglerScript)) { throw "Wrangler is missing after npm install." }
 
 Write-Host "Checking local requirements database migrations..." -ForegroundColor Cyan
-& $nodePath $wranglerScript d1 migrations apply propertydealdesk-requirements --local --persist-to .runtime\wrangler
+& $nodePath $wranglerScript d1 migrations apply $requirementsDatabaseName --local --persist-to .runtime\wrangler
 if ($LASTEXITCODE -ne 0) { throw "Local D1 migration check failed with exit code $LASTEXITCODE." }
 
 Write-Host "Building the current frontend before starting local Pages Dev..." -ForegroundColor Cyan

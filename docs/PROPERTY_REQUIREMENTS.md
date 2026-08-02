@@ -13,3 +13,5 @@ The D1 store is intentionally separate from Stable. Stable remains the private s
 5. Confirm `/admin/inquiries` and `/api/admin/requirements*` are covered by the same Access application. The legacy `/admin/requirements` path redirects to `/admin/inquiries`. The Functions also validate the Access JWT and administrator allowlist, so they fail closed even if a route rule is misconfigured.
 
 The admin APIs support list, detail, mark-as-read, and delete only. Public submission responses contain only the new reference and timestamp. There is no public submission lookup endpoint.
+
+The footer link `Inquiry Admin` opens `/admin/inquiries`. On production, Cloudflare Access and the Function-level JWT/email checks protect both the page and `/api/admin/requirements*`. On local Pages development (`http://127.0.0.1` or `http://localhost`), the same screen uses the locally persisted D1 database without requiring a Cloudflare Access token. Loopback admin access is never accepted over HTTPS or on a non-loopback hostname.

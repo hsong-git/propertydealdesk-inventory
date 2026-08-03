@@ -627,7 +627,17 @@ main { flex: 1; }
 .requirement-date-control > input:first-child { padding-right: 48px; }
 .date-picker-button { position: absolute; right: 6px; z-index: 1; display: grid; place-items: center; width: 38px; height: 38px; border: 0; border-radius: 9px; color: var(--color-primary); background: transparent; cursor: pointer; }
 .date-picker-button:hover, .date-picker-button:focus-visible { background: var(--color-primary-soft); outline: 2px solid rgba(17,124,91,.25); outline-offset: 1px; }
-.native-date-picker { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; opacity: 0 !important; pointer-events: none; }
+.requirement-date-picker { position: relative; }
+.requirement-calendar-popover { position: absolute; top: calc(100% + 8px); left: 0; z-index: 20; width: min(100%, 330px); padding: 14px; border: 1px solid rgba(17,124,91,.18); border-radius: 14px; background: #fff; box-shadow: 0 18px 40px rgba(24,33,29,.16); }
+.requirement-calendar-header { display: grid; grid-template-columns: 36px 1fr 36px; align-items: center; gap: 6px; margin-bottom: 12px; }
+.requirement-calendar-header strong { text-align: center; font-size: 14px; }
+.requirement-calendar-header button { width: 36px; height: 36px; border: 0; border-radius: 9px; color: var(--color-primary); background: var(--color-primary-soft); font-size: 25px; line-height: 1; }
+.requirement-calendar-weekdays, .requirement-calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.requirement-calendar-weekdays { margin-bottom: 4px; color: var(--color-text-muted); font-size: 11px; font-weight: 800; text-align: center; }
+.requirement-calendar-grid button, .requirement-calendar-empty { min-height: 36px; display: grid; place-items: center; }
+.requirement-calendar-grid button { border: 1px solid transparent; border-radius: 9px; color: var(--color-text); background: transparent; font-size: 13px; }
+.requirement-calendar-grid button:hover, .requirement-calendar-grid button:focus-visible { border-color: rgba(17,124,91,.35); background: var(--color-primary-soft); outline: none; }
+.requirement-calendar-grid button.active { color: #fff; border-color: var(--color-primary); background: var(--color-primary); }
 .requirement-tiles { display: grid; grid-template-columns: repeat(var(--choice-columns, 2), minmax(0, 1fr)); gap: 8px; }
 .requirement-tiles button, .location-chips button { min-height: 48px; padding: 8px 10px; border: 1px solid #d3ddd8; border-radius: 11px; color: var(--color-text); background: #fcfefd; font-size: 12px; font-weight: 750; line-height: 1.2; transition: transform 180ms ease, border-color 180ms ease, color 180ms ease, background-color 180ms ease, box-shadow 180ms ease; }
 .requirement-tiles button:hover, .location-chips button:hover { border-color: rgba(17,124,91,.45); color: var(--color-primary); transform: translateY(-1px); }

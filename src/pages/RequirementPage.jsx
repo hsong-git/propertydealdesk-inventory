@@ -95,6 +95,61 @@ function BudgetPicker({ intent, value, onChange, error }) {
   return <fieldset className={`requirement-choice-field budget-picker ${error || customInvalid ? "has-error" : ""}`}><legend>Budget</legend><div className="requirement-tiles budget-tiles">{options.map((option) => <button className={!customActive && Number(value) === option ? "active" : ""} type="button" key={option} onClick={() => { setCustomActive(false); onChange(option); }}>{label(option)}</button>)}<button className={customActive ? "active" : ""} type="button" onClick={() => { setCustomActive(true); if (!customActive) onChange(""); }}>Custom</button></div>{customActive ? <input className="budget-custom-input" required type="number" min="1" max="1000000000" step="1" inputMode="numeric" aria-label="Custom budget" placeholder="Enter one amount in RM" value={value} onChange={(event) => onChange(normalizeBudgetAmount(intent, event.target.value) ?? event.target.value)} autoFocus /> : null}{error || customInvalid ? <em>{error || "Enter one positive budget amount."}</em> : null}</fieldset>;
 }
 
+function DatePickerField({ value, onChange }) {
+  const [open, setOpen] = useState(false);
+  const selected = parseRequirementDate(value) || "";
+  const selectedParts = selected ? selected.split("-").map(Number) : null;
+  const [visibleMonth, setVisibleMonth] = useState(() => {
+    const date = selectedParts ? new Date(Date.UTC(selectedParts[0], selectedParts[1] - 1, 1)) : new Date();
+    return { year: date.getUTCFullYear(), month: date.getUTCMonth() };
+  });
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onDocumentPointerDown = (event) => {
+      if (!containerRef.current?.contains(event.target)) setOpen(false);
+    };
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("pointerdown", onDocumentPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onDocumentPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  const days = useMemo(() => {
+    const firstDay = new Date(Date.UTC(visibleMonth.year, visibleMonth.month, 1)).getUTCDay();
+    const mondayOffset = (firstDay + 6) % 7;
+    const count = new Date(Date.UTC(visibleMonth.year, visibleMonth.month + 1, 0)).getUTCDate();
+    return [...Array(mondayOffset).fill(null), ...Array.from({ length: count }, (_, index) => index + 1)];
+  }, [visibleMonth]);
+
+  const shiftMonth = (amount) => {
+    const date = new Date(Date.UTC(visibleMonth.year, visibleMonth.month + amount, 1));
+    setVisibleMonth({ year: date.getUTCFullYear(), month: date.getUTCMonth() });
+  };
+
+  return <div ref={containerRef} className="requirement-date-picker">
+    <div className="requirement-date-control">
+      <input id="requirement-move-in-date" required type="text" inputMode="numeric" placeholder="dd/mm/yyyy" value={formatRequirementDate(value)} onChange={(event) => onChange(event.target.value)} onBlur={() => { const parsed = parseRequirementDate(value); if (parsed) onChange(formatRequirementDate(parsed)); }} />
+      <button type="button" className="date-picker-button" aria-label="Open calendar for move-in date" aria-expanded={open} onClick={() => setOpen((current) => !current)}><Calendar size={18} /></button>
+    </div>
+    {open ? <div className="requirement-calendar-popover" role="dialog" aria-label="Choose move-in date">
+      <div className="requirement-calendar-header"><button type="button" aria-label="Previous month" onClick={() => shiftMonth(-1)}>‹</button><strong>{new Intl.DateTimeFormat("en-MY", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(Date.UTC(visibleMonth.year, visibleMonth.month, 1)))}</strong><button type="button" aria-label="Next month" onClick={() => shiftMonth(1)}>›</button></div>
+      <div className="requirement-calendar-weekdays" aria-hidden="true">{["M", "T", "W", "T", "F", "S", "S"].map((day, index) => <span key={`${day}-${index}`}>{day}</span>)}</div>
+      <div className="requirement-calendar-grid">{days.map((day, index) => {
+        if (!day) return <span className="requirement-calendar-empty" key={`empty-${index}`} />;
+        const iso = `${String(visibleMonth.year).padStart(4, "0")}-${String(visibleMonth.month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        return <button type="button" key={iso} className={selected === iso ? "active" : ""} aria-label={formatRequirementDate(iso)} aria-pressed={selected === iso} onClick={() => { onChange(formatRequirementDate(iso)); setOpen(false); }}>{day}</button>;
+      })}</div>
+    </div> : null}
+  </div>;
+}
+
 function StepIntro({ eyebrow, title, description }) {
   return <div className="form-heading"><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{description ? <p>{description}</p> : null}</div>;
 }
@@ -117,7 +172,7 @@ function PropertyBasicsStep({ form, propertyTypes, locations, errors, updateRequ
 }
 
 function HomeFitStep({ form, errors, updateRequirement, onBack, onSubmit }) {
-  const moveInDateField = <Field label="Move-in Date" error={errors["requirements.moveInDate"]}><div className="requirement-date-control"><input id="requirement-move-in-date" required type="text" inputMode="numeric" placeholder="dd/mm/yyyy" value={formatRequirementDate(form.requirements.moveInDate)} onChange={(e) => updateRequirement("moveInDate", e.target.value)} onBlur={() => { const parsed = parseRequirementDate(form.requirements.moveInDate); if (parsed) updateRequirement("moveInDate", formatRequirementDate(parsed)); }} /><button type="button" className="date-picker-button" aria-label="Open calendar for move-in date" onClick={() => { const picker = document.getElementById("requirement-native-date"); if (picker) { if (typeof picker.showPicker === "function") picker.showPicker(); else picker.click(); } }}><Calendar size={18} /></button><input id="requirement-native-date" className="native-date-picker" type="date" tabIndex="-1" aria-hidden="true" value={parseRequirementDate(form.requirements.moveInDate) || ""} onChange={(e) => { if (e.target.value) updateRequirement("moveInDate", formatRequirementDate(e.target.value)); }} /></div></Field>;
+  const moveInDateField = <Field label="Move-in Date" error={errors["requirements.moveInDate"]}><DatePickerField value={form.requirements.moveInDate} onChange={(value) => updateRequirement("moveInDate", value)} /></Field>;
   return <form onSubmit={onSubmit} className="requirement-step-panel"><StepIntro eyebrow="Home Fit" title="Now let&apos;s shape the fit" description="A couple of quick taps helps us narrow the search." /><div className="requirement-grid"><div className="room-picker"><StepperField label="Bedrooms" value={form.requirements.bedrooms} onChange={(value) => updateRequirement("bedrooms", value)} error={errors["requirements.bedrooms"]} /><StepperField label="Bathrooms" value={form.requirements.bathrooms} onChange={(value) => updateRequirement("bathrooms", value)} error={errors["requirements.bathrooms"]} /><p className="room-order-note">Your home search: <strong>{formatRoomSummary(form.requirements.bedrooms, form.requirements.bathrooms) || "Choose rooms"}</strong></p></div>{form.intent === "rent" ? <><StepperField label="Number of People Staying" min={1} value={form.requirements.peopleStaying} onChange={(value) => updateRequirement("peopleStaying", value)} error={errors["requirements.peopleStaying"]} /><ChoiceTiles label="Relationship" value={form.requirements.relationship} options={RELATIONSHIPS} onChange={(value) => updateRequirement("relationship", value)} error={errors["requirements.relationship"]} columns={3} />{moveInDateField}</> : <ChoiceTiles label="Purchase Timeline" value={form.requirements.purchaseTimeline} options={PURCHASE_TIMELINES} onChange={(value) => updateRequirement("purchaseTimeline", value)} error={errors["requirements.purchaseTimeline"]} columns={2} />}</div><WizardActions onBack={onBack} label="Next: Preferences" /></form>;
 }
 

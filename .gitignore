@@ -7,5 +7,7 @@ dist/
 public/.inventory-publish-*/
 artifacts/
 wrangler.toml
+wrangler.toml.bak
+.wrangler/
 .dev.vars
 .dev.vars.*

@@ -60,6 +60,7 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
 
   const updatedAt = cleanText(firstValue(raw.updatedAt, raw.updated_at, fallbackTimestamp));
   const createdAt = cleanText(firstValue(raw.createdAt, raw.created_at, updatedAt));
+  const listedAt = cleanNullableText(firstValue(raw.listedAt, raw.listed_at));
   const slug = slugify(firstValue(raw.slug, `${code}-${title}-${location}`));
 
   // This returned object is the complete browser-visible allowlist. Unknown
@@ -83,6 +84,7 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
     availability,
     featured: raw.featured === true,
     createdAt,
+    listedAt,
     updatedAt,
     photos: normalizePhotoPaths(raw, code, isMockData),
     postingCopy: cleanNullableText(firstValue(raw.postingCopy, raw.posting_copy)),

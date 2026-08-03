@@ -98,7 +98,7 @@ export function PropertyPage() {
           <section className="detail-section"><h2>Property overview</h2><p>{listing.description}</p><div className="detail-facts">{detailItems.map(([Icon, label, value]) => <div key={label}><Icon size={19} /><span>{label}</span><strong>{value}</strong></div>)}</div></section>
           {listing.features.length ? <section className="detail-section"><h2>Property features</h2><ul className="check-list">{listing.features.map((item) => <li key={item}><Check size={17} /> {item}</li>)}</ul></section> : null}
           <section className="detail-section posting-details"><div className="posting-heading"><div><span className="eyebrow">Ready to share</span><h2>Posting details</h2></div><button className="button primary" type="button" onClick={onCopyPosting}><Copy size={17} /> {postingCopied ? "Copied" : "Copy posting"}</button></div><pre>{postingText(listing, agentProfile)}</pre></section>
-          <p className="updated-line"><CalendarDays size={16} /> Last updated {formatDate(listing.updatedAt)} · Details are subject to confirmation.</p>
+          <p className="updated-line"><CalendarDays size={16} /> {listing.listedAt ? "Listed" : "Recorded"} {formatDate(listing.listedAt || listing.createdAt)} · Details are subject to confirmation.</p>
         </div>
         <aside className="agent-contact-card">
           <img src={agentProfile.portrait} alt={agentProfile.displayName} /><div><span className="eyebrow">Enquire directly</span><h2>{agentProfile.displayName}</h2><p>{agentProfile.title} · {agentProfile.renNumber}</p><small>{agentProfile.agency}</small></div>

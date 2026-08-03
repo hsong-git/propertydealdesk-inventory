@@ -103,6 +103,7 @@
         },
         "featured": { "type": "boolean" },
         "created_at": { "$ref": "#/$defs/nullableDateOrDateTime" },
+        "listed_at": { "$ref": "#/$defs/nullableDateOrDateTime" },
         "updated_at": { "$ref": "#/$defs/dateOrDateTime" },
         "cover_photo": {
           "oneOf": [

@@ -28,6 +28,7 @@ export const formatDateTime = (value) => {
 };
 
 export const recentActivityTime = (listing) => Math.max(
+  Date.parse(listing.listedAt) || 0,
   Date.parse(listing.updatedAt) || 0,
   Date.parse(listing.createdAt) || 0,
 );

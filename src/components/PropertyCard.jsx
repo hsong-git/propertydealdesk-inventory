@@ -50,7 +50,7 @@ export function PropertyCard({ listing, viewOnly = false }) {
           {listing.bedrooms != null || listing.bathrooms != null ? <span><BedDouble size={16} /> {formatRoomSummary(listing.bedrooms, listing.bathrooms)}</span> : null}
           {listing.builtUpSqFt ? <span><Expand size={16} /> {listing.builtUpSqFt.toLocaleString()} sq ft</span> : null}
         </div>
-        <div className="property-meta"><span>{listing.furnishing}</span><span><CalendarDays size={14} /> Updated {formatDate(listing.updatedAt)}</span></div>
+        <div className="property-meta"><span>{listing.furnishing}</span><span><CalendarDays size={14} /> {listing.listedAt ? "Listed" : "Recorded"} {formatDate(listing.listedAt || listing.createdAt)}</span></div>
       </div>
       <div className={`property-actions ${viewOnly ? "view-only" : ""}`}>
         <Link className="button secondary" to={`/property/${listing.slug}`}>View Details</Link>

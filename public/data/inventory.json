@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.1",
-  "inventoryVersion": "2026.08.04.1",
-  "generated_at": "2026-08-04T04:36:20Z",
-  "publishedAt": "2026-08-04T04:36:20Z",
+  "inventoryVersion": "2026.08.04.2",
+  "generated_at": "2026-08-04T07:32:51Z",
+  "publishedAt": "2026-08-04T07:32:51Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -43,7 +43,8 @@
         "/inventory/WTL0010/photo-09.webp",
         "/inventory/WTL0010/photo-10.webp",
         "/inventory/WTL0010/photo-11.webp",
-        "/inventory/WTL0010/photo-12.webp"
+        "/inventory/WTL0010/photo-12.webp",
+        "/inventory/WTL0010/photo-13.webp"
       ],
       "features": [
         "Condition: Partition ready",
@@ -619,7 +620,23 @@
         "/inventory/WTL0049/photo-04.webp",
         "/inventory/WTL0049/photo-05.webp",
         "/inventory/WTL0049/photo-06.webp",
-        "/inventory/WTL0049/photo-07.webp"
+        "/inventory/WTL0049/photo-07.webp",
+        "/inventory/WTL0049/photo-08.webp",
+        "/inventory/WTL0049/photo-09.webp",
+        "/inventory/WTL0049/photo-10.webp",
+        "/inventory/WTL0049/photo-11.webp",
+        "/inventory/WTL0049/photo-12.webp",
+        "/inventory/WTL0049/photo-13.webp",
+        "/inventory/WTL0049/photo-14.webp",
+        "/inventory/WTL0049/photo-15.webp",
+        "/inventory/WTL0049/photo-16.webp",
+        "/inventory/WTL0049/photo-17.webp",
+        "/inventory/WTL0049/photo-18.webp",
+        "/inventory/WTL0049/photo-19.webp",
+        "/inventory/WTL0049/photo-20.webp",
+        "/inventory/WTL0049/photo-21.webp",
+        "/inventory/WTL0049/photo-22.webp",
+        "/inventory/WTL0049/photo-23.webp"
       ],
       "features": [
         "With Balcony Link to Sunsuria Mall & retail 2 Parkings Level 6"

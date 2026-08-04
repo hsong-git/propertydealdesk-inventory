@@ -16,7 +16,7 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
       <div className="search-row">
         <label className="search-field"><Search size={20} /><span className="sr-only">Search properties</span><input value={filters.keyword} onChange={(event) => update("keyword", event.target.value)} placeholder="Search by area, property type or listing code" /></label>
         <button className="button secondary mobile-filter-button" type="button" onClick={() => setMobileOpen(true)}><SlidersHorizontal size={18} /> Filters {activeCount ? <b>{activeCount}</b> : null}</button>
-        <label className="sort-field"><span>Sort</span><select value={filters.sort} onChange={(event) => update("sort", event.target.value)}><option value="recent">Recently updated</option><option value="newest">Newest</option><option value="price-asc">Price low to high</option><option value="price-desc">Price high to low</option><option value="title">Property title</option></select><ChevronDown size={16} /></label>
+        <label className="sort-field"><span>Sort</span><select value={filters.sort} onChange={(event) => update("sort", event.target.value)}><option value="recent">Recently listed</option><option value="newest">Newest</option><option value="price-asc">Price low to high</option><option value="price-desc">Price high to low</option><option value="title">Property title</option></select><ChevronDown size={16} /></label>
       </div>
       <div className={`advanced-filter-shell ${mobileOpen ? "mobile-open" : ""}`}>
         <div className="filter-drawer-heading"><strong>Filter properties</strong><button className="icon-button" type="button" onClick={() => setMobileOpen(false)} aria-label="Close filters"><X size={20} /></button></div>

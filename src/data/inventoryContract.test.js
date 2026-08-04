@@ -211,12 +211,12 @@ test("builds a photo-download WhatsApp request from public listing details", () 
   ].join("\n"));
 });
 
-test("orders by most recent added or updated timestamp without featured priority", () => {
+test("orders by original listed date without publication timestamp priority", () => {
   const listings = [
-    { code: "WTS0003", featured: false, updatedAt: "2026-07-27T12:00:00Z" },
-    { code: "WTS0001", featured: true, updatedAt: "2026-07-25T12:00:00Z" },
-    { code: "WTS0002", featured: true, updatedAt: "2026-07-26T12:00:00Z" },
-    { code: "WTS0004", featured: false, createdAt: "2026-07-28T09:15:00Z", updatedAt: "2026-07-24T12:00:00Z" },
+    { code: "WTS0003", featured: false, listedAt: "2026-07-27T12:00:00Z", updatedAt: "2026-08-03T12:00:00Z" },
+    { code: "WTS0001", featured: true, listedAt: "2026-07-25T12:00:00Z", updatedAt: "2026-08-03T12:00:00Z" },
+    { code: "WTS0002", featured: true, listedAt: "2026-07-26T12:00:00Z", updatedAt: "2026-08-03T12:00:00Z" },
+    { code: "WTS0004", featured: false, listedAt: "2026-07-28T09:15:00Z", updatedAt: "2026-08-03T12:00:00Z" },
   ];
   assert.deepEqual(
     listings.sort(compareRecentlyUpdated).map((item) => item.code),

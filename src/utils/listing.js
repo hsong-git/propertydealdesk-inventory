@@ -27,10 +27,11 @@ export const formatDateTime = (value) => {
   }).format(date);
 };
 
-export const recentActivityTime = (listing) => Math.max(
-  Date.parse(listing.listedAt) || 0,
-  Date.parse(listing.updatedAt) || 0,
-  Date.parse(listing.createdAt) || 0,
+export const recentActivityTime = (listing) => (
+  Date.parse(listing.listedAt)
+  || Date.parse(listing.createdAt)
+  || Date.parse(listing.updatedAt)
+  || 0
 );
 
 export const compareRecentlyUpdated = (a, b) => {

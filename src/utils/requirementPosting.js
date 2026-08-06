@@ -23,6 +23,13 @@ const labels = {
   otherNeeds: "Other Needs",
 };
 
+const profileLabels = {
+  race: "Race",
+  country: "Country",
+  occupation: "Occupation",
+  companyName: "Company Name",
+};
+
 const clean = (value) => String(value ?? "").trim();
 const hasValue = (value) => value !== undefined && value !== null && clean(value) !== "";
 
@@ -38,6 +45,9 @@ function valueForRequirement(key, value, submission) {
 export function inquiryPostingText(submission) {
   const requirements = submission?.requirements || {};
   const profile = submission?.profile || {};
+  const race = clean(profile.race).toLowerCase() === "other" && hasValue(profile.raceOther)
+    ? profile.raceOther
+    : profile.race;
   const lines = [
     `*${clean(submission?.reference) || "Property Inquiry"}*`,
     `*${intentLabel(submission?.intent)} Requirement*`,
@@ -45,6 +55,19 @@ export function inquiryPostingText(submission) {
 
   if (hasValue(submission?.submittedAt)) lines.push(`Submitted: ${formatDateTime(submission.submittedAt)}`);
   if (hasValue(submission?.name || profile.name)) lines.push(`Name: ${clean(submission.name || profile.name)}`);
+
+  const applicantDetails = {
+    race,
+    country: profile.country,
+    occupation: profile.occupation,
+    companyName: profile.companyName,
+  };
+  const applicantLines = Object.entries(applicantDetails)
+    .filter(([, value]) => hasValue(value))
+    .map(([key, value]) => `- ${profileLabels[key] || key}: ${clean(value)}`);
+  if (applicantLines.length) {
+    lines.push("", "*Applicant Details*", ...applicantLines);
+  }
   lines.push("");
 
   const roomSummary = formatRoomSummary(requirements.bedrooms, requirements.bathrooms);

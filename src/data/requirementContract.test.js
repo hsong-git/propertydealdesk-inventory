@@ -30,6 +30,15 @@ test("requires commercial activity when commercial property usage is selected", 
   assert.equal(result.value.requirements.commercialActivity, "Retail office");
 });
 
+test("does not require property usage or commercial activity for Buy inquiries", () => {
+  const payload = validBase("buy");
+  Object.assign(payload.requirements, { purchaseTimeline: "Within 6 months", purpose: "Own Stay", loan: "Loan Required", occupants: "3", propertyUsage: "", commercialActivity: "" });
+  const result = validateRequirementPayload(payload);
+  assert.equal(result.valid, true);
+  assert.equal(result.value.requirements.propertyUsage, "");
+  assert.equal(result.value.requirements.commercialActivity, "");
+});
+
 test("requires Other race details and all Buy choices", () => {
   const payload = validBase("buy");
   payload.profile.race = "Others";
@@ -113,6 +122,8 @@ test("uses the requested defaults for rent and buy requirements", () => {
   assert.equal(buy.occupants, 1);
   assert.equal(buy.purpose, "Own Stay");
   assert.equal(buy.loan, "Loan Required");
+  assert.equal(buy.propertyUsage, "");
+  assert.equal(buy.commercialActivity, "");
 });
 
 test("requires a country value without rejecting legacy non-empty country names", () => {

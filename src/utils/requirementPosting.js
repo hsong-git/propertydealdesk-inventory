@@ -1,112 +1,64 @@
-import { formatRoomSummary } from "../data/requirementContract.js";
-import { formatDateTime, formatPrice } from "./listing.js";
-
-const labels = {
-  propertyType: "Property Type",
-  storeys: "Storeys",
-  area: "Area",
-  budget: "Budget",
-  bedrooms: "Bedrooms",
-  bathrooms: "Bathrooms",
-  propertyUsage: "Property Usage",
-  commercialActivity: "Commercial Activity",
-  moveInDate: "Move-in Date",
-  peopleStaying: "People Staying",
-  relationship: "Relationship",
-  pet: "Pet",
-  furnishing: "Furnishing",
-  tenancy: "Tenancy",
-  tenancyPeriod: "Tenancy Period",
-  depositAgreement: "Deposit / Fees",
-  purchaseTimeline: "Purchase Timeline",
-  purpose: "Purpose",
-  loan: "Loan",
-  occupants: "Occupants",
-  otherNeeds: "Other Needs",
-};
-
-const profileLabels = {
-  race: "Race",
-  country: "Country",
-  occupation: "Occupation",
-  companyName: "Company Name",
-};
+import { formatRequirementDate, formatRoomSummary } from "../data/requirementContract.js";
+import { formatPrice } from "./listing.js";
 
 const clean = (value) => String(value ?? "").trim();
 const hasValue = (value) => value !== undefined && value !== null && clean(value) !== "";
 
-const intentLabel = (intent) => clean(intent).toLowerCase() === "rent" ? "Rent" : "Buy";
 const priceIntent = (intent) => clean(intent).toLowerCase() === "rent" ? "WTL" : "WTS";
-
-function valueForRequirement(key, value, submission) {
-  if (key === "budget") return formatPrice(value, priceIntent(submission.intent));
-  if (key === "bedrooms" || key === "bathrooms") return null;
-  return clean(value);
-}
+const lookingTo = (submission) => clean(submission?.reference).slice(0, 3).toUpperCase()
+  || (clean(submission?.intent).toLowerCase() === "rent" ? "WTR" : "WTB");
+const detailLine = (label, value) => hasValue(value) ? `*${label}:* ${clean(value)}` : null;
+const normalizedRace = (profile) => ["other", "others"].includes(clean(profile.race).toLowerCase()) && hasValue(profile.raceOther)
+  ? profile.raceOther
+  : profile.race;
+const normalizedCountry = (profile) => clean(profile.country).toLowerCase() === "other" && hasValue(profile.countryOther)
+  ? profile.countryOther
+  : profile.country;
 
 export function inquiryPostingText(submission) {
   const requirements = submission?.requirements || {};
   const profile = submission?.profile || {};
-  const race = clean(profile.race).toLowerCase() === "other" && hasValue(profile.raceOther)
-    ? profile.raceOther
-    : profile.race;
+  const roomSummary = formatRoomSummary(requirements.bedrooms, requirements.bathrooms);
+  const otherNeeds = requirements.otherNeeds || submission?.otherNeeds;
   const lines = [
-    `*${clean(submission?.reference) || "Property Inquiry"}*`,
-    `*${intentLabel(submission?.intent)} Requirement*`,
+    detailLine("Reference", clean(submission?.reference) || "Property Inquiry"),
+    detailLine("Looking to", lookingTo(submission)),
+    detailLine("Name", submission?.name || profile.name),
+    "",
+    detailLine("Race", normalizedRace(profile)),
+    detailLine("Country", normalizedCountry(profile)),
+    detailLine("Occupation", profile.occupation),
+    detailLine("Company Name", profile.companyName),
+    "",
+    detailLine("Property type", requirements.propertyType),
+    detailLine("Storeys", requirements.storeys),
+    detailLine("Area / Location", requirements.area || submission?.area),
+    detailLine("Budget", hasValue(requirements.budget || submission?.budget) ? formatPrice(requirements.budget || submission?.budget, priceIntent(submission?.intent)) : ""),
+    detailLine("Rooms", roomSummary),
+    detailLine("Usage", requirements.propertyUsage),
+    requirements.propertyUsage === "Commercial" ? detailLine("Commercial Activity", requirements.commercialActivity) : null,
   ];
 
-  if (hasValue(submission?.submittedAt)) lines.push(`Submitted: ${formatDateTime(submission.submittedAt)}`);
-  if (hasValue(submission?.name || profile.name)) lines.push(`Name: ${clean(submission.name || profile.name)}`);
-
-  const applicantDetails = {
-    race,
-    country: profile.country,
-    occupation: profile.occupation,
-    companyName: profile.companyName,
-  };
-  const applicantLines = Object.entries(applicantDetails)
-    .filter(([, value]) => hasValue(value))
-    .map(([key, value]) => `- ${profileLabels[key] || key}: ${clean(value)}`);
-  if (applicantLines.length) {
-    lines.push("", "*Applicant Details*", ...applicantLines);
-  }
-  lines.push("");
-
-  const roomSummary = formatRoomSummary(requirements.bedrooms, requirements.bathrooms);
-  const details = {
-    propertyType: requirements.propertyType,
-    storeys: requirements.storeys,
-    area: requirements.area || submission?.area,
-    budget: requirements.budget || submission?.budget,
-    bedroomsBathrooms: roomSummary === "Rooms TBC" ? "" : roomSummary,
-    propertyUsage: requirements.propertyUsage,
-    commercialActivity: requirements.propertyUsage === "Commercial" ? requirements.commercialActivity : "",
-    moveInDate: requirements.moveInDate,
-    peopleStaying: requirements.peopleStaying,
-    relationship: requirements.relationship,
-    pet: requirements.pet,
-    furnishing: requirements.furnishing,
-    tenancy: requirements.tenancy,
-    tenancyPeriod: requirements.tenancyPeriod,
-    depositAgreement: requirements.depositAgreement,
-    purchaseTimeline: requirements.purchaseTimeline,
-    purpose: requirements.purpose,
-    loan: requirements.loan,
-    occupants: requirements.occupants,
-    otherNeeds: requirements.otherNeeds || submission?.otherNeeds,
-  };
-
-  lines.push("*Requirement Details*");
-  for (const [key, value] of Object.entries(details)) {
-    if (!hasValue(value)) continue;
-    if (key === "bedroomsBathrooms") {
-      lines.push(`- Rooms: ${value}`);
-      continue;
-    }
-    const formatted = valueForRequirement(key, value, submission);
-    if (formatted) lines.push(`- ${labels[key] || key}: ${formatted}`);
+  if (clean(submission?.intent).toLowerCase() === "rent") {
+    lines.push(
+      detailLine("Move-in Date", hasValue(requirements.moveInDate) ? formatRequirementDate(requirements.moveInDate) : ""),
+      detailLine("People Staying", requirements.peopleStaying),
+      detailLine("Relationship", requirements.relationship),
+      detailLine("Pet", requirements.pet),
+      detailLine("Furnishing", requirements.furnishing),
+      detailLine("Tenancy", requirements.tenancy),
+      detailLine("Tenancy Period", requirements.tenancyPeriod),
+      detailLine("Deposits and Fees", requirements.depositAgreement),
+    );
+  } else {
+    lines.push(
+      detailLine("Purchase Timeline", requirements.purchaseTimeline),
+      detailLine("Number of Occupants", requirements.occupants),
+      detailLine("Purpose", requirements.purpose),
+      detailLine("Loan", requirements.loan),
+    );
   }
 
-  lines.push("", "Contact HS Ong for matching property opportunities.");
-  return lines.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  if (hasValue(otherNeeds)) lines.push("", "*Other Needs:*", clean(otherNeeds));
+  return lines.filter((line) => line !== null).join("\n").replace(/\n{3,}/g, "\n\n").trim();
 }

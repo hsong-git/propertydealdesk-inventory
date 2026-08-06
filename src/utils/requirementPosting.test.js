@@ -4,49 +4,69 @@ import { inquiryPostingText } from "./requirementPosting.js";
 
 test("formats inquiry posting content without mobile number", () => {
   const text = inquiryPostingText({
-    reference: "WTR000003",
-    submittedAt: "2026-08-05T10:34:00Z",
+    reference: "WTR000001",
     intent: "rent",
-    name: "Nuryana Hartini Abd Latif",
+    name: "Ong",
     mobile: "+60193465091",
-    area: "Bayuemas",
-    budget: 1500,
+    area: "Setia Alam, Bayu",
+    budget: 2000,
     profile: {
-      name: "Nuryana Hartini Abd Latif",
+      name: "Ong",
       mobile: "+60193465091",
-      race: "Malay",
+      race: "Chinese",
       country: "Malaysia",
-      occupation: "Account Supervisor",
-      companyName: "Westports Malaysia Sdn Bhd",
+      occupation: "FDFD",
+      companyName: "FDSF",
     },
     requirements: {
       propertyType: "Terrace House",
-      area: "Bayuemas",
-      budget: 1500,
-      bedrooms: 3,
-      bathrooms: 2,
+      storeys: 1,
+      area: "Setia Alam, Bayu",
+      budget: 2000,
+      bedrooms: 1,
+      bathrooms: 1,
       propertyUsage: "Commercial",
-      commercialActivity: "Retail office",
-      moveInDate: "September 2026",
-      furnishing: "Fully furnished",
-      otherNeeds: "Near school",
+      commercialActivity: "Old Folks home",
+      moveInDate: "2026-08-12",
+      peopleStaying: 1,
+      relationship: "Family",
+      pet: "No",
+      furnishing: "Basic",
+      tenancy: "Individual",
+      tenancyPeriod: "3+ years",
+      depositAgreement: "Yes",
+      otherNeeds: "Need to have ladder\nbig extra side land",
     },
   });
 
-  assert.match(text, /\*WTR000003\*/);
-  assert.match(text, /\*Rent Requirement\*/);
-  assert.match(text, /Name: Nuryana Hartini Abd Latif/);
-  assert.match(text, /\*Applicant Details\*/);
-  assert.match(text, /- Race: Malay/);
-  assert.match(text, /- Country: Malaysia/);
-  assert.match(text, /- Occupation: Account Supervisor/);
-  assert.match(text, /- Company Name: Westports Malaysia Sdn Bhd/);
-  assert.match(text, /- Area: Bayuemas/);
-  assert.match(text, /- Budget: RM 1,500 \/ month/);
-  assert.match(text, /- Rooms: 3R 2B/);
-  assert.match(text, /- Property Usage: Commercial/);
-  assert.match(text, /- Commercial Activity: Retail office/);
-  assert.match(text, /- Other Needs: Near school/);
+  assert.equal(text, `*Reference:* WTR000001
+*Looking to:* WTR
+*Name:* Ong
+
+*Race:* Chinese
+*Country:* Malaysia
+*Occupation:* FDFD
+*Company Name:* FDSF
+
+*Property type:* Terrace House
+*Storeys:* 1
+*Area / Location:* Setia Alam, Bayu
+*Budget:* RM 2,000 / month
+*Rooms:* 1R 1B
+*Usage:* Commercial
+*Commercial Activity:* Old Folks home
+*Move-in Date:* 12/08/2026
+*People Staying:* 1
+*Relationship:* Family
+*Pet:* No
+*Furnishing:* Basic
+*Tenancy:* Individual
+*Tenancy Period:* 3+ years
+*Deposits and Fees:* Yes
+
+*Other Needs:*
+Need to have ladder
+big extra side land`);
   assert.doesNotMatch(text, /Mobile Number|mobile|\+60193465091|60193465091/);
 });
 
@@ -67,9 +87,9 @@ test("uses the specified other race detail without copying mobile contact", () =
     },
   });
 
-  assert.match(text, /Name: Test Applicant/);
-  assert.match(text, /- Race: Foreigner/);
-  assert.match(text, /- Country: Singapore/);
+  assert.match(text, /\*Name:\* Test Applicant/);
+  assert.match(text, /\*Race:\* Foreigner/);
+  assert.match(text, /\*Country:\* Singapore/);
   assert.doesNotMatch(text, /Other:|Mobile Number|\+60123456789|60123456789/);
 });
 
@@ -83,9 +103,9 @@ test("falls back to row summary fields when detail fields are absent", () => {
     budget: 500000,
   });
 
-  assert.match(text, /\*Buy Requirement\*/);
-  assert.match(text, /Name: Yong/);
-  assert.match(text, /- Area: Bukit Tinggi/);
-  assert.match(text, /- Budget: RM 500,000/);
+  assert.match(text, /\*Looking to:\* WTB/);
+  assert.match(text, /\*Name:\* Yong/);
+  assert.match(text, /\*Area \/ Location:\* Bukit Tinggi/);
+  assert.match(text, /\*Budget:\* RM 500,000/);
   assert.doesNotMatch(text, /\+60165573873|60165573873|Mobile Number/);
 });

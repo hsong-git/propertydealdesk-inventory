@@ -33,7 +33,6 @@ function requirementWhatsAppMessage(submission, reference) {
     `*Reference:* ${reference}`,
     `*Looking to:* ${submission.intent === "rent" ? "WTR" : "WTB"}`,
     `*Name:* ${profile.name}`,
-    `*Mobile:* ${profile.mobile}`,
     `*Race:* ${profile.race}${profile.race === "Others" && profile.raceOther ? ` (${profile.raceOther})` : ""}`,
     `*Country:* ${profile.country}${profile.country === "Other" && profile.countryOther ? ` (${profile.countryOther})` : ""}`,
     `*Occupation:* ${profile.occupation}`,

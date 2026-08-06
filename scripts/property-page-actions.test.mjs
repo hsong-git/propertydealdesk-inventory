@@ -89,3 +89,15 @@ test("Share property falls back to copying the public short URL", async () => {
     });
   }
 });
+
+test("requirement WhatsApp message omits applicant mobile number", () => {
+  const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "RequirementPage.jsx"), "utf8");
+  const messageStart = source.indexOf("function requirementWhatsAppMessage");
+  const messageEnd = source.indexOf("function Field", messageStart);
+  assert.notEqual(messageStart, -1);
+  assert.notEqual(messageEnd, -1);
+  const messageSource = source.slice(messageStart, messageEnd);
+  assert.match(messageSource, /`\*Name:\* \$\{profile\.name\}`/);
+  assert.match(messageSource, /`\*Race:\*/);
+  assert.doesNotMatch(messageSource, /\*Mobile:\*|profile\.mobile/);
+});

@@ -25,6 +25,8 @@ test("formats inquiry posting content without mobile number", () => {
       budget: 1500,
       bedrooms: 3,
       bathrooms: 2,
+      propertyUsage: "Commercial",
+      commercialActivity: "Retail office",
       moveInDate: "September 2026",
       furnishing: "Fully furnished",
       otherNeeds: "Near school",
@@ -42,6 +44,8 @@ test("formats inquiry posting content without mobile number", () => {
   assert.match(text, /- Area: Bayuemas/);
   assert.match(text, /- Budget: RM 1,500 \/ month/);
   assert.match(text, /- Rooms: 3R 2B/);
+  assert.match(text, /- Property Usage: Commercial/);
+  assert.match(text, /- Commercial Activity: Retail office/);
   assert.match(text, /- Other Needs: Near school/);
   assert.doesNotMatch(text, /Mobile Number|mobile|\+60193465091|60193465091/);
 });

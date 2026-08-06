@@ -24,6 +24,8 @@ const detailLabels = {
   bedrooms: "Bedrooms",
   bathrooms: "Bathrooms",
   relationship: "Relationship",
+  propertyUsage: "Property Usage",
+  commercialActivity: "Commercial Activity",
   otherNeeds: "Other Needs",
   moveInDate: "Move-in Date",
   peopleStaying: "People Staying",

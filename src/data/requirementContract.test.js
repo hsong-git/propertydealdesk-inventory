@@ -14,6 +14,20 @@ test("validates the exact required Rent fields", () => {
   const result = validateRequirementPayload(payload);
   assert.equal(result.valid, true);
   assert.equal(result.value.requirements.peopleStaying, 4);
+  assert.equal(result.value.requirements.propertyUsage, "Residential");
+});
+
+test("requires commercial activity when commercial property usage is selected", () => {
+  const payload = validBase("rent");
+  Object.assign(payload.requirements, { moveInDate: "2026-09-01", peopleStaying: "4", pet: "No", furnishing: "Partial", tenancy: "Individual", tenancyPeriod: "2 years", depositAgreement: "Yes", propertyUsage: "Commercial", commercialActivity: "" });
+  let result = validateRequirementPayload(payload);
+  assert.equal(result.valid, false);
+  assert.equal(result.errors["requirements.commercialActivity"], "This field is required.");
+  payload.requirements.commercialActivity = "Retail office";
+  result = validateRequirementPayload(payload);
+  assert.equal(result.valid, true);
+  assert.equal(result.value.requirements.propertyUsage, "Commercial");
+  assert.equal(result.value.requirements.commercialActivity, "Retail office");
 });
 
 test("requires Other race details and all Buy choices", () => {

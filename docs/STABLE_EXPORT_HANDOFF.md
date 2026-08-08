@@ -105,9 +105,9 @@ The catalogue keeps a reconstructed public-field fallback only for older snapsho
 
 ## Private photo package handoff
 
-Static grants are disabled; `public/data/download-grants.json` must remain empty. Secure six-hour grants are created at runtime by Access-authenticated Pages Functions, stored as token hashes in KV, and streamed from private R2. Stable does not generate tokens or place ZIP files below `public`.
+Static grants are disabled; `public/data/download-grants.json` must remain empty. Secure email-bound catalogue grants are created at runtime by Access-authenticated Pages Functions, stored as token hashes in D1, and streamed from private R2. Stable does not generate tokens or place ZIP files below `public`.
 
-The controlled publication pipeline may run `npm run package:photos` after the catalogue snapshot is written. Upload each ignored ZIP according to `artifacts/photo-packages/upload-manifest.json`, using the exact R2 key and `sanitized`, `smiCode` and public-safe `title` custom metadata. See [Cloudflare photo grants](CLOUDFLARE_PHOTO_GRANTS.md) for the full contract. R2 credentials, object URLs and internal Stable data must never enter this repository or browser payloads.
+The controlled publication pipeline may run `npm run package:photos` after the catalogue snapshot is written. Upload each ignored per-SMI ZIP according to `artifacts/photo-packages/upload-manifest.json`, using its versioned R2 key and the exact `sanitized`, `watermarked`, `watermarkVersion`, `smiCode`, `inventoryVersion`, `photoCount` and public-safe `title` custom metadata. ZIP images contain embedded watermarks and must never come from Stable master files. See [Cloudflare photo grants](CLOUDFLARE_PHOTO_GRANTS.md) for the full contract. R2 credentials, object URLs and internal Stable data must never enter this repository or browser payloads.
 - `cover_photo` may be null and `photos` may be empty. The catalogue shows a neutral no-photo placeholder.
 - Missing referenced files fail `npm run build` before Vite builds.
 

@@ -2,10 +2,11 @@ name = "propertydealdesk-inventory"
 pages_build_output_dir = "./dist"
 compatibility_date = "2026-07-27"
 
-[[kv_namespaces]]
-binding = "PHOTO_GRANTS"
-id = "REPLACE_WITH_PRODUCTION_KV_NAMESPACE_ID"
-preview_id = "REPLACE_WITH_PREVIEW_KV_NAMESPACE_ID"
+[[d1_databases]]
+binding = "PHOTO_GRANTS_DB"
+database_name = "propertydealdesk-inventory-photo-grants"
+database_id = "REPLACE_WITH_PRODUCTION_PHOTO_GRANTS_DB_ID"
+preview_database_id = "REPLACE_WITH_PREVIEW_PHOTO_GRANTS_DB_ID"
 
 [[r2_buckets]]
 binding = "PHOTO_PACKAGES"
@@ -21,5 +22,6 @@ preview_database_id = "REPLACE_WITH_PREVIEW_D1_DATABASE_ID"
 [vars]
 CF_ACCESS_TEAM_DOMAIN = "REPLACE_WITH_TEAM.cloudflareaccess.com"
 CF_ACCESS_AUD = "REPLACE_WITH_ACCESS_APPLICATION_AUD"
+CF_ACCESS_RECIPIENT_AUD = "REPLACE_WITH_RECIPIENT_ACCESS_APPLICATION_AUD"
 ADMIN_EMAILS = "REPLACE_WITH_OWNER_LOGIN_EMAIL"
 CURRENT_INVENTORY_VERSION = "REPLACE_WITH_CURRENT_INVENTORY_VERSION"

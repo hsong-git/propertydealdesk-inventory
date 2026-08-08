@@ -39,7 +39,7 @@ if (!validateGrants(grants)) {
 }
 
 if (grants.grants.length) {
-  throw new Error("Static download grants are disabled. Keep download-grants.json empty and use the Access + KV + R2 backend.");
+  throw new Error("Static download grants are disabled. Keep download-grants.json empty and use the Access + D1 + private R2 backend.");
 }
 
 const publicIds = new Set();
@@ -103,4 +103,4 @@ if (!inventory.isMockData) {
 }
 
 console.log(`Inventory valid: ${inventory.listings.length} ${inventory.isMockData ? "development placeholder" : "published Stable"} listings, ${referencedPhotos.size} metadata-free display images (${(totalPhotoBytes / 1024 / 1024).toFixed(1)} MiB), schema ${inventory.schema_version}, version ${inventory.inventoryVersion}.`);
-console.log("Static download grants disabled: legacy manifest is empty; runtime grants require Access + KV + R2.");
+console.log("Static download grants disabled: legacy manifest is empty; runtime grants require Access + D1 + private R2.");

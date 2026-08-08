@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 export function OwnerPhotoGrantControl({ listing }) {
   const [admin, setAdmin] = useState(false);
+  const [email, setEmail] = useState("");
   const [state, setState] = useState({ loading: false, error: "", grant: null, copied: false });
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export function OwnerPhotoGrantControl({ listing }) {
         method: "POST",
         credentials: "same-origin",
         headers: { "content-type": "application/json", accept: "application/json" },
-        body: JSON.stringify({ code: listing.code }),
+        body: JSON.stringify({ email }),
       });
       const payload = await response.json();
       if (!response.ok || !payload?.url) throw new Error(payload?.error || "Could not generate the link.");
@@ -48,15 +49,33 @@ export function OwnerPhotoGrantControl({ listing }) {
     }
   };
 
-  return <section className="owner-photo-grant" aria-label="Owner photo download tools">
+  const revoke = async () => {
+    if (!state.grant?.id) return;
+    try {
+      const response = await fetch(`/api/admin/photo-grants/${encodeURIComponent(state.grant.id)}`, {
+        method: "DELETE",
+        credentials: "same-origin",
+        headers: { origin: window.location.origin, accept: "application/json" },
+      });
+      if (!response.ok) throw new Error("Could not revoke the grant.");
+      setState({ loading: false, error: "Grant revoked.", grant: null, copied: false });
+    } catch (error) {
+      setState((current) => ({ ...current, error: error.message || "Could not revoke the grant." }));
+    }
+  };
+
+  return <section className="owner-photo-grant" aria-label="Owner catalogue photo download tools">
     <span className="eyebrow">Owner tools</span>
-    <button className="button tertiary" type="button" onClick={generate} disabled={state.loading}>
+    <label htmlFor={`grant-email-${listing.code}`}>Recipient email</label>
+    <input id={`grant-email-${listing.code}`} type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="agent@example.com" autoComplete="email" />
+    <button className="button tertiary" type="button" onClick={generate} disabled={state.loading || !email.trim()}>
       {state.loading ? <LoaderCircle className="spin" size={18} /> : <Link2 size={18} />}
-      {state.loading ? "Generating…" : "Generate photo download link"}
+      {state.loading ? "Generating…" : "Grant catalogue photo access"}
     </button>
     {state.grant ? <div className="owner-grant-result">
-      <label htmlFor={`grant-${listing.code}`}>Expires in 6 hours</label>
+      <label htmlFor={`grant-${listing.code}`}>Valid for 24 hours, then 1 hour after first access</label>
       <div><input id={`grant-${listing.code}`} value={state.grant.url} readOnly /><button type="button" onClick={copy} aria-label="Copy generated photo download link">{state.copied ? <Check size={18} /> : <Copy size={18} />}</button></div>
+      <button className="button secondary" type="button" onClick={revoke}>Revoke access</button>
     </div> : null}
     {state.error ? <p role="alert">{state.error}</p> : null}
   </section>;

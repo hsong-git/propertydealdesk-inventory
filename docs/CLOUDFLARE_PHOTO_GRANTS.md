@@ -1,41 +1,52 @@
-# Secure six-hour photo download grants
+# Email-bound catalogue photo downloads
 
-## Why a backend is required
+## Scope
 
-The catalogue cannot securely identify HS Ong, keep a signing secret, create an owner-only action, or expire a token from browser JavaScript or a static JSON file. Client-side flags and embedded secrets are visible and forgeable. The legacy `public/data/download-grants.json` must therefore remain empty and is rejected by build validation if it contains a grant.
+HS Ong grants a recipient email catalogue-wide photo access. The recipient can browse the public catalogue normally, then open any individual SMI page and download all photos for that SMI. There is no catalogue-wide bulk ZIP and no public download control.
 
-The implemented minimum boundary is:
+The access window is:
 
 ```text
-HS Ong browser
-  -> Cloudflare Access-protected /api/admin/*
-  -> Pages Function validates Access JWT + ADMIN_EMAILS allowlist
-  -> Function confirms a sanitized private ZIP in R2
-  -> random 256-bit token; only its SHA-256 hash is stored in KV for 21,600 seconds
-  -> shareable /download/<token>
-  -> public token resolver checks KV expiry and streams the private R2 object
+Grant created
+  -> valid for 24 hours maximum
+  -> first successful recipient authentication
+  -> valid for one hour after first access
 ```
 
-Normal inventory, galleries and searches remain static. Only `/api/*` invokes Pages Functions. There is no owner/admin page. After HS Ong authenticates to the Access-protected API, each listing detail page discovers the session and shows `Generate photo download link`; unauthenticated visitors render no owner control. The POST Function repeats authorization, same-origin and package checks, so hiding the button is not the security boundary.
+An unauthenticated request or an email-security scanner does not start the one-hour window. A sent URL cannot be erased from a mailbox; expiry and revocation make it unusable and remove it from the owner’s active-grant view.
+
+## Runtime boundary
+
+```text
+HS Ong owner session
+  -> Access-protected POST /api/admin/photo-grants with recipient email
+  -> Pages Function stores SHA-256 token hash in D1
+  -> recipient opens /download/<token>
+  -> recipient Access OTP verifies the exact granted email
+  -> POST /api/photo-grants/activate sets an HttpOnly session cookie
+  -> public property page checks the cookie for its own SMI code
+  -> Pages Function streams that SMI's private, watermarked ZIP from R2
+```
+
+The public React site never receives the recipient email, raw grant database row, R2 key or package URL. Public property pages only make a no-store availability request; unauthenticated visitors receive the same neutral 404 response as any unavailable grant.
 
 ## Required Cloudflare resources
 
 1. A Cloudflare Pages project for this repository and its production custom domain.
-2. A Workers KV namespace bound as `PHOTO_GRANTS`.
-3. A private R2 bucket bound as `PHOTO_PACKAGES`. Do not enable an `r2.dev` public URL or public custom domain.
-4. A Cloudflare Access self-hosted application covering `https://<catalogue-host>/api/admin/*`, with an Allow policy limited to HS Ong's identity. Enable an identity provider or email one-time PIN as appropriate.
-5. Pages environment variables:
+2. A separate D1 database bound as `PHOTO_GRANTS_DB`, with migration `migrations/0002_catalogue_photo_grants.sql` applied.
+3. A private R2 bucket bound as `PHOTO_PACKAGES`. Do not enable its public development URL (`r2.dev`) or a public custom domain. [R2 access controls](https://developers.cloudflare.com/r2/buckets/public-buckets/)
+4. An owner Access application covering `/api/admin/*`, with an Allow policy limited to HS Ong's exact identity.
+5. A recipient Access application covering `/download/*`, `/api/photo-grants/*` and `/api/photo-grants/activate`. Configure email OTP or another identity provider that yields an email claim. The Function still checks the JWT email against the D1 grant; Access authentication is not the per-grant authorization boundary.
+6. Pages variables/secrets:
    - `CF_ACCESS_TEAM_DOMAIN`: `<team>.cloudflareaccess.com`
-   - `CF_ACCESS_AUD`: Access application audience tag
-   - `ADMIN_EMAILS`: comma-separated exact owner/admin login emails
-   - `CURRENT_INVENTORY_VERSION`: exact deployed `inventoryVersion`, preventing grants for stale R2 packages
-6. Copy `wrangler.example.toml` to an untracked deployment-specific `wrangler.toml`, replace every placeholder, or configure the same bindings and variables in the Cloudflare dashboard.
+   - `CF_ACCESS_AUD`: owner Access application audience
+   - `CF_ACCESS_RECIPIENT_AUD`: recipient Access application audience
+   - `ADMIN_EMAILS`: comma-separated exact owner/admin emails
+   - `CURRENT_INVENTORY_VERSION`: the snapshot used to build packages
 
-Cloudflare Access must protect the admin API even though the Function also validates `Cf-Access-Jwt-Assertion`. The Function checks the JWT signature, issuer, audience and email allowlist and fails closed when configuration is absent.
+Pages Functions support D1 and R2 bindings through Wrangler or the Pages dashboard. [Pages bindings](https://developers.cloudflare.com/pages/functions/bindings/)
 
-With no separate admin page, HS Ong can authenticate by opening the protected `/api/admin/session` URL once, completing Access login, and returning to a listing detail page. The owner button will then appear while the Access session is valid.
-
-## Private package contract
+## Package contract
 
 Run:
 
@@ -43,29 +54,47 @@ Run:
 npm run package:photos
 ```
 
-This revalidates the public snapshot, rebuilds ignored packages in `artifacts/photo-packages`, and emits `upload-manifest.json`. It includes only the same metadata-free WebPs approved for public display. Upload each ZIP to the private R2 key in its manifest and attach these exact custom metadata values:
+The command validates the current public snapshot and creates ignored ZIPs in `artifacts/photo-packages`. Each ZIP contains every unique public photo for one SMI. Every image is re-encoded as WebP with the embedded watermark:
+
+```text
+TRR HS Ong
+property.myeviv.com
+```
+
+The source is always the sanitized public display copy, never a Stable master photo. EXIF/GPS/device/date/ICC/XMP metadata is not retained.
+
+Upload each package according to `upload-manifest.json` using versioned R2 keys:
+
+```text
+packages/<inventoryVersion>/<SMI_CODE>.zip
+```
+
+Required R2 custom metadata:
 
 ```text
 sanitized = true
-smiCode = WTL0010
+watermarked = true
+watermarkVersion = trr-hs-ong-v1
+smiCode = WTL0055
+inventoryVersion = 2026.08.07.1
+photoCount = 12
 title = public-safe listing title
-inventoryVersion = 2026.07.27.5
 ```
 
-The admin Function refuses missing packages, unexpected keys, mismatched SMI codes or inventory versions, or objects without `sanitized=true`. The deploy pipeline must upload the current manifest, remove stale package objects, and set `CURRENT_INVENTORY_VERSION` to the same deployed feed version. Package preparation/upload belongs in the controlled publication pipeline; the public browser never uploads or zips source files. A future Stable-side uploader may consume `upload-manifest.json`, but it must not expose R2 credentials or private object URLs to the catalogue.
+The Functions refuse missing packages, wrong SMI codes, wrong inventory versions, unwatermarked packages or packages without the approved metadata markers. Versioned packages allow a short-lived grant to remain pinned to the snapshot it was created against; the publication pipeline must retain old package versions for at least 25 hours before cleanup.
 
-## Grant behavior
+## Grant endpoints
 
-- `POST /api/admin/photo-grants` accepts only a public supply SMI code and requires a valid Access admin identity and same-origin request.
-- Tokens contain 256 random bits and are not the SMI code. KV stores only `SHA-256(token)` plus public-safe package metadata.
-- KV uses `expirationTtl: 21600`; the resolver also checks the stored absolute expiry time.
-- `/api/photo-grants/<token>` returns only safe display metadata or the same neutral 404 response.
-- `/api/photo-download/<token>` streams the private ZIP with `private, no-store` and an attachment filename.
-- Links are bearer credentials: anyone receiving one may download until six-hour expiry. Do not put them in analytics, support tickets or public pages.
-- KV is eventually consistent across locations, so a newly created link may take up to roughly 60 seconds to resolve in another region. If immediate globally consistent grants become mandatory, replace KV with a Durable Object while retaining R2.
+- `POST /api/admin/photo-grants` — owner-only; body `{ "email": "agent@example.com" }`.
+- `GET /api/photo-grants/<token>` — recipient Access identity check and safe grant status.
+- `POST /api/photo-grants/activate` — exact-email check, first-access transition and HttpOnly session cookie.
+- `GET /api/catalogue-photo-grants/<SMI_CODE>` — no-store availability check using the session cookie.
+- `GET /api/catalogue-photo-download/<SMI_CODE>` — streams only that SMI's private ZIP.
 
-## Local and deployment boundaries
+All download responses use `private, no-store`, `nosniff` and `no-referrer`. A wrong email, invalid token, expired grant, revoked grant, missing session or unsafe package returns the same neutral unavailable response.
 
-The normal Vite server does not emulate Access, KV or R2; it correctly hides owner controls and returns no working grant API. Use Cloudflare's Pages local runtime with configured local bindings for end-to-end Function testing. Do not add production IDs, Access audience values, credentials or owner-only configuration to Git.
+## Local testing and deployment
 
-Deployment is blocked until the Pages project, Access application, KV namespace, private R2 bucket, bindings, variables and package upload step exist. A successful static `npm run build` alone does not activate secure grants.
+The normal Vite server does not emulate Cloudflare Access, D1 or R2. It correctly renders no recipient control without an active session. Use `wrangler pages dev dist` with local D1/R2 bindings for end-to-end Function testing; never place production IDs, Access audience values or credentials in Git.
+
+Static build success does not activate grants. Production requires the D1 migration, two Access applications, private R2 packages, bindings, variables, and the package upload/retention step.

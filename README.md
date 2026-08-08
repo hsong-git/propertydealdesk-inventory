@@ -56,7 +56,7 @@ The build automatically runs `npm run validate:inventory` first. Validation chec
 - `public/data/inventory.schema.json` — strict machine-readable contract for Stable-generated public exports.
 - `public/data/location_dictionary.json` — public-safe canonical area/alias dictionary used by the Location filter and related-listing location relevance.
 - `public/data/download-grants.json` — deprecated legacy manifest; it must remain empty.
-- `functions` — Cloudflare Pages Functions for Access-authenticated six-hour photo grants and private R2 delivery.
+- `functions` — Cloudflare Pages Functions for Access-authenticated catalogue photo grants and private R2 delivery.
 - `docs/CLOUDFLARE_PHOTO_GRANTS.md` — secure grant architecture, Cloudflare setup and private package contract.
 - `docs/PUBLIC_PHOTO_WATERMARKS.md` — public property-photo watermark modes, exclusions, limitations and future embedded workflow.
 - `public/profile` — copied and optimized portrait and name card assets.
@@ -126,17 +126,19 @@ Production display assets must be WebP copies with EXIF orientation applied befo
 
 Property images have no visible download button, cannot normally be dragged, and suppress the browser context menu. These are deterrents only. Any image delivered to a public browser can still be saved through screenshots, browser developer tools, network requests, cache inspection or other means. True protection requires authenticated storage and signed, expiring URLs; a static Cloudflare Pages site cannot provide that security.
 
-Public property photos also render a centralized browser watermark by default: `TRR HS Ong` over `property.myeviv.com`. The current overlay is a deterrent and is not applied to profile portraits, name cards, logos, icons, placeholders or decorative imagery. The future Production Stable publication pipeline should embed the same watermark into sanitized public photo copies and downloadable packages, then set the catalogue watermark mode to `embedded` so the browser overlay is automatically suppressed. See [public photo watermarks](docs/PUBLIC_PHOTO_WATERMARKS.md).
+Public property photos render a centralized browser watermark by default: `TRR HS Ong` over `property.myeviv.com`. The current overlay is a deterrent and is not applied to profile portraits, name cards, logos, icons, placeholders or decorative imagery. Download packages are always generated from sanitized copies with the same watermark embedded into the image bytes. The long-term Stable publication workflow should also embed the watermark into public display copies, then set the catalogue watermark mode to `embedded` so direct public image requests are watermarked and the browser overlay is suppressed. See [public photo watermarks](docs/PUBLIC_PHOTO_WATERMARKS.md).
 
-### Owner-granted image download links
+### Owner-granted catalogue photo downloads
 
-Secure owner-only generation and precise six-hour expiry require Cloudflare Pages Functions, Access, Workers KV and a private R2 bucket. There is no separate owner page. After Access authentication, a listing detail page shows `Generate photo download link`; normal visitors do not see it, and the Function independently rejects unauthorized calls. Random tokens are stored only as SHA-256 hashes in KV with a 21,600-second TTL. The `/download/<token>` page streams only a prebuilt sanitized ZIP from private R2 and shows a neutral message for invalid or expired links.
+Secure owner-only generation and email-bound expiry require Cloudflare Pages Functions, Cloudflare Access, D1 and a private R2 bucket. HS Ong grants a recipient email catalogue-wide access; the recipient then visits any individual SMI page and sees `Download all photos for <CODE>` only while the grant session is active. The download remains per-SMI, not a single catalogue-wide ZIP.
 
-Run `npm run package:photos` to build ignored, sanitized per-SMI ZIPs and an R2 upload manifest. Full resource setup and security boundaries are documented in [Cloudflare photo grants](docs/CLOUDFLARE_PHOTO_GRANTS.md). Links are still bearer credentials: anyone receiving one can use it until expiry.
+Grant timing is 24 hours from creation, shortened to one hour after the recipient's first successful Access-authenticated opening. Grants are stored as token hashes in D1, with revocation and exact recipient-email matching. The initial `/download/<token>` route only activates the recipient session; it does not expose a bulk download.
+
+Run `npm run package:photos` to build ignored, permanently watermarked per-SMI ZIPs and an R2 upload manifest. Every package is versioned by inventory snapshot, contains every approved photo for that SMI, and is rejected by the Function unless its metadata confirms sanitization and the embedded watermark. Full resource setup and security boundaries are documented in [Cloudflare photo grants](docs/CLOUDFLARE_PHOTO_GRANTS.md). Links are bearer session credentials after email verification; anyone who obtains an active browser session can use it until expiry.
 
 ## Cloudflare Pages deployment
 
-Public catalogue browsing is static. Secure photo grants use narrowly routed Cloudflare Pages Functions and managed Access/KV/R2 services; no permanent Node server or connection to Stable is required.
+Public catalogue browsing is static. Secure photo grants use narrowly routed Cloudflare Pages Functions and managed Access/D1/private-R2 services; no permanent Node server or connection to Stable is required.
 
 - Build command: `npm run build`
 - Build output directory: `dist`
@@ -187,9 +189,11 @@ Implementing the Production Stable export control or generator is deliberately o
 - [ ] Location filter options are clean canonical areas and related listings use the same public location dictionary.
 - [ ] Detail galleries, back links and missing-property states work.
 - [ ] Property display images reject drag-save and context-menu actions without losing useful alt text.
-- [ ] Unauthenticated visitors render no `Generate photo download link` control and direct admin API calls are rejected.
-- [ ] An Access-authenticated allowlisted owner can generate a 256-bit link from a listing detail page.
-- [ ] Invalid, missing and expired tokens show the neutral unavailable page; live tokens stream only the matching private sanitized R2 ZIP.
+- [ ] Unauthenticated visitors render no owner grant or recipient download control and direct admin API calls are rejected.
+- [ ] An Access-authenticated allowlisted owner can grant catalogue access to a validated recipient email.
+- [ ] A recipient must authenticate as the granted email before the session activates.
+- [ ] On each property page, an active recipient session exposes only that SMI's private watermarked ZIP.
+- [ ] Invalid, missing, revoked and expired grants show the neutral unavailable page; no public route streams an R2 package.
 - [ ] WhatsApp links contain the correct agent number, listing code and title.
 - [ ] Call buttons appear on mobile layouts and email links open an email client.
 - [ ] Share uses the device share sheet or copies the listing URL.

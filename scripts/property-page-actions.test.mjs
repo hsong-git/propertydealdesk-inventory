@@ -13,6 +13,13 @@ test("property page does not render a separate Copy short link action", () => {
   assert.match(source, /Share property/);
 });
 
+test("photo downloads are disabled in production unless explicitly enabled", () => {
+  const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
+  assert.match(source, /import\.meta\.env\.DEV/);
+  assert.match(source, /VITE_ENABLE_PHOTO_DOWNLOADS === "true"/);
+  assert.match(source, /photoDownloadsEnabled \? <PhotoDownloadButton listing=\{listing\} \/> : null/);
+});
+
 test("property cards expose a compact Copy posting action", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "components", "PropertyCard.jsx"), "utf8");
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");

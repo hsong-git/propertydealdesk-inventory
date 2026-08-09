@@ -1,5 +1,4 @@
 import { Menu, X } from "lucide-react";
-import { AdminNavLink } from "./AdminNavLink";
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
@@ -23,7 +22,6 @@ export function Header() {
           <NavLink to="/contact" onClick={close}>Contact</NavLink>
           <NavLink className="nav-requirements" to="/inquiries" onClick={close}>Find a Property</NavLink>
           <a className="button primary nav-agent-tools" href="https://agenttools.myeviv.com/" target="_blank" rel="noopener noreferrer" onClick={close}>Agent Tools</a>
-          <AdminNavLink />
         </nav>
       </div>
     </header>

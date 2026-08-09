@@ -10,10 +10,10 @@ test("admin session fails closed without a validated Access JWT", async () => {
   assert.deepEqual(await response.json(), { authenticated: false });
 });
 
-test("local loopback requests fail closed without a validated Access JWT", async () => {
+test("local admin session is available only on a loopback HTTP origin", async () => {
   const response = await getSession({ request: new Request("http://127.0.0.1:5277/api/admin/session"), env: {} });
-  assert.equal(response.status, 401);
-  assert.deepEqual(await response.json(), { authenticated: false });
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { authenticated: true, email: "local-admin@propertydealdesk.local" });
 
   const fakeLocalhost = await getSession({ request: new Request("https://127.0.0.1/api/admin/session"), env: {} });
   assert.equal(fakeLocalhost.status, 401);

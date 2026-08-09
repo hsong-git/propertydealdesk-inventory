@@ -349,6 +349,14 @@ main { flex: 1; }
 .gallery-thumbnails { margin-top: 8px; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }
 .gallery-thumbnails button { aspect-ratio: 16/10; padding: 0; border: 2px solid transparent; border-radius: var(--radius-small); overflow: hidden; background: var(--color-surface-muted); }
 .gallery-thumbnails button.active { border-color: var(--color-primary); }
+.gallery-thumbnail-choice { position: relative; min-width: 0; }
+.gallery-thumbnail-choice > button:first-child { width: 100%; }
+.photo-select-toggle { position: absolute !important; right: 5px; bottom: 5px; z-index: 3; width: 24px; height: 24px; min-height: 24px; aspect-ratio: 1; border: 1px solid rgba(255,255,255,.9) !important; border-radius: 50% !important; display: grid; place-items: center; color: #fff; background: rgba(15,31,26,.72) !important; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+.photo-select-toggle.selected { border-color: var(--color-primary) !important; background: var(--color-primary) !important; }
+.photo-select-toggle span { width: 9px; height: 9px; border-radius: 50%; background: #fff; opacity: .9; }
+.selected-photo-share { margin-top: 10px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.selected-photo-share .button { min-height: 36px; font-size: 12px; }
+.selected-photo-share > span { display: inline-flex; align-items: center; gap: 4px; color: var(--color-primary); font-size: 11px; }
 .detail-title-block { padding: 22px; }
 .detail-title-block h1 { margin: 9px 0 7px; font-size: clamp(27px,4vw,42px); line-height: 1.08; letter-spacing: -.04em; }
 .detail-price { margin-top: 14px; display: block; color: var(--color-primary); font-size: 26px; }

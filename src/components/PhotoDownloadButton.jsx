@@ -10,7 +10,13 @@ export function PhotoDownloadButton({ listing }) {
     setState((current) => ({ ...current, open: true, error: "" }));
   };
   const register = async (event) => {
-    event.preventDefault(); setState((current) => ({ ...current, loading: true, error: "" }));
+    event.preventDefault();
+    const normalizedContact = String(state.contactNumber || "").replace(/[\s().-]/g, "");
+    if (!/^\+?[0-9]{8,15}$/.test(normalizedContact)) {
+      setState((current) => ({ ...current, loading: false, error: "Enter a valid contact number, for example 016-313 2865 or +60163132865." }));
+      return;
+    }
+    setState((current) => ({ ...current, loading: true, error: "" }));
     try {
       const response = await fetch(`/api/photo-download/${encodeURIComponent(listing.code)}`, { method: "POST", credentials: "include", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: state.name, email: state.email, contactNumber: state.contactNumber }) });
       const payload = await response.json(); if (!response.ok) throw new Error(payload.error || "Please enter a valid name and email.");

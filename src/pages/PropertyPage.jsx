@@ -6,7 +6,6 @@ import { useInventory } from "../hooks";
 import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing } from "../utils/listing";
 import { openWhatsApp } from "../utils/whatsapp";
 import { PublicPropertyImage } from "../components/PublicPropertyImage";
-import { OwnerPhotoGrantControl } from "../components/OwnerPhotoGrantControl";
 import { PhotoDownloadButton } from "../components/PhotoDownloadButton";
 import { Seo } from "../components/Seo";
 import { ListingUnavailableState } from "../components/ListingUnavailableState";
@@ -107,7 +106,6 @@ export function PropertyPage() {
           <PhotoDownloadButton listing={listing} />
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} /> Call {agentProfile.phoneDisplay}</a>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {copied ? "Link copied" : "Share property"}</button>
-          <OwnerPhotoGrantControl listing={listing} />
         </aside>
       </div>
       <RelatedListings listings={relatedListings} />

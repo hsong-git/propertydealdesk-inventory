@@ -112,7 +112,7 @@ export const postingText = (listing, profile) => {
     ...(listing.description ? ["", listing.description] : []),
     ...(features.length ? ["", "Features:", ...features.map((item) => `- ${item}`)] : []),
     "",
-    `Contact ${profile.displayName} (${profile.renNumber})`,
+    `Contact ${profile.displayName}`,
     `WhatsApp: ${profile.phoneDisplay}`,
   ].join("\n"), listing);
 };

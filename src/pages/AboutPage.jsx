@@ -9,8 +9,8 @@ export function AboutPage() {
   return (
     <main className="page-width content-page">
       <Seo
-        title="About HS Ong | Real Estate Negotiator REN 81340"
-        description="Learn about Ong Hua Seong (HS Ong), Real Estate Negotiator REN 81340 serving Klang, Shah Alam, Bukit Tinggi, Bandar Botanic and nearby areas."
+        title="About HS Ong | Real Estate Negotiator"
+        description="Learn about Ong Hua Seong (HS Ong), Real Estate Negotiator serving Klang, Shah Alam, Bukit Tinggi, Bandar Botanic and nearby areas."
         canonical={`${SITE_ORIGIN}/about`}
         ogTitle="About HS Ong"
       />

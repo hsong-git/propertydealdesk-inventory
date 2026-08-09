@@ -7,7 +7,7 @@ export const defaultSeo = {
   canonical: `${SITE_ORIGIN}/`,
   ogTitle: "HS Ong Property Inventory",
   ogDescription:
-    "Current public property listings by Ong Hua Seong (HS Ong), Real Estate Negotiator REN 81340.",
+    "Current public property listings by Ong Hua Seong (HS Ong), Real Estate Negotiator.",
   image: `${SITE_ORIGIN}/og/property-inventory-card-white.png`,
   imageWidth: "1200",
   imageHeight: "630",
@@ -98,7 +98,6 @@ export const agentJsonLd = (profile) => ({
   name: profile.profilePanelName || profile.name,
   alternateName: profile.displayName,
   jobTitle: profile.title,
-  identifier: profile.renNumber,
   worksFor: {
     "@type": "Organization",
     name: profile.agency,

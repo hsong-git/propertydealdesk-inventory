@@ -15,7 +15,7 @@ export function ProfilePanel({ expanded = false }) {
         <div className="profile-copy">
           <span className="eyebrow"><BadgeCheck size={15} /> Registered property professional</span>
           <h1>{agentProfile.profilePanelName || (expanded ? agentProfile.name : agentProfile.displayName)}</h1>
-          <p className="profile-role">{agentProfile.title} · {agentProfile.renNumber}</p>
+          <p className="profile-role">{agentProfile.title}</p>
           <p className="profile-agency"><BriefcaseBusiness size={16} /> {agentProfile.agency}</p>
           <p>{expanded ? agentProfile.professionalIntroduction : agentProfile.shortIntroduction}</p>
           <div className="area-list" aria-label="Main service areas"><MapPin size={16} /> {agentProfile.serviceAreas.map((area) => <span key={area}>{area}</span>)}</div>

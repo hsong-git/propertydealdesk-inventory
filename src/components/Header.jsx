@@ -11,7 +11,7 @@ export function Header() {
       <div className="page-width header-inner">
         <Link className="brand-link" to="/" onClick={close}>
           <img src="/propertydealdesk-mark.png" alt="" />
-          <span><strong>{agentProfile.brandName}</strong><small>HS Ong · {agentProfile.renNumber}</small></span>
+          <span><strong>{agentProfile.brandName}</strong><small>HS Ong · {agentProfile.title}</small></span>
         </Link>
         <button className="menu-button" type="button" aria-expanded={open} aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen((value) => !value)}>
           {open ? <X /> : <Menu />}

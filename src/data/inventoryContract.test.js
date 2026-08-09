@@ -112,7 +112,8 @@ test("falls back to reconstructed posting details for old snapshots", () => {
   assert.match(text, /^WTS \| WTS1004/m);
   assert.match(text, /Location: Bukit Tinggi, Klang/);
   assert.match(text, /Price: RM 680,000/);
-  assert.match(text, /Contact HS Ong \(REN 81340\)/);
+  assert.match(text, /Contact HS Ong/);
+  assert.doesNotMatch(text, /REN 81340/);
   assert.match(text, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004$/);
   assert.doesNotMatch(text, /database_id|contact_no|raw_json/);
 });

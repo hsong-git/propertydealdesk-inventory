@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { OwnerPhotoGrantControl } from "../components/OwnerPhotoGrantControl";
 import { Seo } from "../components/Seo";
+import { PhotoDownloadRequestsAdminPanel } from "../components/PhotoDownloadRequestsAdminPanel";
 
 export function PhotoGrantsAdminPage() {
   const [state, setState] = useState({ loading: true, authenticated: false });
@@ -28,6 +29,7 @@ export function PhotoGrantsAdminPage() {
     <Seo title="Photo access administration | HS Ong Property Inventory" description="Owner-only catalogue photo access administration." />
     <header className="admin-page-heading"><span className="eyebrow"><ShieldCheck size={15} /> Protected administration</span><h1>Catalogue photo access</h1><p>Grant a recipient access to download watermarked photos from individual SMI pages. Grants cover the catalogue, expire after 24 hours, and become active for one hour after first use.</p></header>
     <section className="admin-photo-grants-card"><OwnerPhotoGrantControl /></section>
+    <PhotoDownloadRequestsAdminPanel />
     <Link className="back-link" to="/#properties">Back to Catalogue</Link>
   </main>;
 }

@@ -191,6 +191,8 @@ Implementing the Production Stable export control or generator is deliberately o
 - [ ] Property display images reject drag-save and context-menu actions without losing useful alt text.
 - [ ] Unauthenticated visitors render no owner grant or recipient download control and direct admin API calls are rejected.
 - [ ] An Access-authenticated allowlisted owner can grant catalogue access to a validated recipient email.
+- [ ] An agent can request photos from an individual SMI using name and contact number; the request appears in the protected admin photo-request queue.
+- [ ] Granting a request creates a one-SMI watermarked download link and opens a WhatsApp message containing the SMI page and instructions.
 - [ ] Local loopback requests fail closed without a validated Access JWT; the dev server must not expose owner controls to incognito/public visitors.
 - [ ] For local workflow testing only, open `/admin/photo-grants?devAdmin=1` to set an explicit loopback admin cookie; use a fresh incognito window without that cookie to simulate a normal agent.
 - [ ] A recipient must authenticate as the granted email before the session activates.

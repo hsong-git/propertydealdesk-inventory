@@ -181,6 +181,8 @@ Implementing the Production Stable export control or generator is deliberately o
 - [ ] The matching count equals the current Stable feed and Load More reveals all matching records.
 - [ ] A production snapshot does not show the development mock-inventory notice.
 - [ ] Every property card opens its shareable `/property/:slug` route.
+- [ ] Each SMI detail page offers a per-listing watermarked ZIP download; first use prompts for visitor name and email, then subsequent downloads reuse the secure session cookie.
+- [ ] The private `/admin/photo-downloads` page shows every successful SMI download with visitor identity and timestamp.
 - [ ] Property detail raw HTML contains listing-specific OG/Twitter tags before JavaScript runs.
 - [ ] Short links such as `/i/WTL0010` render listing-specific OG/Twitter tags, then route human visitors to the full property detail page.
 - [ ] Property Share uses `https://property.myeviv.com/i/<SMI_CODE>`.

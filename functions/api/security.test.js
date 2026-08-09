@@ -3,6 +3,7 @@ import test from "node:test";
 import { onRequestGet as getSession } from "./admin/session.js";
 import { onRequestPost as createGrant } from "./admin/photo-grants.js";
 import { onRequestGet as resolveGrant } from "./photo-grants/[token].js";
+import { onRequestGet as getPhotoAudit } from "./admin/photo-downloads.js";
 
 test("admin session fails closed without a validated Access JWT", async () => {
   const response = await getSession({ request: new Request("https://inventory.example.com/api/admin/session"), env: {} });
@@ -31,4 +32,9 @@ test("invalid public token returns the neutral unavailable response", async () =
   assert.equal(response.status, 404);
   const payload = await response.json();
   assert.equal(payload.available, false);
+});
+
+test("photo download audit rejects public callers", async () => {
+  const response = await getPhotoAudit({ request: new Request("https://inventory.example.com/api/admin/photo-downloads"), env: {} });
+  assert.equal(response.status, 401);
 });

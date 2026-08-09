@@ -191,6 +191,7 @@ Implementing the Production Stable export control or generator is deliberately o
 - [ ] Property display images reject drag-save and context-menu actions without losing useful alt text.
 - [ ] Unauthenticated visitors render no owner grant or recipient download control and direct admin API calls are rejected.
 - [ ] An Access-authenticated allowlisted owner can grant catalogue access to a validated recipient email.
+- [ ] Local loopback requests fail closed without a validated Access JWT; the dev server must not expose owner controls to incognito/public visitors.
 - [ ] A recipient must authenticate as the granted email before the session activates.
 - [ ] On each property page, an active recipient session exposes only that SMI's private watermarked ZIP.
 - [ ] Invalid, missing, revoked and expired grants show the neutral unavailable page; no public route streams an R2 package.

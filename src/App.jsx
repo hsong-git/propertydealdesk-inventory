@@ -9,6 +9,7 @@ import { DownloadGrantPage } from "./pages/DownloadGrantPage";
 import { ShortListingRedirect } from "./pages/ShortListingRedirect";
 import { RequirementPage } from "./pages/RequirementPage";
 import { RequirementsAdminPage } from "./pages/RequirementsAdminPage";
+import { PhotoGrantsAdminPage } from "./pages/PhotoGrantsAdminPage";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           <Route path="inquiries" element={<RequirementPage />} />
           <Route path="requirements" element={<Navigate to="/inquiries" replace />} />
           <Route path="admin/inquiries" element={<RequirementsAdminPage />} />
+          <Route path="admin/photo-grants" element={<PhotoGrantsAdminPage />} />
           <Route path="admin/requirements" element={<Navigate to="/admin/inquiries" replace />} />
           <Route path="i/:code" element={<ShortListingRedirect />} />
           <Route path="property/:slug" element={<PropertyPage />} />

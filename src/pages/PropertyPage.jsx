@@ -1,13 +1,12 @@
-import { ArrowLeft, Bath, BedDouble, Building2, CalendarDays, Check, ChevronLeft, ChevronRight, Compass, Copy, Expand, ImageOff, MapPin, Maximize2, MessageCircle, Phone, Share2, Sofa, Warehouse, X } from "lucide-react";
+import { ArrowLeft, Bath, BedDouble, Building2, CalendarDays, Check, ChevronLeft, ChevronRight, Compass, Copy, Download, Expand, ImageOff, MapPin, Maximize2, MessageCircle, Phone, Share2, Sofa, Warehouse, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
 import { useInventory } from "../hooks";
-import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing } from "../utils/listing";
+import { enquiryText, formatDate, formatPrice, intentLabels, photoDownloadRequestText, postingText, shareListing } from "../utils/listing";
 import { openWhatsApp } from "../utils/whatsapp";
 import { PublicPropertyImage } from "../components/PublicPropertyImage";
 import { CataloguePhotoDownloadControl } from "../components/CataloguePhotoDownloadControl";
-import { PhotoDownloadRequestControl } from "../components/PhotoDownloadRequestControl";
 import { Seo } from "../components/Seo";
 import { ListingUnavailableState } from "../components/ListingUnavailableState";
 import { propertySeoDescription, SITE_ORIGIN } from "../utils/seo";
@@ -104,7 +103,7 @@ export function PropertyPage() {
         <aside className="agent-contact-card">
           <img src={agentProfile.portrait} alt={agentProfile.displayName} /><div><span className="eyebrow">Enquire directly</span><h2>{agentProfile.displayName}</h2><p>{agentProfile.title} · {agentProfile.renNumber}</p><small>{agentProfile.agency}</small></div>
           <button className="button primary" type="button" onClick={() => openWhatsApp({ phone: agentProfile.whatsapp, message: enquiryText(listing, agentProfile.displayName), onError: (error) => window.alert(error) })}><MessageCircle size={18} /> WhatsApp enquiry</button>
-          <PhotoDownloadRequestControl listing={listing} />
+          <button className="button secondary" type="button" onClick={() => openWhatsApp({ phone: agentProfile.whatsapp, message: photoDownloadRequestText(listing, agentProfile.displayName), onError: (error) => window.alert(error) })}><Download size={18} /> PM for photos</button>
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} /> Call {agentProfile.phoneDisplay}</a>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {copied ? "Link copied" : "Share property"}</button>
           <CataloguePhotoDownloadControl listing={listing} />

@@ -57,7 +57,6 @@ const rowToGrant = (row) => row ? ({
   firstAccessAt: row.first_access_at || null,
   activeExpiresAt: row.active_expires_at || null,
   inventoryVersion: row.inventory_version,
-  listingCode: row.listing_code || null,
   revokedAt: row.revoked_at || null,
 }) : null;
 
@@ -116,26 +115,10 @@ export async function findGrantByToken({ env, token }) {
   const tokenHash = await hashGrantToken(token);
   const row = await env.PHOTO_GRANTS_DB.prepare(`
     SELECT id, scope, recipient_email, created_by, created_at, absolute_expires_at,
-      first_access_at, active_expires_at, inventory_version, revoked_at, listing_code
+      first_access_at, active_expires_at, inventory_version, revoked_at
     FROM photo_catalogue_grants WHERE token_hash = ?
   `).bind(tokenHash).first();
   return rowToGrant(row);
-}
-
-export async function createListingGrant({ env, requestId, listingCode, createdBy, now = new Date() }) {
-  requireBindings(env);
-  const code = text(listingCode).toUpperCase();
-  if (!/^(WTS|WTL)[A-Z0-9-]+$/.test(code)) return null;
-  const token = generateGrantToken();
-  const tokenHash = await hashGrantToken(token);
-  const createdAt = now.toISOString();
-  const absoluteExpiresAt = new Date(now.getTime() + GRANT_TTL_SECONDS * 1000).toISOString();
-  const id = crypto.randomUUID();
-  await env.PHOTO_GRANTS_DB.prepare(`
-    INSERT INTO photo_catalogue_grants (id, token_hash, scope, recipient_email, created_by, created_at, absolute_expires_at, inventory_version, listing_code)
-    VALUES (?, ?, 'catalogue', ?, ?, ?, ?, ?, ?)
-  `).bind(id, tokenHash, `request:${text(requestId)}`, normalizeEmail(createdBy), createdAt, absoluteExpiresAt, String(env.CURRENT_INVENTORY_VERSION).trim(), code).run();
-  return { id, token, listingCode: code, createdAt, expiresAt: absoluteExpiresAt, url: `${env.PUBLIC_SITE_ORIGIN || ""}/download/${token}` };
 }
 
 export async function activateCatalogueGrant({ env, token, recipientEmail, now = new Date() }) {
@@ -164,17 +147,6 @@ export async function activateCatalogueGrant({ env, token, recipientEmail, now =
   return { grant: { ...grant, firstAccessAt, activeExpiresAt }, sessionToken, activeExpiresAt };
 }
 
-export async function activateListingGrant({ env, token, now = new Date() }) {
-  const grant = await findGrantByToken({ env, token });
-  if (!grant?.listingCode || !validGrant(grant, now)) return null;
-  const firstAccessAt = grant.firstAccessAt || now.toISOString();
-  const activeExpiresAt = grant.activeExpiresAt || new Date(Math.min(Date.parse(grant.absoluteExpiresAt), now.getTime() + ACTIVE_TTL_SECONDS * 1000)).toISOString();
-  if (!grant.firstAccessAt) await env.PHOTO_GRANTS_DB.prepare("UPDATE photo_catalogue_grants SET first_access_at = ?, active_expires_at = ? WHERE id = ? AND first_access_at IS NULL AND revoked_at IS NULL").bind(firstAccessAt, activeExpiresAt, grant.id).run();
-  const sessionToken = generateGrantToken();
-  await env.PHOTO_GRANTS_DB.prepare("INSERT INTO photo_catalogue_sessions (session_hash, grant_id, created_at, expires_at) VALUES (?, ?, ?, ?)").bind(await hashGrantToken(sessionToken), grant.id, now.toISOString(), activeExpiresAt).run();
-  return { grant: { ...grant, firstAccessAt, activeExpiresAt }, sessionToken, activeExpiresAt };
-}
-
 export async function resolveCatalogueSession({ env, request, code, now = new Date(), includeObject = false }) {
   requireBindings(env);
   const sessionToken = cookieValue(request, SESSION_COOKIE);
@@ -190,7 +162,6 @@ export async function resolveCatalogueSession({ env, request, code, now = new Da
   `).bind(sessionHash).first();
   const grant = rowToGrant(row);
   if (!validGrant(grant, now) || Date.parse(row?.session_expires_at || "") <= now.getTime()) return null;
-  if (grant.listingCode && grant.listingCode !== text(code).toUpperCase()) return null;
   const packageKey = packageKeyFor(code, grant.inventoryVersion);
   if (!packageKey) return null;
   const object = includeObject ? await env.PHOTO_PACKAGES.get(packageKey) : await env.PHOTO_PACKAGES.head(packageKey);

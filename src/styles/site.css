@@ -269,26 +269,6 @@ main { flex: 1; }
 .admin-page-heading h1 { margin: 8px 0 10px; font-size: clamp(30px,5vw,48px); letter-spacing: -.045em; }
 .admin-page-heading p { margin: 0; color: var(--color-text-muted); line-height: 1.6; }
 .admin-photo-grants-card { width: min(100%, 680px); margin: 0 auto 20px; padding: clamp(20px,4vw,32px); border: 1px solid var(--color-border); border-radius: var(--radius-large); background: #fff; box-shadow: var(--shadow-card); }
-.photo-request-backdrop { position: fixed; inset: 0; z-index: 100; padding: 18px; display: grid; place-items: center; background: rgba(7,13,11,.72); }
-.photo-request-modal { position: relative; width: min(100%, 460px); padding: 28px; border-radius: var(--radius-large); background: #fff; box-shadow: var(--shadow-elevated); }
-.photo-request-modal form { display: grid; gap: 12px; }
-.photo-request-modal h2 { margin: 2px 0 0; }
-.photo-request-modal p { margin: 0; color: var(--color-text-muted); line-height: 1.55; }
-.photo-request-modal label { display: grid; gap: 5px; color: var(--color-text-muted); font-size: 11px; font-weight: 750; }
-.photo-request-modal input { min-height: 42px; padding: 0 11px; border: 1px solid var(--color-border); border-radius: var(--radius-small); font: inherit; }
-.modal-close { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; border: 1px solid var(--color-border); border-radius: 9px; display: grid; place-items: center; color: var(--color-text-muted); background: #fff; }
-.photo-request-success { display: grid; justify-items: center; gap: 10px; text-align: center; }
-.photo-request-success > svg { color: var(--color-primary); }
-.photo-request-success .button { margin-top: 6px; }
-.photo-request-admin-card { width: min(100%, 1100px); margin: 0 auto 22px; border: 1px solid var(--color-border); border-radius: var(--radius-large); overflow: hidden; background: #fff; box-shadow: var(--shadow-card); }
-.photo-request-table-wrap { overflow-x: auto; }
-.photo-request-table { width: 100%; border-collapse: collapse; font-size: 11px; }
-.photo-request-table th { padding: 12px 10px; text-align: left; color: var(--color-text-muted); background: var(--color-surface-muted); white-space: nowrap; }
-.photo-request-table td { padding: 12px 10px; border-top: 1px solid var(--color-border); vertical-align: middle; white-space: nowrap; }
-.photo-request-table td strong, .photo-request-table td small { display: block; }
-.photo-request-table td strong { color: var(--color-primary); }
-.photo-request-table td small { max-width: 220px; overflow: hidden; text-overflow: ellipsis; color: var(--color-text-muted); }
-.button.compact { min-height: 32px; padding: 0 10px; font-size: 11px; }
 .admin-table-card { border: 1px solid var(--color-border); border-radius: var(--radius-large); overflow: hidden; background: #fff; box-shadow: var(--shadow-card); }
 .admin-table-summary { min-height: 52px; padding: 10px 12px; display: flex; align-items: center; gap: 7px; border-bottom: 1px solid var(--color-border); }
 .admin-table-summary strong { color: var(--color-primary); font-size: 18px; }

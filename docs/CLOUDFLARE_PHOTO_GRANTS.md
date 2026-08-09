@@ -85,10 +85,6 @@ The Functions refuse missing packages, wrong SMI codes, wrong inventory versions
 
 ## Grant endpoints
 
-## SMI photo-request workflow
-
-`POST /api/photo-download-requests` stores a request for one WTS/WTL listing with the agent's name and contact number. It sends a dedicated Telegram notification using `PHOTO_REQUEST_TELEGRAM_BOT_TOKEN` and `PHOTO_REQUEST_TELEGRAM_CHAT_ID`, separate from any lead/matching bot. The owner reviews requests at `/admin/photo-grants`; granting creates a one-SMI watermarked link and opens a WhatsApp message to the supplied contact number with the SMI page and activation instructions. The request queue and grants use the private `PHOTO_GRANTS_DB` binding.
-
 - `POST /api/admin/photo-grants` — owner-only; body `{ "email": "agent@example.com" }`.
 - `GET /api/photo-grants/<token>` — recipient Access identity check and safe grant status.
 - `POST /api/photo-grants/activate` — exact-email check, first-access transition and HttpOnly session cookie.

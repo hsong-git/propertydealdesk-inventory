@@ -8,8 +8,8 @@ export async function onRequestPost(context) {
   let payload;
   try { payload = await context.request.json(); } catch { return json({ error: "Invalid request." }, 400); }
   try {
-    const visitor = await registerPhotoVisitor({ env: context.env, name: payload?.name, email: payload?.email });
-    if (!visitor) return json({ error: "Enter a valid name and email address." }, 400);
+    const visitor = await registerPhotoVisitor({ env: context.env, name: payload?.name, email: payload?.email, contactNumber: payload?.contactNumber });
+    if (!visitor) return json({ error: "Enter a valid name, email and contact number (for example 016-313 2865 or +60163132865)." }, 400);
     return json({ registered: true }, 200, { "set-cookie": visitorSessionCookie(visitor.sessionToken) });
   } catch { return json({ error: "Photo download registration is unavailable." }, 503); }
 }

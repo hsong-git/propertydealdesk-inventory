@@ -13,6 +13,8 @@ function requireBindings(env) {
 
 export const normalizeEmail = (value) => text(value).toLowerCase();
 export const isEmail = (value) => EMAIL_PATTERN.test(normalizeEmail(value));
+export const normalizeContactNumber = (value) => text(value).replace(/[\s().-]/g, "");
+export const isContactNumber = (value) => /^\+?[0-9]{8,15}$/.test(normalizeContactNumber(value));
 export const packageKeyFor = (code) => CODE_PATTERN.test(text(code).toUpperCase()) ? `packages/${text(code).toUpperCase()}.zip` : null;
 
 export function generateToken() {
@@ -37,16 +39,17 @@ export function visitorSessionCookie(token) {
   return `${VISITOR_SESSION_COOKIE}=${encodeURIComponent(token)}; Path=/; Max-Age=${SESSION_TTL_SECONDS}; HttpOnly; Secure; SameSite=Lax`;
 }
 
-export async function registerPhotoVisitor({ env, name, email, now = new Date() }) {
+export async function registerPhotoVisitor({ env, name, email, contactNumber, now = new Date() }) {
   requireBindings(env);
   const cleanName = text(name).slice(0, 120);
   const cleanEmail = normalizeEmail(email);
-  if (!cleanName || !isEmail(cleanEmail)) return null;
+  const cleanContact = normalizeContactNumber(contactNumber);
+  if (!cleanName || !isEmail(cleanEmail) || !isContactNumber(cleanContact)) return null;
   const existing = await env.REQUIREMENTS_DB.prepare("SELECT id FROM photo_download_visitors WHERE email = ?").bind(cleanEmail).first();
   const visitorId = existing?.id || crypto.randomUUID();
   const timestamp = now.toISOString();
-  if (existing) await env.REQUIREMENTS_DB.prepare("UPDATE photo_download_visitors SET name = ?, last_seen_at = ? WHERE id = ?").bind(cleanName, timestamp, visitorId).run();
-  else await env.REQUIREMENTS_DB.prepare("INSERT INTO photo_download_visitors (id, name, email, created_at, last_seen_at) VALUES (?, ?, ?, ?, ?)").bind(visitorId, cleanName, cleanEmail, timestamp, timestamp).run();
+  if (existing) await env.REQUIREMENTS_DB.prepare("UPDATE photo_download_visitors SET name = ?, contact_number = ?, last_seen_at = ? WHERE id = ?").bind(cleanName, cleanContact, timestamp, visitorId).run();
+  else await env.REQUIREMENTS_DB.prepare("INSERT INTO photo_download_visitors (id, name, email, contact_number, created_at, last_seen_at) VALUES (?, ?, ?, ?, ?, ?)").bind(visitorId, cleanName, cleanEmail, cleanContact, timestamp, timestamp).run();
   const sessionToken = generateToken();
   await env.REQUIREMENTS_DB.prepare("INSERT INTO photo_download_sessions (token_hash, visitor_id, created_at, expires_at) VALUES (?, ?, ?, ?)").bind(await hashToken(sessionToken), visitorId, timestamp, new Date(now.getTime() + SESSION_TTL_SECONDS * 1000).toISOString()).run();
   return { visitorId, name: cleanName, email: cleanEmail, sessionToken };

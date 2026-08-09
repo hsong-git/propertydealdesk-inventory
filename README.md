@@ -192,6 +192,7 @@ Implementing the Production Stable export control or generator is deliberately o
 - [ ] Unauthenticated visitors render no owner grant or recipient download control and direct admin API calls are rejected.
 - [ ] An Access-authenticated allowlisted owner can grant catalogue access to a validated recipient email.
 - [ ] Local loopback requests fail closed without a validated Access JWT; the dev server must not expose owner controls to incognito/public visitors.
+- [ ] For local workflow testing only, open `/admin/photo-grants?devAdmin=1` to set an explicit loopback admin cookie; use a fresh incognito window without that cookie to simulate a normal agent.
 - [ ] A recipient must authenticate as the granted email before the session activates.
 - [ ] On each property page, an active recipient session exposes only that SMI's private watermarked ZIP.
 - [ ] Invalid, missing, revoked and expired grants show the neutral unavailable page; no public route streams an R2 package.

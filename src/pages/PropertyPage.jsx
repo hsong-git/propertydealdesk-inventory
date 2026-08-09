@@ -6,7 +6,7 @@ import { useInventory } from "../hooks";
 import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing } from "../utils/listing";
 import { openWhatsApp } from "../utils/whatsapp";
 import { PublicPropertyImage } from "../components/PublicPropertyImage";
-import { ShareSelectedPhotosButton } from "../components/ShareSelectedPhotosButton";
+import { PhotoDownloadButton } from "../components/PhotoDownloadButton";
 import { Seo } from "../components/Seo";
 import { ListingUnavailableState } from "../components/ListingUnavailableState";
 import { propertySeoDescription, SITE_ORIGIN } from "../utils/seo";
@@ -21,7 +21,6 @@ export function PropertyPage() {
   const [activePhoto, setActivePhoto] = useState(0);
   const [copied, setCopied] = useState(false);
   const [postingCopied, setPostingCopied] = useState(false);
-  const [selectedPhotos, setSelectedPhotos] = useState([]);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxSlide, setLightboxSlide] = useState("");
   const swipeStart = useRef(null);
@@ -90,7 +89,7 @@ export function PropertyPage() {
               ? <button className="gallery-open" type="button" onClick={() => setLightboxOpen(true)} aria-label={`Open photo ${activePhoto + 1} of ${listing.photos.length} fullscreen`}><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1}`} /><span className="gallery-open-label"><Maximize2 size={17} /> Full view</span></button>
               : <span className="property-photo-placeholder detail-placeholder"><ImageOff size={38} /><small>No public photo supplied</small></span>}
               <span className={`intent intent-${listing.intent.toLowerCase()}`}>{listing.intent}<small>{intentLabels[listing.intent]}</small></span></div>
-            {listing.photos.length > 0 ? <><div className="gallery-thumbnails">{listing.photos.map((photo, index) => <div className="gallery-thumbnail-choice" key={photo}><button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button><button type="button" className={`photo-select-toggle${selectedPhotos.includes(photo) ? " selected" : ""}`} aria-label={`${selectedPhotos.includes(photo) ? "Deselect" : "Select"} photo ${index + 1}`} aria-pressed={selectedPhotos.includes(photo)} onClick={() => setSelectedPhotos((current) => current.includes(photo) ? current.filter((item) => item !== photo) : [...current, photo])}>{selectedPhotos.includes(photo) ? <Check size={14} /> : <span />}</button></div>)}</div><ShareSelectedPhotosButton listing={listing} selectedPhotos={selectedPhotos} /></> : null}
+            {listing.photos.length > 1 ? <div className="gallery-thumbnails">{listing.photos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
           </section>
           <section className="detail-title-block">
             <div className="property-reference"><span>{listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
@@ -104,6 +103,7 @@ export function PropertyPage() {
         <aside className="agent-contact-card">
           <img src={agentProfile.portrait} alt={agentProfile.displayName} /><div><span className="eyebrow">Enquire directly</span><h2>{agentProfile.displayName}</h2><p>{agentProfile.title}</p><small>{agentProfile.agency}</small></div>
           <button className="button primary" type="button" onClick={() => openWhatsApp({ phone: agentProfile.whatsapp, message: enquiryText(listing, agentProfile.displayName), onError: (error) => window.alert(error) })}><MessageCircle size={18} /> WhatsApp enquiry</button>
+          <PhotoDownloadButton listing={listing} />
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} /> Call {agentProfile.phoneDisplay}</a>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {copied ? "Link copied" : "Share property"}</button>
         </aside>

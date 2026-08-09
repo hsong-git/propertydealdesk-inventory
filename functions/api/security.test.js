@@ -19,12 +19,6 @@ test("local loopback requests fail closed without a validated Access JWT", async
   assert.equal(fakeLocalhost.status, 401);
 });
 
-test("local dev admin simulation requires the explicit opt-in cookie", async () => {
-  const response = await getSession({ request: new Request("http://127.0.0.1:5277/api/admin/session", { headers: { cookie: "pd_dev_admin=1" } }), env: {} });
-  assert.equal(response.status, 200);
-  assert.deepEqual(await response.json(), { authenticated: true, email: "local-admin@propertydealdesk.local" });
-});
-
 test("grant generation rejects public and cross-origin calls before storage", async () => {
   const noOrigin = await createGrant({ request: new Request("https://inventory.example.com/api/admin/photo-grants", { method: "POST" }), env: {} });
   assert.equal(noOrigin.status, 403);

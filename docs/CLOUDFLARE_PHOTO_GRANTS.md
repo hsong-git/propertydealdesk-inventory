@@ -95,6 +95,6 @@ All download responses use `private, no-store`, `nosniff` and `no-referrer`. A w
 
 ## Local testing and deployment
 
-The normal Vite server does not emulate Cloudflare Access, D1 or R2. Local loopback requests fail closed unless a real validated Access JWT or the explicit development-only `pd_dev_admin=1` cookie is supplied. To simulate the owner workflow locally, open `/admin/photo-grants?devAdmin=1`; use a fresh incognito window without that cookie for a normal agent. Never enable or reuse this cookie outside loopback development. Use `wrangler pages dev dist` with local D1/R2 bindings for end-to-end Function testing; never place production IDs, Access audience values or credentials in Git.
+The normal Vite server does not emulate Cloudflare Access, D1 or R2. Local loopback requests fail closed unless a real validated Access JWT is supplied, so incognito/public visitors cannot see owner controls. Use `wrangler pages dev dist` with local D1/R2 bindings for end-to-end Function testing; never place production IDs, Access audience values or credentials in Git.
 
 Static build success does not activate grants. Production requires the D1 migration, two Access applications, private R2 packages, bindings, variables, and the package upload/retention step.

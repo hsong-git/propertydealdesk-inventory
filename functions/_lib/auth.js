@@ -12,16 +12,6 @@ const configuredAdmins = (value = "") => new Set(value
   .map((email) => email.trim().toLowerCase())
   .filter(Boolean));
 
-const isLocalDevAdmin = (request) => {
-  try {
-    const url = new URL(request.url);
-    return url.protocol === "http:" && ["127.0.0.1", "localhost"].includes(url.hostname)
-      && /(?:^|;)\s*pd_dev_admin=1(?:;|$)/.test(request.headers.get("cookie") || "");
-  } catch {
-    return false;
-  }
-};
-
 export async function requireAccessIdentity(context, { audienceEnv = "CF_ACCESS_AUD", allowEmails = null } = {}) {
   const assertion = context.request.headers.get("cf-access-jwt-assertion");
   const teamDomain = normalizedTeamDomain(context.env.CF_ACCESS_TEAM_DOMAIN);
@@ -43,7 +33,6 @@ export async function requireAccessIdentity(context, { audienceEnv = "CF_ACCESS_
 }
 
 export async function requireAdmin(context) {
-  if (isLocalDevAdmin(context.request)) return { email: "local-admin@propertydealdesk.local", local: true };
   const admins = configuredAdmins(context.env?.ADMIN_EMAILS);
   return admins.size
     ? requireAccessIdentity(context, { audienceEnv: "CF_ACCESS_AUD", allowEmails: admins })

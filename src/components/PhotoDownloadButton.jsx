@@ -19,7 +19,7 @@ export function PhotoDownloadButton({ listing }) {
     setState((current) => ({ ...current, loading: true, error: "" }));
     try {
       const response = await fetch(`/api/photo-download/${encodeURIComponent(listing.code)}`, { method: "POST", credentials: "include", headers: { "content-type": "application/json" }, body: JSON.stringify({ name: state.name, email: state.email, contactNumber: state.contactNumber }) });
-      const payload = await response.json(); if (!response.ok) throw new Error(payload.error || "Please enter a valid name and email.");
+      const payload = await response.json(); if (!response.ok) throw new Error(response.status === 503 ? "Local photo-download storage is not configured. Start the Pages dev server with local D1/R2 bindings, or try the deployed site." : (payload.error || "Please enter a valid name, email and contact number."));
       setState((current) => ({ ...current, loading: false, sent: true }));
     } catch (error) { setState((current) => ({ ...current, loading: false, error: error.message })); }
   };

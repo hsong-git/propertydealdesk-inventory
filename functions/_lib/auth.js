@@ -21,13 +21,14 @@ const isLocalAdminRequest = (request) => {
   }
 };
 
-export async function requireAccessIdentity(context, { audienceEnv = "CF_ACCESS_AUD", allowEmails = null } = {}) {
+export async function requireAdmin(context) {
   if (isLocalAdminRequest(context.request)) return { email: "local-admin@propertydealdesk.local", local: true };
 
   const assertion = context.request.headers.get("cf-access-jwt-assertion");
   const teamDomain = normalizedTeamDomain(context.env.CF_ACCESS_TEAM_DOMAIN);
-  const audience = String(context.env?.[audienceEnv] || "").trim();
-  if (!assertion || !teamDomain || !audience) return null;
+  const audience = String(context.env.CF_ACCESS_AUD || "").trim();
+  const admins = configuredAdmins(context.env.ADMIN_EMAILS);
+  if (!assertion || !teamDomain || !audience || !admins.size) return null;
 
   try {
     const issuer = `https://${teamDomain}`;
@@ -35,22 +36,8 @@ export async function requireAccessIdentity(context, { audienceEnv = "CF_ACCESS_
     if (!jwksByUrl.has(certsUrl)) jwksByUrl.set(certsUrl, createRemoteJWKSet(new URL(certsUrl)));
     const { payload } = await jwtVerify(assertion, jwksByUrl.get(certsUrl), { issuer, audience });
     const email = String(payload.email || "").trim().toLowerCase();
-    if (!email) return null;
-    if (allowEmails && !allowEmails.has(email)) return null;
-    return { email };
+    return admins.has(email) ? { email } : null;
   } catch {
     return null;
   }
-}
-
-export async function requireAdmin(context) {
-  if (isLocalAdminRequest(context.request)) return { email: "local-admin@propertydealdesk.local", local: true };
-  const admins = configuredAdmins(context.env?.ADMIN_EMAILS);
-  return admins.size
-    ? requireAccessIdentity(context, { audienceEnv: "CF_ACCESS_AUD", allowEmails: admins })
-    : null;
-}
-
-export async function requireRecipient(context) {
-  return requireAccessIdentity(context, { audienceEnv: "CF_ACCESS_RECIPIENT_AUD" });
 }

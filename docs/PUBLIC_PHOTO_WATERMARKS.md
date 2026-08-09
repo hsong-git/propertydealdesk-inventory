@@ -47,7 +47,7 @@ The overlay is intentionally excluded from:
 
 The browser overlay is a deterrent only. Any image delivered to a public browser can still be copied through screenshots, developer tools, cache inspection or network requests. It should not be treated as theft prevention or access control.
 
-## Embedded publication and download workflow
+## Future embedded watermark workflow
 
 The production-safe long-term workflow should embed the same watermark into the optimized publication images generated from Production Stable before they are copied into:
 
@@ -57,6 +57,6 @@ public/inventory/<SMI_CODE>/
 
 Stable should never modify original/master PropertyDealDesk photos. It should generate sanitized, optimized, embedded-watermarked publication copies only.
 
-The Catalogue ZIP builder already embeds the watermark into its per-SMI download packages from the sanitized public display copies and marks them `watermarked=true` / `watermarkVersion=trr-hs-ong-v1`. When Stable also embeds watermarks into public display files, set the catalogue config mode to `embedded`. That prevents duplicate browser overlays while keeping the UI code path unchanged.
+When embedded watermarks are available, set the catalogue config mode to `embedded`. That prevents duplicate browser overlays while keeping the UI code path unchanged.
 
 Future downloadable photo packages, shared catalogue images and any static publication image outputs should use embedded-watermarked public copies, never original PropertyDealDesk master photos.

@@ -12,11 +12,24 @@ import { buildLocationOptions, matchesKeywordSearch, matchesLocationFilter } fro
 
 const defaultIntent = "WTL";
 const defaults = { keyword: "", intent: defaultIntent, propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", sort: "recent" };
+const CATALOGUE_STATE_KEY = "pdd-catalogue-state";
+
+function readCatalogueState() {
+  if (typeof window === "undefined") return { filters: defaults, catalogueMode: "all" };
+  try {
+    const saved = JSON.parse(window.sessionStorage.getItem(CATALOGUE_STATE_KEY) || "null");
+    return {
+      filters: saved?.filters && typeof saved.filters === "object" ? { ...defaults, ...saved.filters } : defaults,
+      catalogueMode: saved?.catalogueMode === "featured" ? "featured" : "all",
+    };
+  } catch { return { filters: defaults, catalogueMode: "all" }; }
+}
 
 export function HomePage() {
   const { items, meta, locationDictionary, loading, error } = useInventory();
-  const [filters, setFilters] = useState(defaults);
-  const [catalogueMode, setCatalogueMode] = useState("all");
+  const initialCatalogueState = useMemo(readCatalogueState, []);
+  const [filters, setFilters] = useState(initialCatalogueState.filters);
+  const [catalogueMode, setCatalogueMode] = useState(initialCatalogueState.catalogueMode);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [visible, setVisible] = useState(6);
   const [agentToolsPreviewOpen, setAgentToolsPreviewOpen] = useState(false);
@@ -53,6 +66,9 @@ export function HomePage() {
     setCatalogueMode(mode);
     setVisible(6);
   };
+  useEffect(() => {
+    try { window.sessionStorage.setItem(CATALOGUE_STATE_KEY, JSON.stringify({ filters, catalogueMode })); } catch { /* storage may be unavailable */ }
+  }, [filters, catalogueMode]);
   useEffect(() => {
     if (!agentToolsPreviewOpen) return undefined;
     document.body.classList.add("modal-open");

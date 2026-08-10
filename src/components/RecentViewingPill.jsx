@@ -65,8 +65,9 @@ export function RecentViewingPill() {
     setLeaving(false);
     setVisible(true);
     const hide = window.setTimeout(() => setLeaving(true), 6000);
-    const next = window.setTimeout(() => setIndex((value) => value + 1), 8000);
-    return () => { window.clearTimeout(hide); window.clearTimeout(next); };
+    const remove = window.setTimeout(() => setVisible(false), 8000);
+    const next = window.setTimeout(() => setIndex((value) => value + 1), 10000);
+    return () => { window.clearTimeout(hide); window.clearTimeout(remove); window.clearTimeout(next); };
   }, [current, dismissed, index]);
 
   if (!current || location.pathname.startsWith("/admin") || location.pathname === "/inquiries" || !visible) return null;

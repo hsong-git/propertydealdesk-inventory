@@ -54,6 +54,7 @@ main { flex: 1; }
 .area-list span { padding: 5px 9px; border-radius: var(--radius-pill); background: rgba(255,255,255,.76); border: 1px solid rgba(17,124,91,.14); color: var(--color-text); font-size: 11px; font-weight: 700; }
 .profile-actions { margin-top: 15px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 .mobile-browse-properties { display: none; }
+.profile-name-card-icon { display: none; }
 .contact-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .profile-panel.expanded { min-height: 360px; grid-template-columns: minmax(220px,310px) minmax(0,1fr); padding-inline: clamp(22px,4vw,54px); }
 .profile-panel.expanded .portrait-wrap { height: 335px; }
@@ -509,7 +510,7 @@ main { flex: 1; }
   .site-header nav a { min-height: 44px; }
   .home-stack, .content-page { padding-block: 14px 38px; gap: 20px; }
   .profile-panel, .profile-panel.expanded { min-height: 0; padding: 16px; grid-template-columns: 1fr; gap: 14px; overflow: visible; background: linear-gradient(155deg,#fff 0%,#fff 54%,var(--color-primary-soft) 100%); }
-  .profile-panel:not(.expanded) { padding: 12px; grid-template-columns: 82px minmax(0,1fr); align-items: center; gap: 12px; }
+  .profile-panel:not(.expanded) { position: relative; padding: 12px; grid-template-columns: 82px minmax(0,1fr); align-items: center; gap: 12px; }
   .portrait-wrap, .profile-panel.expanded .portrait-wrap, .profile-panel:not(.expanded) .portrait-wrap { justify-self: center; align-self: center; width: min(48vw,178px); height: 204px; min-height: 0; border-radius: 12px; overflow: hidden; background: var(--color-surface-muted); box-shadow: 0 12px 26px rgba(24,33,29,.09); }
   .profile-panel:not(.expanded) .portrait-wrap { display: grid; place-items: center; }
   .profile-panel:not(.expanded) .portrait-wrap { width: 82px; height: 104px; border-radius: 10px; }
@@ -541,6 +542,8 @@ main { flex: 1; }
   .profile-panel:not(.expanded) .profile-actions { margin-top: 7px; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; }
   .profile-panel:not(.expanded) .profile-actions .button { min-height: 36px; padding-inline: 7px; font-size: 11px; }
   .profile-panel:not(.expanded) .mobile-browse-properties { display: inline-flex; }
+  .profile-panel:not(.expanded) .profile-name-card-icon { position: absolute; top: 7px; right: 7px; z-index: 1; width: 28px; height: 28px; padding: 0; border: 1px solid rgba(17,124,91,.22); border-radius: 8px; display: grid; place-items: center; color: var(--color-primary); background: rgba(255,255,255,.9); box-shadow: 0 4px 12px rgba(24,33,29,.08); cursor: pointer; }
+  .profile-panel:not(.expanded) .profile-name-card-icon:hover { background: #fff; }
   .section-heading { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: start; gap: 8px 12px; }
   .section-heading h2 { margin-top: 3px; font-size: 25px; line-height: 1.08; }
   .section-heading p { display: none; }

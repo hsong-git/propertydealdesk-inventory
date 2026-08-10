@@ -12,6 +12,11 @@ export function ProfilePanel({ expanded = false }) {
     <>
       <section className={`profile-panel ${expanded ? "expanded" : ""}`}>
         <div className="portrait-wrap"><img src={portrait} alt={`${agentProfile.displayName}, ${agentProfile.title}`} /></div>
+        {expanded ? null : (
+          <button className="profile-name-card-icon" type="button" onClick={() => setCardOpen(true)} aria-label="View Name Card" title="View Name Card">
+            <CreditCard size={16} aria-hidden="true" />
+          </button>
+        )}
         <div className="profile-copy">
           <span className="eyebrow"><BadgeCheck size={15} /> Registered property professional</span>
           <h1>{agentProfile.profilePanelName || (expanded ? agentProfile.name : agentProfile.displayName)}</h1>

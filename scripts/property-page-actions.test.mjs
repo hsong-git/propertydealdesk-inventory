@@ -84,11 +84,11 @@ test("intent selection remains outside the collapsible mobile filter drawer", ()
   assert.match(css, /\.persistent-intent-filter \{[^}]*width: min\(100%,376px\);/);
 });
 
-test("homepage profile provides a compact mobile route to the catalogue", () => {
+test("homepage profile keeps a compact mobile action row", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "components", "ProfilePanel.jsx"), "utf8");
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
   assert.doesNotMatch(source, /mobile-browse-properties/);
-  assert.match(source, /profile-requirement-link" to="\/inquiries">Find me a property/);
+  assert.doesNotMatch(source, /profile-requirement-link|Find me a property/);
   assert.match(source, /profile-name-card-icon[\s\S]*aria-label="View Name Card"/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \{[^}]*grid-template-columns: 82px minmax\(0,1fr\)/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.area-list,[\s\S]*\.profile-actions > \.button\.tertiary,[\s\S]*display: none;/);

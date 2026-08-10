@@ -18,25 +18,25 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
         <button className="button secondary mobile-filter-button" type="button" onClick={() => setMobileOpen(true)}><SlidersHorizontal size={18} /> Filters {activeCount ? <b>{activeCount}</b> : null}</button>
         <label className="sort-field"><span>Sort</span><select value={filters.sort} onChange={(event) => update("sort", event.target.value)}><option value="recent">Recently listed</option><option value="newest">Newest</option><option value="price-asc">Price low to high</option><option value="price-desc">Price high to low</option><option value="title">Property title</option></select><ChevronDown size={16} /></label>
       </div>
+      <fieldset className="filter-toggle-field persistent-intent-filter">
+        <legend>Intent</legend>
+        <div className="catalogue-mode-toggle intent-toggle" aria-label="Intent">
+          {intentOptions.map((intent) => (
+            <button
+              key={intent.key}
+              className={filters.intent === intent.key ? "active" : ""}
+              type="button"
+              aria-pressed={filters.intent === intent.key}
+              onClick={() => update("intent", intent.key)}
+            >
+              {intent.label}
+            </button>
+          ))}
+        </div>
+      </fieldset>
       <div className={`advanced-filter-shell ${mobileOpen ? "mobile-open" : ""}`}>
         <div className="filter-drawer-heading"><strong>Filter properties</strong><button className="icon-button" type="button" onClick={() => setMobileOpen(false)} aria-label="Close filters"><X size={20} /></button></div>
         <div className="filter-grid">
-          <fieldset className="filter-toggle-field">
-            <legend>Intent</legend>
-            <div className="catalogue-mode-toggle intent-toggle" aria-label="Intent">
-              {intentOptions.map((intent) => (
-                <button
-                  key={intent.key}
-                  className={filters.intent === intent.key ? "active" : ""}
-                  type="button"
-                  aria-pressed={filters.intent === intent.key}
-                  onClick={() => update("intent", intent.key)}
-                >
-                  {intent.label}
-                </button>
-              ))}
-            </div>
-          </fieldset>
           <label>Property type<select value={filters.propertyType} onChange={(event) => update("propertyType", event.target.value)}><option value="">All types</option>{options.propertyTypes.map((value) => <option key={value}>{value}</option>)}</select></label>
           <label>Location<select value={filters.location} onChange={(event) => update("location", event.target.value)}><option value="">All locations</option>{options.locations.map((value) => <option key={value}>{value}</option>)}</select></label>
           <label>Minimum price<input type="number" min="0" step="100" value={filters.minPrice} onChange={(event) => update("minPrice", event.target.value)} placeholder="No minimum" /></label>

@@ -58,6 +58,14 @@ test("property cards expose a compact Copy posting action", () => {
   assert.match(css, /width: 32px/);
 });
 
+test("intent selection remains outside the collapsible mobile filter drawer", () => {
+  const source = fs.readFileSync(path.join(projectRoot, "src", "components", "CatalogueFilters.jsx"), "utf8");
+  const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
+  assert.ok(source.indexOf('className="filter-toggle-field persistent-intent-filter"') < source.indexOf("advanced-filter-shell"));
+  assert.equal((source.match(/<legend>Intent<\/legend>/g) || []).length, 1);
+  assert.match(css, /\.persistent-intent-filter \{[^}]*width: min\(100%,376px\);/);
+});
+
 test("fullscreen photo viewer applies direction-aware slide classes", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");

@@ -23,6 +23,8 @@ test("photo sharing audit links SMI codes and shortens browser details", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PhotoDownloadsAdminPage.jsx"), "utf8");
   assert.match(source, /href=\{`\/i\/\$\{encodeURIComponent\(String\(event\.listing_code/);
   assert.match(source, /function browserLabel\(userAgent\)/);
+  assert.match(source, /function shareMethodLabel\(method\)/);
+  assert.match(source, /shareMethodLabel\(event\.share_client\)/);
   assert.match(source, /className="browser-detail"/);
 });
 

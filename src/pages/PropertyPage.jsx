@@ -14,6 +14,7 @@ import { photoSwipeDirection } from "../utils/photoSwipe";
 import { getRelatedListings } from "../utils/relatedListings";
 import { RelatedListings } from "../components/RelatedListings";
 import { rememberListingView } from "../components/RecentViewingPill";
+import { PHOTO_SELECTION_LIMIT } from "../utils/photoShare";
 
 const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false";
 
@@ -69,6 +70,7 @@ export function PropertyPage() {
     window.setTimeout(() => setPostingCopied(false), 1800);
   };
   const relatedListings = getRelatedListings(listing, items, 8, locationDictionary);
+  const selectFirstPhotos = () => setSelectedPhotos(listing.photos.slice(0, PHOTO_SELECTION_LIMIT));
   const onLightboxTouchStart = (event) => {
     const touch = event.changedTouches?.[0];
     if (touch) swipeStart.current = { x: touch.clientX, y: touch.clientY };
@@ -98,7 +100,7 @@ export function PropertyPage() {
               ? <button className="gallery-open" type="button" onClick={() => setLightboxOpen(true)} aria-label={`Open photo ${activePhoto + 1} of ${listing.photos.length} fullscreen`}><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1}`} /><span className="gallery-open-label"><Maximize2 size={17} /> Full view</span></button>
               : <span className="property-photo-placeholder detail-placeholder"><ImageOff size={38} /><small>No public photo supplied</small></span>}
               <span className={`intent intent-${listing.intent.toLowerCase()}`}>{listing.intent}<small>{intentLabels[listing.intent]}</small></span></div>
-            {photoSharingEnabled && listing.photos.length > 0 ? <><div className="gallery-thumbnails">{listing.photos.map((photo, index) => <div className="gallery-thumbnail-choice" key={photo}><button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button><button type="button" className={`photo-select-toggle${selectedPhotos.includes(photo) ? " selected" : ""}`} aria-label={`${selectedPhotos.includes(photo) ? "Deselect" : "Select"} photo ${index + 1}`} aria-pressed={selectedPhotos.includes(photo)} onClick={() => setSelectedPhotos((current) => current.includes(photo) ? current.filter((item) => item !== photo) : [...current, photo])}>{selectedPhotos.includes(photo) ? <Check size={14} /> : <span />}</button></div>)}</div><ShareSelectedPhotosButton listing={listing} selectedPhotos={selectedPhotos} /></> : listing.photos.length > 1 ? <div className="gallery-thumbnails">{listing.photos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
+            {photoSharingEnabled && listing.photos.length > 0 ? <><div className="gallery-thumbnails">{listing.photos.map((photo, index) => { const selected = selectedPhotos.includes(photo); const blocked = selectedPhotos.length >= PHOTO_SELECTION_LIMIT && !selected; return <div className="gallery-thumbnail-choice" key={photo}><button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button><button type="button" disabled={blocked} className={`photo-select-toggle${selected ? " selected" : ""}${blocked ? " is-blocked" : ""}`} aria-label={`${selected ? "Deselect" : "Select"} photo ${index + 1}`} aria-pressed={selected} onClick={() => setSelectedPhotos((current) => selected ? current.filter((item) => item !== photo) : current.length < PHOTO_SELECTION_LIMIT ? [...current, photo] : current)}>{selected ? <Check size={14} /> : <span />}</button></div>; })}</div><button className="select-first-photos" type="button" onClick={selectFirstPhotos} disabled={!listing.photos.length}>Select first {Math.min(PHOTO_SELECTION_LIMIT, listing.photos.length)}</button><ShareSelectedPhotosButton listing={listing} selectedPhotos={selectedPhotos} /></> : listing.photos.length > 1 ? <div className="gallery-thumbnails">{listing.photos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
           </section>
           <section className="detail-title-block">
             <div className="property-reference"><span>{listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>

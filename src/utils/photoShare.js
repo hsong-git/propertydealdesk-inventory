@@ -1,7 +1,9 @@
 import { propertyPhotoWatermark } from "../config/watermark.js";
 import { SITE_ORIGIN } from "./seo.js";
+import { postingText } from "./listing.js";
 
 export const PHOTO_SHARE_JPEG_QUALITY = 0.9;
+export const PHOTO_SELECTION_LIMIT = 10;
 
 export const nativeShareErrorMessage = (error) => error?.name === "AbortError"
   ? ""
@@ -13,7 +15,8 @@ export function photoShareFileName(code, index) {
   return `${cleanCode(code)}-photo-${String(index + 1).padStart(2, "0")}.jpg`;
 }
 
-export function photoShareMessage(listing) {
+export function photoShareMessage(listing, profile) {
+  if (profile) return postingText(listing, profile);
   return `${listing.code} — ${listing.title}\n${SITE_ORIGIN}/i/${String(listing.code || "").toUpperCase()}`;
 }
 

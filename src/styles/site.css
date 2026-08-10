@@ -355,8 +355,11 @@ main { flex: 1; }
 .gallery-thumbnail-choice > button:first-child { width: 100%; }
 .photo-select-toggle { position: absolute !important; right: 5px; bottom: 5px; z-index: 3; width: 27px; height: 27px; min-height: 27px; padding: 0 !important; aspect-ratio: 1 !important; border: 1px solid rgba(255,255,255,.95) !important; border-radius: 50% !important; display: grid; place-items: center; color: #fff; background: rgba(15,31,26,.76) !important; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
 .photo-select-toggle.selected { border-color: #fff !important; background: var(--color-primary) !important; }
+.photo-select-toggle.is-blocked { opacity: .34; cursor: not-allowed; filter: grayscale(1); }
 .photo-select-toggle span { width: 9px; height: 9px; border-radius: 50%; background: #fff; opacity: .95; }
 .selected-photo-share { margin-top: 11px; display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
+.select-first-photos { margin-top: 9px; padding: 0; border: 0; color: var(--color-primary); background: transparent; font-size: 11px; font-weight: 800; text-decoration: underline; }
+.select-first-photos:disabled { opacity: .55; }
 .selected-photo-share .button { min-height: 40px; }
 .photo-share-trigger { transition: color .18s ease, background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease; }
 .photo-share-trigger.is-ready { box-shadow: 0 7px 18px rgba(12, 132, 97, .24); }

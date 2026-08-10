@@ -1,8 +1,9 @@
 import { Check, Download, LoaderCircle, MessageCircle, Monitor, Smartphone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { agentProfile } from "../config/agentProfile";
 import { isMobileOrTabletDevice } from "../utils/whatsapp";
-import { createWatermarkedJpegFile, desktopWhatsAppUrl, downloadPreparedFiles, nativeShareErrorMessage, photoShareMessage } from "../utils/photoShare";
+import { createWatermarkedJpegFile, desktopWhatsAppUrl, downloadPreparedFiles, nativeShareErrorMessage, photoShareMessage, PHOTO_SELECTION_LIMIT } from "../utils/photoShare";
 
 const initialState = { open: false, stage: "register", name: "", email: "", contactNumber: "", openWhatsApp: false, busy: false, message: "", error: "" };
 
@@ -20,11 +21,12 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
   }, [selectedPhotos.length]);
 
   const prepareFiles = async () => {
+    const photos = selectedPhotos.slice(0, PHOTO_SELECTION_LIMIT);
     patchState({ busy: true, message: "Preparing watermarked JPG photos…", error: "" });
     const files = [];
-    for (let index = 0; index < selectedPhotos.length; index += 1) {
-      files.push(await createWatermarkedJpegFile(selectedPhotos[index], { code: listing.code, index }));
-      patchState({ message: `Preparing photo ${index + 1} of ${selectedPhotos.length}…` });
+    for (let index = 0; index < photos.length; index += 1) {
+      files.push(await createWatermarkedJpegFile(photos[index], { code: listing.code, index }));
+      patchState({ message: `Preparing photo ${index + 1} of ${photos.length}…` });
     }
     return files;
   };
@@ -58,7 +60,7 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
         patchState({ open: true, stage: "choose", busy: false, openWhatsApp: true, message: "", error: "Direct file sharing is unavailable in this browser. Use one of the assisted WhatsApp options below." });
         return;
       }
-      await navigator.share({ title: `${listing.code} photos`, text: photoShareMessage(listing), files });
+      await navigator.share({ title: `${listing.code} photos`, text: photoShareMessage(listing, agentProfile), files });
       await recordShare("native");
       patchState({ open: false, busy: false, message: "Photos shared successfully.", error: "" });
     } catch (error) {
@@ -126,7 +128,7 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
       const files = await prepareFiles();
       downloadPreparedFiles(files);
       await recordShare(client);
-      const url = desktopWhatsAppUrl(client, photoShareMessage(listing));
+      const url = desktopWhatsAppUrl(client, photoShareMessage(listing, agentProfile));
       if (popup) popup.location.href = url;
       else window.location.href = url;
       patchState({ busy: false, message: "JPG photos downloaded. Attach them separately in WhatsApp after it opens.", error: "" });
@@ -152,6 +154,7 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
   const hasSelection = selectedPhotos.length > 0;
 
   return <div className="selected-photo-share">
+    <span className="photo-selection-limit">Select up to {PHOTO_SELECTION_LIMIT} photos at a time.</span>
     {state.error && !state.open ? <span className="form-error" role="alert">{state.error}</span> : null}
     {state.message && !state.open && !state.busy ? <span role="status"><Check size={14} /> {state.message}</span> : null}
     <button className={`button photo-share-trigger ${hasSelection ? "primary is-ready" : "secondary"}`} type="button" onClick={begin} disabled={state.busy}>{mobile ? <MessageCircle className="photo-share-trigger-icon" size={17} /> : <Download className="photo-share-trigger-icon" size={17} />} {state.busy && !state.open ? state.message : mobile ? "Share selected photos to WhatsApp" : "Download selected photos"}</button>

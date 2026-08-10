@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.1",
-  "inventoryVersion": "2026.08.10.2",
-  "generated_at": "2026-08-10T05:02:12Z",
-  "publishedAt": "2026-08-10T05:02:12Z",
+  "inventoryVersion": "2026.08.10.3",
+  "generated_at": "2026-08-10T08:24:45Z",
+  "publishedAt": "2026-08-10T08:24:45Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -3541,8 +3541,8 @@
       "featured": false,
       "created_at": "2026-08-10T03:24:54Z",
       "listed_at": "2026-08-10T11:24:54Z",
-      "posting_copy": "*WTS*\n\n*4R3B Double Storey House @ Storey House Setia Indah 9 Setia Alam*\nSelling Price: *RM870,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Storey House Setia Indah Shah Alam\n- Unit Dimensions: 22 × 75\n- Size Approx. 2300 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n*Features Highlights*\n- Newly refurbished\n- Backyard fully extension as wet kitchen\n- Prime Location & Open Views\n- Freehold\n- Non Bumi Lot\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1025*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1025",
-      "updated_at": "2026-08-10T03:41:43Z",
+      "posting_copy": "*WTS*\n\n*4R3B Double Storey House @ Storey House Setia Indah 9 Setia Alam*\nSelling Price: *RM870,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Storey House Setia Indah Shah Alam\n- Unit Dimensions: 22 × 75\n- Size Approx. 2300 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n*Features Highlights*\n- 🔥🔥AAA stock🔥🔥\n- Newly refurbished and clean in tip-top condition\n- Largest Built-Up in Its Class\n- Backyard fully extension as wet kitchen\n- Prime Location with Open Views\n- Walking distance to the nearest park\n- Flood Free area\n- Freehold\n- Non Bumi Lot\n- First-hand owner unit purchased directly from SP Setia Developer\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1025*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1025",
+      "updated_at": "2026-08-10T08:12:25Z",
       "cover_photo": "/inventory/WTS1025/cover.webp",
       "photos": [
         "/inventory/WTS1025/cover.webp",
@@ -3560,16 +3560,16 @@
         "/inventory/WTS1025/photo-13.webp",
         "/inventory/WTS1025/photo-14.webp",
         "/inventory/WTS1025/photo-15.webp",
-        "/inventory/WTS1025/photo-16.webp",
-        "/inventory/WTS1025/photo-17.webp",
-        "/inventory/WTS1025/photo-18.webp"
+        "/inventory/WTS1025/photo-16.webp"
       ],
       "features": [
-        "Newly refurbished",
+        "🔥🔥AAA stock🔥🔥 Newly refurbished and clean in tip-top condition Largest Built-Up in Its Class",
         "Backyard fully extension as wet kitchen",
-        "Prime Location & Open Views",
-        "Freehold",
-        "Non Bumi Lot"
+        "Prime Location with Open Views",
+        "Walking distance to the nearest park",
+        "Flood Free area Freehold",
+        "Non Bumi Lot",
+        "First-hand owner unit purchased directly from SP Setia Developer"
       ],
       "amenities": [],
       "why_this_property": []

@@ -13,6 +13,7 @@ import { buildLocationOptions, matchesKeywordSearch, matchesLocationFilter } fro
 const defaultIntent = "WTL";
 const defaults = { keyword: "", intent: defaultIntent, propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", sort: "recent" };
 const CATALOGUE_STATE_KEY = "pdd-catalogue-state";
+const CATALOGUE_SCROLL_KEY = "pdd-catalogue-scroll-y";
 
 function readCatalogueState() {
   if (typeof window === "undefined") return { filters: defaults, catalogueMode: "all", visible: 6 };
@@ -70,6 +71,21 @@ export function HomePage() {
   useEffect(() => {
     try { window.sessionStorage.setItem(CATALOGUE_STATE_KEY, JSON.stringify({ filters, catalogueMode, visible })); } catch { /* storage may be unavailable */ }
   }, [filters, catalogueMode, visible]);
+  useEffect(() => {
+    const onScroll = () => { try { window.sessionStorage.setItem(CATALOGUE_SCROLL_KEY, String(Math.round(window.scrollY || 0))); } catch { /* storage may be unavailable */ } };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  useEffect(() => {
+    if (loading) return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      try {
+        const saved = Number(window.sessionStorage.getItem(CATALOGUE_SCROLL_KEY));
+        if (Number.isFinite(saved) && saved > 0) window.scrollTo(0, saved);
+      } catch { /* storage may be unavailable */ }
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [loading]);
   useEffect(() => {
     if (!agentToolsPreviewOpen) return undefined;
     document.body.classList.add("modal-open");

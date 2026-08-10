@@ -25,6 +25,8 @@ Production Stable remains the source of truth. The catalogue only consumes a rev
 
 After a visitor opens a public property detail page, the catalogue may show a small anonymous “recently viewed” pill while they browse. It uses only the current browser session's recently opened listing codes, contains no visitor name or identity, and does not claim to be a live count of other agents. It is a navigation convenience, not analytics or proof of simultaneous activity.
 
+When the `listing_view_events` D1 migration is applied, detail-page opens also contribute anonymous listing codes to a rolling 24-hour shared activity feed. The pill then combines those public activity codes with the current session history. No names, emails, IP addresses, or device identifiers are stored. If the table is unavailable, the site safely falls back to session-only history.
+
 ## Local setup
 
 Requirements: Node.js 20 or newer and npm.

@@ -43,6 +43,21 @@ export function RecentViewingPill() {
     return () => { window.removeEventListener(EVENT_NAME, sync); window.removeEventListener("storage", sync); };
   }, []);
 
+  useEffect(() => {
+    let active = true;
+    const loadPublicActivity = async () => {
+      try {
+        const response = await fetch("/api/listing-views", { cache: "no-store" });
+        const payload = response.ok ? await response.json() : null;
+        const publicCodes = Array.isArray(payload?.events) ? payload.events.map((event) => String(event.listing_code || "").toUpperCase()).filter(Boolean) : [];
+        if (active && publicCodes.length) setRecentCodes((current) => [...new Set([...publicCodes, ...current])].slice(0, 12));
+      } catch { /* Shared activity is optional until the D1 migration is applied. */ }
+    };
+    loadPublicActivity();
+    const timer = window.setInterval(loadPublicActivity, 30000);
+    return () => { active = false; window.clearInterval(timer); };
+  }, []);
+
   const recentListings = useMemo(() => recentCodes.map((code) => listings.find((item) => String(item.code).toUpperCase() === code)).filter(Boolean), [recentCodes, listings]);
   const current = recentListings[index % Math.max(recentListings.length, 1)];
   useEffect(() => {

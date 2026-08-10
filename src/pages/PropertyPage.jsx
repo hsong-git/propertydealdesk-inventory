@@ -37,7 +37,11 @@ export function PropertyPage() {
     setActivePhoto((current) => (current + direction + listing.photos.length) % listing.photos.length);
   }
   useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); setSelectedPhotos([]); setLightboxSlide(""); }, [slug]);
-  useEffect(() => { if (listing?.code) rememberListingView(listing.code); }, [listing?.code]);
+  useEffect(() => {
+    if (!listing?.code) return;
+    rememberListingView(listing.code);
+    fetch("/api/listing-views", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code: listing.code }) }).catch(() => {});
+  }, [listing?.code]);
   useEffect(() => {
     if (!lightboxOpen) return undefined;
     document.body.classList.add("modal-open");

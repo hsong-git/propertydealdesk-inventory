@@ -19,6 +19,13 @@ test("legacy ZIP photo downloads are no longer rendered", () => {
   assert.doesNotMatch(source, /photoDownloadsEnabled/);
 });
 
+test("photo sharing audit links SMI codes and shortens browser details", () => {
+  const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PhotoDownloadsAdminPage.jsx"), "utf8");
+  assert.match(source, /href=\{`\/i\/\$\{encodeURIComponent\(String\(event\.listing_code/);
+  assert.match(source, /function browserLabel\(userAgent\)/);
+  assert.match(source, /className="browser-detail"/);
+});
+
 test("selected photo sharing is enabled unless explicitly disabled", () => {
   const page = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
   const sharing = fs.readFileSync(path.join(projectRoot, "src", "components", "ShareSelectedPhotosButton.jsx"), "utf8");

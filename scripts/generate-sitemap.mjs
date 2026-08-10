@@ -27,7 +27,6 @@ const fallbackLastMod = meta.publishedAt || meta.generatedAt;
 
 const urls = [
   { loc: `${SITE_ORIGIN}/`, priority: "1.0", changefreq: "daily", lastmod: asDate(fallbackLastMod) },
-  { loc: `${SITE_ORIGIN}/about`, priority: "0.6", changefreq: "monthly", lastmod: asDate(fallbackLastMod) },
   { loc: `${SITE_ORIGIN}/contact`, priority: "0.6", changefreq: "monthly", lastmod: asDate(fallbackLastMod) },
   ...items.map((listing) => ({
     loc: `${SITE_ORIGIN}/property/${listing.slug}`,

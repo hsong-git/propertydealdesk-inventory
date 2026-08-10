@@ -1,6 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
-import { AboutContactPage } from "./pages/AboutContactPage";
 import { HomePage } from "./pages/HomePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { PropertyPage } from "./pages/PropertyPage";
@@ -17,8 +16,8 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path="about" element={<AboutContactPage />} />
-          <Route path="contact" element={<AboutContactPage />} />
+          <Route path="about" element={<Navigate to="/" replace />} />
+          <Route path="contact" element={<Navigate to="/" replace />} />
           <Route path="inquiries" element={<RequirementPage />} />
           <Route path="requirements" element={<Navigate to="/inquiries" replace />} />
           <Route path="admin" element={<AdminLandingPage />} />

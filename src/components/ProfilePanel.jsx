@@ -12,11 +12,6 @@ export function ProfilePanel({ expanded = false }) {
     <>
       <section className={`profile-panel ${expanded ? "expanded" : ""}`}>
         <div className="portrait-wrap"><img src={portrait} alt={`${agentProfile.displayName}, ${agentProfile.title}`} /></div>
-        {expanded ? null : (
-          <button className="profile-name-card-icon" type="button" onClick={() => setCardOpen(true)} aria-label="View Name Card" title="View Name Card">
-            <CreditCard size={16} aria-hidden="true" />
-          </button>
-        )}
         <div className="profile-copy">
           <span className="eyebrow"><BadgeCheck size={15} /> Registered property professional</span>
           <h1>{agentProfile.profilePanelName || (expanded ? agentProfile.name : agentProfile.displayName)}</h1>
@@ -25,9 +20,9 @@ export function ProfilePanel({ expanded = false }) {
           <p>{expanded ? agentProfile.professionalIntroduction : agentProfile.shortIntroduction}</p>
           <div className="area-list" aria-label="Main service areas"><MapPin size={16} /> {agentProfile.serviceAreas.map((area) => <span key={area}>{area}</span>)}</div>
           <div className="profile-actions">
-            {expanded ? null : <a className="button primary mobile-browse-properties" href="#properties">Browse Properties</a>}
             {expanded ? null : <Link className="button primary profile-requirement-link" to="/inquiries">Find a Property for Me</Link>}
             {expanded ? null : <ContactActions compact includeWhatsApp includeEmail includeCall={false} />}
+            {expanded ? null : <button className="profile-name-card-icon" type="button" onClick={() => setCardOpen(true)} aria-label="View Name Card" title="View Name Card"><CreditCard size={16} aria-hidden="true" /></button>}
             <button className="button tertiary" type="button" onClick={() => setCardOpen(true)}><CreditCard size={18} /> View Name Card</button>
           </div>
         </div>

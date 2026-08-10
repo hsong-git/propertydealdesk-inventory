@@ -611,6 +611,7 @@ main { flex: 1; }
 @media (max-width: 480px) {
   .brand-link small { display: none; }
   .portrait-wrap, .profile-panel.expanded .portrait-wrap, .profile-panel:not(.expanded) .portrait-wrap, .contact-hero > img { width: min(58vw,156px); height: 178px; }
+  .profile-panel:not(.expanded) .portrait-wrap { width: 82px; height: 104px; }
   .profile-agency { font-size: 11px; }
   .profile-actions, .contact-hero .contact-actions { grid-template-columns: 1fr; gap: 7px; }
   .profile-panel:not(.expanded) .profile-actions { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; }

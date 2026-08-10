@@ -73,6 +73,7 @@ test("homepage profile provides a compact mobile route to the catalogue", () => 
   assert.match(css, /\.profile-panel:not\(\.expanded\) \{[^}]*grid-template-columns: 82px minmax\(0,1fr\)/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.area-list,[\s\S]*\.profile-requirement-link,[\s\S]*display: none;/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.mobile-browse-properties \{ display: inline-flex; \}/);
+  assert.match(css, /@media \(max-width: 480px\)[\s\S]*\.profile-panel:not\(\.expanded\) \.portrait-wrap \{ width: 82px; height: 104px; \}/);
 });
 
 test("fullscreen photo viewer applies direction-aware slide classes", () => {

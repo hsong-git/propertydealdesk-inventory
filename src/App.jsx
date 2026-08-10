@@ -10,6 +10,7 @@ import { ShortListingRedirect } from "./pages/ShortListingRedirect";
 import { RequirementPage } from "./pages/RequirementPage";
 import { RequirementsAdminPage } from "./pages/RequirementsAdminPage";
 import { PhotoDownloadsAdminPage } from "./pages/PhotoDownloadsAdminPage";
+import { AdminLandingPage } from "./pages/AdminLandingPage";
 
 export default function App() {
   return (
@@ -21,9 +22,12 @@ export default function App() {
           <Route path="contact" element={<ContactPage />} />
           <Route path="inquiries" element={<RequirementPage />} />
           <Route path="requirements" element={<Navigate to="/inquiries" replace />} />
-          <Route path="admin/inquiries" element={<RequirementsAdminPage />} />
-          <Route path="admin/photo-downloads" element={<PhotoDownloadsAdminPage />} />
-          <Route path="admin/requirements" element={<Navigate to="/admin/inquiries" replace />} />
+          <Route path="admin" element={<AdminLandingPage />} />
+          <Route path="admin/inquiries" element={<AdminLandingPage />} />
+          <Route path="admin/photo-downloads" element={<AdminLandingPage />} />
+          <Route path="admin/inquiries/manage" element={<RequirementsAdminPage />} />
+          <Route path="admin/photo-downloads/audit" element={<PhotoDownloadsAdminPage />} />
+          <Route path="admin/requirements" element={<Navigate to="/admin" replace />} />
           <Route path="i/:code" element={<ShortListingRedirect />} />
           <Route path="property/:slug" element={<PropertyPage />} />
           <Route path="download/:grantToken" element={<DownloadGrantPage />} />

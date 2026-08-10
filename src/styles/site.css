@@ -439,7 +439,19 @@ main { flex: 1; }
 .photo-request-modal .photo-share-checkbox { display: flex; align-items: center; gap: 9px; color: var(--color-text); font-size: 13px; font-weight: 700; cursor: pointer; }
 .photo-request-modal .photo-share-checkbox input { width: 18px; height: 18px; min-height: 0; margin: 0; accent-color: var(--color-primary); }
 .photo-request-modal .photo-share-remark { padding: 10px 12px; border: 1px solid rgba(166,107,0,.3); border-radius: var(--radius-small); color: var(--color-text); background: #fff8e8; font-size: 12px; }
-.admin-downloads-page { min-height: 68vh; padding-block: clamp(34px,6vw,72px); }
+.admin-landing-page, .admin-downloads-page { min-height: 68vh; padding-block: clamp(34px,6vw,72px); }
+.admin-landing-shell { display: grid; gap: 24px; }
+.admin-page-heading { max-width: 760px; }
+.admin-page-heading h1 { margin: 8px 0 8px; font-size: clamp(30px,4vw,46px); letter-spacing: -.04em; }
+.admin-page-heading p { margin: 0; color: var(--color-text-muted); line-height: 1.55; }
+.admin-tool-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+.admin-tool-card { min-height: 150px; padding: 22px; border: 1px solid var(--color-border); border-radius: var(--radius-large); display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 16px; color: inherit; background: #fff; box-shadow: var(--shadow-card); transition: border-color 140ms ease, transform 140ms ease, box-shadow 140ms ease; }
+.admin-tool-card:hover { border-color: rgba(17,124,91,.35); transform: translateY(-2px); box-shadow: var(--shadow-elevated); }
+.admin-tool-icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; color: #fff; background: var(--color-primary); }
+.admin-tool-card > span:nth-child(2) { display: grid; gap: 7px; }
+.admin-tool-card strong { font-size: 18px; }
+.admin-tool-card small { color: var(--color-text-muted); font-size: 12px; line-height: 1.5; }
+.admin-tool-card > svg { color: var(--color-primary); }
 .admin-photo-audit-card { margin: 0 auto; border: 1px solid var(--color-border); border-radius: var(--radius-large); overflow: hidden; background: #fff; box-shadow: var(--shadow-card); }
 .photo-audit-table-wrap { overflow-x: auto; }
 .photo-audit-table { width: 100%; border-collapse: collapse; font-size: 11px; }
@@ -582,6 +594,8 @@ main { flex: 1; }
   .co-broke-panel .button { grid-column: auto; }
   .agent-tools-panel { grid-template-columns: 1fr; align-items: stretch; }
   .agent-tools-panel .button { width: 100%; }
+  .admin-tool-grid { grid-template-columns: 1fr; }
+  .admin-tool-card { min-height: 0; padding: 16px; }
   .agent-tools-lightbox { padding: 12px; }
   .agent-tools-lightbox-card { max-height: calc(100vh - 24px); }
   .agent-tools-lightbox-heading { align-items: flex-start; }

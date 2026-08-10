@@ -23,9 +23,19 @@ test("photo sharing audit links SMI codes and shortens browser details", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PhotoDownloadsAdminPage.jsx"), "utf8");
   assert.match(source, /href=\{`\/i\/\$\{encodeURIComponent\(String\(event\.listing_code/);
   assert.match(source, /function browserLabel\(userAgent\)/);
+  assert.match(source, /const os = \/Android/);
   assert.match(source, /function shareMethodLabel\(method\)/);
   assert.match(source, /shareMethodLabel\(event\.share_client\)/);
   assert.match(source, /className="browser-detail"/);
+});
+
+test("both legacy admin links open the shared administration landing page", () => {
+  const source = fs.readFileSync(path.join(projectRoot, "src", "App.jsx"), "utf8");
+  assert.match(source, /path="admin" element=\{<AdminLandingPage \/>\}/);
+  assert.match(source, /path="admin\/inquiries" element=\{<AdminLandingPage \/>\}/);
+  assert.match(source, /path="admin\/photo-downloads" element=\{<AdminLandingPage \/>\}/);
+  assert.match(source, /path="admin\/inquiries\/manage" element=\{<RequirementsAdminPage \/>\}/);
+  assert.match(source, /path="admin\/photo-downloads\/audit" element=\{<PhotoDownloadsAdminPage \/>\}/);
 });
 
 test("selected photo sharing is enabled unless explicitly disabled", () => {

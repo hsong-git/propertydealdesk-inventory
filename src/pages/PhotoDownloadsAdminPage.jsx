@@ -5,9 +5,9 @@ import { Seo } from "../components/Seo";
 
 function browserLabel(userAgent) {
   const value = String(userAgent || "");
-  const device = /Android|iPhone|iPad|Mobile/i.test(value) ? "Mobile" : "Desktop";
+  const os = /Android/i.test(value) ? "Android" : /iPhone|iPad|iPod/i.test(value) ? "iOS" : /Windows/i.test(value) ? "Windows" : /Mac OS X/i.test(value) ? "macOS" : /Linux/i.test(value) ? "Linux" : "Unknown OS";
   const browser = /Edg\//i.test(value) ? "Edge" : /Firefox\//i.test(value) ? "Firefox" : /Chrome\//i.test(value) ? "Chrome" : /Safari\//i.test(value) ? "Safari" : "Browser";
-  return `${device} · ${browser}`;
+  return `${os} · ${browser}`;
 }
 
 function shareMethodLabel(method) {

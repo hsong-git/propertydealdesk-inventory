@@ -49,8 +49,8 @@ export function RecentViewingPill() {
     if (!current || dismissed) return undefined;
     setLeaving(false);
     setVisible(true);
-    const hide = window.setTimeout(() => setLeaving(true), 8000);
-    const next = window.setTimeout(() => setIndex((value) => value + 1), 8450);
+    const hide = window.setTimeout(() => setLeaving(true), 5000);
+    const next = window.setTimeout(() => setIndex((value) => value + 1), 5450);
     return () => { window.clearTimeout(hide); window.clearTimeout(next); };
   }, [current, dismissed, index]);
 

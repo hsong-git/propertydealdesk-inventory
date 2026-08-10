@@ -1,6 +1,5 @@
 import { BadgeCheck, BriefcaseBusiness, CreditCard } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
 import { ContactActions } from "./ContactActions";
 import { NameCardModal } from "./NameCardModal";
@@ -19,7 +18,6 @@ export function ProfilePanel({ expanded = false }) {
           <p className="profile-agency"><BriefcaseBusiness size={16} /> {agentProfile.agency}</p>
           <p>{expanded ? agentProfile.professionalIntroduction : agentProfile.shortIntroduction}</p>
           <div className="profile-actions">
-            {expanded ? null : <Link className="button secondary profile-requirement-link" to="/inquiries">Find me a property</Link>}
             {expanded ? null : <ContactActions compact includeWhatsApp includeEmail includeCall={false} />}
             {expanded ? null : <button className="profile-name-card-icon" type="button" onClick={() => setCardOpen(true)} aria-label="View Name Card" title="View Name Card"><CreditCard size={16} aria-hidden="true" /></button>}
             <button className="button tertiary" type="button" onClick={() => setCardOpen(true)}><CreditCard size={18} /> View Name Card</button>

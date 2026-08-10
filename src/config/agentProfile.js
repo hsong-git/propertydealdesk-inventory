@@ -14,7 +14,7 @@ export const agentProfile = {
   aboutPortrait: "/profile/hs-ong-about-portrait.webp",
   nameCard: "/profile/hs-ong-name-card.webp",
   shortIntroduction:
-    "Helping buyers, tenants, owners and fellow agents connect with suitable property opportunities across Klang and Shah Alam.",
+    "Helping buyers, tenants, owners and fellow agents connect with suitable property opportunities across Klang Valley.",
   professionalIntroduction:
     "I support residential and commercial property enquiries with clear communication, practical local knowledge and responsive viewing coordination. Whether you are buying, renting, selling, letting or exploring a co-broke opportunity, you are welcome to get in touch.",
   coBrokeMessage:

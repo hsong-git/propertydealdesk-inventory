@@ -534,13 +534,13 @@ main { flex: 1; }
   .profile-panel:not(.expanded) .profile-agency,
   .profile-panel:not(.expanded) .profile-copy > p:not(.profile-role):not(.profile-agency),
   .profile-panel:not(.expanded) .area-list,
-  .profile-panel:not(.expanded) .profile-requirement-link,
   .profile-panel:not(.expanded) .profile-actions > .button.tertiary,
   .profile-panel:not(.expanded) .profile-actions .contact-actions .button.secondary { display: none; }
   .profile-panel:not(.expanded) .profile-copy h1 { font-size: 18px; line-height: 1.12; }
   .profile-panel:not(.expanded) .profile-role { font-size: 12px; }
   .profile-panel:not(.expanded) .profile-actions { margin-top: 7px; grid-template-columns: minmax(0,1fr) 42px; gap: 6px; }
   .profile-panel:not(.expanded) .profile-actions .button { min-height: 36px; padding-inline: 7px; font-size: 11px; }
+  .profile-panel:not(.expanded) .profile-requirement-link { grid-column: 1 / -1; }
   .profile-panel:not(.expanded) .profile-name-card-icon { width: 42px; height: 36px; min-height: 36px; padding: 0; border: 1px solid rgba(17,124,91,.22); border-radius: 8px; display: grid; place-items: center; color: var(--color-primary); background: rgba(255,255,255,.9); box-shadow: 0 4px 12px rgba(24,33,29,.08); cursor: pointer; }
   .profile-panel:not(.expanded) .profile-name-card-icon:hover { background: #fff; }
   .section-heading { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: start; gap: 8px 12px; }
@@ -573,8 +573,10 @@ main { flex: 1; }
   .property-facts span:first-child, .property-facts span:nth-child(4), .property-meta span:first-child { display: none; }
   .property-meta { justify-content: flex-start; }
   .property-actions { grid-column: 1 / -1; padding: 9px; grid-template-columns: 1fr 1fr auto; border-top: 1px solid var(--color-border); }
-  .co-broke-panel { grid-template-columns: auto 1fr; }
-  .co-broke-panel .button { grid-column: 1 / -1; }
+  .co-broke-panel { grid-template-columns: 1fr; justify-items: center; gap: 12px; text-align: center; }
+  .co-broke-panel > div { max-width: 390px; }
+  .co-broke-panel .contact-actions { width: 100%; justify-content: center; }
+  .co-broke-panel .button { grid-column: auto; }
   .agent-tools-panel { grid-template-columns: 1fr; align-items: stretch; }
   .agent-tools-panel .button { width: 100%; }
   .agent-tools-lightbox { padding: 12px; }

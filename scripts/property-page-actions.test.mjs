@@ -69,9 +69,10 @@ test("homepage profile provides a compact mobile route to the catalogue", () => 
   const source = fs.readFileSync(path.join(projectRoot, "src", "components", "ProfilePanel.jsx"), "utf8");
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
   assert.doesNotMatch(source, /mobile-browse-properties/);
+  assert.match(source, /profile-requirement-link" to="\/inquiries">Find me a property/);
   assert.match(source, /profile-name-card-icon[\s\S]*aria-label="View Name Card"/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \{[^}]*grid-template-columns: 82px minmax\(0,1fr\)/);
-  assert.match(css, /\.profile-panel:not\(\.expanded\) \.area-list,[\s\S]*\.profile-requirement-link,[\s\S]*display: none;/);
+  assert.match(css, /\.profile-panel:not\(\.expanded\) \.area-list,[\s\S]*\.profile-actions > \.button\.tertiary,[\s\S]*display: none;/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.profile-name-card-icon \{[^}]*width: 42px;[^}]*height: 36px;/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.profile-copy \{ padding-right: 34px; \}/);
   assert.match(css, /@media \(max-width: 480px\)[\s\S]*\.profile-panel:not\(\.expanded\) \.portrait-wrap \{ width: 82px; height: 104px; \}/);

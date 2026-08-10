@@ -6,7 +6,6 @@ import { useInventory } from "../hooks";
 import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing } from "../utils/listing";
 import { openWhatsApp } from "../utils/whatsapp";
 import { PublicPropertyImage } from "../components/PublicPropertyImage";
-import { PhotoDownloadButton } from "../components/PhotoDownloadButton";
 import { ShareSelectedPhotosButton } from "../components/ShareSelectedPhotosButton";
 import { Seo } from "../components/Seo";
 import { ListingUnavailableState } from "../components/ListingUnavailableState";
@@ -15,7 +14,6 @@ import { photoSwipeDirection } from "../utils/photoSwipe";
 import { getRelatedListings } from "../utils/relatedListings";
 import { RelatedListings } from "../components/RelatedListings";
 
-const photoDownloadsEnabled = import.meta.env.DEV || import.meta.env.VITE_ENABLE_PHOTO_DOWNLOADS === "true";
 const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false";
 
 export function PropertyPage() {
@@ -108,7 +106,6 @@ export function PropertyPage() {
         <aside className="agent-contact-card">
           <img src={agentProfile.portrait} alt={agentProfile.displayName} /><div><span className="eyebrow">Enquire directly</span><h2>{agentProfile.displayName}</h2><p>{agentProfile.title}</p><small>{agentProfile.agency}</small></div>
           <button className="button primary" type="button" onClick={() => openWhatsApp({ phone: agentProfile.whatsapp, message: enquiryText(listing, agentProfile.displayName), onError: (error) => window.alert(error) })}><MessageCircle size={18} /> WhatsApp enquiry</button>
-          {photoDownloadsEnabled ? <PhotoDownloadButton listing={listing} /> : null}
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} /> Call {agentProfile.phoneDisplay}</a>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {copied ? "Link copied" : "Share property"}</button>
         </aside>

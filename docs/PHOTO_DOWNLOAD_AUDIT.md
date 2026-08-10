@@ -1,10 +1,10 @@
 # Per-SMI photo downloads and audit
 
-Each published WTS/WTL property detail page exposes a **Download photos** action. The first successful attempt asks for the visitor's name and email and stores a long-lived, HttpOnly session cookie. Later downloads reuse that session without asking again.
+The public ZIP-download workflow has been retired. Each published WTS/WTL property detail page now exposes the selected-photo workflow. Visitors register once, choose photos, and either download watermarked JPGs or open WhatsApp. Each completed action is recorded with the visitor identity, SMI code, photo count, method and timestamp.
 
-The download endpoint accepts only a specific SMI code, streams that SMI's private R2 ZIP, and records a successful download event with the visitor, listing code, timestamp and user-agent. ZIP images are generated as WebP display copies with the approved embedded watermark (`TRR HS Ong` / `property.myeviv.com`); originals are never packaged.
+The private audit page is `/admin/photo-downloads`. It now reads `photo_share_events` from the private D1 database and reports `download`, `native`, `app` and `web` actions. Legacy ZIP routes and storage may remain dormant for migration compatibility, but are no longer rendered by the public property page.
 
-The owner-only audit page is `/admin/photo-downloads`. It requires the configured administrator Access identity and is not linked from public navigation. It reads the private `REQUIREMENTS_DB` tables created by `migrations/0002_photo_download_tracking.sql`.
+The owner-only audit page is `/admin/photo-downloads`. It requires the configured administrator Access identity and is not linked from public navigation. It reads the private `REQUIREMENTS_DB` tables created by `migrations/0004_photo_share_tracking.sql` and the visitor table from the earlier migration.
 
 Required production setup:
 

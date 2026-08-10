@@ -13,11 +13,10 @@ test("property page does not render a separate Copy short link action", () => {
   assert.match(source, /Share property/);
 });
 
-test("photo downloads are disabled in production unless explicitly enabled", () => {
+test("legacy ZIP photo downloads are no longer rendered", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
-  assert.match(source, /import\.meta\.env\.DEV/);
-  assert.match(source, /VITE_ENABLE_PHOTO_DOWNLOADS === "true"/);
-  assert.match(source, /photoDownloadsEnabled \? <PhotoDownloadButton listing=\{listing\} \/> : null/);
+  assert.doesNotMatch(source, /PhotoDownloadButton/);
+  assert.doesNotMatch(source, /photoDownloadsEnabled/);
 });
 
 test("selected photo sharing is enabled unless explicitly disabled", () => {

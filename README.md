@@ -21,6 +21,10 @@ PropertyDealDesk Inventory Catalogue
 
 Production Stable remains the source of truth. The catalogue only consumes a reviewed static snapshot and never writes back to Stable. No Stable export button or export script is implemented by this project; that Stable-side work requires separate approval from HS Ong.
 
+### Recently viewed listing pill
+
+After a visitor opens a public property detail page, the catalogue may show a small anonymous “recently viewed” pill while they browse. It uses only the current browser session's recently opened listing codes, contains no visitor name or identity, and does not claim to be a live count of other agents. It is a navigation convenience, not analytics or proof of simultaneous activity.
+
 ## Local setup
 
 Requirements: Node.js 20 or newer and npm.

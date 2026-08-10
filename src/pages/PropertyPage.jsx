@@ -13,6 +13,7 @@ import { propertySeoDescription, SITE_ORIGIN } from "../utils/seo";
 import { photoSwipeDirection } from "../utils/photoSwipe";
 import { getRelatedListings } from "../utils/relatedListings";
 import { RelatedListings } from "../components/RelatedListings";
+import { rememberListingView } from "../components/RecentViewingPill";
 
 const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false";
 
@@ -36,6 +37,7 @@ export function PropertyPage() {
     setActivePhoto((current) => (current + direction + listing.photos.length) % listing.photos.length);
   }
   useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); setSelectedPhotos([]); setLightboxSlide(""); }, [slug]);
+  useEffect(() => { if (listing?.code) rememberListingView(listing.code); }, [listing?.code]);
   useEffect(() => {
     if (!lightboxOpen) return undefined;
     document.body.classList.add("modal-open");

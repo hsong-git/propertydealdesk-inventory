@@ -2,6 +2,7 @@ import { Link, Outlet } from "react-router-dom";
 import { Header } from "./Header";
 import { agentProfile } from "../config/agentProfile";
 import { useAppVersionReload } from "../hooks/useAppVersionReload";
+import { RecentViewingPill } from "./RecentViewingPill";
 
 export function Layout() {
   useAppVersionReload();
@@ -10,6 +11,7 @@ export function Layout() {
     <div className="site-shell">
       <Header />
       <Outlet />
+      <RecentViewingPill />
       <footer className="site-footer">
         <div className="page-width footer-grid">
           <div><strong>{agentProfile.websiteTitle}</strong><p>{agentProfile.title}</p></div>

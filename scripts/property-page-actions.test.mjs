@@ -66,6 +66,15 @@ test("intent selection remains outside the collapsible mobile filter drawer", ()
   assert.match(css, /\.persistent-intent-filter \{[^}]*width: min\(100%,376px\);/);
 });
 
+test("homepage profile provides a compact mobile route to the catalogue", () => {
+  const source = fs.readFileSync(path.join(projectRoot, "src", "components", "ProfilePanel.jsx"), "utf8");
+  const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
+  assert.match(source, /mobile-browse-properties" href="#properties">Browse Properties/);
+  assert.match(css, /\.profile-panel:not\(\.expanded\) \{[^}]*grid-template-columns: 82px minmax\(0,1fr\)/);
+  assert.match(css, /\.profile-panel:not\(\.expanded\) \.area-list,[\s\S]*\.profile-requirement-link,[\s\S]*display: none;/);
+  assert.match(css, /\.profile-panel:not\(\.expanded\) \.mobile-browse-properties \{ display: inline-flex; \}/);
+});
+
 test("fullscreen photo viewer applies direction-aware slide classes", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");

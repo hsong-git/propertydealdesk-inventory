@@ -3,7 +3,6 @@ import { useState } from "react";
 import { agentProfile } from "../config/agentProfile";
 import { ContactActions } from "../components/ContactActions";
 import { NameCardModal } from "../components/NameCardModal";
-import { ProfilePanel } from "../components/ProfilePanel";
 import { Seo } from "../components/Seo";
 import { SITE_ORIGIN } from "../utils/seo";
 
@@ -17,7 +16,6 @@ export function AboutContactPage() {
         canonical={`${SITE_ORIGIN}/about`}
         ogTitle="About & Contact HS Ong"
       />
-      <ProfilePanel expanded />
       <section className="contact-hero"><div><span className="eyebrow">Direct contact</span><h1>Let&apos;s discuss your property enquiry</h1><p>When contacting me, include the listing code, your preferred viewing time, or a short description of the property you need.</p><ContactActions includeEmail includeWhatsApp /></div><img src={agentProfile.portrait} alt={agentProfile.displayName} /></section>
       <div className="about-grid">
         <section className="content-card"><span className="eyebrow">How I can help</span><h2>Property-related services</h2><ul className="check-list large">{agentProfile.services.map((service) => <li key={service}><Check size={18} /> {service}</li>)}</ul></section>

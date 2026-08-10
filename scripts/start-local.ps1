@@ -48,11 +48,27 @@ if ($LASTEXITCODE -ne 0) { throw "Local D1 migration check failed with exit code
 
 Write-Host "Building the current frontend before starting local Pages Dev..." -ForegroundColor Cyan
 Push-Location $projectRoot
-try { & $npmCommand.Source run build; if ($LASTEXITCODE -ne 0) { throw "npm run build failed with exit code $LASTEXITCODE." } }
-finally { Pop-Location }
+$previousPhotoSharingFlag = $env:VITE_ENABLE_PHOTO_SHARING
+try {
+    $env:VITE_ENABLE_PHOTO_SHARING = "true"
+    & $npmCommand.Source run build
+    if ($LASTEXITCODE -ne 0) { throw "npm run build failed with exit code $LASTEXITCODE." }
+}
+finally {
+    if ($null -eq $previousPhotoSharingFlag) { Remove-Item Env:VITE_ENABLE_PHOTO_SHARING -ErrorAction SilentlyContinue }
+    else { $env:VITE_ENABLE_PHOTO_SHARING = $previousPhotoSharingFlag }
+    Pop-Location
+}
 
 Remove-Item -LiteralPath $outputLog, $errorLog -Force -ErrorAction SilentlyContinue
-$pages = Start-Process -FilePath $nodePath -ArgumentList @($wranglerScript, "pages", "dev", "dist", "--port", "$pagesPort", "--persist-to", ".runtime\wrangler", "--compatibility-date", "2026-07-31", "--show-interactive-dev-session", "false") -WorkingDirectory $projectRoot -WindowStyle Hidden -RedirectStandardOutput $outputLog -RedirectStandardError $errorLog -PassThru
+$pagesArguments = @($wranglerScript, "pages", "dev", "dist", "--ip", "0.0.0.0", "--port", "$pagesPort", "--persist-to", ".runtime\wrangler", "--compatibility-date", "2026-07-31", "--show-interactive-dev-session", "false")
+$processInfo = New-Object System.Diagnostics.ProcessStartInfo
+$processInfo.FileName = $nodePath
+$processInfo.Arguments = ($pagesArguments | ForEach-Object { '"' + ($_ -replace '"', '\"') + '"' }) -join ' '
+$processInfo.WorkingDirectory = $projectRoot
+$processInfo.UseShellExecute = $false
+$processInfo.CreateNoWindow = $true
+$pages = [System.Diagnostics.Process]::Start($processInfo)
 Set-Content -LiteralPath $pidFile -Value $pages.Id -Encoding ascii
 
 $ready = $false
@@ -73,4 +89,6 @@ if (-not $ready) {
 
 Write-Host "Inventory Catalogue started successfully with local Pages Functions (PID $($pages.Id))." -ForegroundColor Green
 Write-Host $url
+Write-Host "Mobile/LAN testing: http://<this-laptop-IP>:$pagesPort/"
+Write-Host "Development-only feature enabled: Share selected photos to WhatsApp"
 Write-Host "Local D1 binding: REQUIREMENTS_DB"

@@ -20,6 +20,26 @@ test("photo downloads are disabled in production unless explicitly enabled", () 
   assert.match(source, /photoDownloadsEnabled \? <PhotoDownloadButton listing=\{listing\} \/> : null/);
 });
 
+test("selected photo sharing is enabled unless explicitly disabled", () => {
+  const page = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
+  const sharing = fs.readFileSync(path.join(projectRoot, "src", "components", "ShareSelectedPhotosButton.jsx"), "utf8");
+  const styles = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
+  assert.match(page, /VITE_ENABLE_PHOTO_SHARING !== "false"/);
+  assert.match(page, /photoSharingEnabled && listing\.photos\.length > 0/);
+  assert.match(sharing, /createWatermarkedJpegFile/);
+  assert.match(sharing, /WhatsApp App/);
+  assert.match(sharing, /WhatsApp Web/);
+  assert.match(sharing, /Download selected photos/);
+  assert.match(sharing, /hasSelection \? "primary is-ready" : "secondary"/);
+  assert.match(sharing, /photo-share-trigger-icon/);
+  assert.match(styles, /\.selected-photo-share \{[^}]*justify-content: flex-end;[^}]*gap: 8px;/);
+  assert.ok(sharing.indexOf('role="alert"') < sharing.indexOf('className={`button photo-share-trigger'));
+  assert.match(sharing, /current\.error === "Select at least one photo first\."/);
+  assert.match(sharing, /Open WhatsApp after downloading/);
+  assert.match(sharing, /attach the downloaded JPG photos separately/);
+  assert.match(sharing, /name: state\.name, email: state\.email, contactNumber: state\.contactNumber/);
+});
+
 test("property cards expose a compact Copy posting action", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "components", "PropertyCard.jsx"), "utf8");
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");

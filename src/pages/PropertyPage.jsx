@@ -7,6 +7,7 @@ import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareL
 import { openWhatsApp } from "../utils/whatsapp";
 import { PublicPropertyImage } from "../components/PublicPropertyImage";
 import { PhotoDownloadButton } from "../components/PhotoDownloadButton";
+import { ShareSelectedPhotosButton } from "../components/ShareSelectedPhotosButton";
 import { Seo } from "../components/Seo";
 import { ListingUnavailableState } from "../components/ListingUnavailableState";
 import { propertySeoDescription, SITE_ORIGIN } from "../utils/seo";
@@ -15,6 +16,7 @@ import { getRelatedListings } from "../utils/relatedListings";
 import { RelatedListings } from "../components/RelatedListings";
 
 const photoDownloadsEnabled = import.meta.env.DEV || import.meta.env.VITE_ENABLE_PHOTO_DOWNLOADS === "true";
+const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false";
 
 export function PropertyPage() {
   const { slug } = useParams();
@@ -23,6 +25,7 @@ export function PropertyPage() {
   const [activePhoto, setActivePhoto] = useState(0);
   const [copied, setCopied] = useState(false);
   const [postingCopied, setPostingCopied] = useState(false);
+  const [selectedPhotos, setSelectedPhotos] = useState([]);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxSlide, setLightboxSlide] = useState("");
   const swipeStart = useRef(null);
@@ -34,7 +37,7 @@ export function PropertyPage() {
     setLightboxSlide(direction > 0 ? "next" : "previous");
     setActivePhoto((current) => (current + direction + listing.photos.length) % listing.photos.length);
   }
-  useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); setLightboxSlide(""); }, [slug]);
+  useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); setSelectedPhotos([]); setLightboxSlide(""); }, [slug]);
   useEffect(() => {
     if (!lightboxOpen) return undefined;
     document.body.classList.add("modal-open");
@@ -91,7 +94,7 @@ export function PropertyPage() {
               ? <button className="gallery-open" type="button" onClick={() => setLightboxOpen(true)} aria-label={`Open photo ${activePhoto + 1} of ${listing.photos.length} fullscreen`}><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1}`} /><span className="gallery-open-label"><Maximize2 size={17} /> Full view</span></button>
               : <span className="property-photo-placeholder detail-placeholder"><ImageOff size={38} /><small>No public photo supplied</small></span>}
               <span className={`intent intent-${listing.intent.toLowerCase()}`}>{listing.intent}<small>{intentLabels[listing.intent]}</small></span></div>
-            {listing.photos.length > 1 ? <div className="gallery-thumbnails">{listing.photos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
+            {photoSharingEnabled && listing.photos.length > 0 ? <><div className="gallery-thumbnails">{listing.photos.map((photo, index) => <div className="gallery-thumbnail-choice" key={photo}><button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button><button type="button" className={`photo-select-toggle${selectedPhotos.includes(photo) ? " selected" : ""}`} aria-label={`${selectedPhotos.includes(photo) ? "Deselect" : "Select"} photo ${index + 1}`} aria-pressed={selectedPhotos.includes(photo)} onClick={() => setSelectedPhotos((current) => current.includes(photo) ? current.filter((item) => item !== photo) : [...current, photo])}>{selectedPhotos.includes(photo) ? <Check size={14} /> : <span />}</button></div>)}</div><ShareSelectedPhotosButton listing={listing} selectedPhotos={selectedPhotos} /></> : listing.photos.length > 1 ? <div className="gallery-thumbnails">{listing.photos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
           </section>
           <section className="detail-title-block">
             <div className="property-reference"><span>{listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>

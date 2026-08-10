@@ -10,7 +10,7 @@ export async function onRequestPost(context) {
   try {
     const visitor = await registerPhotoVisitor({ env: context.env, name: payload?.name, email: payload?.email, contactNumber: payload?.contactNumber });
     if (!visitor) return json({ error: "Enter a valid name, email and contact number (for example 016-313 2865 or +60163132865)." }, 400);
-    return json({ registered: true }, 200, { "set-cookie": visitorSessionCookie(visitor.sessionToken) });
+    return json({ registered: true }, 200, { "set-cookie": visitorSessionCookie(visitor.sessionToken, { secure: new URL(context.request.url).protocol === "https:" }) });
   } catch { return json({ error: "Photo download registration is unavailable." }, 503); }
 }
 

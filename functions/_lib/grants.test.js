@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createPhotoGrant, GRANT_TTL_SECONDS, resolvePhotoGrant, TOKEN_PATTERN } from "./grants.js";
+import { createPhotoGrant, GRANT_TTL_SECONDS, resolvePhotoGrant, TOKEN_PATTERN, visitorSessionCookie } from "./grants.js";
 
 function fakeEnvironment(metadata = { sanitized: "true", smiCode: "WTL0010", inventoryVersion: "2026.07.27.5", title: "Office Lot photos" }) {
   const values = new Map();
@@ -44,4 +44,10 @@ test("refuses missing, mismatched, or unsanitized R2 packages", async () => {
   assert.equal(await createPhotoGrant({ env: bad.env, code: "WTL0010", email: "owner@example.com", origin: "https://inventory.example.com" }), null);
   const good = fakeEnvironment();
   assert.equal(await createPhotoGrant({ env: good.env, code: "WTB0010", email: "owner@example.com", origin: "https://inventory.example.com" }), null);
+});
+
+test("keeps visitor cookies secure in production and usable for local HTTP testing", () => {
+  assert.match(visitorSessionCookie("test-token"), /; Secure;/);
+  assert.doesNotMatch(visitorSessionCookie("test-token", { secure: false }), /; Secure;/);
+  assert.match(visitorSessionCookie("test-token", { secure: false }), /HttpOnly; SameSite=Lax$/);
 });

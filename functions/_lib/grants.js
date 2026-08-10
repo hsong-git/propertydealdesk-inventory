@@ -11,6 +11,10 @@ function requireBindings(env) {
   if (!env?.REQUIREMENTS_DB || !env?.PHOTO_PACKAGES || !String(env.CURRENT_INVENTORY_VERSION || "").trim()) throw new Error("Photo download storage is not configured.");
 }
 
+function requireVisitorDatabase(env) {
+  if (!env?.REQUIREMENTS_DB) throw new Error("Photo visitor storage is not configured.");
+}
+
 export const normalizeEmail = (value) => text(value).toLowerCase();
 export const isEmail = (value) => EMAIL_PATTERN.test(normalizeEmail(value));
 export const normalizeContactNumber = (value) => text(value).replace(/[\s().-]/g, "");
@@ -35,12 +39,12 @@ function cookieValue(request) {
   return match ? decodeURIComponent(match.slice(VISITOR_SESSION_COOKIE.length + 1)) : "";
 }
 
-export function visitorSessionCookie(token) {
-  return `${VISITOR_SESSION_COOKIE}=${encodeURIComponent(token)}; Path=/; Max-Age=${SESSION_TTL_SECONDS}; HttpOnly; Secure; SameSite=Lax`;
+export function visitorSessionCookie(token, { secure = true } = {}) {
+  return `${VISITOR_SESSION_COOKIE}=${encodeURIComponent(token)}; Path=/; Max-Age=${SESSION_TTL_SECONDS}; HttpOnly${secure ? "; Secure" : ""}; SameSite=Lax`;
 }
 
 export async function registerPhotoVisitor({ env, name, email, contactNumber, now = new Date() }) {
-  requireBindings(env);
+  requireVisitorDatabase(env);
   const cleanName = text(name).slice(0, 120);
   const cleanEmail = normalizeEmail(email);
   const cleanContact = normalizeContactNumber(contactNumber);
@@ -55,6 +59,15 @@ export async function registerPhotoVisitor({ env, name, email, contactNumber, no
   return { visitorId, name: cleanName, email: cleanEmail, sessionToken };
 }
 
+export async function resolvePhotoVisitorSession({ env, request, now = new Date() }) {
+  requireVisitorDatabase(env);
+  const sessionToken = cookieValue(request);
+  if (!TOKEN_PATTERN.test(sessionToken)) return null;
+  const row = await env.REQUIREMENTS_DB.prepare("SELECT s.visitor_id, s.expires_at, v.name, v.email, v.contact_number FROM photo_download_sessions s JOIN photo_download_visitors v ON v.id = s.visitor_id WHERE s.token_hash = ?").bind(await hashToken(sessionToken)).first();
+  if (!row || Date.parse(row.expires_at) <= now.getTime()) return null;
+  return row;
+}
+
 const isWatermarked = (object, code, env) => object?.customMetadata?.sanitized === "true"
   && object.customMetadata?.watermarked === "true"
   && object.customMetadata?.watermarkVersion === "trr-hs-ong-v1"
@@ -65,10 +78,9 @@ export async function resolvePhotoDownload({ env, request, code, includeObject =
   requireBindings(env);
   const normalizedCode = text(code).toUpperCase();
   const packageKey = packageKeyFor(normalizedCode);
-  const sessionToken = cookieValue(request);
-  if (!packageKey || !TOKEN_PATTERN.test(sessionToken)) return null;
-  const row = await env.REQUIREMENTS_DB.prepare("SELECT s.visitor_id, s.expires_at, v.name, v.email FROM photo_download_sessions s JOIN photo_download_visitors v ON v.id = s.visitor_id WHERE s.token_hash = ?").bind(await hashToken(sessionToken)).first();
-  if (!row || Date.parse(row.expires_at) <= now.getTime()) return null;
+  if (!packageKey) return null;
+  const row = await resolvePhotoVisitorSession({ env, request, now });
+  if (!row) return null;
   const object = includeObject ? await env.PHOTO_PACKAGES.get(packageKey) : await env.PHOTO_PACKAGES.head(packageKey);
   if (!isWatermarked(object, normalizedCode, env)) return null;
   return { packageKey, object, visitor: row, code: normalizedCode };

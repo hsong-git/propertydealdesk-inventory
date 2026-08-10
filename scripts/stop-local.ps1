@@ -10,8 +10,15 @@ function Stop-Tracked([string]$pidPath) {
     if (-not (Test-Path -LiteralPath $pidPath)) { return }
     $savedPid = (Get-Content -LiteralPath $pidPath -Raw).Trim()
     if ($savedPid -match '^\d+$') {
-        $processInfo = Get-CimInstance Win32_Process -Filter "ProcessId = $savedPid" -ErrorAction SilentlyContinue
-        if ($null -ne $processInfo) { Stop-Process -Id ([int]$savedPid) -Force -ErrorAction SilentlyContinue }
+        $allProcesses = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)
+        $tree = New-Object System.Collections.Generic.List[int]
+        $tree.Add([int]$savedPid)
+        for ($index = 0; $index -lt $tree.Count; $index++) {
+            foreach ($child in $allProcesses | Where-Object { $_.ParentProcessId -eq $tree[$index] }) {
+                if (-not $tree.Contains([int]$child.ProcessId)) { $tree.Add([int]$child.ProcessId) }
+            }
+        }
+        for ($index = $tree.Count - 1; $index -ge 0; $index--) { Stop-Process -Id $tree[$index] -Force -ErrorAction SilentlyContinue }
     }
     Remove-Item -LiteralPath $pidPath -Force -ErrorAction SilentlyContinue
 }
@@ -22,8 +29,14 @@ Stop-Tracked $vitePidFile
 
 $listener = Get-NetTCPConnection -State Listen -LocalPort $pagesPort -ErrorAction SilentlyContinue | Select-Object -First 1
 if ($null -ne $listener) {
-    Write-Host "Port $pagesPort is still used by PID $($listener.OwningProcess). No untracked process was stopped." -ForegroundColor Yellow
-    exit 1
+    $listenerProcess = Get-Process -Id $listener.OwningProcess -ErrorAction SilentlyContinue
+    if ($null -ne $listenerProcess -and $listenerProcess.Path -like "$projectRoot*") {
+        Stop-Process -Id $listener.OwningProcess -Force -ErrorAction SilentlyContinue
+    }
+    else {
+        Write-Host "Port $pagesPort is still used by unrelated PID $($listener.OwningProcess). It was not stopped." -ForegroundColor Yellow
+        exit 1
+    }
 }
 
 if ($hadTracked) { Write-Host "Inventory Catalogue stopped successfully." -ForegroundColor Green }

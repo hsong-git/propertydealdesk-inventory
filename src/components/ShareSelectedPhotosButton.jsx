@@ -60,11 +60,13 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
         patchState({ open: true, stage: "choose", busy: false, openWhatsApp: true, message: "", error: "Direct file sharing is unavailable in this browser. Use one of the assisted WhatsApp options below." });
         return;
       }
-      await navigator.share({ title: `${listing.code} photos`, text: photoShareMessage(listing, agentProfile), files });
+      // Record before handing control to the native share sheet. Installed Android
+      // apps can be suspended while WhatsApp is foregrounded, so waiting for the
+      // share promise to resolve can lose the audit request entirely.
       await recordShare("native");
+      await navigator.share({ title: `${listing.code} photos`, text: photoShareMessage(listing, agentProfile), files });
       patchState({ open: false, busy: false, message: "Photos shared successfully.", error: "" });
     } catch (error) {
-      if (error?.name === "AbortError") await recordShare("native");
       patchState({ busy: false, message: "", error: nativeShareErrorMessage(error) });
     }
   };

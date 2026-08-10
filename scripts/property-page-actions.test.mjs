@@ -56,6 +56,8 @@ test("selected photo sharing is enabled unless explicitly disabled", () => {
   assert.match(sharing, /Open WhatsApp after downloading/);
   assert.match(sharing, /attach the downloaded JPG photos separately/);
   assert.match(sharing, /name: state\.name, email: state\.email, contactNumber: state\.contactNumber/);
+  assert.ok(sharing.indexOf('await recordShare("native");') < sharing.indexOf('await navigator.share({'));
+  assert.doesNotMatch(sharing, /if \(error\?\.name === "AbortError"\) await recordShare\("native"\)/);
 });
 
 test("property cards expose a compact Copy posting action", () => {

@@ -15,14 +15,15 @@ const defaults = { keyword: "", intent: defaultIntent, propertyType: "", locatio
 const CATALOGUE_STATE_KEY = "pdd-catalogue-state";
 
 function readCatalogueState() {
-  if (typeof window === "undefined") return { filters: defaults, catalogueMode: "all" };
+  if (typeof window === "undefined") return { filters: defaults, catalogueMode: "all", visible: 6 };
   try {
     const saved = JSON.parse(window.sessionStorage.getItem(CATALOGUE_STATE_KEY) || "null");
     return {
       filters: saved?.filters && typeof saved.filters === "object" ? { ...defaults, ...saved.filters } : defaults,
       catalogueMode: saved?.catalogueMode === "featured" ? "featured" : "all",
+      visible: Number.isInteger(saved?.visible) && saved.visible >= 6 ? saved.visible : 6,
     };
-  } catch { return { filters: defaults, catalogueMode: "all" }; }
+  } catch { return { filters: defaults, catalogueMode: "all", visible: 6 }; }
 }
 
 export function HomePage() {
@@ -31,7 +32,7 @@ export function HomePage() {
   const [filters, setFilters] = useState(initialCatalogueState.filters);
   const [catalogueMode, setCatalogueMode] = useState(initialCatalogueState.catalogueMode);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [visible, setVisible] = useState(6);
+  const [visible, setVisible] = useState(initialCatalogueState.visible);
   const [agentToolsPreviewOpen, setAgentToolsPreviewOpen] = useState(false);
   const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && key !== "intent" && value).length
     + (filters.intent !== defaultIntent ? 1 : 0)
@@ -67,8 +68,8 @@ export function HomePage() {
     setVisible(6);
   };
   useEffect(() => {
-    try { window.sessionStorage.setItem(CATALOGUE_STATE_KEY, JSON.stringify({ filters, catalogueMode })); } catch { /* storage may be unavailable */ }
-  }, [filters, catalogueMode]);
+    try { window.sessionStorage.setItem(CATALOGUE_STATE_KEY, JSON.stringify({ filters, catalogueMode, visible })); } catch { /* storage may be unavailable */ }
+  }, [filters, catalogueMode, visible]);
   useEffect(() => {
     if (!agentToolsPreviewOpen) return undefined;
     document.body.classList.add("modal-open");

@@ -3,6 +3,7 @@ import { Header } from "./Header";
 import { agentProfile } from "../config/agentProfile";
 import { useAppVersionReload } from "../hooks/useAppVersionReload";
 import { RecentViewingPill } from "./RecentViewingPill";
+import { ScrollToTopButton } from "./ScrollToTopButton";
 
 export function Layout() {
   useAppVersionReload();
@@ -12,6 +13,7 @@ export function Layout() {
       <Header />
       <Outlet />
       <RecentViewingPill />
+      <ScrollToTopButton />
       <footer className="site-footer">
         <div className="page-width footer-grid">
           <div><strong>{agentProfile.websiteTitle}</strong><p>{agentProfile.title}</p></div>

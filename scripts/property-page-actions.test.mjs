@@ -75,6 +75,7 @@ test("homepage profile provides a compact mobile route to the catalogue", () => 
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.area-list,[\s\S]*\.profile-requirement-link,[\s\S]*display: none;/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.mobile-browse-properties \{ display: inline-flex; \}/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.profile-name-card-icon \{[^}]*position: absolute;[^}]*width: 28px;[^}]*height: 28px;/);
+  assert.match(css, /\.profile-panel:not\(\.expanded\) \.profile-copy \{ padding-right: 34px; \}/);
   assert.match(css, /@media \(max-width: 480px\)[\s\S]*\.profile-panel:not\(\.expanded\) \.portrait-wrap \{ width: 82px; height: 104px; \}/);
 });
 

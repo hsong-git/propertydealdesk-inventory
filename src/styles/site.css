@@ -530,6 +530,7 @@ main { flex: 1; }
   .profile-actions .button { width: 100%; min-width: 0; }
   .profile-actions > .button.tertiary { grid-column: 1 / -1; }
   .profile-panel:not(.expanded) .profile-copy { gap: 3px; }
+  .profile-panel:not(.expanded) .profile-copy { padding-right: 34px; }
   .profile-panel:not(.expanded) .profile-copy > .eyebrow,
   .profile-panel:not(.expanded) .profile-agency,
   .profile-panel:not(.expanded) .profile-copy > p:not(.profile-role):not(.profile-agency),

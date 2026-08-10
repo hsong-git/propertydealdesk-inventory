@@ -2,7 +2,7 @@ import { Check, Download, LoaderCircle, MessageCircle, Monitor, Smartphone, X } 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { isMobileOrTabletDevice } from "../utils/whatsapp";
-import { createWatermarkedJpegFile, desktopWhatsAppUrl, downloadPreparedFiles, photoShareMessage } from "../utils/photoShare";
+import { createWatermarkedJpegFile, desktopWhatsAppUrl, downloadPreparedFiles, nativeShareErrorMessage, photoShareMessage } from "../utils/photoShare";
 
 const initialState = { open: false, stage: "register", name: "", email: "", contactNumber: "", openWhatsApp: false, busy: false, message: "", error: "" };
 
@@ -62,7 +62,8 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
       await recordShare("native");
       patchState({ open: false, busy: false, message: "Photos shared successfully.", error: "" });
     } catch (error) {
-      patchState({ busy: false, message: "", error: error?.name === "AbortError" ? "Sharing was cancelled." : "Unable to prepare these photos for sharing." });
+      if (error?.name === "AbortError") await recordShare("native");
+      patchState({ busy: false, message: "", error: nativeShareErrorMessage(error) });
     }
   };
 

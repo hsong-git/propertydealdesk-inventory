@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { desktopWhatsAppUrl, PHOTO_SHARE_JPEG_QUALITY, photoShareFileName, photoShareMessage } from "./photoShare.js";
+import { desktopWhatsAppUrl, nativeShareErrorMessage, PHOTO_SHARE_JPEG_QUALITY, photoShareFileName, photoShareMessage } from "./photoShare.js";
 
 test("prepares standard JPG filenames and listing share copy", () => {
   assert.equal(photoShareFileName("wtl0063", 0), "WTL0063-photo-01.jpg");
@@ -12,4 +12,9 @@ test("prepares standard JPG filenames and listing share copy", () => {
 test("provides explicit WhatsApp App and Web destinations", () => {
   assert.match(desktopWhatsAppUrl("app", "Listing photos"), /^whatsapp:\/\/send\?text=/);
   assert.match(desktopWhatsAppUrl("web", "Listing photos"), /^https:\/\/web\.whatsapp\.com\/send\?text=/);
+});
+
+test("does not show a false cancellation after a mobile share target closes", () => {
+  assert.equal(nativeShareErrorMessage({ name: "AbortError" }), "");
+  assert.equal(nativeShareErrorMessage({ name: "NotAllowedError" }), "Unable to prepare these photos for sharing.");
 });

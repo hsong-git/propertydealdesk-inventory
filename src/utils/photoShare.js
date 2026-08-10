@@ -3,6 +3,10 @@ import { SITE_ORIGIN } from "./seo.js";
 
 export const PHOTO_SHARE_JPEG_QUALITY = 0.9;
 
+export const nativeShareErrorMessage = (error) => error?.name === "AbortError"
+  ? ""
+  : "Unable to prepare these photos for sharing.";
+
 const cleanCode = (code) => String(code || "listing").trim().toUpperCase().replace(/[^A-Z0-9-]/g, "-");
 
 export function photoShareFileName(code, index) {

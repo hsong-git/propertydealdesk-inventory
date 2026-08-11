@@ -12,4 +12,23 @@ export async function onRequestGet(context) {
   }
 }
 
-export const onRequest = (context) => context.request.method === "GET" ? onRequestGet(context) : methodNotAllowed("GET");
+export async function onRequestDelete(context) {
+  if (!await requireAdmin(context)) return json({ error: "Administrator access required." }, 401);
+  if (!context.env?.REQUIREMENTS_DB) return json({ deleted: 0 });
+  let payload;
+  try { payload = await context.request.json(); } catch { return json({ error: "Invalid request." }, 400); }
+  const name = String(payload?.name || "").trim();
+  if (!name || name.length > 120) return json({ error: "A valid visitor name is required." }, 400);
+  try {
+    const result = await context.env.REQUIREMENTS_DB.prepare(`DELETE FROM photo_share_events WHERE visitor_id IN (SELECT id FROM photo_download_visitors WHERE UPPER(TRIM(name)) = UPPER(TRIM(?)))`).bind(name).run();
+    return json({ deleted: Number(result?.meta?.changes || 0) });
+  } catch {
+    return json({ error: "Photo sharing audit is unavailable." }, 503);
+  }
+}
+
+export const onRequest = (context) => context.request.method === "GET"
+  ? onRequestGet(context)
+  : context.request.method === "DELETE"
+    ? onRequestDelete(context)
+    : methodNotAllowed("GET, DELETE");

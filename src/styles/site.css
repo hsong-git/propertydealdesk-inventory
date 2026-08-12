@@ -438,7 +438,10 @@ main { flex: 1; }
 }
 .updated-line { margin: 0; display: flex; align-items: center; gap: 6px; color: var(--color-text-muted); font-size: 11px; }
 .agent-contact-card { position: sticky; top: 90px; padding: 20px; display: grid; grid-template-columns: 64px minmax(0,1fr); gap: 13px; }
-.agent-contact-card > img { width: 64px; height: 72px; border-radius: var(--radius-small); object-fit: cover; object-position: center 10%; background: var(--color-surface-muted); }
+.agent-contact-card { grid-template-columns: 82px minmax(0,1fr); }
+.agent-contact-card > img, .agent-portrait-trigger { width: 82px; height: 102px; }
+.agent-portrait-trigger { padding: 0; border: 0; border-radius: var(--radius-small); overflow: hidden; cursor: zoom-in; background: var(--color-surface-muted); }
+.agent-portrait-trigger img { width: 100%; height: 100%; object-fit: cover; object-position: center 0%; display: block; }
 .agent-contact-card h2 { margin: 4px 0 1px; font-size: 19px; }
 .agent-contact-card p, .agent-contact-card small { margin: 0; color: var(--color-text-muted); font-size: 11px; }
 .agent-contact-card .button { grid-column: 1 / -1; width: 100%; }
@@ -647,8 +650,8 @@ main { flex: 1; }
   .detail-title-block, .detail-section { padding: 16px; }
   .detail-title-block h1 { font-size: 28px; }
   .reason-grid { grid-template-columns: 1fr; }
-  .agent-contact-card { position: static; grid-template-columns: 88px minmax(0,1fr); }
-  .agent-contact-card > img { width: 88px; height: 112px; object-position: center 0%; }
+  .agent-contact-card { position: static; grid-template-columns: 96px minmax(0,1fr); }
+  .agent-contact-card > img, .agent-portrait-trigger { width: 96px; height: 126px; }
   .posting-heading { align-items: stretch; flex-direction: column; }
   .posting-heading .button { width: 100%; }
   .photo-lightbox { padding: 66px 12px 72px; }

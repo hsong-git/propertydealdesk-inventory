@@ -15,6 +15,7 @@ import { getRelatedListings } from "../utils/relatedListings";
 import { RelatedListings } from "../components/RelatedListings";
 import { rememberListingView } from "../components/RecentViewingPill";
 import { PHOTO_SELECTION_LIMIT } from "../utils/photoShare";
+import { PortraitModal } from "../components/PortraitModal";
 
 const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false";
 
@@ -27,6 +28,7 @@ export function PropertyPage() {
   const [postingCopied, setPostingCopied] = useState(false);
   const [selectedPhotos, setSelectedPhotos] = useState([]);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [agentPortraitOpen, setAgentPortraitOpen] = useState(false);
   const [lightboxSlide, setLightboxSlide] = useState("");
   const swipeStart = useRef(null);
   const seoTitle = listing ? `${listing.title} | ${listing.code} | HS Ong Property Inventory` : "Property Details | HS Ong Property Inventory";
@@ -114,7 +116,7 @@ export function PropertyPage() {
           <p className="updated-line"><CalendarDays size={16} /> {listing.listedAt ? "Listed" : "Recorded"} {formatDate(listing.listedAt || listing.createdAt)} · Details are subject to confirmation.</p>
         </div>
         <aside className="agent-contact-card">
-          <img src={agentProfile.portrait} alt={agentProfile.displayName} /><div><span className="eyebrow">Enquire directly</span><h2>{agentProfile.displayName}</h2><p>{agentProfile.title}</p><small>{agentProfile.agency}</small></div>
+          <button className="agent-portrait-trigger" type="button" onClick={() => setAgentPortraitOpen(true)} aria-label="Enlarge agent portrait"><img src={agentProfile.portrait} alt={agentProfile.displayName} /></button><div><span className="eyebrow">Enquire directly</span><h2>{agentProfile.displayName}</h2><p>{agentProfile.title}</p><small>{agentProfile.agency}</small></div>
           <button className="button primary" type="button" onClick={() => openWhatsApp({ phone: agentProfile.whatsapp, message: enquiryText(listing, agentProfile.displayName), onError: (error) => window.alert(error) })}><MessageCircle size={18} /> WhatsApp enquiry</button>
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} /> Call {agentProfile.phoneDisplay}</a>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {copied ? "Link copied" : "Share property"}</button>
@@ -122,6 +124,7 @@ export function PropertyPage() {
       </div>
       <RelatedListings listings={relatedListings} />
       {lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={`${listing.title} photo viewer`}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label="Close full photo view" autoFocus><X size={24} /></button>{listing.photos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label="Previous photo"><ChevronLeft size={32} /></button> : null}<div className={`lightbox-image${lightboxSlide ? ` slide-${lightboxSlide}` : ""}`} onTouchStart={onLightboxTouchStart} onTouchEnd={onLightboxTouchEnd} onTouchCancel={() => { swipeStart.current = null; }} onAnimationEnd={() => setLightboxSlide("")}><PublicPropertyImage key={listing.photos[activePhoto]} src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1} fullscreen`} /><span className="lightbox-counter">{activePhoto + 1} / {listing.photos.length}</span></div>{listing.photos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label="Next photo"><ChevronRight size={32} /></button> : null}</div> : null}
+      <PortraitModal open={agentPortraitOpen} src={agentProfile.portrait} alt={`${agentProfile.displayName}, ${agentProfile.title}`} onClose={() => setAgentPortraitOpen(false)} />
     </main>
   );
 }

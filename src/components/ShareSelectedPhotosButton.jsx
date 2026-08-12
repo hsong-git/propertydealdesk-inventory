@@ -1,9 +1,8 @@
 import { Check, Download, LoaderCircle, MessageCircle, Monitor, Smartphone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { agentProfile } from "../config/agentProfile";
 import { isMobileOrTabletDevice } from "../utils/whatsapp";
-import { createWatermarkedJpegFile, desktopWhatsAppUrl, downloadPreparedFiles, nativeShareErrorMessage, photoShareMessage, PHOTO_SELECTION_LIMIT } from "../utils/photoShare";
+import { createWatermarkedJpegFile, desktopWhatsAppUrl, downloadPreparedFiles, nativeShareErrorMessage, PHOTO_SELECTION_LIMIT } from "../utils/photoShare";
 
 const initialState = { open: false, stage: "register", name: "", email: "", contactNumber: "", openWhatsApp: false, busy: false, message: "", error: "" };
 
@@ -64,7 +63,10 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
       // apps can be suspended while WhatsApp is foregrounded, so waiting for the
       // share promise to resolve can lose the audit request entirely.
       await recordShare("native");
-      await navigator.share({ title: `${listing.code} photos`, text: photoShareMessage(listing, agentProfile), files });
+      // Share the selected watermarked image files only. WhatsApp decides how
+      // multiple attachments are grouped; posting copy is intentionally not
+      // included in this share payload.
+      await navigator.share({ files });
       patchState({ open: false, busy: false, message: "Photos shared successfully.", error: "" });
     } catch (error) {
       patchState({ busy: false, message: "", error: nativeShareErrorMessage(error) });
@@ -130,7 +132,7 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
       const files = await prepareFiles();
       downloadPreparedFiles(files);
       await recordShare(client);
-      const url = desktopWhatsAppUrl(client, photoShareMessage(listing, agentProfile));
+      const url = desktopWhatsAppUrl(client, "");
       if (popup) popup.location.href = url;
       else window.location.href = url;
       patchState({ busy: false, message: "JPG photos downloaded. Attach them separately in WhatsApp after it opens.", error: "" });

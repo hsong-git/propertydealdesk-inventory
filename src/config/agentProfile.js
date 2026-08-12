@@ -10,7 +10,7 @@ export const agentProfile = {
   whatsapp: "60163132865",
   email: "hsong@myeviv.com",
   serviceAreas: ["Klang", "Bukit Tinggi", "Bandar Botanic", "Bayu Perdana", "Shah Alam", "Setia Alam"],
-  portrait: "/profile/hs-ong-full-body-portrait.webp",
+  portrait: "/profile/hs-ong-home-portrait.png",
   aboutPortrait: "/profile/hs-ong-about-portrait.webp",
   nameCard: "/profile/hs-ong-name-card.webp",
   shortIntroduction:

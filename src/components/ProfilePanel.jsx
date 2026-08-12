@@ -3,14 +3,18 @@ import { useState } from "react";
 import { agentProfile } from "../config/agentProfile";
 import { ContactActions } from "./ContactActions";
 import { NameCardModal } from "./NameCardModal";
+import { PortraitModal } from "./PortraitModal";
 
 export function ProfilePanel({ expanded = false }) {
   const [cardOpen, setCardOpen] = useState(false);
+  const [portraitOpen, setPortraitOpen] = useState(false);
   const portrait = expanded ? agentProfile.aboutPortrait || agentProfile.portrait : agentProfile.portrait;
   return (
     <>
       <section className={`profile-panel ${expanded ? "expanded" : ""}`}>
-        <div className="portrait-wrap"><img src={portrait} alt={`${agentProfile.displayName}, ${agentProfile.title}`} /></div>
+        <button className={`portrait-wrap ${expanded ? "portrait-static" : "portrait-zoom-trigger"}`} type="button" onClick={() => !expanded && setPortraitOpen(true)} aria-label={expanded ? undefined : "Enlarge profile portrait"}>
+          <img src={portrait} alt={`${agentProfile.displayName}, ${agentProfile.title}`} />
+        </button>
         <div className="profile-copy">
           <span className="eyebrow"><BadgeCheck size={15} /> Registered property professional</span>
           <h1>{agentProfile.profilePanelName || (expanded ? agentProfile.name : agentProfile.displayName)}</h1>
@@ -25,6 +29,7 @@ export function ProfilePanel({ expanded = false }) {
         </div>
       </section>
       <NameCardModal open={cardOpen} onClose={() => setCardOpen(false)} />
+      <PortraitModal open={portraitOpen} src={portrait} alt={`${agentProfile.displayName}, ${agentProfile.title}`} onClose={() => setPortraitOpen(false)} />
     </>
   );
 }

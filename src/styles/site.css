@@ -43,6 +43,13 @@ main { flex: 1; }
 .profile-panel { min-height: 250px; padding: 22px 28px 0; border: 1px solid var(--color-border); border-radius: var(--radius-large); display: grid; grid-template-columns: 220px minmax(0,1fr); gap: 26px; overflow: hidden; background: linear-gradient(118deg, #fff 0%, #fff 62%, var(--color-primary-soft) 100%); box-shadow: var(--shadow-card); }
 .portrait-wrap { align-self: end; height: 226px; overflow: hidden; }
 .portrait-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.portrait-wrap { padding: 0; border: 0; color: inherit; background: transparent; }
+.portrait-zoom-trigger { cursor: zoom-in; }
+.portrait-static { cursor: default; }
+.portrait-modal-backdrop { z-index: 70; }
+.portrait-modal { position: relative; width: min(520px,100%); max-height: calc(100vh - 36px); padding: 12px; border-radius: var(--radius-large); background: #fff; box-shadow: var(--shadow-elevated); }
+.portrait-modal img { width: 100%; max-height: calc(100vh - 60px); object-fit: contain; object-position: center top; display: block; border-radius: var(--radius-small); }
+.portrait-modal-close { position: absolute; z-index: 1; top: 20px; right: 20px; background: rgba(255,255,255,.92); }
 .profile-panel:not(.expanded) .portrait-wrap { align-self: center; height: 301px; min-height: 0; display: grid; place-items: center; }
 .profile-panel:not(.expanded) .portrait-wrap img { object-fit: cover; object-position: center 0%; transform: translateY(-10px) scale(1.86); transform-origin: center top; }
 .profile-copy { align-self: center; padding-block: 14px 22px; }
@@ -521,6 +528,7 @@ main { flex: 1; }
 .download-grant-warning p { margin: 0; font-size: 12px; line-height: 1.55; }
 
 @media (min-width: 761px) { .mobile-call { display: none; } }
+@media (min-width: 761px) { .portrait-zoom-trigger { cursor: default; pointer-events: none; } }
 @media (max-width: 1040px) {
   .property-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .related-listing-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
@@ -542,12 +550,15 @@ main { flex: 1; }
   .site-header nav a { min-height: 44px; }
   .home-stack, .content-page { padding-block: 14px 38px; gap: 20px; }
   .profile-panel, .profile-panel.expanded { min-height: 0; padding: 16px; grid-template-columns: 1fr; gap: 14px; overflow: visible; background: linear-gradient(155deg,#fff 0%,#fff 54%,var(--color-primary-soft) 100%); }
-  .profile-panel:not(.expanded) { position: relative; padding: 12px; grid-template-columns: 82px minmax(0,1fr); align-items: center; gap: 12px; }
+  /* Keep the compact homepage profile readable on narrow screens: give the
+     portrait enough width/height to show a confident upper-body crop while
+     preserving the two-column profile layout. */
+  .profile-panel:not(.expanded) { position: relative; padding: 12px; grid-template-columns: clamp(140px, 30vw, 180px) minmax(0,1fr); align-items: center; gap: 16px; }
   .portrait-wrap, .profile-panel.expanded .portrait-wrap, .profile-panel:not(.expanded) .portrait-wrap { justify-self: center; align-self: center; width: min(48vw,178px); height: 204px; min-height: 0; border-radius: 12px; overflow: hidden; background: var(--color-surface-muted); box-shadow: 0 12px 26px rgba(24,33,29,.09); }
   .profile-panel:not(.expanded) .portrait-wrap { display: grid; place-items: center; }
-  .profile-panel:not(.expanded) .portrait-wrap { width: 82px; height: 104px; border-radius: 10px; }
+  .profile-panel:not(.expanded) .portrait-wrap { width: 100%; height: clamp(180px, 38vw, 220px); border-radius: 10px; }
   .profile-panel:not(.expanded) .portrait-wrap img { object-fit: cover; object-position: center 0%; transform: translateY(-8px) scale(1.78); transform-origin: center top; }
-  .profile-panel:not(.expanded) .portrait-wrap img { transform: translateY(-4px) scale(1.45); }
+  .profile-panel:not(.expanded) .portrait-wrap img { transform: translateY(-7px) scale(1.5); }
   .profile-panel.expanded .portrait-wrap img { object-position: center 0%; transform: translateY(-16px) scale(1.65); transform-origin: center top; }
   .profile-copy, .profile-panel.expanded .profile-copy { min-width: 0; padding: 0; display: grid; gap: 8px; }
   .profile-copy h1 { font-size: 23px; }
@@ -636,8 +647,8 @@ main { flex: 1; }
   .detail-title-block, .detail-section { padding: 16px; }
   .detail-title-block h1 { font-size: 28px; }
   .reason-grid { grid-template-columns: 1fr; }
-  .agent-contact-card { position: static; grid-template-columns: 58px minmax(0,1fr); }
-  .agent-contact-card > img { width: 58px; height: 66px; }
+  .agent-contact-card { position: static; grid-template-columns: 88px minmax(0,1fr); }
+  .agent-contact-card > img { width: 88px; height: 112px; object-position: center 0%; }
   .posting-heading { align-items: stretch; flex-direction: column; }
   .posting-heading .button { width: 100%; }
   .photo-lightbox { padding: 66px 12px 72px; }
@@ -650,7 +661,7 @@ main { flex: 1; }
 @media (max-width: 480px) {
   .brand-link small { display: none; }
   .portrait-wrap, .profile-panel.expanded .portrait-wrap, .profile-panel:not(.expanded) .portrait-wrap, .contact-hero > img { width: min(58vw,156px); height: 178px; }
-  .profile-panel:not(.expanded) .portrait-wrap { width: 82px; height: 104px; }
+  .profile-panel:not(.expanded) .portrait-wrap { width: 130px; height: 170px; }
   .profile-agency { font-size: 11px; }
   .profile-actions, .contact-hero .contact-actions { grid-template-columns: 1fr; gap: 7px; }
   .profile-panel:not(.expanded) .profile-actions { grid-template-columns: minmax(0,1fr) 42px; gap: 6px; }

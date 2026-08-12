@@ -92,11 +92,11 @@ test("homepage profile keeps a compact mobile action row", () => {
   assert.doesNotMatch(source, /mobile-browse-properties/);
   assert.doesNotMatch(source, /profile-requirement-link|Find me a property/);
   assert.match(source, /profile-name-card-icon[\s\S]*aria-label="View Name Card"/);
-  assert.match(css, /\.profile-panel:not\(\.expanded\) \{[^}]*grid-template-columns: 82px minmax\(0,1fr\)/);
+  assert.match(css, /\.profile-panel:not\(\.expanded\) \{[^}]*grid-template-columns: clamp\(140px, 30vw, 180px\) minmax\(0,1fr\)/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.area-list,[\s\S]*\.profile-actions > \.button\.tertiary,[\s\S]*display: none;/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.profile-name-card-icon \{[^}]*width: 42px;[^}]*height: 36px;/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.profile-copy \{ padding-right: 34px; \}/);
-  assert.match(css, /@media \(max-width: 480px\)[\s\S]*\.profile-panel:not\(\.expanded\) \.portrait-wrap \{ width: 82px; height: 104px; \}/);
+  assert.match(css, /@media \(max-width: 480px\)[\s\S]*\.profile-panel:not\(\.expanded\) \.portrait-wrap \{ width: 130px; height: 170px; \}/);
 });
 
 test("fullscreen photo viewer applies direction-aware slide classes", () => {

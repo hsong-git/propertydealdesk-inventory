@@ -441,7 +441,7 @@ main { flex: 1; }
 .agent-contact-card { grid-template-columns: 82px minmax(0,1fr); }
 .agent-contact-card > img, .agent-portrait-trigger { width: 82px; height: 102px; }
 .agent-portrait-trigger { padding: 0; border: 0; border-radius: var(--radius-small); overflow: hidden; cursor: zoom-in; background: var(--color-surface-muted); }
-.agent-portrait-trigger img { width: 100%; height: 100%; object-fit: cover; object-position: center 0%; display: block; }
+.agent-portrait-trigger img { width: 100%; height: 100%; object-fit: cover; object-position: center 0%; display: block; transform: translateY(-5px) scale(1.68); transform-origin: center top; }
 .agent-contact-card h2 { margin: 4px 0 1px; font-size: 19px; }
 .agent-contact-card p, .agent-contact-card small { margin: 0; color: var(--color-text-muted); font-size: 11px; }
 .agent-contact-card .button { grid-column: 1 / -1; width: 100%; }
@@ -652,6 +652,7 @@ main { flex: 1; }
   .reason-grid { grid-template-columns: 1fr; }
   .agent-contact-card { position: static; grid-template-columns: 96px minmax(0,1fr); }
   .agent-contact-card > img, .agent-portrait-trigger { width: 96px; height: 126px; }
+  .agent-portrait-trigger img { transform: translateY(-8px) scale(1.82); }
   .posting-heading { align-items: stretch; flex-direction: column; }
   .posting-heading .button { width: 100%; }
   .photo-lightbox { padding: 66px 12px 72px; }

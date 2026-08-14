@@ -1,9 +1,18 @@
 import { Eye, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { PublicPropertyImage } from "./PublicPropertyImage";
 
 const STORAGE_KEY = "pdd-recently-viewed-listings";
 const EVENT_NAME = "pdd:recent-view";
+
+function coverPhoto(listing) {
+  const photos = Array.isArray(listing?.photos) ? listing.photos : [];
+  return listing?.cover_photo
+    || photos.find((photo) => /(?:coverpage|cover)(?:[-_.\/]|$)/i.test(String(photo)))
+    || photos[0]
+    || "";
+}
 
 function readRecentCodes() {
   try {
@@ -72,7 +81,10 @@ export function RecentViewingPill() {
 
   if (!current || location.pathname.startsWith("/admin") || location.pathname === "/inquiries" || !visible) return null;
   return <aside className={`recent-viewing-pill${leaving ? " is-leaving" : ""}`} role="status">
-    <Link to={`/property/${current.slug}`} aria-label={`Open recently viewed listing ${current.code}`}><Eye size={16} /><span><strong>{current.code}</strong> — {current.title} was recently viewed</span></Link>
+    <Link to={`/property/${current.slug}`} aria-label={`Open recently viewed listing ${current.code}`}>
+      {coverPhoto(current) ? <PublicPropertyImage className="recent-viewing-thumb" src={coverPhoto(current)} alt="" loading="lazy" /> : <Eye size={16} />}
+      <span><strong>{current.code}</strong> — {current.title} was recently viewed</span>
+    </Link>
     <button type="button" onClick={() => { setDismissed(true); setLeaving(true); window.setTimeout(() => setVisible(false), 2000); }} aria-label="Dismiss recently viewed notice"><X size={15} /></button>
   </aside>;
 }

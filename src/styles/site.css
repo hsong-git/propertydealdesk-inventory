@@ -404,7 +404,9 @@ main { flex: 1; }
 .lightbox-counter { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); padding: 6px 10px; border-radius: var(--radius-pill); background: rgba(0,0,0,.56); font-size: 11px; font-weight: 750; }
 .recent-viewing-pill { position: fixed; z-index: 30; left: 18px; bottom: 18px; max-width: min(470px, calc(100vw - 36px)); display: flex; align-items: stretch; border: 1px solid rgba(255,255,255,.28); border-radius: 14px; background: var(--color-primary); box-shadow: 0 12px 30px rgba(24,33,29,.22); overflow: hidden; animation: recent-pill-in 2s cubic-bezier(.22,.8,.3,1) both; }
 .recent-viewing-pill.is-leaving { animation: recent-pill-out 2s cubic-bezier(.55,.1,.8,.2) both; }
-.recent-viewing-pill a { min-height: 52px; padding: 11px 13px; display: inline-flex; align-items: center; gap: 9px; color: #fff; font-size: 13px; line-height: 1.35; text-decoration: none; }
+.recent-viewing-pill a { min-height: 52px; padding: 7px 13px 7px 7px; display: inline-flex; align-items: center; gap: 9px; color: #fff; font-size: 13px; line-height: 1.35; text-decoration: none; }
+.recent-viewing-pill .recent-viewing-thumb { width: 52px; height: 42px; flex: 0 0 52px; overflow: hidden; border-radius: 9px; }
+.recent-viewing-pill .recent-viewing-thumb img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .recent-viewing-pill a svg { flex: 0 0 auto; color: #fff; }
 .recent-viewing-pill a strong { color: #fff; }
 .recent-viewing-pill > button { width: 34px; border: 0; border-left: 1px solid rgba(255,255,255,.24); color: rgba(255,255,255,.86); background: transparent; }

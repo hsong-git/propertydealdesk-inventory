@@ -2,31 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://property.myeviv.com/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/contact</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wtl0010-3rd-floor-office-lot-sublet-bukit-tinggi-klang-near-ambank-bukit-tinggi-botanic-bayu-perdana</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wtl0011-ground-floor-shoplot-bandar-parklands-klang-bandar-parklands-bayumas-bayuemas-bayu-emas</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wtl0019-newly-renovated-double-storey-4r3b-taman-sentosa-lorong-laksamana-taman-sentosa-kampung-jawa-bandar-puteri</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -116,7 +116,7 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wtl0058-2r1b-condo-trio-by-setia-bandar-bukit-tinggi-trio-by-setia-bandar-bukit-tinggi</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -152,103 +152,109 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wtl0064-3r2b-condo-orchis-apartment-klang-orchis-apartment-klang</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://property.myeviv.com/property/wtl0065-2r1b-condo-gravit8-adria-residences-klang-gravit8-adria-residences-klang</loc>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0003-trefoil-studio-setia-city-setia-alam-setia-alam-shah-alam-bandar-baru-klang</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0004-double-storey-terrace-taman-lestari-putra-seri-kembangan-taman-lestari-putra-seri-kembangan-serdang-putrajaya</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0007-gravit8-klang-parklands-bayumas-bayuemas-bayu-emas</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0010-2-5-storey-terrace-house-penaga-bandar-botanic-klang-bandar-botanic-bukit-tinggi</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0011-double-storey-terrace-house-impian-8-setia-alam-impian-8-setia-alam</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0012-freehold-2-storey-corner-lot-setia-permai-3-setia-alam-setia-alam-shah-alam-bandar-baru-klang</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0017-single-storey-terrace-house-taman-melawis-klang-taman-melawis-teluk-pulai-taman-gembira</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0018-vista-bayu-apartment-bayu-perdana-klang-bayu-perdana-botanic-bukit-tinggi</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0019-single-storey-terrace-house-mempari-taman-seri-meru-klang-taman-seri-meru-kapar-bandar-baru-klang</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0024-windows-on-the-park-cheras-cheras-kuala-lumpur</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0026-single-storey-end-lot-house-taman-menara-maju-klang-between-taman-sri-andalas-kampung-jawa-taman-menara-maju-kla</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0027-agriculture-lands-jalan-bukit-perah-banting-for-sale-jalan-bukit-perah-banting</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0028-double-storey-end-lot-terrace-house-for-sale-bukit-tinggi-1-klang-bukit-tinggi-1-klang</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0029-2-storey-extended-terrace-house-bandar-botanic-klang-bandar-botanic-klang</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0030-wts-4r3b-double-storey-taman-sentosa-taman-sentosa-klang-bandar-puteri-kampung-jawa</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0031-amanda-wts-corner-house-huge-land-taman-rashna-klang-taman-rashna-berkeley-eng-ann</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -260,19 +266,19 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0033-wts-double-storey-bayu-perdana-klang-bayu-perdana</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0034-teh-wts-single-storey-taman-klang-jaya-klang-jaya-andalas-bandar-puteri</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0035-wts-double-storey-setia-bayuemas-laelia-3-setia-bayuemas-laelia-3</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -284,7 +290,7 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0037-cw-tan-wts-double-storey-corner-lot-jenaris-bandar-botanic-extra-land-6-car-parking-facing-south-jenaris-bandar</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -302,7 +308,7 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0041-sughan-wts-4r1b-single-storey-corner-lot-bandar-sentosa-klang-extended-room-extra-side-land-taman-sentosa</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -320,7 +326,7 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts1001-parkhill-residence-bukit-jalil-bukit-jalil-puchong-kinrara</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>

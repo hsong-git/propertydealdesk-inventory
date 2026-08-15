@@ -97,6 +97,8 @@ test("renders crawler-visible property OG tags from public listing data", () => 
     assert.match(html, /<meta property="og:image:width" content="1200" \/>/);
     assert.match(html, /<meta property="og:image:height" content="630" \/>/);
     assert.match(html, /<meta property="og:image:type" content="image\/webp" \/>/);
+    assert.match(html, /<meta property="og:image:secure_url" content="https:\/\/property\.myeviv\.com\/inventory\/WTS1004\/cover\.webp" \/>/);
+    assert.match(html, /<meta property="og:image:alt" content="WTS1004 Family Home in Bukit Tinggi property photo" \/>/);
     assert.doesNotMatch(html, /database_id|raw_json|internal_note|60163132865/);
     assert.match(shortHtml, /<link rel="canonical" href="https:\/\/property\.myeviv\.com\/property\/wts1004-family-home-bukit-tinggi" \/>/);
     assert.match(shortHtml, /<meta property="og:url" content="https:\/\/property\.myeviv\.com\/i\/WTS1004" \/>/);

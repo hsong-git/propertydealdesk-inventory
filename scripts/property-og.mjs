@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import sharp from "sharp";
 import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { formatPrice } from "../src/utils/listing.js";
 import { absoluteUrl, defaultSeo, propertySeoDescription, SITE_ORIGIN } from "../src/utils/seo.js";
@@ -53,7 +54,8 @@ export function propertyOgDescription(listing) {
   return truncateSentence(fromPostingCopy || fallback);
 }
 
-export function propertyOgImage(listing, publicRoot) {
+export function propertyOgImage(listing, publicRoot, imageOverride = null) {
+  if (imageOverride) return imageOverride;
   const relativeImage = listing.photos?.[0] || defaultSeo.image;
   const absoluteImage = absoluteUrl(relativeImage);
   if (absoluteImage === defaultSeo.image) {
@@ -95,11 +97,13 @@ export function propertyOgMeta(listing, publicRoot) {
     ogDescription: description,
     ogType: "article",
     image,
+    imageAlt: `${listing.code} ${listing.title} property photo`,
   };
 }
 
-export function renderPropertyRouteHtml(indexHtml, listing, publicRoot, { canonicalOverride, ogUrlOverride } = {}) {
+export function renderPropertyRouteHtml(indexHtml, listing, publicRoot, { canonicalOverride, ogUrlOverride, imageOverride } = {}) {
   const meta = propertyOgMeta(listing, publicRoot);
+  if (imageOverride) meta.image = imageOverride;
   if (canonicalOverride) meta.canonical = canonicalOverride;
   if (ogUrlOverride) meta.ogUrl = ogUrlOverride;
   let html = indexHtml;
@@ -114,21 +118,42 @@ export function renderPropertyRouteHtml(indexHtml, listing, publicRoot, { canoni
   html = replaceTag(html, /<meta property="og:image:width" content="[^"]*"\s*\/?>/i, `<meta property="og:image:width" content="${htmlEscape(meta.image.width)}" />`);
   html = replaceTag(html, /<meta property="og:image:height" content="[^"]*"\s*\/?>/i, `<meta property="og:image:height" content="${htmlEscape(meta.image.height)}" />`);
   html = replaceTag(html, /<meta property="og:image:type" content="[^"]*"\s*\/?>/i, `<meta property="og:image:type" content="${htmlEscape(meta.image.type)}" />`);
+  html = replaceTag(html, /<meta property="og:image:secure_url" content="[^"]*"\s*\/?>/i, `<meta property="og:image:secure_url" content="${htmlEscape(meta.image.url)}" />`);
+  html = replaceTag(html, /<meta property="og:image:alt" content="[^"]*"\s*\/?>/i, `<meta property="og:image:alt" content="${htmlEscape(meta.imageAlt)}" />`);
   html = replaceTag(html, /<meta name="twitter:title" content="[^"]*"\s*\/?>/i, `<meta name="twitter:title" content="${htmlEscape(meta.ogTitle)}" />`);
   html = replaceTag(html, /<meta name="twitter:description" content="[^"]*"\s*\/?>/i, `<meta name="twitter:description" content="${htmlEscape(meta.ogDescription)}" />`);
   html = replaceTag(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/i, `<meta name="twitter:image" content="${htmlEscape(meta.image.url)}" />`);
   return html;
 }
 
-export function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distRoot }) {
+async function createPropertyOgImage(listing, publicRoot, distRoot, inventoryVersion) {
+  const source = listing.cover_photo || listing.photos?.[0];
+  if (!source) return null;
+  const sourcePath = path.join(publicRoot, source.replace(/^\//, ""));
+  if (!fs.existsSync(sourcePath)) return null;
+  const code = String(listing.code || "listing").toUpperCase().replace(/[^A-Z0-9_-]/g, "-");
+  const version = String(inventoryVersion || "current").replace(/[^A-Za-z0-9._-]/g, "-");
+  const relativePath = `/og/properties/${code}-${version}.jpg`;
+  const destination = path.join(distRoot, relativePath.replace(/^\//, ""));
+  fs.mkdirSync(path.dirname(destination), { recursive: true });
+  await sharp(sourcePath)
+    .rotate()
+    .resize({ width: 1200, height: 630, fit: "cover", position: "centre" })
+    .jpeg({ quality: 82, progressive: true, mozjpeg: true })
+    .toFile(destination);
+  return { url: `${SITE_ORIGIN}${relativePath}`, width: "1200", height: "630", type: "image/jpeg" };
+}
+
+export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distRoot }) {
   const inventory = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "inventory.json"), "utf8"));
   const { items, meta } = normalizeInventoryFeed(inventory);
   const indexHtml = fs.readFileSync(path.join(distRoot, "index.html"), "utf8");
 
   for (const listing of items) {
+    const imageOverride = await createPropertyOgImage(listing, publicRoot, distRoot, meta.inventoryVersion);
     const propertyRouteDirectory = path.join(distRoot, "property", listing.slug);
     fs.mkdirSync(propertyRouteDirectory, { recursive: true });
-    const listingHtml = renderPropertyRouteHtml(indexHtml, listing, publicRoot);
+    const listingHtml = renderPropertyRouteHtml(indexHtml, listing, publicRoot, { imageOverride });
     fs.writeFileSync(
       path.join(propertyRouteDirectory, "index.html"),
       listingHtml,
@@ -139,6 +164,7 @@ export function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distRoot })
     fs.writeFileSync(
       path.join(shortRouteDirectory, "index.html"),
       renderPropertyRouteHtml(indexHtml, listing, publicRoot, {
+        imageOverride,
         ogUrlOverride: `${SITE_ORIGIN}/i/${listing.code}`,
       }),
     );

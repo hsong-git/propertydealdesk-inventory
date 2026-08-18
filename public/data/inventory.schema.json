@@ -16,7 +16,7 @@
   ],
   "properties": {
     "schema": { "const": "propertydealdesk-public-inventory" },
-    "schema_version": { "enum": ["1.0", "1.1"] },
+    "schema_version": { "enum": ["1.0", "1.1", "1.2"] },
     "inventoryVersion": { "type": "string", "minLength": 1 },
     "generated_at": { "type": "string", "format": "date-time" },
     "publishedAt": { "type": ["string", "null"], "format": "date-time" },
@@ -120,6 +120,8 @@
           "maxLength": 8000,
           "description": "Optional public-safe SMI Copy text exported by Production Stable. Rendered and copied verbatim by the catalogue when present."
         },
+        "alternate_intent": { "type": ["string", "null"], "enum": ["WTS", "WTL", null] },
+        "alternate_price": { "$ref": "#/$defs/nullableNonNegativeNumber" },
         "description": { "type": ["string", "null"] },
         "features": { "$ref": "#/$defs/publicStringList" },
         "amenities": { "$ref": "#/$defs/publicStringList" },

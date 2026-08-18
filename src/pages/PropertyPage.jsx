@@ -108,7 +108,7 @@ export function PropertyPage() {
           </section>
           <section className="detail-title-block">
             <div className="property-reference"><span>{listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
-            <h1>{listing.title}</h1><p className="property-location"><MapPin size={17} /> {listing.location}</p><strong className="detail-price">{formatPrice(listing.price, listing.intent)}</strong>
+            <h1>{listing.title}</h1><p className="property-location"><MapPin size={17} /> {listing.location}</p><strong className="detail-price">{formatPrice(listing.price, listing.intent)}</strong>{listing.alternateIntent && listing.alternatePrice != null ? <p className="detail-alternate-offer">Also available to {listing.alternateIntent === "WTL" ? "rent" : "buy"}: <strong>{formatPrice(listing.alternatePrice, listing.alternateIntent)}</strong></p> : null}
           </section>
           <section className="detail-section"><h2>Property overview</h2><p>{listing.description}</p><div className="detail-facts">{detailItems.map(([Icon, label, value]) => <div key={label}><Icon size={19} /><span>{label}</span><strong>{value}</strong></div>)}</div></section>
           {listing.features.length ? <section className="detail-section"><h2>Property features</h2><ul className="check-list">{listing.features.map((item) => <li key={item}><Check size={17} /> {item}</li>)}</ul></section> : null}

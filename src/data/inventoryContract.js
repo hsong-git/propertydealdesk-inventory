@@ -1,5 +1,5 @@
 const CONTRACT_SCHEMA = "propertydealdesk-public-inventory";
-const SUPPORTED_SCHEMA_VERSIONS = new Set(["1", "1.0", "1.1"]);
+const SUPPORTED_SCHEMA_VERSIONS = new Set(["1", "1.0", "1.1", "1.2"]);
 const SUPPLY_INTENTS = new Set(["WTS", "WTL"]);
 const MOCK_INTENTS = new Set(["WTS", "WTL"]);
 const PUBLIC_AVAILABILITY = new Set([
@@ -70,6 +70,8 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
     code,
     slug,
     intent,
+    alternateIntent: cleanNullableText(firstValue(raw.alternateIntent, raw.alternate_intent)),
+    alternatePrice: cleanNumber(firstValue(raw.alternatePrice, raw.alternate_price)),
     title,
     propertyType: cleanText(firstValue(raw.propertyType, raw.property_type), "Property"),
     location,

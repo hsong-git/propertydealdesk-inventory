@@ -102,6 +102,26 @@ test("accepts Stable schema 1.1 posting copy snapshots", () => {
   assert.equal(items[0].postingCopy, "Stable 1.1 SMI Copy");
 });
 
+test("accepts a WTSL listing and retains its alternate rental offer", () => {
+  const { items, meta } = normalizeInventoryFeed({
+    ...productionFeed([{
+      ...stableListing,
+      code: "WTSL0001",
+      intent: "WTS",
+      alternate_intent: "WTL",
+      alternate_price: 2400,
+      cover_photo: "/inventory/WTSL0001/cover.webp",
+      photos: ["/inventory/WTSL0001/cover.webp"],
+    }]),
+    schema_version: "1.2",
+  });
+  assert.equal(meta.schemaVersion, "1.2");
+  assert.equal(items[0].code, "WTSL0001");
+  assert.equal(items[0].alternateIntent, "WTL");
+  assert.equal(items[0].alternatePrice, 2400);
+  assert.deepEqual(items[0].photos, ["/inventory/WTSL0001/cover.webp"]);
+});
+
 test("falls back to reconstructed posting details for old snapshots", () => {
   const { items } = normalizeInventoryFeed(productionFeed([stableListing]));
   const text = postingText(items[0], {

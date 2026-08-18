@@ -137,6 +137,8 @@ main { flex: 1; }
 .property-location svg { flex: 0 0 auto; margin-top: 1px; }
 .property-price-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .property-price { min-width: 0; color: var(--color-text); font-size: 19px; letter-spacing: -.025em; }
+.property-alternate-offer, .detail-alternate-offer { margin: 6px 0 0; color: var(--color-text-muted); font-size: 14px; }
+.property-alternate-offer strong, .detail-alternate-offer strong { color: var(--color-primary); }
 .copy-posting-control { position: relative; flex: 0 0 auto; display: inline-grid; place-items: center; }
 .copy-posting-icon-button { width: 32px; height: 32px; flex: 0 0 auto; border: 1px solid var(--color-border); border-radius: var(--radius-small); display: inline-grid; place-items: center; color: var(--color-primary); background: #fff; box-shadow: none; }
 .copy-posting-icon-button:hover { border-color: rgba(17,124,91,.28); background: var(--color-primary-soft); }

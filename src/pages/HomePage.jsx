@@ -15,6 +15,14 @@ const defaults = { keyword: "", intent: defaultIntent, propertyType: "", locatio
 const CATALOGUE_STATE_KEY = "pdd-catalogue-state";
 const CATALOGUE_SCROLL_KEY = "pdd-catalogue-scroll-y";
 
+const offerForIntent = (listing, intent) => (
+  listing.intent === intent
+    ? { intent: listing.intent, price: listing.price }
+    : listing.alternateIntent === intent
+      ? { intent: listing.alternateIntent, price: listing.alternatePrice }
+      : null
+);
+
 function readCatalogueState() {
   if (typeof window === "undefined") return { filters: defaults, catalogueMode: "all", visible: 6 };
   try {
@@ -45,20 +53,21 @@ export function HomePage() {
   }), [items, locationDictionary]);
   const results = useMemo(() => {
     const filtered = items.filter((item) => {
+      const selectedOffer = filters.intent ? offerForIntent(item, filters.intent) : { price: item.price };
       return (catalogueMode !== "featured" || item.featured)
         && matchesKeywordSearch(item, filters.keyword)
-        && (!filters.intent || item.intent === filters.intent)
+        && Boolean(selectedOffer)
         && (!filters.propertyType || item.propertyType === filters.propertyType)
         && matchesLocationFilter(item, filters.location, locationDictionary)
-        && (!filters.minPrice || item.price >= Number(filters.minPrice))
-        && (!filters.maxPrice || item.price <= Number(filters.maxPrice))
+        && (!filters.minPrice || selectedOffer.price >= Number(filters.minPrice))
+        && (!filters.maxPrice || selectedOffer.price <= Number(filters.maxPrice))
         && (!filters.bedrooms || Number(item.bedrooms || 0) >= Number(filters.bedrooms))
         && (!filters.furnishing || item.furnishing === filters.furnishing);
     });
     return [...filtered].sort((a, b) => {
       if (filters.sort === "newest") return new Date(b.createdAt) - new Date(a.createdAt);
-      if (filters.sort === "price-asc") return a.price - b.price;
-      if (filters.sort === "price-desc") return b.price - a.price;
+      if (filters.sort === "price-asc") return offerForIntent(a, filters.intent).price - offerForIntent(b, filters.intent).price;
+      if (filters.sort === "price-desc") return offerForIntent(b, filters.intent).price - offerForIntent(a, filters.intent).price;
       if (filters.sort === "title") return a.title.localeCompare(b.title);
       return compareRecentlyUpdated(a, b);
     });
@@ -118,7 +127,7 @@ export function HomePage() {
           <CatalogueFilters filters={filters} setFilters={setFilters} options={options} activeCount={activeCount} onReset={reset} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} catalogueMode={catalogueMode} setCatalogueMode={updateCatalogueMode} />
           {loading ? <div className="state-card"><LoaderCircle className="spin" /><strong>Loading public inventory…</strong></div> : null}
           {error ? <div className="state-card error"><strong>{error}</strong><span>Please refresh the page or contact HS Ong directly.</span></div> : null}
-          {!loading && !error && results.length ? <div className="property-grid">{results.slice(0, visible).map((listing) => <PropertyCard key={listing.publicId} listing={listing} />)}</div> : null}
+          {!loading && !error && results.length ? <div className="property-grid">{results.slice(0, visible).map((listing) => <PropertyCard key={listing.publicId} listing={listing} displayIntent={filters.intent} />)}</div> : null}
           {!loading && !error && !results.length ? <div className="state-card"><strong>{items.length ? "No properties match these filters." : "No published properties are currently available."}</strong><span>{items.length ? "Try clearing one or more filters to see other opportunities." : "Please check back after the next approved inventory publication."}</span>{items.length ? <button className="button secondary" type="button" onClick={reset}>Reset Filters</button> : null}</div> : null}
           {visible < results.length ? <div className="load-more"><button className="button secondary" type="button" onClick={() => setVisible((count) => count + 6)}>Load more properties</button></div> : null}
         </section>

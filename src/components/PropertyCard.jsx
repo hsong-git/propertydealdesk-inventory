@@ -6,9 +6,14 @@ import { PublicPropertyImage } from "./PublicPropertyImage";
 import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing, whatsappUrl } from "../utils/listing";
 import { formatRoomSummary } from "../data/requirementContract";
 
-export function PropertyCard({ listing, viewOnly = false }) {
+export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) {
   const [shared, setShared] = useState(false);
   const [postingCopied, setPostingCopied] = useState(false);
+  const showingAlternateOffer = displayIntent && listing.alternateIntent === displayIntent;
+  const displayedIntent = showingAlternateOffer ? listing.alternateIntent : listing.intent;
+  const displayedPrice = showingAlternateOffer ? listing.alternatePrice : listing.price;
+  const otherIntent = showingAlternateOffer ? listing.intent : listing.alternateIntent;
+  const otherPrice = showingAlternateOffer ? listing.price : listing.alternatePrice;
   const share = async () => {
     try {
       const result = await shareListing(listing);
@@ -29,7 +34,7 @@ export function PropertyCard({ listing, viewOnly = false }) {
         {listing.photos[0]
           ? <PublicPropertyImage src={listing.photos[0]} alt={`${listing.title} in ${listing.location}`} loading="lazy" />
           : <span className="property-photo-placeholder"><Building2 size={30} /><small>Photo coming soon</small></span>}
-        <span className={`intent intent-${listing.intent.toLowerCase()}`}>{listing.intent}<small>{intentLabels[listing.intent]}</small></span>
+        <span className={`intent intent-${displayedIntent.toLowerCase()}`}>{displayedIntent}<small>{intentLabels[displayedIntent]}</small></span>
         {listing.featured ? <span className="featured-badge">Featured</span> : null}
       </Link>
       <div className="property-content">
@@ -37,7 +42,7 @@ export function PropertyCard({ listing, viewOnly = false }) {
         <h3><Link to={`/property/${listing.slug}`}>{listing.title}</Link></h3>
         <p className="property-location"><MapPin size={15} /> {listing.location}</p>
         <div className="property-price-row">
-          <strong className="property-price">{formatPrice(listing.price, listing.intent)}</strong>
+          <strong className="property-price">{formatPrice(displayedPrice, displayedIntent)}</strong>
           <span className="copy-posting-control">
             {postingCopied ? <span className="copy-posting-prompt">Copied</span> : null}
             <button className="copy-posting-icon-button" type="button" onClick={copyPosting} aria-label={`Copy posting for ${listing.code}`} title={postingCopied ? "Copied" : "Copy posting"}>
@@ -45,6 +50,7 @@ export function PropertyCard({ listing, viewOnly = false }) {
             </button>
           </span>
         </div>
+        {otherIntent && otherPrice != null ? <p className="property-alternate-offer">Also available to {otherIntent === "WTL" ? "rent" : "buy"}: <strong>{formatPrice(otherPrice, otherIntent)}</strong></p> : null}
         <div className="property-facts">
           <span><Building2 size={16} /> {listing.propertyType}</span>
           {listing.bedrooms != null || listing.bathrooms != null ? <span><BedDouble size={16} /> {formatRoomSummary(listing.bedrooms, listing.bathrooms)}</span> : null}

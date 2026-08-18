@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.1",
-  "inventoryVersion": "2026.08.17.1",
-  "generated_at": "2026-08-17T03:53:47Z",
-  "publishedAt": "2026-08-17T03:53:47Z",
+  "inventoryVersion": "2026.08.18.1",
+  "generated_at": "2026-08-18T04:29:08Z",
+  "publishedAt": "2026-08-18T04:29:08Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -21,15 +21,15 @@
       "bathroom_count": null,
       "built_up_sqft": 1000,
       "land_size": null,
-      "furnishing": "Full",
+      "furnishing": "Partial",
       "facing_direction": null,
       "unit_type": "Intermediate",
       "availability": "Available",
       "featured": true,
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
-      "posting_copy": "*WTL*\n\n*3rd Floor Office Lot Sublet @ Bukit Tinggi, Klang (near Ambank)*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Office Lot\n- Property Unit Type: Intermediate\n- Location: Bukit Tinggi, Botanic, Bayu Perdana\n- Furnishing: Full\n- Size Approx. 1000.0 sqft\n\n*Feature Highlights*\n- Condition: Partition ready\n- Availability: Ready to move in\n- Key Features\n- Spacious office space suitable for various business operations\n- 2 units of air conditioners\n- Dedicated office entrance for privacy\n- Dedicated toilet within the unit\n- Partitioned layout ready for immediate use\n- Strategic location in Bukit Tinggi 1\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0010*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0010",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "posting_copy": "*WTL*\n\n*3rd Floor Office Lot Sublet @ Bukit Tinggi, Klang (near Ambank)*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Office Lot\n- Property Unit Type: Intermediate\n- Location: Bukit Tinggi, Botanic, Bayu Perdana\n- Furnishing: Partial\n- Size Approx. 1000.0 sqft\n\n*Feature Highlights*\n- Condition: Partition ready\n- Availability: Ready to move in\n- Key Features\n- Spacious office space suitable for various business operations\n- 2 units of air conditioners\n- Dedicated office entrance for privacy\n- Dedicated toilet within the unit\n- Partitioned layout ready for immediate use\n- Strategic location in Bukit Tinggi 1\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0010*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0010",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0010/cover.webp",
       "photos": [
         "/inventory/WTL0010/cover.webp",
@@ -64,12 +64,12 @@
       "public_id": "pub_7a626e9086c36f13412d3ff0",
       "code": "WTL0011",
       "intent": "WTL",
-      "slug": "wtl0011-ground-floor-shoplot-bandar-parklands-klang-bandar-parklands-bayumas-bayuemas-bayu-emas",
+      "slug": "wtl0011-ground-floor-shoplot-bandar-parklands-klang-bandar-parklands-klang",
       "title": "Ground Floor Shoplot @ Bandar Parklands, Klang",
       "property_type": "Shoplot",
-      "location": "Bandar Parklands, Bayumas, Bayuemas, Bayu Emas",
+      "location": "Bandar Parklands, Klang",
       "price": 3800,
-      "description": "Shoplot at Bandar Parklands, Bayumas, Bayuemas, Bayu Emas. Contact HS Ong to confirm current availability and viewing details.",
+      "description": "Shoplot at Bandar Parklands, Klang. Contact HS Ong to confirm current availability and viewing details.",
       "bedroom_count": null,
       "bathroom_count": 2,
       "built_up_sqft": null,
@@ -81,8 +81,8 @@
       "featured": false,
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
-      "posting_copy": "*WTL*\n\n*Ground Floor Shoplot @ Bandar Parklands, Klang*\nRental *RM3,800*\n\n*Property Details*\n- Property Type : Shoplot\n- Property Unit Type: Intermediate\n- Location: Bandar Parklands, Bayumas, Bayuemas, Bayu Emas\n- Furnishing: Basic\n- N/A Bedrooms | 2 Bathrooms\n\n*Feature Highlights*\n- Condition: Ready for immediate use\n- Key Features\n- Ground floor unit - maximum exposure\n- Strategic location in Bandar Parklands\n- Easy accessibility and good traffic flow\n- Bare unit - flexible for your own renovation concept\n- Comes with 2 bathrooms\n- Suitable for retail\n- office\n- or service business\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0011*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0011",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "posting_copy": "*WTL*\n\n*Ground Floor Shoplot @ Bandar Parklands, Klang*\nRental *RM3,800*\n\n*Property Details*\n- Property Type : Shoplot\n- Property Unit Type: Intermediate\n- Location: Bandar Parklands, Klang\n- Furnishing: Basic\n- N/A Bedrooms | 2 Bathrooms\n\n*Feature Highlights*\n- Condition: Ready for immediate use\n- Key Features\n- Ground floor unit - maximum exposure\n- Strategic location in Bandar Parklands\n- Easy accessibility and good traffic flow\n- Bare unit - flexible for your own renovation concept\n- Comes with 2 bathrooms\n- Suitable for retail\n- office\n- or service business\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0011*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0011",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0011/cover.webp",
       "photos": [
         "/inventory/WTL0011/cover.webp",
@@ -129,7 +129,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTL*\n\n*Newly Renovated Double Storey 4R3B @ Taman Sentosa (Lorong Laksamana)*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Sentosa, Kampung Jawa, Bandar Puteri\n- Furnishing: Basic\n- Unit Dimensions: 20 × 65\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South West\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0019*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0019",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0019/cover.webp",
       "photos": [
         "/inventory/WTL0019/cover.webp",
@@ -176,7 +176,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTL*\n\n*BRAND NEW DETACHED FACTORY, Puncak Alam Jaya*\nRental *RM88,000*\n\n*Property Details*\n- Property Type : Factory\n- Property Unit Type: Intermediate\n- Location: Puncak Alam\n- Furnishing: Basic\n- Size Approx. 40167 sqft\n- Land Area: 68,000 sq.ft. (1.56 acres)\n- Factory Dimensions: 45.24m x 78.00m (148.4ft x 255.9ft)\n- Total Built-Up: 40,167 sq.ft.\n- Office Area: 4,079 sq.ft.\n- Ceiling Height: 40 ft (12m)\n- Power Supply: 600 Amp\n- Loading Floor Capacity: 3 Tonnes\n- Estimated CCC Approval: September 2026\n- Guard House\n- Fire Protection System Installed\n- Perimeter Fencing\n- Multiple Roller Shutter Access\n- Wide Driveway for Container & Trailer Movement\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0030*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0030",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0030/cover.webp",
       "photos": [
         "/inventory/WTL0030/cover.webp",
@@ -228,7 +228,7 @@
       "created_at": "2026-07-07T03:54:15Z",
       "listed_at": "2026-07-07T11:54:15Z",
       "posting_copy": "*WTL*\n\n*4R3B Double Storey house @ Anggerik Tainia, Kota Kemuning*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Terrace House\n- Location: Anggerik Tainia, Kota Kemuning\n- Furnishing: Partial\n- Unit Dimensions: 22 × 75\n- 3+1 Bedrooms | 3 Bathrooms\n- ✅ 3 Airconds\n- ✅ Kitchen Cabinet\n- ✅ Water Heater\n- ✅ Move-in condition\n- Walking distance to SJKC Chung Hua\n- Near playground\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0039*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0039",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0039/cover.webp",
       "photos": [
         "/inventory/WTL0039/cover.webp",
@@ -269,7 +269,7 @@
       "created_at": "2026-07-07T07:12:29Z",
       "listed_at": "2026-07-07T15:12:29Z",
       "posting_copy": "*WTL*\n\n*3R3B South Facing Double Storey house @ Rimbayu Starling*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Kota Kemuning\n- Furnishing: Partial\n- Unit Dimensions: 20 × 65\n- 3 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0040*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0040",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0040/cover.webp",
       "photos": [
         "/inventory/WTL0040/cover.webp",
@@ -309,7 +309,7 @@
       "created_at": "2026-07-09T00:39:55Z",
       "listed_at": "2026-07-09T08:39:55Z",
       "posting_copy": "*WTL*\n\n*4R3B Double Storey House @ Delima Bandar Parklands*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Location: Bandar Parklands\n- Furnishing: Partial\n- Unit Dimensions: 22 × 70\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: North\n- Built in kitchen cabinets only (Good Condition)\n- Very well maintained\n- Move in condition\n- Comes with Airconds\n- Car porch with tiles\n- Gated & Guarded\n- 5 minutes to Kesas Highways\n\n*All races accepted, subject to profile review by owner.*\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0041*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0041",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0041/cover.webp",
       "photos": [
         "/inventory/WTL0041/cover.webp",
@@ -360,7 +360,7 @@
       "created_at": "2026-07-13T08:24:51Z",
       "listed_at": "2026-07-13T16:24:51Z",
       "posting_copy": "*WTL*\n\n*4R3B Single Storey House @ In Klang Utama Kalng*\nRental *RM1,500*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Intermediate\n- Location: In Klang Utama Kalng\n- Furnishing: Partial\n- Unit Dimensions: 22 × 75\n- Size Approx. 1650 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n- Furnishing with:\n🛏️ Beds\n❄️ Air conditioners\n🛋️ Sofa\n🍽️ Dining table\n🧊 Refrigerator\n👔 Wardrobes\n🚿 Water heaters\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0044*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0044",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0044/cover.webp",
       "photos": [
         "/inventory/WTL0044/cover.webp",
@@ -398,7 +398,7 @@
       "created_at": "2026-07-14T03:39:47Z",
       "listed_at": "2026-07-14T11:39:46Z",
       "posting_copy": "*WTL*\n\n*Double Storey Terrace House for Rent in Taman Sri Gadong Klang*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Sri Gadong, Telok Gadong\n- Furnishing: Partial\n- Unit Dimensions: 20 × 70\n- 3 Bedrooms | 3 Bathrooms\n- Facing Direction: South East\n\n*Feature Highlights*\n- This fully built-up double storey terrace house features 3 bedrooms and 3 bathrooms with a kitchen table top and installed grills.\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0045*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0045",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0045/cover.webp",
       "photos": [
         "/inventory/WTL0045/cover.webp",
@@ -426,6 +426,37 @@
       "why_this_property": []
     },
     {
+      "public_id": "pub_9782e40a36ec5645b19ffe6e",
+      "code": "WTL0046",
+      "intent": "WTL",
+      "slug": "wtl0046-4r3b-double-storey-house-bandar-bukit-tinggi-bandar-bukit-tinggi",
+      "title": "4R3B Double Storey House @ Bandar Bukit Tinggi",
+      "property_type": "Terrace House - 2 Storey",
+      "location": "Bandar Bukit Tinggi",
+      "price": 2200,
+      "description": "Terrace House - 2 Storey at Bandar Bukit Tinggi. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 4,
+      "bathroom_count": 3,
+      "built_up_sqft": null,
+      "land_size": "20 × 70 ft",
+      "furnishing": "Partial",
+      "facing_direction": null,
+      "unit_type": "Intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-07-14T07:07:19Z",
+      "listed_at": "2026-07-14T15:07:19Z",
+      "posting_copy": "*WTL*\n\n*4R3B Double Storey House @ Bandar Bukit Tinggi*\nRental *RM2,200*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Bukit Tinggi\n- Furnishing: Partial\n- Unit Dimensions: 20 × 70\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Kitchen Cabinet\n- Air Conditioner (Master Bedroom)\n- Ceiling Fan in all rooms\n- 24 hrs security in gated guarded community\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0046*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0046",
+      "updated_at": "2026-08-18T00:41:35Z",
+      "cover_photo": null,
+      "photos": [],
+      "features": [
+        "Kitchen Cabinet Air Conditioner (Master Bedroom) Ceiling Fan in all rooms 24 hrs security in gated guarded community"
+      ],
+      "amenities": [],
+      "why_this_property": []
+    },
+    {
       "public_id": "pub_e5b3c2b3ee2af2ceb1ef04a3",
       "code": "WTL0047",
       "intent": "WTL",
@@ -447,7 +478,7 @@
       "created_at": "2026-07-16T03:23:05Z",
       "listed_at": "2026-07-16T11:23:05Z",
       "posting_copy": "*WTL*\n\n*4R3B Double Storey House @ Bayuemas Laelia 2*\n* Rental *RM2,000* (without Airconds)\n* Rental *RM2,200* (3 x Airconds in bedrooms, 2 years tenancy)\n\n*Property Details*\n* Property Type : Terrace House - 2 Storey\n* Property Unit Type: Intermediate\n* Location: Bayuemas Laelia 2, Klang\n* Furnishing: Partial\n* Unit Dimensions: 20 × 70\n* 4 Bedrooms | 3 Bathrooms\n* Facing Direction: North\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0047*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0047",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0047/cover.webp",
       "photos": [
         "/inventory/WTL0047/cover.webp",
@@ -492,7 +523,7 @@
       "created_at": "2026-07-20T01:09:54Z",
       "listed_at": "2026-07-20T09:09:54Z",
       "posting_copy": "*WTL*\n\n*4R4B Double Storey House @ Bandar Parklands*\nRental *RM2,400*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Parklands\n- Furnishing: Partial\n- Size 20 x 70\n- 4 Bedrooms | 4 Bathrooms\n- Facing Southeast\n- Almost fully furnished, except beds\n- Gated and Guarded community\n- Walking distance to shop lots\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0048*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0048",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0048/cover.webp",
       "photos": [
         "/inventory/WTL0048/cover.webp",
@@ -532,7 +563,7 @@
       "created_at": "2026-07-24T06:06:09Z",
       "listed_at": "2026-07-24T14:06:09Z",
       "posting_copy": "*WTL*\n\n*2R2B Condo @ Princeton @ Edusentral, Corner Unit for Rent, Setia Alam*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Princeton @ Edusentral, Setia Alam\n- Furnishing: Full\n- Size Approx. 630 sqft\n- 2 Bedrooms | 2 Bathrooms\n- Car Parks: 1\n- Fully furnishing (except Washing Machine)\n\n*All races and foreigner accepted, subject to profile review*\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0053*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0053",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0053/cover.webp",
       "photos": [
         "/inventory/WTL0053/cover.webp",
@@ -579,7 +610,7 @@
       "created_at": "2026-07-24T06:50:40Z",
       "listed_at": "2026-07-24T14:50:40Z",
       "posting_copy": "*WTL*\n\n*2R2B Corner Unit @ Trefoil, Setia Alam*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Corner\n- Location: Trefoil, Setia Alam\n- Furnishing: Full\n- Size Approx. 791 sqft\n- 2 Bedrooms | 2 Bathrooms\n\n*Ready To Move In NOW!*\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0054*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0054",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0054/cover.webp",
       "photos": [
         "/inventory/WTL0054/cover.webp",
@@ -617,7 +648,7 @@
       "created_at": "2026-07-27T06:24:36Z",
       "listed_at": "2026-07-27T14:24:36Z",
       "posting_copy": "*WTL*\n\n*3R2B Condo @ Huni @ Eco Ardence, Setia Alam*\n***AAA Stock***\nRental *RM2,700*\n\n*Property Details*\n* Property Type : Condominium/Apartment\n* Property Unit Type: Intermediate\n* Location: Huni @ Eco Ardence, Setia Alam\n* Furnishing: Full\n* Size Approx. 1000 sqft\n* 3 Bedrooms | 2 Bathrooms\n* Comfortable Sofa & Coffee Table for Living Area\n* Television & TV Cabinet\n* Dining Table & Chairs\n* Complete Kitchen Cabinet with Fridge\n* Washing Machine\n* Bed Frames & Premium Mattresses in all rooms\n* Built-in Wardrobes & Curtains\n* Full Air-conditioning\n* High Floor\n* *Available 1st September onwards*\n\n*Accept any type of good tenant, subject to profile review.*\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0055*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0055",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0055/cover.webp",
       "photos": [
         "/inventory/WTL0055/cover.webp",
@@ -660,7 +691,7 @@
       "created_at": "2026-07-29T09:35:58Z",
       "listed_at": "2026-07-29T17:35:58Z",
       "posting_copy": "*WTL*\n\n*4R2B Apartment @ Trifolis Klang*\nRental *RM1,450*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Trifolis Apartment Klang\n- Furnishing: Partial\n- Size Approx. 900.0 sqft\n- 4 Bedrooms | 2 Bathrooms\n- Car Parks: 1\n\n*Feature Highlights*\n- Renovated\n- Dry and Wet concrete top with build in Kitchen Cabinets\n- Build In Hob and Hood for cooking\n- Build in tv cabinet\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0057*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0057",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0057/cover.webp",
       "photos": [
         "/inventory/WTL0057/cover.webp",
@@ -704,7 +735,7 @@
       "created_at": "2026-07-30T02:09:49Z",
       "listed_at": "2026-07-30T10:09:49Z",
       "posting_copy": "*WTL*\n\n*2R1B Condo @ TRIO by Setia, Bandar Bukit Tinggi*\nRental *RM2,000*\n\n*Property Details*\n* Property Type : Condominium/Apartment\n* Property Unit Type: Intermediate\n* Location: TRIO by Setia, Bandar Bukit Tinggi\n* Furnishing: Full\n* Size Approx. 656 sqft\n* 2 Bedrooms | 1 Bathrooms\n* Car Parks: 2\n\n*Key features*\n* Super nice unit with interior designed\n* Very well maintained and clean\n* Muslim friendly \n\n*Accept all kinds of good tenants, subject to owner's review.*\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0058*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0058",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0058/cover.webp",
       "photos": [
         "/inventory/WTL0058/cover.webp",
@@ -749,7 +780,7 @@
       "created_at": "2026-07-30T06:09:18Z",
       "listed_at": "2026-07-30T14:09:17Z",
       "posting_copy": "*WTS*\n\n*Spacious Double Storey Semi-Detached House for Sale in Taman Sri Andalas, Klang*\nSelling Price: *RM1,800,000*\n\n*Property Details*\n- Property Type : Semi-Detached House\n- Property Unit Type: Intermediate\n- Location: Taman Sri Andalas, Klang\n- Furnishing: Basic\n- Size Approx. 4963 sqft\n- 5 Bedrooms | 3 Bathrooms\n- Facing Direction: North\n\nWhy This Property?\n- Rare Semi-D on a huge 4,963 sqft\n- Spacious front, side and backyard\n- Bright and airy living & dining areas\n- Huge Master bedroom with attached bathroom\n- Newly painted interior & exterior\n- Newly tiled bathroom floors\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1022*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0059",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0059/cover.webp",
       "photos": [
         "/inventory/WTL0059/cover.webp",
@@ -809,7 +840,7 @@
       "created_at": "2026-08-04T07:55:59Z",
       "listed_at": "2026-08-04T15:55:59Z",
       "posting_copy": "*WTL*\n\n*4R2B Double Storey House @ Southern Park, Klang*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Southern Park, Klang\n- Furnishing: Partial\n- Unit Dimensions: 20 × 80\n- Size Approx. 2200 sqft\n- 4 Bedrooms | 2 Bathrooms\n- Facing Direction: North West\n\nFeatures\n- Newly renovated\n- New Water heater\n- new lighting & fans\n- Flood free area\n- Near LRT station & 兴华独中 & La Salle School\n\n*AVAILABLE NOW*\n*Furnishing can be discussed*\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0060*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0060",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0060/cover.webp",
       "photos": [
         "/inventory/WTL0060/cover.webp",
@@ -854,7 +885,7 @@
       "created_at": "2026-08-05T03:45:09Z",
       "listed_at": "2026-08-05T11:45:08Z",
       "posting_copy": "*WTL/WTS*\n\n*2nd Floor 3-Bedroom Apartment at Prima Bayu for Rent*\n\nRental: *RM1,100*\nSelling: *RM310k*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Prima Bayu Apartment, Klang\n- Furnishing: Basic\n- Size Approx. 970 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 1\n\n*Feature Highlights*\n- Newly painted\n- Balcony facing the swimming pool\n- kitchen marble table top\n- 2 ceiling fans\n- Freehold and non-bumi\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0061*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0061",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0061/cover.webp",
       "photos": [
         "/inventory/WTL0061/cover.webp",
@@ -893,7 +924,7 @@
       "created_at": "2026-08-06T06:29:28Z",
       "listed_at": "2026-08-06T14:29:28Z",
       "posting_copy": "*WTL*\n\n*3R2B Condo @ Asteria Klang Parkland*\nRental *RM1,500*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bandar Parklands\n- Furnishing: Full\n- Size Approx. 850 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Level 5\n\n*Features Highlights*\n- 4 air conds\n- Fridge\n- Washing Machine\n- Dining Table\n- Sofa\n- TV\n- Water Heaters\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0062*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0062",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0062/cover.webp",
       "photos": [
         "/inventory/WTL0062/cover.webp",
@@ -932,7 +963,7 @@
       "created_at": "2026-08-06T06:50:38Z",
       "listed_at": "2026-08-06T14:50:38Z",
       "posting_copy": "*WTL*\n\n*2R2B Setia City Residence @ Setia Alam*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Setia City Residence, Setia Alam, Shah Alam, Selangor\n- Furnishing: Partial\n- Size Approx. 858 sqft\n- 2 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Facing Direction: South\n\n*Features Highlights*\n- lighting and ceiling fans\n- air conds\n- curtains\n- kitchen cabinets and table top\n- water heaters\n- link bridge to Setia City Mall on level B1.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0063*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0063",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0063/cover.webp",
       "photos": [
         "/inventory/WTL0063/cover.webp",
@@ -976,7 +1007,7 @@
       "created_at": "2026-08-11T05:34:38Z",
       "listed_at": "2026-08-11T13:34:38Z",
       "posting_copy": "*WTL*\n\n*3R2B Condo @ Orchis Apartment, Klang*\nRental *RM1,500*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Orchis Apartment, Klang\n- Furnishing: Full\n- Size Approx. 850 sqft\n- 3 Bedrooms | 2 Bathrooms\n\n*Feature Highlights*\nFull Furnished with \n- 2 unit Airconds\n- 2 unit shower\n- kitchen cabinet\n- Refrigerator\n- Dining table\n- washing machine\n- 55\" TV\n\n*Block B Ground floor unit*\n*Parking just right in font the block*\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0064*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0064",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0064/cover.webp",
       "photos": [
         "/inventory/WTL0064/cover.webp",
@@ -1022,7 +1053,7 @@
       "created_at": "2026-08-14T07:30:50Z",
       "listed_at": "2026-08-14T15:30:50Z",
       "posting_copy": "*WTL*\n\n*2R1B Condo @ Gravit8 Adria Residences, Klang*\nRental *RM1,400*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Gravit8 Adria Residences, Klang\n- Furnishing: Partial\n- Size Approx. 637 sqft\n- 2 Bedrooms | 1 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Lighting and ceiling fan\n- 2 airconds - Living room and Master bedroom\n- Built-in wardrobe\n- Water Heater\n- Carpark at Level 3A\n- Furnishing is open for discussion\n\n*Open to all races and nationalities, subject to document verification and owner approval*\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0065*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0065",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0065/cover.webp",
       "photos": [
         "/inventory/WTL0065/cover.webp",
@@ -1061,7 +1092,7 @@
       "created_at": "2026-08-16T10:49:58Z",
       "listed_at": "2026-08-16T18:49:56Z",
       "posting_copy": "*WTL/WTS*\n\n*Double Storey @ Lorong Laksamana Sentosa*\n\nRetal Price: *RM1,100*\nSelling Price: *RM530,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Sentosa\n- Unit Dimensions: 18 × 65\n- Size Approx. 0 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n*Highlights*\n- Facing field\n- Near corner (more parking)\n- Kitchen full tiles with table top & kitchen cabinet installed\n- Fully Extended\n- Car porch full tiles\n- Slide door & awning installed.\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1016*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0066",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTL0066/cover.webp",
       "photos": [
         "/inventory/WTL0066/cover.webp",
@@ -1078,6 +1109,58 @@
         "Facing field Near corner (more parking)",
         "Kitchen full tiles with table top & kitchen cabinet installed Fully Extended Car porch full tiles",
         "Slide door & awning installed."
+      ],
+      "amenities": [],
+      "why_this_property": []
+    },
+    {
+      "public_id": "pub_c4fcecb3d5e9a241a97ad457",
+      "code": "WTL0067",
+      "intent": "WTL",
+      "slug": "wtl0067-4r3b-double-storey-house-storey-house-setia-indah-9-setia-alam-storey-house-setia-indah-shah-alam",
+      "title": "4R3B Double Storey House @ Storey House Setia Indah 9 Setia Alam",
+      "property_type": "Terrace House - 2 Storey",
+      "location": "Storey House Setia Indah Shah Alam",
+      "price": 2800,
+      "description": "Terrace House - 2 Storey at Storey House Setia Indah Shah Alam. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 4,
+      "bathroom_count": 3,
+      "built_up_sqft": 2300,
+      "land_size": "22 × 75 ft",
+      "furnishing": "Partial",
+      "facing_direction": "South",
+      "unit_type": "Intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-08-18T04:12:47Z",
+      "listed_at": "2026-08-18T12:12:45Z",
+      "posting_copy": "*WTL/WTS*\n\n*4R3B Double Storey House @ Storey House Setia Indah 9 Setia Alam*\n\nRental Price: *RM2,800*\nSelling Price: *RM870,000*\n\n*Keys in hand.*\n*Viewings can be arranged flexibly.*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Storey House Setia Indah Shah Alam\n- Unit Dimensions: 22 × 75\n- Size Approx. 2300 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n*Features Highlights*\n- 🔥🔥AAA stock🔥🔥\n- Newly refurbished and clean in tip-top condition\n- Largest Built-Up in Its Class\n- Backyard fully extension as wet kitchen\n- Prime Location with Open Views\n- Walking distance to the nearest park\n- Flood Free area\n- Freehold\n- Non Bumi Lot\n- First-hand owner unit purchased directly from SP Setia Developer\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1025*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0067",
+      "updated_at": "2026-08-18T04:24:09Z",
+      "cover_photo": "/inventory/WTL0067/cover.webp",
+      "photos": [
+        "/inventory/WTL0067/cover.webp",
+        "/inventory/WTL0067/photo-02.webp",
+        "/inventory/WTL0067/photo-03.webp",
+        "/inventory/WTL0067/photo-04.webp",
+        "/inventory/WTL0067/photo-05.webp",
+        "/inventory/WTL0067/photo-06.webp",
+        "/inventory/WTL0067/photo-07.webp",
+        "/inventory/WTL0067/photo-08.webp",
+        "/inventory/WTL0067/photo-09.webp",
+        "/inventory/WTL0067/photo-10.webp",
+        "/inventory/WTL0067/photo-11.webp",
+        "/inventory/WTL0067/photo-12.webp",
+        "/inventory/WTL0067/photo-13.webp",
+        "/inventory/WTL0067/photo-14.webp",
+        "/inventory/WTL0067/photo-15.webp",
+        "/inventory/WTL0067/photo-16.webp"
+      ],
+      "features": [
+        "🔥🔥AAA stock🔥🔥 Newly refurbished and clean in tip-top condition Largest Built-Up in Its Class",
+        "Backyard fully extension as wet kitchen",
+        "Prime Location with Open Views",
+        "Walking distance to the nearest park",
+        "Flood Free area"
       ],
       "amenities": [],
       "why_this_property": []
@@ -1104,7 +1187,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Trefoil Studio @ Setia City, Setia Alam*\nSelling Price: *RM330,000*\n\n*Property Details*\n- Property Type : Studio\n- Property Unit Type: Intermediate\n- Location: Setia Alam, Shah Alam, Bandar Baru Klang\n- Furnishing: Full\n- Size Approx. 486.0 sqft\n- N/A Bedrooms | 1 Bathrooms\n\n*Feature Highlights*\n- Sell with tenancy RM1300/month\n- High Floor with Stunning Hill & City View\n- Comes with 1 Car Park\n- Freehold\n- Strata Title\n- Move-in ready\n- Direct bridge walking access to Setia City Mall\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0003*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0003",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0003/cover.webp",
       "photos": [
         "/inventory/WTS0003/cover.webp",
@@ -1178,7 +1261,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Double Storey Terrace @ Taman Lestari Putra, Seri Kembangan*\nSelling Price: *RM780,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Lestari Putra, Seri Kembangan, Serdang, Putrajaya\n- Furnishing: Full\n- Size Approx. 2000.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Land Size / Built-up: 20x70 ft\n- 2\n- 000 sq.ft\n- Intermediate Double Storey Terrace\n- Leasehold\n- 4 Bedrooms\n- 3 Bathrooms\n- 2 Car Parks\n- Fully renovated & move-in ready\n- All furniture & electrical appliances included (Lock\n- Stock & Barrel)\n- Guarded community with low management fee (RM40/month)\n- Located on high ground & flood-free area\n- Facing Southeast - bright & airy unit\n- Owner-occupied\n- well maintained\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0004*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0004",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0004/cover.webp",
       "photos": [
         "/inventory/WTS0004/cover.webp",
@@ -1245,7 +1328,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Gravit8 @ Klang*\nSelling Price: *RM645,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Parklands, Bayumas, Bayuemas, Bayu Emas\n- Furnishing: Full\n- Size Approx. 2024.0 sqft\n- 1 Bedrooms | 2 Bathrooms\n\n*Feature Highlights*\n- Facing Swimming Pool\n- Car Parks: 2 lots on 5th floor\n- right beside the lift door\n- Layout: 3 + 1 Bedrooms\n- 2 Bathrooms\n- Fully renovated & move-in ready\n- Complete with furniture & electrical appliances\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0007*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0007",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0007/cover.webp",
       "photos": [
         "/inventory/WTS0007/cover.webp",
@@ -1308,7 +1391,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*2.5 Storey Terrace House @ Penaga, Bandar Botanic, Klang*\nSelling Price: *RM850,000*\n\n*Property Details*\n- Property Type : Terrace House - 2.5 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Botanic, Bukit Tinggi\n- Furnishing: Partial\n- 4 Bedrooms | 4 Bathrooms\n\n*Feature Highlights*\n- PRICE DROPPED: RM 842\n- 000 (Negotiable)\n- Land Size: 20 x 75 ft\n- 2.5 Storey Terrace\n- Extended & Renovated Balconies\n- Tenure: Freehold\n- Orientation: Facing North\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0010*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0010",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0010/cover.webp",
       "photos": [
         "/inventory/WTS0010/cover.webp",
@@ -1353,7 +1436,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Double Storey Terrace House @ Impian 8, Setia Alam*\nSelling Price: *RM700,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Impian 8, Setia Alam\n- Furnishing: Basic\n- Unit Dimensions: 20 × 70\n- Size Approx. 2200.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: North\n\n*Feature Highlights*\n- Tenure: Freehold\n- Land Title: Non-Bumi Lot\n- Orientation: Facing North\n- View: Facing Open\n- Security: 24-hour gated & guarded community\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0011*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0011",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0011/cover.webp",
       "photos": [
         "/inventory/WTS0011/cover.webp",
@@ -1405,7 +1488,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Freehold 2-Storey Corner Lot @ Setia Permai 3, Setia Alam*\nSelling Price: *RM1,080,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Corner\n- Location: Setia Alam, Shah Alam, Bandar Baru Klang\n- Furnishing: Basic\n- Size Approx. 1630.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Tenure: Freehold\n- Land Title: Non-Bumi Lot\n- 📐 Property Details\n- Land Size: 50' x 65' (Extra Land 32')\n- Facing Direction: South\n- Condition: Brand New Basic Unit\n- Community: Gated & Guarded (Security Fee: RM70/month)\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0012*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0012",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0012/cover.webp",
       "photos": [
         "/inventory/WTS0012/cover.webp",
@@ -1456,7 +1539,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Single Storey Terrace House @ Taman Melawis, Klang*\nSelling Price: *RM505,000*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Melawis, Teluk Pulai, Taman Gembira\n- Furnishing: Basic\n- Unit Dimensions: 22 × 65\n- 4 Bedrooms | 2 Bathrooms\n- Facing Direction: West\n\n*Feature Highlights*\n- 🔥🔥Price Dropped🔥🔥\n- Newly renovated and well-maintained unit\n- Land Size: 22' x 60'\n- Tenure: Freehold\n- Land Title: Non-Bumi Lot\n- Facing Direction: West\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0017*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0017",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0017/cover.webp",
       "photos": [
         "/inventory/WTS0017/cover.webp",
@@ -1507,7 +1590,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Vista Bayu Apartment, Bayu Perdana (Klang)*\nSelling Price: *RM290,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bayu Perdana, Botanic, Bukit Tinggi\n- Furnishing: Partial\n- Size Approx. 960.0 sqft\n- 3 Bedrooms | 1 Bathrooms\n\n*Feature Highlights*\n- Block: A\n- Floor: 3rd Floor\n- Layout: 3 Bedrooms\n- 2 Bathrooms\n- 1 Car Park\n- Maintenance Fee: RM120/month\n- Currently Vacant (Easy viewing can be arranged)\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0018*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0018",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0018/cover.webp",
       "photos": [
         "/inventory/WTS0018/cover.webp",
@@ -1556,7 +1639,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Single Storey Terrace House @ Mempari, Taman Seri Meru, Klang*\nSelling Price: *RM325,000*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Seri Meru, Kapar, Bandar Baru Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 62\n- 3 Bedrooms | 2 Bathrooms\n- Facing Direction: North\n\n*Feature Highlights*\n- Newly renovated and well-maintained unit\n- Land Size: 20' x 65'\n- Tenure: Freehold\n- Land Title: Non-Bumi Lot\n- Facing Direction: North\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0019*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0019",
-      "updated_at": "2026-08-17T03:11:29Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0019/cover.webp",
       "photos": [
         "/inventory/WTS0019/cover.webp",
@@ -1600,7 +1683,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Windows on the Park, Cheras*\nSelling Price: *RM799,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Cheras, Kuala Lumpur\n- Furnishing: Full\n- Size Approx. 2116.0 sqft\n- 4 Bedrooms | 4 Bathrooms\n\n*Feature Highlights*\n- Sell with tenancy worth RM2\n- 550/month\n- Carpark: 2\n- Tenure: Freehold\n- Facing: South\n- Occupancy: Sell with Tenancy\n- Maintenance Fee: RM600/month\n- Balcony: Very wide balcony with pool view\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0024*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0024",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0024/cover.webp",
       "photos": [
         "/inventory/WTS0024/cover.webp",
@@ -1648,7 +1731,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Single Storey End Lot House @ Taman Menara Maju, Klang (Between Taman Sri Andalas & Kampung Jawa)*\nSelling Price: *RM448,000*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Endlot\n- Location: Taman Menara Maju, Klang (Between Taman Sri Andalas & Kampung Jawa)\n- Furnishing: Partial\n- Unit Dimensions: 20 × 65\n- 3 Bedrooms | 2 Bathrooms\n\n*Feature Highlights*\n- Newly renovated and well-maintained unit\n- Land Size: 20' x 65'\n- Tenure: Freehold\n- Renovations & Upgrades\n- Fully renovated and fully extended\n- New wiring and new piping\n- New kitchen cabinets\n- New gate installed\n- 2 water heaters\n- Touch-up will be done before handover\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0026*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0026",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0026/cover.webp",
       "photos": [
         "/inventory/WTS0026/cover.webp",
@@ -1700,7 +1783,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*2 x Agriculture Lands @ Jalan Bukit Perah, Banting for Sale*\n\nSelling Price\nLot 1 - *RM4 Millions*\nLot 2 - *RM3.4 Millions*\n\n*Property Details*\n- Property Type : Land\n- Location: Jalan Bukit Perah, Banting\n- Approx. 5 acres each\n- rectangular land\n- Accessible from main road\n- FREEHOLD tenure\n- Non-Bumi Lot\n- Current Condition : Palm Oil Plantation\n- Approx. 15-20 mins to KLIA / KLIA2\n- Near IOI Industrial Park @ Banting (≈322 acres)\n- Close to Banting Industrial City\n- Strategic position within a high-potential development corridor\n- A-B-C co-broke deal\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0027*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0027",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0027/cover.webp",
       "photos": [
         "/inventory/WTS0027/cover.webp",
@@ -1757,7 +1840,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Double Storey End Lot Terrace House For Sale @ Bukit Tinggi 1, Klang*\nSelling Price: *RM650,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Endlot\n- Location: Bukit Tinggi 1, Klang\n- Furnishing: Basic\n- Unit Dimensions: 22 × 70\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n*Feature Highlights*\n- 4 Bedrooms\n- 3 Bathrooms\n- Freehold\n- Non-Bumi Lot\n- South Facing\n- Non-flooded area - safe & secure\n- Walking distance to Lotus's\n- Easy access to KESAS highways\n- Near Aeon Bukit Tinggi & GM Klang\n- Mature neighborhood with full amenities\n- Gated & guarded with 24-hour security\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0028*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0028",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0028/cover.webp",
       "photos": [
         "/inventory/WTS0028/cover.webp",
@@ -1808,7 +1891,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*2-Storey Extended Terrace House @ Bandar Botanic, Klang*\nSelling Price: *RM659,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Kiara, Bandar Botanic\n- Furnishing: Partial\n- Size Approx. 1400 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Land Size: 20' x 70'\n- Condition: Renovated and Extended (Backyard +20' x 10')\n- Gated and Guarded\n- Good house number (33 - very ong)\n- Facing North\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0029*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0029",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0029/cover.webp",
       "photos": [
         "/inventory/WTS0029/cover.webp",
@@ -1870,7 +1953,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*WTS 4R3B Double Storey @ Taman Sentosa*\nSelling Price: *RM470,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Sentosa, Klang\n- Furnishing: Partial\n- Unit Dimensions: 18 × 64\n- Size Approx. 1656.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South West\n\n*Feature Highlights*\n- 🔥AAA stock🔥\n- clean and well maintained unit\n- Land Size: 18' x 65'\n- Tenure: Freehold\n- Lot Type: Non-Bumi Lot\n- non-flood area\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0030*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0030",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0030/cover.webp",
       "photos": [
         "/inventory/WTS0030/cover.webp",
@@ -1918,7 +2001,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Angie WTS Double Storey@ Bandar Puteri Klang (Jalan Gelang 7)*\nSelling Price: *RM660,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Puteri Klang (Jalan Gelang 7)\n- Furnishing: Basic\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Land size: 20' x 75'\n- Facing: North\n- Located in non-flood area\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0032*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0032",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0032/cover.webp",
       "photos": [
         "/inventory/WTS0032/cover.webp",
@@ -1960,7 +2043,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*WTS Double Storey @ Bayu Perdana, Klang*\nSelling Price: *RM480,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bayu Perdana\n- Furnishing: Basic\n- Unit Dimensions: 20 × 75\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Land size: 20' x 75'\n- Facing: North\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0033*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0033",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0033/cover.webp",
       "photos": [
         "/inventory/WTS0033/cover.webp",
@@ -2001,7 +2084,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*TEH WTS Single Storey @ Taman Klang Jaya*\nSelling Price: *RM580,000*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Intermediate\n- Location: Klang Jaya, Andalas, Bandar Puteri\n- Furnishing: Basic\n- Unit Dimensions: 22 × 85\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Newly Renovated Unit - Look brand NEW\n- Facing: South\n- Freehold\n- Fully renovated - like brand new condition\n- Roof retiled - brand new (major cost saving)\n- Fully extended for maximum space\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0034*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0034",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0034/cover.webp",
       "photos": [
         "/inventory/WTS0034/cover.webp",
@@ -2051,7 +2134,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*WTS Double Storey @ Setia Bayuemas (Laelia 3)*\nSelling Price: *RM838,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Setia Bayuemas (Laelia 3)\n- Furnishing: Basic\n- Unit Dimensions: 22 × 75\n- 4 Bedrooms | 4 Bathrooms\n- Facing Direction: North\n\n*Feature Highlights*\n- Brand NEW Unit\n- Tenure: Freehold\n- Lot Type: Non-Bumi Lot\n- Condition: Vacant & Move-In Ready\n- Facing North\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0035*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0035",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0035/cover.webp",
       "photos": [
         "/inventory/WTS0035/cover.webp",
@@ -2104,7 +2187,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Jeniffer Wah WTS Fully Furnished Superlink @ Bandar Parklands*\nSelling Price: *RM968,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Location: Bandar Parklands\n- Furnishing: Full\n- Unit Dimensions: 24 × 75\n- Size Approx. 1920 sqft\n- 4 Bedrooms | 4 Bathrooms\n- Move In Ready\n- Tenure: Freehold\n- Lot Type: Non-Bumi Lot\n- Condition: Fully Furnished & Move-In Ready\n- Security: Gated & Guarded (24-hour)\n- Auto gate system\n- Curtains & blinds installed\n- South Facing\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0036*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0036",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0036/cover.webp",
       "photos": [
         "/inventory/WTS0036/cover.webp",
@@ -2167,7 +2250,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*CW Tan WTS Double Storey Corner Lot @ Jenaris Bandar Botanic | Extra Land | 6-Car Parking | Facing South*\nSelling Price: *RM1,180,000* (negotiable)\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Corner\n- Location: Jenaris Bandar Botanic \n- Furnishing: Basic\n- Size Approx. 3100 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Land Size: 24' x 75' + 20' extra land\n- Tenure: Freehold\n- Lot Type: Non-Bumi Lot\n- Security: Gated & Guarded\n- Can park up to 6 cars (3-in 3-out)\n- Facing South\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0037*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0037",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0037/cover.webp",
       "photos": [
         "/inventory/WTS0037/cover.webp",
@@ -2214,7 +2297,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*5R3B Semi-Detached House @ Bukit Tinggi 1, Klang | Extended | Next to Hin Hwa and SMK Bukit Tinggi | South*\nSelling Price: *RM1,370,000*\n\n*Property Details*\n- Property Type : Semi-Detached House\n- Property Unit Type: Intermediate\n- Location: Bukit Tinggi 1, Klang | Extended | Next to Hin Hwa and SMK Bukit Tinggi | South\n- Furnishing: Basic\n- Unit Dimensions: 40 × 80\n- Size Approx. 3200.0 sqft\n- 5 Bedrooms | 4 Bathrooms\n- Facing Direction: South\n\n*Feature Highlights*\n- Tenure: Freehold\n- Lot Type: Non-Bumi Lot\n- Extended and Renovated\n- Low density residential area\n- Walking distance to Hin Hua Primary School and SMK Bukit Tinggi\n- Walking distance to Bukit Tinggi Medical Centre\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0038*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0038",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0038/cover.webp",
       "photos": [
         "/inventory/WTS0038/cover.webp",
@@ -2258,7 +2341,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*4R2B Single Storey @ Taman Pendamar Indah 2, Port Klang*\nSelling Price: *RM578,000*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Pendamar Indah 2, Port Klang\n- Furnishing: Full\n- Unit Dimensions: 20 × 65\n- Size Approx. 1400 sqft\n- 4 Bedrooms | 2 Bathrooms\n- Tenure: Freehold\n- Lot Type: Non-Bumi Lot\n- Land Size: 20' x 65'\n- Facing: North\n\n*Features Highlights*\n- Condition: Fully Renovated\n- Renovation & Features\n- Fully extended kitchen\n- Fully tiled throughout\n- Car porch with awning\n- Well maintained and move-in condition\n- Friendly neighborhood\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0039*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0039",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0039/cover.webp",
       "photos": [
         "/inventory/WTS0039/cover.webp",
@@ -2307,7 +2390,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Sughan WTS 4R1B Single Storey Corner Lot @Bandar Sentosa Klang | Extended Room | Extra Side Land*\nSelling Price: *RM450,000*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Corner\n- Location: Taman Sentosa\n- Furnishing: Basic\n- Unit Dimensions: 45 × 63\n- Size Approx. 2434.0 sqft\n- 4 Bedrooms | 1 Bathrooms\n- Facing Direction: South East\n\n*Feature Highlights*\n- Tenure: Freehold\n- Land Size: 2\n- 434 sqft\n- Spacious corner lot with approx 10ft wide land size\n- Facing Southeast\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0041*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0041",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0041/cover.webp",
       "photos": [
         "/inventory/WTS0041/cover.webp",
@@ -2355,7 +2438,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Kavi WTS 4R3B Fully Renovated End Lot Double Storey Terrace House @ Kapar, Klang*\nSelling Price: *RM490,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Endlot\n- Location: Kapar, Klang Utama, Meru\n- Furnishing: Basic\n- Unit Dimensions: 20 × 65\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Tenure: Freehold\n- Title: Non-Bumi Lot\n- Land Size: 20' x 65'\n- Condition: Fully Renovated\n- Move-in Ready\n- Facing West\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0042*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0042",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0042/cover.webp",
       "photos": [
         "/inventory/WTS0042/cover.webp",
@@ -2398,7 +2481,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Mann WTS 4R3B 2 Storey Semi-D @ Aman Perdana Klang*\nSelling Price: *RM788,000*\n\n*Property Details*\n- Property Type : Semi-Detached House\n- Property Unit Type: Intermediate\n- Location: Aman Perdana, Klang\n- Furnishing: Partial\n- Size Approx. 1980.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Tenure: Freehold\n- Title: Individual Title\n- Land Size: 32' x 75' (2\n- 400 sqft)\n- Store Room: 1\n- Land Title: Non-Bumi Lot\n- Gated & Guarded\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0045*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0045",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS0045/cover.webp",
       "photos": [
         "/inventory/WTS0045/cover.webp",
@@ -2450,7 +2533,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Parkhill Residence, Bukit Jalil*\nSelling Price: *RM600,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bukit Jalil, Puchong, Kinrara\n- Furnishing: Full\n- Size Approx. 1100.0 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Floor: High Floor (26th)\n- Carpark: 2 (Low Floor)\n- Tenure: Leasehold\n- Occupancy: Currently Tenanted\n- Shuttle service to APU\n- Next to Astro & Asia Pacific University (APU)\n- 5 minutes covered walkway to STAR LRT\n- 5 minutes walking distance to Bukit Jalil Stadium\n- 10 minutes drive to Pavilion Bukit Jalil\n- Stunning stadium view from the balcony\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1001*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1001",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1001/cover.webp",
       "photos": [
         "/inventory/WTS1001/cover.webp",
@@ -2513,7 +2596,7 @@
       "created_at": "2026-06-25T11:45:24Z",
       "listed_at": "2026-06-13T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Klang Taman Sentosa Jalan in Dato Hamid Single Storey House*\nSelling Price: *RM340,000*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Intermediate\n- Location: Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 60\n- Size Approx. 1200.0 sqft\n- 3 Bedrooms | 1 Bathrooms\n\n*Feature Highlights*\n- Freehold\n- Non Bumi Lot\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1002*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1002",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1002/cover.webp",
       "photos": [
         "/inventory/WTS1002/cover.webp",
@@ -2551,7 +2634,7 @@
       "created_at": "2026-06-28T07:02:58Z",
       "listed_at": "2026-06-28T15:02:58Z",
       "posting_copy": "*WTS*\n\n*Tmn Sentosa Double Storey Terrace House*\nSelling Price: *RM550,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Location: Klang\n- Furnishing: Full\n- Unit Dimensions: 24 × 50\n- Size Approx. 1200 sqft\n- 3 Bedrooms | 2 Bathrooms\n- 100% Full Loan Allowed\n- Fully Furnish\n- Renovated & Move In Ready \n- ▪️ Freehold\n- ▪️ Non-Bumi Lot\n- ▪️ Fully Extended Balcony\n- ▪️ Spacious car porch\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1003*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1003",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1003/cover.webp",
       "photos": [
         "/inventory/WTS1003/cover.webp",
@@ -2593,7 +2676,7 @@
       "created_at": "2026-06-29T12:32:20Z",
       "listed_at": "2026-06-29T20:32:20Z",
       "posting_copy": "*WTS*\n\n*WTS 2.5 Storey Semi D House at Bukit Tinggi*\nSelling Price: *RM1,600,000*\n\n*Property Details*\n- Property Type : Semi-Detached House\n- Property Unit Type: Intermediate\n- Location: Batu Nilam 9F Bukit Tinggi 1\n- Furnishing: Basic\n- Unit Dimensions: 100 × 47\n- Size Approx. 3907.0 sqft\n- 5 Bedrooms | 3 Bathrooms\n- Facing Direction: North\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1004*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1004",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1004/cover.webp",
       "photos": [
         "/inventory/WTS1004/cover.webp",
@@ -2636,7 +2719,7 @@
       "created_at": "2026-07-02T07:21:39Z",
       "listed_at": "2026-07-02T15:21:39Z",
       "posting_copy": "*WTS*\n\n*Serunai Apartment, Bandar Bukit Raja, Selangor*\nSelling Price: *RM355,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Serunai, Bandar Bukit Raja\n- Size Approx. 1000.0 sqft\n- 3 Bedrooms | 2 Bathrooms\n\n*Feature Highlights*\n- Unit at Level 6\n- 2 x dedicate car park ( The parking is same level as bridge)\n- 1 x Water Heater\n- Fully Renovated (Wet Kitchen + Dry Kitchen)\n- 24 Hours Security\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1005*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1005",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1005/cover.webp",
       "photos": [
         "/inventory/WTS1005/cover.webp",
@@ -2684,7 +2767,7 @@
       "created_at": "2026-07-03T01:58:25Z",
       "listed_at": "2026-07-03T09:58:25Z",
       "posting_copy": "*WTS*\n\n*2-Storey Intermediate House for Sale in Bandar Puteri, Klang*\nSelling Price: *RM550,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Puteri, Klang\n- Unit Dimensions: 20 × 75\n- Size Approx. 1800.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Security fee: RM60/month\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1007*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1007",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1007/cover.webp",
       "photos": [
         "/inventory/WTS1007/cover.webp",
@@ -2723,7 +2806,7 @@
       "created_at": "2026-07-07T08:24:00Z",
       "listed_at": "2026-07-07T16:24:00Z",
       "posting_copy": "*WTS*\n\n*4R3B 2 Storey Terrace House@ Bukit Tinggi (Next to Lotus's)*\nSelling Price: *RM750,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bukit Tinggi (Next to Lotus's)\n- Unit Dimensions: 20 × 70\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1008*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1008",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1008/cover.webp",
       "photos": [
         "/inventory/WTS1008/cover.webp",
@@ -2765,7 +2848,7 @@
       "created_at": "2026-07-13T00:51:36Z",
       "listed_at": "2026-07-13T08:51:36Z",
       "posting_copy": "*WTS*\n\n*Freehold Corner Single in Storey House In Setia Perdana, Setia Alam*\nSelling Price: *RM950,000* (negotiable)\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Intermediate\n- Location: Setia Alam\n- Build up Dimensions: 24 × 70\n- Land size Size Approx. 3000 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Facing Direction: North\n- Freehold\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1009*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1009",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1009/cover.webp",
       "photos": [
         "/inventory/WTS1009/cover.webp",
@@ -2813,7 +2896,7 @@
       "created_at": "2026-07-14T03:42:56Z",
       "listed_at": "2026-07-14T11:42:56Z",
       "posting_copy": "*WTS*\n\n*Double Storey Terrace House for Sale in Taman Sri Gadong Klang*\nSelling Price: *RM690,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Sri Gadong, Telok Gadong\n- Furnishing: Partial\n- Unit Dimensions: 20 × 70\n- 4 Bedrooms | 3 Bathrooms\n- Extra Rooms: 0\n- Facing Direction: South East\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1010*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1010",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1010/cover.webp",
       "photos": [
         "/inventory/WTS1010/cover.webp",
@@ -2860,7 +2943,7 @@
       "created_at": "2026-07-16T02:16:25Z",
       "listed_at": "2026-07-16T10:16:25Z",
       "posting_copy": "*WTS*\n\n*3R1B Single Storey House @ Taman Sentosa Klang*\nSelling Price: *RM495,000*\n🔥AAA Stock🔥\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Sentosa Klang House for Sale Klang, 3 1\n- Unit Dimensions: 20 × 60\n- Size Approx. 1200 sqft\n- 3 Bedrooms | 1 Bathrooms\n- Facing Direction: North\n- Freehold\n- Newly Fully Renovated\n- Security doors\n- Autogate\n- Kitchen Cabinet\n- Plaster Ceiling\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1012*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1012",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1012/cover.webp",
       "photos": [
         "/inventory/WTS1012/cover.webp",
@@ -2904,7 +2987,7 @@
       "created_at": "2026-07-18T00:51:37Z",
       "listed_at": "2026-07-18T08:51:37Z",
       "posting_copy": "*WTS*\n\n*Trifolis Apartment, Klang, Selangor*\nSelling Price: *RM400,000* (negotiable)\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Trifolis Apartment, Klang\n- Furnishing: Partial\n- Size Approx. 900 sqft\n- 3 Bedrooms | 2 Bathrooms\n- [🏠Freehold\n- ✨900 sqft] 📌\n- 🎯 Level 8 With Lift (Corner unit)\n- FREEHOLD\n- ⁠Gated & Guarded\n- Aircond in Master Bedroom\n- Kitchen Cabinet\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1013*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1013",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1013/cover.webp",
       "photos": [
         "/inventory/WTS1013/cover.webp",
@@ -2954,7 +3037,7 @@
       "created_at": "2026-07-21T04:53:04Z",
       "listed_at": "2026-07-21T12:53:04Z",
       "posting_copy": "*WTS*\n\n*3R3B Terrace House @ Laelia 1, Bayuemas, Klang*\nSelling Price: *RM660,000*\n\n*Property Details*\n- Property Type : Terrace House\n- Property Unit Type: Intermediate\n- Location: Laelia 1, Bayuemas, Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 70\n- 3 Bedrooms | 3 Bathrooms\n- Facing Direction: North\n\n*Feature Highlights*\n- Freehold\n- Non Bumi Lot\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1014*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1014",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1014/cover.webp",
       "photos": [
         "/inventory/WTS1014/cover.webp",
@@ -2995,7 +3078,7 @@
       "created_at": "2026-07-22T05:53:00Z",
       "listed_at": "2026-07-22T13:53:00Z",
       "posting_copy": "*WTS*\n\n*Bandar Puteri Klang Double Storey Terrace House*\nSelling Price: *RM650,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Puteri Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 74\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- - Gated Guarded\n- - Kitchen fully extended and all tiles flooring\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1015*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1015",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1015/cover.webp",
       "photos": [
         "/inventory/WTS1015/cover.webp",
@@ -3033,7 +3116,7 @@
       "created_at": "2026-07-23T02:14:41Z",
       "listed_at": "2026-07-23T10:14:41Z",
       "posting_copy": "*WTS/WTL*\n\n*Double Storey @ Lorong Laksamana Sentosa*\n\nSelling Price: *RM530,000*\nRental Price: *RM1,100*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Sentosa\n- Unit Dimensions: 18 × 65\n- Size Approx. 0 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n*Highlights*\n- Facing field\n- Near corner (more parking)\n- Kitchen full tiles with table top & kitchen cabinet installed\n- Fully Extended\n- Car porch full tiles\n- Slide door & awning installed.\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1016*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1016",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1016/cover.webp",
       "photos": [
         "/inventory/WTS1016/cover.webp",
@@ -3076,7 +3159,7 @@
       "created_at": "2026-07-27T14:57:30Z",
       "listed_at": "2026-07-27T22:57:30Z",
       "posting_copy": "*WTS*\n\n*Bukit Tinggi Klang Double in Story Terrace House*\nSelling Price: *RM785,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bukit Tinggi\n- Furnishing: Partial\n- Unit Dimensions: 20 × 70\n- Size Approx. 1400.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: North\n\n*Feature Highlights*\n- Freehold\n- Gated & Guarded\n- Stainless Steel Auto Gate\n- Non Bumi Lot\n- Leasehold\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1017*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1017",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1017/cover.webp",
       "photos": [
         "/inventory/WTS1017/cover.webp",
@@ -3119,7 +3202,7 @@
       "created_at": "2026-07-28T08:13:12Z",
       "listed_at": "2026-07-28T16:13:12Z",
       "posting_copy": "*WTS*\n\n*Pelangi Heights, Klang, Selangor*\nSelling Price: *RM330,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Pelangi Heights, Klang\n- Size Approx. 1170.0 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 1\n\n*Feature Highlights*\n- Freehold\n- Non Bumi Lot\n- Security Guarded\n- Located at 6th floor\n- Facing Swimming Pool (Can see 福建会馆）\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1018*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1018",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1018/cover.webp",
       "photos": [
         "/inventory/WTS1018/cover.webp",
@@ -3168,7 +3251,7 @@
       "created_at": "2026-07-28T08:34:24Z",
       "listed_at": "2026-07-28T16:34:24Z",
       "posting_copy": "*WTS*\n\n*2R1B Regency Condominium (Klang), Klang, Selangor*\nSelling Price: *RM250,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Regency Condominium (Klang), Klang\n- Size Approx. 689.0 sqft\n- 2 Bedrooms | 1 Bathrooms\n- Car Parks: 1\n\n*Feature Highlights*\n- Freehold\n- Non Bumi Lot\n- Security\n- Located at 6th floor\n- Living hall window facing Swimming Pool\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1019*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1019",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1019/cover.webp",
       "photos": [
         "/inventory/WTS1019/cover.webp",
@@ -3215,7 +3298,7 @@
       "created_at": "2026-07-30T04:00:20Z",
       "listed_at": "2026-07-30T12:00:20Z",
       "posting_copy": "*WTS*\n\n*4R4B Renovated Double Storey Intermediate Link House with Side Land in Taman Sri Gadong, Klang*\nSelling Price: *RM1,050,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Sri Gadong off Telok Gadong Besar, Klang\n- Furnishing: Partial\n- Unit Dimensions: 42 × 70\n- Size Approx. 2696 sqft\n- 4 Bedrooms | 4 Bathrooms\n- Extra Rooms: 1\n- Facing Direction: North West\n\nWhy this property?\n- a large master bedroom with an attached bathroom\n- attic storage\n- multiple balconies including a huge front balcony\n- located near KTM Teluk Gadong station and various amenities with easy access to major highways.\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1021*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1021",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1021/cover.webp",
       "photos": [
         "/inventory/WTS1021/cover.webp",
@@ -3268,7 +3351,7 @@
       "created_at": "2026-07-30T05:49:53Z",
       "listed_at": "2026-07-30T13:49:52Z",
       "posting_copy": "*WTS*\n\n*Spacious Double Storey Semi-Detached House for Sale in Taman Sri Andalas, Klang*\nSelling Price: *RM1,800,000*\n\n*Property Details*\n- Property Type : Semi-Detached House\n- Property Unit Type: Intermediate\n- Location: Taman Sri Andalas, Klang\n- Furnishing: Basic\n- Size Approx. 4963 sqft\n- 5 Bedrooms | 3 Bathrooms\n- Facing Direction: North\n\nWhy This Property?\n- Rare Semi-D on a huge 4,963 sqft\n- Spacious front, side and backyard\n- Bright and airy living & dining areas\n- Practical 5-bedroom, 3-bathroom layout\n- Huge Master bedroom with attached bathroom\n- Under staircase store room\n- Newly painted interior & exterior\n- Newly tiled bathroom floors\n- Wide car porch with ample parking\n- Flat usable land with excellent renovation or extension potential\n- Peaceful and mature residential environment\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1022*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1022",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1022/cover.webp",
       "photos": [
         "/inventory/WTS1022/cover.webp",
@@ -3328,7 +3411,7 @@
       "created_at": "2026-08-05T03:53:56Z",
       "listed_at": "2026-08-05T11:53:56Z",
       "posting_copy": "*WTS*\n\n*Double Storey House in Taman Gembira for Sale*\nSelling Price: *RM680,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Gembira\n- Furnishing: Basic\n- Unit Dimensions: 22 × 80\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South East\n\n*Feature Highlights*\n- Freehold\n- Car Porch with extended awning\n- Completely refurbished and newly renovated\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1023*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1023",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1023/cover.webp",
       "photos": [
         "/inventory/WTS1023/cover.webp",
@@ -3368,7 +3451,7 @@
       "created_at": "2026-08-05T03:59:59Z",
       "listed_at": "2026-08-05T11:59:59Z",
       "posting_copy": "*WTS*\n\n*2-Storey Freehold House for Sale in Bandar Puteri Klang*\nSelling Price: *RM508,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Puteri Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 75\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n*Feature Highlights*\n- *Faces no other house directly*\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1024*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1024",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1024/cover.webp",
       "photos": [
         "/inventory/WTS1024/cover.webp",
@@ -3409,8 +3492,8 @@
       "featured": true,
       "created_at": "2026-08-10T03:24:54Z",
       "listed_at": "2026-08-10T11:24:54Z",
-      "posting_copy": "*WTS*\n\n*4R3B Double Storey House @ Storey House Setia Indah 9 Setia Alam*\nSelling Price: *RM870,000*\n\n*Keys in hand.*\n*Viewings can be arranged flexibly.*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Storey House Setia Indah Shah Alam\n- Unit Dimensions: 22 × 75\n- Size Approx. 2300 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n*Features Highlights*\n- 🔥🔥AAA stock🔥🔥\n- Newly refurbished and clean in tip-top condition\n- Largest Built-Up in Its Class\n- Backyard fully extension as wet kitchen\n- Prime Location with Open Views\n- Walking distance to the nearest park\n- Flood Free area\n- Freehold\n- Non Bumi Lot\n- First-hand owner unit purchased directly from SP Setia Developer\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1025*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1025",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "posting_copy": "*WTL/WTS*\n\n*4R3B Double Storey House @ Storey House Setia Indah 9 Setia Alam*\n\nRental Price: *RM2,800*\nSelling Price: *RM870,000*\n\n*Keys in hand.*\n*Viewings can be arranged flexibly.*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Storey House Setia Indah Shah Alam\n- Unit Dimensions: 22 × 75\n- Size Approx. 2300 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n*Features Highlights*\n- 🔥🔥AAA stock🔥🔥\n- Newly refurbished and clean in tip-top condition\n- Largest Built-Up in Its Class\n- Backyard fully extension as wet kitchen\n- Prime Location with Open Views\n- Walking distance to the nearest park\n- Flood Free area\n- Freehold\n- Non Bumi Lot\n- First-hand owner unit purchased directly from SP Setia Developer\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1025*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1025",
+      "updated_at": "2026-08-18T04:25:48Z",
       "cover_photo": "/inventory/WTS1025/cover.webp",
       "photos": [
         "/inventory/WTS1025/cover.webp",
@@ -3464,7 +3547,7 @@
       "created_at": "2026-08-14T11:55:48Z",
       "listed_at": "2026-08-14T19:55:48Z",
       "posting_copy": "*WTS*\n\n*4R3B Double Storey House @ Bandar Bukit Raja Casira 3 Klang Double Storey*\nSelling Price: *RM740,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Bukit Raja Casira 3 Klang Double Storey\n- Furnishing: Basic\n- Unit Dimensions: 20 × 72\n- Size Approx. 1700.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n*Feature Highlights*\n- Freehold\n- Backyard Facing Open & Playground\n- Non Bumi Lot\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1026*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1026",
-      "updated_at": "2026-08-16T23:31:13Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1026/cover.webp",
       "photos": [
         "/inventory/WTS1026/cover.webp",
@@ -3510,7 +3593,7 @@
       "created_at": "2026-08-17T03:45:18Z",
       "listed_at": "2026-08-17T11:45:18Z",
       "posting_copy": "*WTS*\n\n*Shoplot @ Bandar Bukit Tinggi*\nSelling Price: *RM850,000*\n\n*Property Details*\n- Property Type : Shoplot\n- Property Unit Type: Intermediate\n- Location: Bandar Bukit Tinggi\n- Furnishing: Full\n- Unit Dimensions: 22 × 75\n- Size Approx. 1650.0 sqft\n- Facing Direction: East\n\n*Feature Highlights*\n- High Visibility – Facing Busy Main Road\n- Fully Furnished & Renovated\n- Freehold\n- 2 Security Doors for added safety\n- Centralized Aircond (2 Units) + 3 Normal Aircond Units\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1027*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1027",
-      "updated_at": "2026-08-17T03:45:18Z",
+      "updated_at": "2026-08-18T00:41:35Z",
       "cover_photo": "/inventory/WTS1027/cover.webp",
       "photos": [
         "/inventory/WTS1027/cover.webp",

@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://property.myeviv.com/</loc>
-    <lastmod>2026-08-26</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/contact</loc>
-    <lastmod>2026-08-26</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -92,7 +92,7 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wtl0059-spacious-double-storey-semi-detached-house-for-rent-in-taman-sri-andalas-klang-taman-sri-andalas-klang</loc>
-    <lastmod>2026-08-26</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -147,6 +147,12 @@
   <url>
     <loc>https://property.myeviv.com/property/wtl0069-3r2b-aronia-apartment-klang-selangor-bandar-parklands-klang</loc>
     <lastmod>2026-08-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://property.myeviv.com/property/wtl0070-3r2b-endlot-condo-trifolia-apartment-klang-trifolia-apartment-klang</loc>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -224,7 +230,7 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0029-2-storey-extended-terrace-house-bandar-botanic-klang-bandar-botanic-klang</loc>
-    <lastmod>2026-08-26</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -441,6 +447,12 @@
   <url>
     <loc>https://property.myeviv.com/property/wts1027-shoplot-bandar-bukit-tinggi-bandar-bukit-tinggi</loc>
     <lastmod>2026-08-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://property.myeviv.com/property/wts1028-4r4b-double-storey-house-kota-kemuning-kota-kemuning</loc>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

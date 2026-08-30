@@ -14,6 +14,44 @@ const defaultIntent = "WTL";
 const defaults = { keyword: "", intent: defaultIntent, propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", sort: "recent" };
 const CATALOGUE_STATE_KEY = "pdd-catalogue-state";
 const CATALOGUE_SCROLL_KEY = "pdd-catalogue-scroll-y";
+const shareableFilterKeys = {
+  keyword: "q",
+  intent: "intent",
+  propertyType: "type",
+  location: "location",
+  minPrice: "min",
+  maxPrice: "max",
+  bedrooms: "beds",
+  furnishing: "furnishing",
+  sort: "sort",
+};
+
+function readSharedCatalogueState() {
+  if (typeof window === "undefined") return null;
+  const params = new URLSearchParams(window.location.search);
+  const hasSharedFilters = Object.values(shareableFilterKeys).some((key) => params.has(key)) || params.has("view");
+  if (!hasSharedFilters) return null;
+  const filters = { ...defaults };
+  Object.entries(shareableFilterKeys).forEach(([filterKey, queryKey]) => {
+    if (params.has(queryKey)) filters[filterKey] = params.get(queryKey) || "";
+  });
+  return {
+    filters: { ...defaults, ...filters },
+    catalogueMode: params.get("view") === "featured" ? "featured" : "all",
+    visible: 6,
+  };
+}
+
+function catalogueSearchParams(filters, catalogueMode) {
+  const params = new URLSearchParams();
+  Object.entries(shareableFilterKeys).forEach(([filterKey, queryKey]) => {
+    const value = filters[filterKey];
+    const isDefault = value === defaults[filterKey];
+    if (value && !isDefault) params.set(queryKey, value);
+  });
+  if (catalogueMode === "featured") params.set("view", catalogueMode);
+  return params;
+}
 
 const offerForIntent = (listing, intent) => (
   listing.intent === intent
@@ -25,6 +63,8 @@ const offerForIntent = (listing, intent) => (
 
 function readCatalogueState() {
   if (typeof window === "undefined") return { filters: defaults, catalogueMode: "all", visible: 6 };
+  const shared = readSharedCatalogueState();
+  if (shared) return shared;
   try {
     const saved = JSON.parse(window.sessionStorage.getItem(CATALOGUE_STATE_KEY) || "null");
     return {
@@ -43,6 +83,7 @@ export function HomePage() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [visible, setVisible] = useState(initialCatalogueState.visible);
   const [agentToolsPreviewOpen, setAgentToolsPreviewOpen] = useState(false);
+  const [shareCopied, setShareCopied] = useState(false);
   const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && key !== "intent" && value).length
     + (filters.intent !== defaultIntent ? 1 : 0)
     + (catalogueMode === "featured" ? 1 : 0);
@@ -77,9 +118,36 @@ export function HomePage() {
     setCatalogueMode(mode);
     setVisible(6);
   };
+  const shareUrl = useMemo(() => {
+    if (typeof window === "undefined") return "";
+    const url = new URL(window.location.href);
+    url.search = catalogueSearchParams(filters, catalogueMode).toString();
+    return url.toString();
+  }, [filters, catalogueMode]);
+  const shareSearch = async () => {
+    if (!shareUrl) return;
+    try {
+      if (typeof navigator.share === "function") {
+        await navigator.share({ title: "Property search", url: shareUrl });
+        return;
+      }
+      await navigator.clipboard.writeText(shareUrl);
+      setShareCopied(true);
+      window.setTimeout(() => setShareCopied(false), 1800);
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+      window.prompt("Copy this shareable search link:", shareUrl);
+    }
+  };
   useEffect(() => {
     try { window.sessionStorage.setItem(CATALOGUE_STATE_KEY, JSON.stringify({ filters, catalogueMode, visible })); } catch { /* storage may be unavailable */ }
   }, [filters, catalogueMode, visible]);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    url.search = catalogueSearchParams(filters, catalogueMode).toString();
+    window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+  }, [filters, catalogueMode]);
   useEffect(() => {
     const onScroll = () => { try { window.sessionStorage.setItem(CATALOGUE_SCROLL_KEY, String(Math.round(window.scrollY || 0))); } catch { /* storage may be unavailable */ } };
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -124,7 +192,7 @@ export function HomePage() {
             <div><span className="eyebrow">Public property listings</span><h2>{agentProfile.catalogueHeading}</h2><p>Explore current opportunities and contact me directly to confirm details or arrange a viewing.</p></div>
             <div className="catalogue-count"><strong>{results.length}</strong><span>matching {results.length === 1 ? "property" : "properties"}</span>{meta ? <small>Inventory {meta.inventoryVersion} · {meta.isMockData ? "generated" : "published"} {formatDateTime(meta.publishedAt || meta.generatedAt)}</small> : null}</div>
           </div>
-          <CatalogueFilters filters={filters} setFilters={setFilters} options={options} activeCount={activeCount} onReset={reset} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} catalogueMode={catalogueMode} setCatalogueMode={updateCatalogueMode} />
+          <CatalogueFilters filters={filters} setFilters={setFilters} options={options} activeCount={activeCount} onReset={reset} onShare={shareSearch} shareCopied={shareCopied} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} catalogueMode={catalogueMode} setCatalogueMode={updateCatalogueMode} />
           {loading ? <div className="state-card"><LoaderCircle className="spin" /><strong>Loading public inventory…</strong></div> : null}
           {error ? <div className="state-card error"><strong>{error}</strong><span>Please refresh the page or contact HS Ong directly.</span></div> : null}
           {!loading && !error && results.length ? <div className="property-grid">{results.slice(0, visible).map((listing) => <PropertyCard key={listing.publicId} listing={listing} displayIntent={filters.intent} />)}</div> : null}

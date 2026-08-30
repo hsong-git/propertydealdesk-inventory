@@ -1,4 +1,4 @@
-import { ChevronDown, RotateCcw, Search, SlidersHorizontal, X } from "lucide-react";
+import { Check, ChevronDown, RotateCcw, Search, Share2, SlidersHorizontal, X } from "lucide-react";
 
 const intentOptions = [
   { key: "WTL", label: "WTL" },
@@ -9,7 +9,7 @@ const catalogueModes = [
   { key: "featured", label: "Featured" },
 ];
 
-export function CatalogueFilters({ filters, setFilters, options, activeCount, onReset, mobileOpen, setMobileOpen, catalogueMode, setCatalogueMode }) {
+export function CatalogueFilters({ filters, setFilters, options, activeCount, onReset, onShare, shareCopied, mobileOpen, setMobileOpen, catalogueMode, setCatalogueMode }) {
   const update = (key, value) => setFilters((current) => ({ ...current, [key]: value }));
   return (
     <section className="catalogue-controls" aria-label="Property search and filters">
@@ -60,7 +60,7 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
             </div>
           </fieldset>
         </div>
-        <div className="filter-footer"><button className="reset-button" type="button" onClick={onReset} disabled={!activeCount}><RotateCcw size={16} /> Reset Filters</button><button className="button primary apply-filter-button" type="button" onClick={() => setMobileOpen(false)}>Show results</button></div>
+        <div className="filter-footer"><button className="reset-button" type="button" onClick={onReset} disabled={!activeCount}><RotateCcw size={16} /> Reset Filters</button><button className="button secondary share-search-button" type="button" onClick={onShare}>{shareCopied ? <Check size={16} /> : <Share2 size={16} />} {shareCopied ? "Link copied" : "Share search"}</button><button className="button primary apply-filter-button" type="button" onClick={() => setMobileOpen(false)}>Show results</button></div>
       </div>
       {mobileOpen ? <button className="filter-backdrop" type="button" aria-label="Close filters" onClick={() => setMobileOpen(false)} /> : null}
     </section>

@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.08.30.1",
-  "generated_at": "2026-08-30T01:17:59Z",
-  "publishedAt": "2026-08-30T01:17:59Z",
+  "inventoryVersion": "2026.08.30.2",
+  "generated_at": "2026-08-30T01:34:20Z",
+  "publishedAt": "2026-08-30T01:34:20Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -156,6 +156,50 @@
       ],
       "features": [
         "Facing Direction: South West"
+      ],
+      "amenities": [],
+      "why_this_property": []
+    },
+    {
+      "public_id": "pub_8adc2f03b565f042fedf3c5b",
+      "code": "WTL0029",
+      "intent": "WTL",
+      "slug": "wtl0029-allen-wtl-3r3b-maple-residences-bandar-bestari-klang-parklands-ksl-bayuemas",
+      "title": "Allen WTL 3R3B Maple Residences, Bandar Bestari Klang",
+      "property_type": "Condominium/Apartment",
+      "location": "Parklands, KSL, Bayuemas",
+      "price": 1500,
+      "alternate_intent": null,
+      "alternate_price": null,
+      "description": "Condominium/Apartment at Parklands, KSL, Bayuemas. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 3,
+      "bathroom_count": 2,
+      "built_up_sqft": 889,
+      "land_size": null,
+      "furnishing": "Partial",
+      "facing_direction": null,
+      "unit_type": "Intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-08-29T04:11:15Z",
+      "listed_at": null,
+      "posting_copy": "*WTL*\n\n*Allen WTL 3R3B Maple Residences, Bandar Bestari Klang*\nRental *RM1,500*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Parklands, KSL, Bayuemas\n- Furnishing: Partial\n- Size Approx. 889.0 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- 3 bedrooms\n- 2 bathrooms\n- 2 car parks\n- built-up 889 sqft\n- medium floor. Included furnishings: air-conditioners\n- kitchen cabinets\n- refrigerator\n- washing machine\n- beds & wardrobes\n- curtains\n- sofa set.\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0029*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0029",
+      "updated_at": "2026-08-29T23:43:06Z",
+      "cover_photo": "/inventory/WTL0029/cover.webp",
+      "photos": [
+        "/inventory/WTL0029/cover.webp",
+        "/inventory/WTL0029/photo-02.webp",
+        "/inventory/WTL0029/photo-03.webp",
+        "/inventory/WTL0029/photo-04.webp",
+        "/inventory/WTL0029/photo-05.webp",
+        "/inventory/WTL0029/photo-06.webp",
+        "/inventory/WTL0029/photo-07.webp",
+        "/inventory/WTL0029/photo-08.webp"
+      ],
+      "features": [
+        "3 bedrooms",
+        "2 bathrooms",
+        "2 car parks, built-up 889 sqft, medium floor. Included furnishings: air-conditioners, kitchen cabinets, refrigerator, washing machine, beds & wardrobes, curtains, sofa set."
       ],
       "amenities": [],
       "why_this_property": []

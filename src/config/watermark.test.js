@@ -7,7 +7,7 @@ test("uses the approved public property logo watermark and overlay default", () 
     title: "TRR HS Ong",
     subtitle: "property.myeviv.com",
   });
-  assert.equal(propertyPhotoWatermark.logo, "/branding/Logo-GrayScale.png");
+  assert.equal(propertyPhotoWatermark.logo, "/branding/Logo-Transparent.png");
   assert.equal(propertyPhotoWatermark.mode, "overlay");
   assert.equal(propertyPhotoWatermark.opacity, 0.3);
 });

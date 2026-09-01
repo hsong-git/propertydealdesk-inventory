@@ -1,5 +1,6 @@
 import { SITE_ORIGIN } from "./seo.js";
 import { postingText } from "./listing.js";
+import { propertyPhotoWatermark } from "../config/watermark.js";
 
 export const PHOTO_SHARE_JPEG_QUALITY = 0.9;
 export const PHOTO_SELECTION_LIMIT = 10;
@@ -39,6 +40,15 @@ function canvasBlob(canvas) {
   return new Promise((resolve, reject) => canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error("Photo conversion failed.")), "image/jpeg", PHOTO_SHARE_JPEG_QUALITY));
 }
 
+let watermarkLogoPromise;
+async function loadWatermarkLogo(fetcher) {
+  if (!propertyPhotoWatermark.logo) return null;
+  watermarkLogoPromise ||= fetcher(new URL(propertyPhotoWatermark.logo, window.location.origin), { cache: "force-cache" })
+    .then((response) => response.ok ? response.blob() : null)
+    .then((blob) => blob ? decodeImage(blob) : null);
+  return watermarkLogoPromise;
+}
+
 // The legacy export name is retained for callers, but shared/downloaded files
 // intentionally contain the original photo without any browser watermark.
 export async function createWatermarkedJpegFile(photoUrl, { code, index, fetcher = fetch } = {}) {
@@ -55,6 +65,20 @@ export async function createWatermarkedJpegFile(photoUrl, { code, index, fetcher
   const context = canvas.getContext("2d");
   if (!context) throw new Error("Photo conversion is unavailable in this browser.");
   context.drawImage(source, 0, 0, width, height);
+
+  const logo = await loadWatermarkLogo(fetcher);
+  if (logo) {
+    const margin = Math.round(Math.min(width, height) * 0.03);
+    const maxWidth = width * 0.22;
+    const maxHeight = height * 0.18;
+    const scale = Math.min(maxWidth / logo.width, maxHeight / logo.height);
+    const logoWidth = logo.width * scale;
+    const logoHeight = logo.height * scale;
+    context.save();
+    context.globalAlpha = propertyPhotoWatermark.opacity;
+    context.drawImage(logo, width - logoWidth - margin, height - logoHeight - margin, logoWidth, logoHeight);
+    context.restore();
+  }
 
   source.close?.();
 

@@ -113,7 +113,8 @@ main { flex: 1; }
 .property-photo { position: relative; aspect-ratio: 16/10; overflow: hidden; display: block; background: var(--color-surface-muted); }
 .watermarked-image { position: relative; width: 100%; height: 100%; overflow: hidden; display: block; background: var(--color-surface-muted); }
 .watermarked-image > img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.watermark-overlay { position: absolute; left: 50%; top: 50%; z-index: 1; width: max-content; max-width: calc(100% - 28px); padding: 4px 7px; display: grid; justify-items: center; gap: 1px; color: rgba(255,255,255,var(--watermark-opacity,.28)); line-height: 1.1; text-align: center; white-space: nowrap; transform: translate(-50%,-50%); pointer-events: none; user-select: none; }
+.watermark-overlay { position: absolute; right: 3%; bottom: 3%; z-index: 1; width: min(22%, 112px); pointer-events: none; user-select: none; }
+.watermark-logo { width: 100%; height: auto; display: block; opacity: var(--watermark-opacity,.3); }
 .watermark-title { display: block; font-size: clamp(14px,1.65vw,24px); font-weight: 760; letter-spacing: .025em; }
 .watermark-subtitle { display: block; font-size: clamp(10px,1.05vw,15px); font-weight: 650; letter-spacing: .02em; }
 .property-photo img { transition: transform 300ms ease; }

@@ -19,8 +19,7 @@ export function PublicPropertyImage({ alt, className = "", ...props }) {
       />
       {showWatermark ? (
         <span className="watermark-overlay" aria-hidden="true">
-          <span className="watermark-title">{propertyPhotoWatermark.lines.title}</span>
-          <span className="watermark-subtitle">{propertyPhotoWatermark.lines.subtitle}</span>
+          <img className="watermark-logo" src={propertyPhotoWatermark.logo} alt="" draggable="false" />
         </span>
       ) : null}
     </span>

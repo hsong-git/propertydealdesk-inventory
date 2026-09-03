@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.09.03.1",
-  "generated_at": "2026-09-03T02:41:24Z",
-  "publishedAt": "2026-09-03T02:41:24Z",
+  "inventoryVersion": "2026.09.03.2",
+  "generated_at": "2026-09-03T04:57:27Z",
+  "publishedAt": "2026-09-03T04:57:27Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -976,8 +976,8 @@
       "featured": false,
       "created_at": "2026-08-26T07:17:05Z",
       "listed_at": "2026-08-26T15:17:05Z",
-      "posting_copy": "*WTL*\n\n*3R2B Aronia Apartment, Klang, Selangor*\nRental *RM1,200*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bandar Parklands Klang\n- Furnishing: Partial\n- Size Approx. 900 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Kitchen Cabinet Installed\n- Clean & Well Maintained Unit\n- Minimum Tenancy: *2 YEARS*\n- *Available NOW*\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0069*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0069",
-      "updated_at": "2026-09-03T00:39:16Z",
+      "posting_copy": "*WTL*\n\n*3R2B Aronia Apartment, Klang, Selangor*\nRental *RM1,200*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bandar Parklands Klang\n- Furnishing: Partial\n- Size Approx. 900 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Kitchen Cabinet Installed\n- Clean & Well Maintained Unit\n- Prefer Malay Tenant\n- Minimum Tenancy: *2 YEARS*\n- *Available NOW*\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0069*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0069",
+      "updated_at": "2026-09-03T03:50:54Z",
       "cover_photo": "/inventory/WTL0069/cover.webp",
       "photos": [
         "/inventory/WTL0069/cover.webp",
@@ -988,7 +988,7 @@
         "/inventory/WTL0069/photo-06.webp"
       ],
       "features": [
-        "Kitchen Cabinet Installed Clean & Well Maintained Unit Minimum Tenancy: 2 YEARS Available NOW"
+        "Kitchen Cabinet Installed Clean & Well Maintained Unit Prefer Malay tenant Minimum Tenancy: 2 YEARS Available NOW"
       ],
       "amenities": [],
       "why_this_property": []
@@ -1029,6 +1029,59 @@
       ],
       "features": [
         "End lot unit Near the guard house Living hall window facing swimming pool Level 15"
+      ],
+      "amenities": [],
+      "why_this_property": []
+    },
+    {
+      "public_id": "pub_ba762d97bc71cfa39cf96b4e",
+      "code": "WTL0071",
+      "intent": "WTL",
+      "slug": "wtl0071-3r2b-condo-d-sini-residences-setia-alam-d-sini-residences-setia-alam",
+      "title": "3R2B Condo @ D'Sini Residences @ Setia Alam",
+      "property_type": "Condominium/Apartment",
+      "location": "D'Sini Residences @ Setia Alam",
+      "price": 2000,
+      "alternate_intent": null,
+      "alternate_price": null,
+      "description": "Condominium/Apartment at D'Sini Residences @ Setia Alam. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 3,
+      "bathroom_count": 2,
+      "built_up_sqft": 926,
+      "land_size": null,
+      "furnishing": "Partial",
+      "facing_direction": null,
+      "unit_type": "Intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-09-03T04:47:03Z",
+      "listed_at": "2026-09-03T12:47:03Z",
+      "posting_copy": "*WTL*\n\n*3R2B Condo @ D'Sini Residences @ Setia Alam*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: D'Sini Residences @ Setia Alam\n- Furnishing: Partial\n- Size Approx. 926.0 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Kitchen Cabinet\n- Induction hob & hood\n- 2 x Water Heaters\n- 3 x Airconds\n- Refridgerator\n- 7KG washing machine\n- Block B Level 17\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0071*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0071",
+      "updated_at": "2026-09-03T04:47:03Z",
+      "cover_photo": "/inventory/WTL0071/cover.webp",
+      "photos": [
+        "/inventory/WTL0071/cover.webp",
+        "/inventory/WTL0071/photo-02.webp",
+        "/inventory/WTL0071/photo-03.webp",
+        "/inventory/WTL0071/photo-04.webp",
+        "/inventory/WTL0071/photo-05.webp",
+        "/inventory/WTL0071/photo-06.webp",
+        "/inventory/WTL0071/photo-07.webp",
+        "/inventory/WTL0071/photo-08.webp",
+        "/inventory/WTL0071/photo-09.webp",
+        "/inventory/WTL0071/photo-10.webp",
+        "/inventory/WTL0071/photo-11.webp",
+        "/inventory/WTL0071/photo-12.webp",
+        "/inventory/WTL0071/photo-13.webp",
+        "/inventory/WTL0071/photo-14.webp",
+        "/inventory/WTL0071/photo-15.webp",
+        "/inventory/WTL0071/photo-16.webp",
+        "/inventory/WTL0071/photo-17.webp"
+      ],
+      "features": [
+        "Kitchen Cabinet",
+        "Induction hob & hood",
+        "2 x Water Heaters 3 x Airconds Refridgerator 7KG washing machine Block B Level 17"
       ],
       "amenities": [],
       "why_this_property": []
@@ -2276,14 +2329,14 @@
       "built_up_sqft": 1980,
       "land_size": null,
       "furnishing": "Partial",
-      "facing_direction": null,
+      "facing_direction": "South",
       "unit_type": "Intermediate",
       "availability": "Available",
       "featured": true,
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
-      "posting_copy": "*WTS*\n\n*Mann WTS 4R3B 2 Storey Semi-D @ Aman Perdana Klang*\nSelling Price: *RM788,000*\n\n*Property Details*\n- Property Type : Semi-Detached House\n- Property Unit Type: Intermediate\n- Location: Aman Perdana, Klang\n- Furnishing: Partial\n- Size Approx. 1980.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Tenure: Freehold\n- Title: Individual Title\n- Land Size: 32' x 75' (2\n- 400 sqft)\n- Store Room: 1\n- Land Title: Non-Bumi Lot\n- Gated & Guarded\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0045*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0045",
-      "updated_at": "2026-09-03T00:39:16Z",
+      "posting_copy": "*WTS*\n\n*Mann WTS 4R3B 2 Storey Semi-D @ Aman Perdana Klang*\nSelling Price: *RM788,000*\n\n*Property Details*\n- Property Type : Semi-Detached House\n- Property Unit Type: Intermediate\n- Location: Aman Perdana, Klang\n- Furnishing: Partial\n- Size Approx. 1980.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n\n*Feature Highlights*\n- Tenure: Freehold\n- Title: Individual Title\n- Land Size: 32' x 75' (2\n- 400 sqft)\n- Store Room: 1\n- Land Title: Non-Bumi Lot\n- Gated & Guarded\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0045*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0045",
+      "updated_at": "2026-09-03T04:37:52Z",
       "cover_photo": "/inventory/WTS0045/cover.webp",
       "photos": [
         "/inventory/WTS0045/cover.webp",

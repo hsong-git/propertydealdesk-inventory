@@ -11,6 +11,8 @@ import { compareRecentlyUpdated, formatDateTime } from "../utils/listing";
 import { buildLocationOptions, matchesKeywordSearch, matchesLocationFilter } from "../utils/locationFilter";
 
 const defaultIntent = "WTL";
+const INITIAL_VISIBLE_COUNT = 12;
+const LOAD_MORE_COUNT = 6;
 const defaults = { keyword: "", intent: defaultIntent, propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", sort: "recent" };
 const CATALOGUE_STATE_KEY = "pdd-catalogue-state";
 const CATALOGUE_SCROLL_KEY = "pdd-catalogue-scroll-y";
@@ -38,7 +40,7 @@ function readSharedCatalogueState() {
   return {
     filters: { ...defaults, ...filters },
     catalogueMode: params.get("view") === "featured" ? "featured" : "all",
-    visible: 6,
+    visible: INITIAL_VISIBLE_COUNT,
   };
 }
 
@@ -62,7 +64,7 @@ const offerForIntent = (listing, intent) => (
 );
 
 function readCatalogueState() {
-  if (typeof window === "undefined") return { filters: defaults, catalogueMode: "all", visible: 6 };
+  if (typeof window === "undefined") return { filters: defaults, catalogueMode: "all", visible: INITIAL_VISIBLE_COUNT };
   const shared = readSharedCatalogueState();
   if (shared) return shared;
   try {
@@ -70,9 +72,9 @@ function readCatalogueState() {
     return {
       filters: saved?.filters && typeof saved.filters === "object" ? { ...defaults, ...saved.filters } : defaults,
       catalogueMode: saved?.catalogueMode === "featured" ? "featured" : "all",
-      visible: Number.isInteger(saved?.visible) && saved.visible >= 6 ? saved.visible : 6,
+      visible: Number.isInteger(saved?.visible) && saved.visible >= INITIAL_VISIBLE_COUNT ? saved.visible : INITIAL_VISIBLE_COUNT,
     };
-  } catch { return { filters: defaults, catalogueMode: "all", visible: 6 }; }
+  } catch { return { filters: defaults, catalogueMode: "all", visible: INITIAL_VISIBLE_COUNT }; }
 }
 
 export function HomePage() {
@@ -113,10 +115,10 @@ export function HomePage() {
       return compareRecentlyUpdated(a, b);
     });
   }, [items, filters, catalogueMode, locationDictionary]);
-  const reset = () => { setFilters(defaults); setCatalogueMode("all"); setVisible(6); };
+  const reset = () => { setFilters(defaults); setCatalogueMode("all"); setVisible(INITIAL_VISIBLE_COUNT); };
   const updateCatalogueMode = (mode) => {
     setCatalogueMode(mode);
-    setVisible(6);
+    setVisible(INITIAL_VISIBLE_COUNT);
   };
   const shareUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
@@ -197,7 +199,7 @@ export function HomePage() {
           {error ? <div className="state-card error"><strong>{error}</strong><span>Please refresh the page or contact HS Ong directly.</span></div> : null}
           {!loading && !error && results.length ? <div className="property-grid">{results.slice(0, visible).map((listing) => <PropertyCard key={listing.publicId} listing={listing} displayIntent={filters.intent} />)}</div> : null}
           {!loading && !error && !results.length ? <div className="state-card"><strong>{items.length ? "No properties match these filters." : "No published properties are currently available."}</strong><span>{items.length ? "Try clearing one or more filters to see other opportunities." : "Please check back after the next approved inventory publication."}</span>{items.length ? <button className="button secondary" type="button" onClick={reset}>Reset Filters</button> : null}</div> : null}
-          {visible < results.length ? <div className="load-more"><button className="button secondary" type="button" onClick={() => setVisible((count) => count + 6)}>Load more properties</button></div> : null}
+          {visible < results.length ? <div className="load-more"><button className="button secondary" type="button" onClick={() => setVisible((count) => count + LOAD_MORE_COUNT)}>Load more properties</button></div> : null}
         </section>
         <section className="co-broke-panel">
           <span className="co-broke-icon"><Handshake size={27} /></span>

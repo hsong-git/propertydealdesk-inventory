@@ -48,20 +48,21 @@ test("formats inquiry posting content without mobile number", () => {
 *Occupation:* FDFD
 *Company Name:* FDSF
 
+*Budget:* *RM 2,000 / month*
+*Move-in Date:* *12/08/2026*
+*Furnishing:* *Basic*
+*Tenancy Period:* *3+ years*
+
 *Property type:* Terrace House
 *Storeys:* 1
 *Area / Location:* Setia Alam, Bayu
-*Budget:* **RM 2,000 / month**
 *Rooms:* 1R 1B
 *Usage:* Commercial
 *Commercial Activity:* Old Folks home
-*Move-in Date:* **12/08/2026**
 *People Staying:* 1
 *Relationship:* Family
 *Pet:* No
-*Furnishing:* **Basic**
 *Tenancy:* Individual
-*Tenancy Period:* **3+ years**
 *Deposits and Fees:* Yes
 
 *Other Needs:*
@@ -106,6 +107,6 @@ test("falls back to row summary fields when detail fields are absent", () => {
   assert.match(text, /\*Looking to:\* WTB/);
   assert.match(text, /\*Name:\* Yong/);
   assert.match(text, /\*Area \/ Location:\* Bukit Tinggi/);
-  assert.match(text, /\*Budget:\* \*\*RM 500,000\*\*/);
+  assert.match(text, /\*Budget:\* \*RM 500,000\*/);
   assert.doesNotMatch(text, /\+60165573873|60165573873|Mobile Number/);
 });

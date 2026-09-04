@@ -7,7 +7,7 @@ const hasValue = (value) => value !== undefined && value !== null && clean(value
 const priceIntent = (intent) => clean(intent).toLowerCase() === "rent" ? "WTL" : "WTS";
 const lookingTo = (submission) => clean(submission?.reference).slice(0, 3).toUpperCase()
   || (clean(submission?.intent).toLowerCase() === "rent" ? "WTR" : "WTB");
-const detailLine = (label, value, boldValue = false) => hasValue(value) ? `*${label}:* ${boldValue ? `**${clean(value)}**` : clean(value)}` : null;
+const detailLine = (label, value, boldValue = false) => hasValue(value) ? `*${label}:* ${boldValue ? `*${clean(value)}*` : clean(value)}` : null;
 const normalizedRace = (profile) => ["other", "others"].includes(clean(profile.race).toLowerCase()) && hasValue(profile.raceOther)
   ? profile.raceOther
   : profile.race;
@@ -20,6 +20,14 @@ export function inquiryPostingText(submission) {
   const profile = submission?.profile || {};
   const roomSummary = formatRoomSummary(requirements.bedrooms, requirements.bathrooms);
   const otherNeeds = requirements.otherNeeds || submission?.otherNeeds;
+  const highlightedLines = [
+    detailLine("Budget", hasValue(requirements.budget || submission?.budget) ? formatPrice(requirements.budget || submission?.budget, priceIntent(submission?.intent)) : "", true),
+    ...(clean(submission?.intent).toLowerCase() === "rent" ? [
+      detailLine("Move-in Date", hasValue(requirements.moveInDate) ? formatRequirementDate(requirements.moveInDate) : "", true),
+      detailLine("Furnishing", requirements.furnishing, true),
+      detailLine("Tenancy Period", requirements.tenancyPeriod, true),
+    ] : []),
+  ].filter(Boolean);
   const lines = [
     detailLine("Reference", clean(submission?.reference) || "Property Inquiry"),
     detailLine("Looking to", lookingTo(submission)),
@@ -29,11 +37,11 @@ export function inquiryPostingText(submission) {
     detailLine("Country", normalizedCountry(profile)),
     detailLine("Occupation", profile.occupation),
     detailLine("Company Name", profile.companyName),
+    ...(highlightedLines.length ? ["", ...highlightedLines] : []),
     "",
     detailLine("Property type", requirements.propertyType),
     detailLine("Storeys", requirements.storeys),
     detailLine("Area / Location", requirements.area || submission?.area),
-    detailLine("Budget", hasValue(requirements.budget || submission?.budget) ? formatPrice(requirements.budget || submission?.budget, priceIntent(submission?.intent)) : "", true),
     detailLine("Rooms", roomSummary),
     detailLine("Usage", requirements.propertyUsage),
     requirements.propertyUsage === "Commercial" ? detailLine("Commercial Activity", requirements.commercialActivity) : null,
@@ -41,13 +49,10 @@ export function inquiryPostingText(submission) {
 
   if (clean(submission?.intent).toLowerCase() === "rent") {
     lines.push(
-      detailLine("Move-in Date", hasValue(requirements.moveInDate) ? formatRequirementDate(requirements.moveInDate) : "", true),
       detailLine("People Staying", requirements.peopleStaying),
       detailLine("Relationship", requirements.relationship),
       detailLine("Pet", requirements.pet),
-      detailLine("Furnishing", requirements.furnishing, true),
       detailLine("Tenancy", requirements.tenancy),
-      detailLine("Tenancy Period", requirements.tenancyPeriod, true),
       detailLine("Deposits and Fees", requirements.depositAgreement),
     );
   } else {

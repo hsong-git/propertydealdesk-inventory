@@ -27,6 +27,34 @@ function requirementWhatsAppMessage(submission, reference) {
   const profile = submission.profile;
   const requirements = submission.requirements;
   const occupants = requirements.occupants || requirements.peopleStaying || "Not specified";
+  const highlightedLines = [
+    `*Budget:* *${formatPrice(requirements.budget, submission.intent === "rent" ? "WTL" : "WTS")}*`,
+    ...(submission.intent === "rent" ? [
+      `*Move-in Date:* *${formatRequirementDate(requirements.moveInDate)}*`,
+      `*Furnishing:* *${requirements.furnishing}*`,
+      `*Tenancy Period:* *${requirements.tenancyPeriod}*`,
+    ] : []),
+  ];
+  const detailLines = [
+    `*Property type:* ${requirements.propertyType}`,
+    `*Storeys:* ${requirements.storeys}`,
+    `*Area / Location:* ${requirements.area}`,
+    `*Rooms:* ${formatRoomSummary(requirements.bedrooms, requirements.bathrooms)}`,
+    ...(submission.intent === "rent" ? [
+      `*Usage:* ${requirements.propertyUsage}`,
+      ...(requirements.propertyUsage === "Commercial" ? [`*Commercial Activity:* ${requirements.commercialActivity}`] : []),
+      `*People Staying:* ${requirements.peopleStaying}`,
+      `*Relationship:* ${requirements.relationship}`,
+      `*Pet:* ${requirements.pet}`,
+      `*Tenancy:* ${requirements.tenancy}`,
+      `*Deposits and Fees:* ${requirements.depositAgreement}`,
+    ] : [
+      `*Purchase Timeline:* ${requirements.purchaseTimeline}`,
+      `*Number of Occupants:* ${occupants}`,
+      `*Purpose:* ${requirements.purpose}`,
+      `*Loan:* ${requirements.loan}`,
+    ]),
+  ];
   const lines = [
     `Hi ${agentProfile.displayName}, I have submitted a property requirement.`,
     "",
@@ -38,28 +66,9 @@ function requirementWhatsAppMessage(submission, reference) {
     `*Occupation:* ${profile.occupation}`,
     `*Company Name:* ${profile.companyName}`,
     "",
-    `*Property type:* ${requirements.propertyType}`,
-    `*Storeys:* ${requirements.storeys}`,
-    `*Area / Location:* ${requirements.area}`,
-    `*Budget:* **${formatPrice(requirements.budget, submission.intent === "rent" ? "WTL" : "WTS")}**`,
-    `*Rooms:* ${formatRoomSummary(requirements.bedrooms, requirements.bathrooms)}`,
-    ...(submission.intent === "rent" ? [
-      `*Usage:* ${requirements.propertyUsage}`,
-      ...(requirements.propertyUsage === "Commercial" ? [`*Commercial Activity:* ${requirements.commercialActivity}`] : []),
-      `*Move-in Date:* **${formatRequirementDate(requirements.moveInDate)}**`,
-      `*People Staying:* ${requirements.peopleStaying}`,
-      `*Relationship:* ${requirements.relationship}`,
-      `*Pet:* ${requirements.pet}`,
-      `*Furnishing:* **${requirements.furnishing}**`,
-      `*Tenancy:* ${requirements.tenancy}`,
-      `*Tenancy Period:* **${requirements.tenancyPeriod}**`,
-      `*Deposits and Fees:* ${requirements.depositAgreement}`,
-    ] : [
-      `*Purchase Timeline:* ${requirements.purchaseTimeline}`,
-      `*Number of Occupants:* ${occupants}`,
-      `*Purpose:* ${requirements.purpose}`,
-      `*Loan:* ${requirements.loan}`,
-    ]),
+    ...highlightedLines,
+    "",
+    ...detailLines,
     ...(requirements.otherNeeds ? ["", `*Other Needs:*\n${requirements.otherNeeds}`] : []),
   ];
   return lines.join("\n");

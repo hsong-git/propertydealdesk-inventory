@@ -7,7 +7,7 @@ const hasValue = (value) => value !== undefined && value !== null && clean(value
 const priceIntent = (intent) => clean(intent).toLowerCase() === "rent" ? "WTL" : "WTS";
 const lookingTo = (submission) => clean(submission?.reference).slice(0, 3).toUpperCase()
   || (clean(submission?.intent).toLowerCase() === "rent" ? "WTR" : "WTB");
-const detailLine = (label, value) => hasValue(value) ? `*${label}:* ${clean(value)}` : null;
+const detailLine = (label, value, boldValue = false) => hasValue(value) ? `*${label}:* ${boldValue ? `**${clean(value)}**` : clean(value)}` : null;
 const normalizedRace = (profile) => ["other", "others"].includes(clean(profile.race).toLowerCase()) && hasValue(profile.raceOther)
   ? profile.raceOther
   : profile.race;
@@ -33,7 +33,7 @@ export function inquiryPostingText(submission) {
     detailLine("Property type", requirements.propertyType),
     detailLine("Storeys", requirements.storeys),
     detailLine("Area / Location", requirements.area || submission?.area),
-    detailLine("Budget", hasValue(requirements.budget || submission?.budget) ? formatPrice(requirements.budget || submission?.budget, priceIntent(submission?.intent)) : ""),
+    detailLine("Budget", hasValue(requirements.budget || submission?.budget) ? formatPrice(requirements.budget || submission?.budget, priceIntent(submission?.intent)) : "", true),
     detailLine("Rooms", roomSummary),
     detailLine("Usage", requirements.propertyUsage),
     requirements.propertyUsage === "Commercial" ? detailLine("Commercial Activity", requirements.commercialActivity) : null,
@@ -41,13 +41,13 @@ export function inquiryPostingText(submission) {
 
   if (clean(submission?.intent).toLowerCase() === "rent") {
     lines.push(
-      detailLine("Move-in Date", hasValue(requirements.moveInDate) ? formatRequirementDate(requirements.moveInDate) : ""),
+      detailLine("Move-in Date", hasValue(requirements.moveInDate) ? formatRequirementDate(requirements.moveInDate) : "", true),
       detailLine("People Staying", requirements.peopleStaying),
       detailLine("Relationship", requirements.relationship),
       detailLine("Pet", requirements.pet),
-      detailLine("Furnishing", requirements.furnishing),
+      detailLine("Furnishing", requirements.furnishing, true),
       detailLine("Tenancy", requirements.tenancy),
-      detailLine("Tenancy Period", requirements.tenancyPeriod),
+      detailLine("Tenancy Period", requirements.tenancyPeriod, true),
       detailLine("Deposits and Fees", requirements.depositAgreement),
     );
   } else {

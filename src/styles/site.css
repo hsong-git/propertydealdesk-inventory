@@ -383,8 +383,9 @@ main { flex: 1; }
 .detail-title-block h1 { margin: 9px 0 7px; font-size: clamp(27px,4vw,42px); line-height: 1.08; letter-spacing: -.04em; }
 .detail-price { margin-top: 14px; display: block; color: var(--color-primary); font-size: 26px; }
 .detail-price-rental { font-size: 20px; }
-.detail-sale-offer { margin-top: 10px; font-size: 16px; }
-.detail-sale-offer strong { display: inline-block; color: var(--color-primary); font-size: 30px; letter-spacing: -.025em; }
+.detail-price-sale { font-size: 32px; }
+.detail-rental-offer { margin-top: 10px; font-size: 16px; }
+.detail-rental-offer strong { color: var(--color-primary); }
 .detail-section { padding: 22px; }
 .detail-section h2 { margin: 0 0 12px; font-size: 19px; }
 .detail-section > p { margin: 0; color: var(--color-text-muted); font-size: 14px; line-height: 1.7; }

@@ -1,6 +1,6 @@
 import { ArrowLeft, Bath, BedDouble, Building2, CalendarDays, Check, ChevronLeft, ChevronRight, Compass, Copy, Expand, ImageOff, MapPin, Maximize2, MessageCircle, Phone, Share2, Sofa, Warehouse, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
 import { useInventory } from "../hooks";
 import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing } from "../utils/listing";
@@ -21,6 +21,7 @@ const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false
 
 export function PropertyPage() {
   const { slug } = useParams();
+  const [searchParams] = useSearchParams();
   const { items, locationDictionary, loading, error } = useInventory();
   const listing = items.find((item) => item.slug === slug);
   const [activePhoto, setActivePhoto] = useState(0);
@@ -31,8 +32,13 @@ export function PropertyPage() {
   const [agentPortraitOpen, setAgentPortraitOpen] = useState(false);
   const [lightboxSlide, setLightboxSlide] = useState("");
   const swipeStart = useRef(null);
+  const requestedIntent = searchParams.get("intent")?.toUpperCase();
+  const displayIntent = listing && [listing.intent, listing.alternateIntent].includes(requestedIntent) ? requestedIntent : listing?.intent;
+  const displayPrice = displayIntent === listing?.alternateIntent ? listing?.alternatePrice : listing?.price;
+  const otherIntent = displayIntent === listing?.alternateIntent ? listing?.intent : listing?.alternateIntent;
+  const otherPrice = displayIntent === listing?.alternateIntent ? listing?.price : listing?.alternatePrice;
   const seoTitle = listing ? `${listing.title} | ${listing.code} | HS Ong Property Inventory` : "Property Details | HS Ong Property Inventory";
-  const seoDescription = listing ? propertySeoDescription(listing, formatPrice(listing.price, listing.intent)) : "Public property details from HS Ong Property Inventory.";
+  const seoDescription = listing ? propertySeoDescription(listing, formatPrice(displayPrice, displayIntent)) : "Public property details from HS Ong Property Inventory.";
   const seoCanonical = `${SITE_ORIGIN}/property/${slug}`;
   function movePhoto(direction) {
     if (!listing?.photos.length) return;
@@ -103,12 +109,12 @@ export function PropertyPage() {
             <div className="gallery-main">{listing.photos[activePhoto]
               ? <button className="gallery-open" type="button" onClick={() => setLightboxOpen(true)} aria-label={`Open photo ${activePhoto + 1} of ${listing.photos.length} fullscreen`}><PublicPropertyImage src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1}`} /><span className="gallery-open-label"><Maximize2 size={17} /> Full view</span></button>
               : <span className="property-photo-placeholder detail-placeholder"><ImageOff size={38} /><small>No public photo supplied</small></span>}
-              <span className={`intent intent-${listing.intent.toLowerCase()}`}>{listing.intent}<small>{intentLabels[listing.intent]}</small></span></div>
+              <span className={`intent intent-${displayIntent.toLowerCase()}`}>{displayIntent}<small>{intentLabels[displayIntent]}</small></span></div>
             {photoSharingEnabled && listing.photos.length > 0 ? <><div className="gallery-thumbnails">{listing.photos.map((photo, index) => { const selected = selectedPhotos.includes(photo); const blocked = selectedPhotos.length >= PHOTO_SELECTION_LIMIT && !selected; return <div className="gallery-thumbnail-choice" key={photo}><button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button><button type="button" disabled={blocked} className={`photo-select-toggle${selected ? " selected" : ""}${blocked ? " is-blocked" : ""}`} aria-label={`${selected ? "Deselect" : "Select"} photo ${index + 1}`} aria-pressed={selected} onClick={() => setSelectedPhotos((current) => selected ? current.filter((item) => item !== photo) : current.length < PHOTO_SELECTION_LIMIT ? [...current, photo] : current)}>{selected ? <Check size={14} /> : <span />}</button></div>; })}</div><button className="select-first-photos" type="button" onClick={selectFirstPhotos} disabled={!listing.photos.length} aria-pressed={firstPhotosSelected}>{firstPhotosSelected ? "Deselect first " : "Select first "}{Math.min(PHOTO_SELECTION_LIMIT, listing.photos.length)}</button><ShareSelectedPhotosButton listing={listing} selectedPhotos={selectedPhotos} /></> : listing.photos.length > 1 ? <div className="gallery-thumbnails">{listing.photos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
           </section>
           <section className="detail-title-block">
             <div className="property-reference"><span>{listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
-            <h1>{listing.title}</h1><p className="property-location"><MapPin size={17} /> {listing.location}</p><strong className={`detail-price ${listing.alternateIntent === "WTS" ? "detail-price-rental" : ""}`}>{formatPrice(listing.price, listing.intent)}</strong>{listing.alternateIntent && listing.alternatePrice != null ? <p className={`detail-alternate-offer ${listing.alternateIntent === "WTS" ? "detail-sale-offer" : ""}`}>Also available to {listing.alternateIntent === "WTL" ? "rent" : "buy"}: <strong>{formatPrice(listing.alternatePrice, listing.alternateIntent)}</strong></p> : null}
+            <h1>{listing.title}</h1><p className="property-location"><MapPin size={17} /> {listing.location}</p><strong className={`detail-price ${displayIntent === "WTL" && otherIntent === "WTS" ? "detail-price-rental" : ""}`}>{formatPrice(displayPrice, displayIntent)}</strong>{otherIntent && otherPrice != null ? <p className={`detail-alternate-offer ${otherIntent === "WTS" ? "detail-sale-offer" : ""}`}>Also available to {otherIntent === "WTL" ? "rent" : "buy"}: <strong>{formatPrice(otherPrice, otherIntent)}</strong></p> : null}
           </section>
           <section className="detail-section"><h2>Property overview</h2><p>{listing.description}</p><div className="detail-facts">{detailItems.map(([Icon, label, value]) => <div key={label}><Icon size={19} /><span>{label}</span><strong>{value}</strong></div>)}</div></section>
           {listing.features.length ? <section className="detail-section"><h2>Property features</h2><ul className="check-list">{listing.features.map((item) => <li key={item}><Check size={17} /> {item}</li>)}</ul></section> : null}

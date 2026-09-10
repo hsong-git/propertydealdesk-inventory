@@ -14,6 +14,7 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
   const displayedPrice = showingAlternateOffer ? listing.alternatePrice : listing.price;
   const otherIntent = showingAlternateOffer ? listing.intent : listing.alternateIntent;
   const otherPrice = showingAlternateOffer ? listing.price : listing.alternatePrice;
+  const propertyHref = `/property/${listing.slug}${displayIntent ? `?intent=${encodeURIComponent(displayIntent)}` : ""}`;
   const share = async () => {
     try {
       const result = await shareListing(listing);
@@ -30,7 +31,7 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
   };
   return (
     <article className="property-card">
-      <Link className="property-photo" to={`/property/${listing.slug}`} aria-label={`View ${listing.title}`}>
+      <Link className="property-photo" to={propertyHref} aria-label={`View ${listing.title}`}>
         {listing.photos[0]
           ? <PublicPropertyImage src={listing.photos[0]} alt={`${listing.title} in ${listing.location}`} loading="lazy" />
           : <span className="property-photo-placeholder"><Building2 size={30} /><small>Photo coming soon</small></span>}
@@ -39,7 +40,7 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
       </Link>
       <div className="property-content">
         <div className="property-reference"><span>{listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
-        <h3><Link to={`/property/${listing.slug}`}>{listing.title}</Link></h3>
+        <h3><Link to={propertyHref}>{listing.title}</Link></h3>
         <p className="property-location"><MapPin size={15} /> {listing.location}</p>
         <div className="property-price-row">
           <strong className="property-price">{formatPrice(displayedPrice, displayedIntent)}</strong>
@@ -59,7 +60,7 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
         <div className="property-meta"><span>{listing.furnishing}</span><span><CalendarDays size={14} /> {listing.listedAt ? "Listed" : "Recorded"} {formatDate(listing.listedAt || listing.createdAt)}</span></div>
       </div>
       <div className={`property-actions ${viewOnly ? "view-only" : ""}`}>
-        <Link className="button secondary" to={`/property/${listing.slug}`}>View Details</Link>
+        <Link className="button secondary" to={propertyHref}>View Details</Link>
         {viewOnly ? null : <a className="button primary icon-only-mobile" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><MessageCircle size={18} /><span>Enquire</span></a>}
         {viewOnly ? null : <button className="button tertiary share-button" type="button" onClick={share} aria-label={`Share ${listing.code}`}><Share2 size={18} /><span>{shared ? "Copied" : "Share"}</span></button>}
       </div>

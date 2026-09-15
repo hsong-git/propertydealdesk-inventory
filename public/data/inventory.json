@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.09.15.2",
-  "generated_at": "2026-09-15T06:37:54Z",
-  "publishedAt": "2026-09-15T06:37:54Z",
+  "inventoryVersion": "2026.09.15.3",
+  "generated_at": "2026-09-15T12:52:37Z",
+  "publishedAt": "2026-09-15T12:52:37Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -1051,8 +1051,8 @@
       "featured": false,
       "created_at": "2026-09-15T03:48:38Z",
       "listed_at": "2026-09-15T11:48:38Z",
-      "posting_copy": "*WTL*\n\n*3R2B Condo @ Setia Alam, Setia Alam*\nRental *RM1,200*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Setia Alam, Setia Alam\n- Furnishing: Partial\n- Size Approx. 920.0 sqft\n- 3 Bedrooms | 2 Bathrooms\n\n*Feature Highlights*\n- Move in by 1st October\n- Medium floor range\n- Level 8 facing pool\n- Parking at Ground Floor\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0075*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0075",
-      "updated_at": "2026-09-15T03:58:10Z",
+      "posting_copy": "*WTL*\n\n*3R2B Condo @ Setia Alam, Setia Alam*\nRental *RM1,200*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Setia Alam, Setia Alam\n- Furnishing: Partial\n- Size Approx. 920 sqft\n- 3 Bedrooms | 2 Bathrooms\n\n*Feature Highlights*\n- Move in by 1st October\n- Medium floor range\n- Level 8 facing pool\n- Parking at Ground Floor\n- Refrigerator, Air-Cond, Kitchen Cabinet, Water Heater\n- No Washing Machine\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0075*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0075",
+      "updated_at": "2026-09-15T12:45:13Z",
       "cover_photo": "/inventory/WTL0075/cover.webp",
       "photos": [
         "/inventory/WTL0075/cover.webp",
@@ -1066,7 +1066,10 @@
         "/inventory/WTL0075/photo-09.webp"
       ],
       "features": [
-        "Move in by 1st October Medium floor range Level 8 facing pool Parking at Ground Floor"
+        "Move in by 1st October Medium floor range Level 8 facing pool Parking at Ground Floor Refrigerator",
+        "Air-Cond",
+        "Kitchen Cabinet",
+        "Water Heater No Washing Machine"
       ],
       "amenities": [],
       "why_this_property": []

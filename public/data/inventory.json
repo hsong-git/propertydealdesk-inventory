@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.09.22.2",
-  "generated_at": "2026-09-22T05:51:13Z",
-  "publishedAt": "2026-09-22T05:51:13Z",
+  "inventoryVersion": "2026.09.22.3",
+  "generated_at": "2026-09-22T09:30:44Z",
+  "publishedAt": "2026-09-22T09:30:44Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -926,7 +926,8 @@
         "/inventory/WTL0073/photo-03.webp",
         "/inventory/WTL0073/photo-04.webp",
         "/inventory/WTL0073/photo-05.webp",
-        "/inventory/WTL0073/photo-06.webp"
+        "/inventory/WTL0073/photo-06.webp",
+        "/inventory/WTL0073/photo-07.webp"
       ],
       "features": [
         "High Floor – Level 15 Car park level 3 Kitchen cabinets 2 years tenancy preferred"
@@ -958,7 +959,7 @@
       "created_at": "2026-09-14T03:11:18Z",
       "listed_at": "2026-09-14T11:11:18Z",
       "posting_copy": "*WTL*\n\n*4R3B Double Storey House @ Hulubalang, Taman Sentosa Klang*\nRental *RM1,400*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Hulubalang, Taman Sentosa Klang\n- Furnishing: Partial\n- Unit Dimensions: 18 × 65\n- Size Approx. 1170.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Car porch accommodates *2 cars with awning*\n- Partially furnished: Kitchen cabinet cooking stove\n- lighting and ceiling fans\n- Flood free area\n- Ready to move in immediately\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0074*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0074",
-      "updated_at": "2026-09-21T23:37:31Z",
+      "updated_at": "2026-09-22T07:24:23Z",
       "cover_photo": "/inventory/WTL0074/cover.webp",
       "photos": [
         "/inventory/WTL0074/cover.webp",
@@ -1002,7 +1003,7 @@
       "created_at": "2026-09-18T02:19:50Z",
       "listed_at": "2026-09-18T10:19:49Z",
       "posting_copy": "*WTS*\n\n*3R2B Apartment @ Orchis Apartment Bandar Parklands*\nSelling Price: *RM1,400*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bandar Parklands Klang\n- Furnishing: Partial\n- Size Approx. 844 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 1\n\n*Feature Highlights*\n- 2 water heaters\n- air conditioning\n- basic lighting and ceiling fans\n- built-in wardrobes\n- bed frames\n- kitchen cabinets\n- TV cabinet\n- kitchen hood\n- Block C Level 1\n- Car Park at Ground Floor\n\n*The property is currently tenanted and will be available for move-in from October.*\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0078*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0078",
-      "updated_at": "2026-09-21T23:37:31Z",
+      "updated_at": "2026-09-22T07:19:15Z",
       "cover_photo": "/inventory/WTL0078/cover.webp",
       "photos": [
         "/inventory/WTL0078/cover.webp",
@@ -1052,7 +1053,7 @@
       "created_at": "2026-09-19T03:52:10Z",
       "listed_at": "2026-09-19T11:52:10Z",
       "posting_copy": "*WTL*\n\n*1+1R 1B Fully Furnished unit @ TRIO by Setia*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bandar Bukit Tinggi, Klang\n- Furnishing: Full\n- Size Approx. 659 sqft\n- 2 Bedrooms | 1 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Unit at 17th floor\n- 2 car parks at level 5\n- Sofa set\n- TV cabinet\n- Fridge\n- Dining table set\n- Kitchen cabinet with gas stove\n- 2 air conditioners\n- Ceiling fan.\n\n- *Currently still tenanted. Available after 8th Oct*\n- *All races are welcome. Subject to profile review by owner.*\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0079*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0079",
-      "updated_at": "2026-09-21T23:37:31Z",
+      "updated_at": "2026-09-22T07:14:40Z",
       "cover_photo": "/inventory/WTL0079/cover.webp",
       "photos": [
         "/inventory/WTL0079/cover.webp",
@@ -3579,9 +3580,7 @@
         "/inventory/WTS1034/photo-11.webp",
         "/inventory/WTS1034/photo-12.webp",
         "/inventory/WTS1034/photo-13.webp",
-        "/inventory/WTS1034/photo-14.webp",
-        "/inventory/WTS1034/photo-15.webp",
-        "/inventory/WTS1034/photo-16.webp"
+        "/inventory/WTS1034/photo-14.webp"
       ],
       "features": [
         "Built In Kitchen Cabinet Water heater Brand new aircond in all bed room and living hall Freehold",
@@ -3600,7 +3599,7 @@
       "location": "Bandar Bukit Tinggi",
       "price": 789000,
       "alternate_intent": "WTL",
-      "alternate_price": 789000,
+      "alternate_price": 2200,
       "description": "Terrace House - 2 Storey at Bandar Bukit Tinggi. Contact HS Ong to confirm current availability and viewing details.",
       "bedroom_count": 4,
       "bathroom_count": 3,
@@ -3614,7 +3613,7 @@
       "created_at": "2026-07-14T07:07:19Z",
       "listed_at": "2026-07-14T15:07:19Z",
       "posting_copy": "*WTL / WTS*\n\n*4R3B Double Storey House @ Bandar Bukit Tinggi*\nRental *RM2,200*\nSale *RM789,000* (final price)\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Bukit Tinggi\n- Furnishing: Partial\n- Unit Dimensions: 20 × 70\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Kitchen Cabinet\n- Air Conditioner (Master Bedroom)\n- Ceiling Fan in all rooms\n- 24 hrs security in gated guarded community\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTSL0001*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTSL0001",
-      "updated_at": "2026-09-21T23:37:31Z",
+      "updated_at": "2026-09-22T09:24:35Z",
       "cover_photo": "/inventory/WTSL0001/cover.webp",
       "photos": [
         "/inventory/WTSL0001/cover.webp",

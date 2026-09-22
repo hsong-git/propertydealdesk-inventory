@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.09.22.1",
-  "generated_at": "2026-09-22T01:32:21Z",
-  "publishedAt": "2026-09-22T01:32:21Z",
+  "inventoryVersion": "2026.09.22.2",
+  "generated_at": "2026-09-22T05:51:13Z",
+  "publishedAt": "2026-09-22T05:51:13Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -1018,7 +1018,8 @@
         "/inventory/WTL0078/photo-11.webp",
         "/inventory/WTL0078/photo-12.webp",
         "/inventory/WTL0078/photo-13.webp",
-        "/inventory/WTL0078/photo-14.webp"
+        "/inventory/WTL0078/photo-14.webp",
+        "/inventory/WTL0078/photo-15.webp"
       ],
       "features": [
         "2 water heaters, air conditioning basic lighting and ceiling fans built-in wardrobes bed frames kitchen cabinets",
@@ -3579,7 +3580,8 @@
         "/inventory/WTS1034/photo-12.webp",
         "/inventory/WTS1034/photo-13.webp",
         "/inventory/WTS1034/photo-14.webp",
-        "/inventory/WTS1034/photo-15.webp"
+        "/inventory/WTS1034/photo-15.webp",
+        "/inventory/WTS1034/photo-16.webp"
       ],
       "features": [
         "Built In Kitchen Cabinet Water heater Brand new aircond in all bed room and living hall Freehold",

@@ -1,5 +1,5 @@
 import { AlertTriangle, ExternalLink, Handshake, LoaderCircle, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { agentProfile } from "../config/agentProfile";
 import { CatalogueFilters } from "../components/CatalogueFilters";
 import { ContactActions } from "../components/ContactActions";
@@ -86,6 +86,7 @@ export function HomePage() {
   const [visible, setVisible] = useState(initialCatalogueState.visible);
   const [agentToolsPreviewOpen, setAgentToolsPreviewOpen] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
+  const loadMoreRef = useRef(null);
   const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && key !== "intent" && value).length
     + (filters.intent !== defaultIntent ? 1 : 0)
     + (catalogueMode === "featured" ? 1 : 0);
@@ -166,6 +167,15 @@ export function HomePage() {
     return () => window.cancelAnimationFrame(frame);
   }, [loading]);
   useEffect(() => {
+    const sentinel = loadMoreRef.current;
+    if (!sentinel || loading || visible >= results.length || typeof IntersectionObserver === "undefined") return undefined;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) setVisible((count) => Math.min(count + LOAD_MORE_COUNT, results.length));
+    }, { rootMargin: "320px 0px" });
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [loading, results.length, visible]);
+  useEffect(() => {
     if (!agentToolsPreviewOpen) return undefined;
     document.body.classList.add("modal-open");
     const onKeyDown = (event) => {
@@ -199,7 +209,7 @@ export function HomePage() {
           {error ? <div className="state-card error"><strong>{error}</strong><span>Please refresh the page or contact HS Ong directly.</span></div> : null}
           {!loading && !error && results.length ? <div className="property-grid">{results.slice(0, visible).map((listing) => <PropertyCard key={listing.publicId} listing={listing} displayIntent={filters.intent} />)}</div> : null}
           {!loading && !error && !results.length ? <div className="state-card"><strong>{items.length ? "No properties match these filters." : "No published properties are currently available."}</strong><span>{items.length ? "Try clearing one or more filters to see other opportunities." : "Please check back after the next approved inventory publication."}</span>{items.length ? <button className="button secondary" type="button" onClick={reset}>Reset Filters</button> : null}</div> : null}
-          {visible < results.length ? <div className="load-more"><button className="button secondary" type="button" onClick={() => setVisible((count) => count + LOAD_MORE_COUNT)}>Load more properties</button></div> : null}
+          {visible < results.length ? <div className="load-more" ref={loadMoreRef}><button className="button secondary" type="button" onClick={() => setVisible((count) => Math.min(count + LOAD_MORE_COUNT, results.length))}>Load more properties</button></div> : null}
         </section>
         <section className="co-broke-panel">
           <span className="co-broke-icon"><Handshake size={27} /></span>

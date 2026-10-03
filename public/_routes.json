@@ -1,5 +1,5 @@
 {
   "version": 1,
-  "include": ["/api/*", "/i/*"],
-  "exclude": []
+  "include": ["/*"],
+  "exclude": ["/assets/*", "/inventory/*", "/profile/*", "/og/*", "/branding/*", "/data/*", "/agent-tools/*", "/robots.txt", "/sitemap.xml", "/favicon.ico", "/favicon.png", "/apple-touch-icon.png", "/site.webmanifest"]
 }

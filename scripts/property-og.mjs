@@ -3,8 +3,9 @@ import path from "node:path";
 import sharp from "sharp";
 import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { formatPrice } from "../src/utils/listing.js";
-import { absoluteUrl, defaultSeo, propertySeoDescription, SITE_ORIGIN } from "../src/utils/seo.js";
+import { absoluteUrl, defaultSeo, propertyBreadcrumbs, propertyJsonLd, propertySeoDescription, SITE_ORIGIN } from "../src/utils/seo.js";
 import { inspectPublicImage } from "./image-policy.mjs";
+import { propertyPhotoWatermark } from "../src/config/watermark.js";
 
 const OG_DESCRIPTION_LIMIT = 210;
 const CONTACT_LINE_PATTERN = /^(contact|whatsapp|phone|tel|mobile|email)\b/i;
@@ -16,6 +17,8 @@ export const htmlEscape = (value) => String(value ?? "")
   .replaceAll(">", "&gt;")
   .replaceAll('"', "&quot;")
   .replaceAll("'", "&#39;");
+
+const staticPhoto = (src, alt, lazy = false) => `<span class="watermarked-image has-browser-watermark" style="--watermark-opacity:${propertyPhotoWatermark.opacity};max-width:100%"><img src="${htmlEscape(src)}" alt="${htmlEscape(alt)}" ${lazy ? 'loading="lazy"' : ""} style="width:100%;height:auto"><span class="watermark-overlay" aria-hidden="true"><img class="watermark-logo" src="${htmlEscape(propertyPhotoWatermark.logo)}" alt=""></span></span>`;
 
 const collapseWhitespace = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
@@ -123,6 +126,11 @@ export function renderPropertyRouteHtml(indexHtml, listing, publicRoot, { canoni
   html = replaceTag(html, /<meta name="twitter:title" content="[^"]*"\s*\/?>/i, `<meta name="twitter:title" content="${htmlEscape(meta.ogTitle)}" />`);
   html = replaceTag(html, /<meta name="twitter:description" content="[^"]*"\s*\/?>/i, `<meta name="twitter:description" content="${htmlEscape(meta.ogDescription)}" />`);
   html = replaceTag(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/i, `<meta name="twitter:image" content="${htmlEscape(meta.image.url)}" />`);
+  const photo = listing.photos[0];
+  const content = `<main class="page-width property-page"><a href="/">Back to Catalogue</a><section class="detail-title-block"><p>${htmlEscape(listing.code)} · ${htmlEscape(listing.availability)}</p><h1>${htmlEscape(listing.title)}</h1><p>${htmlEscape(listing.location)}</p><strong class="detail-price">${htmlEscape(formatPrice(listing.price, listing.intent))}</strong>${listing.alternateIntent && listing.alternatePrice != null ? `<p>Also available to ${listing.alternateIntent === "WTL" ? "rent" : "buy"}: ${htmlEscape(formatPrice(listing.alternatePrice, listing.alternateIntent))}</p>` : ""}</section>${photo ? `<img src="${htmlEscape(photo)}" alt="${htmlEscape(listing.title)}" style="max-width:100%;height:auto">` : ""}<section class="detail-section"><h2>Property overview</h2><p>${htmlEscape(listing.description)}</p><dl>${[["Property type", listing.propertyType], ["Bedrooms", listing.bedrooms], ["Bathrooms", listing.bathrooms], ["Built-up (sq ft)", listing.builtUpSqFt], ["Land size", listing.landSize], ["Furnishing", listing.furnishing]].filter(([, value]) => value != null).map(([label, value]) => `<dt>${label}</dt><dd>${htmlEscape(value)}</dd>`).join("")}</dl><h2>Property features</h2><ul>${listing.features.map((feature) => `<li>${htmlEscape(feature)}</li>`).join("")}</ul><a href="/inquiries">Find a property for me</a></section></main>`;
+  html = html.replace('<div id="root"></div>', `<div id="root">${photo ? content.replace(`<img src="${htmlEscape(photo)}" alt="${htmlEscape(listing.title)}" style="max-width:100%;height:auto">`, staticPhoto(photo, listing.title)) : content}</div>`);
+  const structuredData = JSON.stringify([propertyJsonLd(listing), propertyBreadcrumbs(listing)]).replaceAll("<", "\\u003c");
+  html = html.replace("</head>", `<script id="page-jsonld" type="application/ld+json">${structuredData}</script></head>`);
   return html;
 }
 
@@ -147,7 +155,7 @@ async function createPropertyOgImage(listing, publicRoot, distRoot, inventoryVer
 export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distRoot }) {
   const inventory = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "inventory.json"), "utf8"));
   const { items, meta } = normalizeInventoryFeed(inventory);
-  const indexHtml = fs.readFileSync(path.join(distRoot, "index.html"), "utf8");
+  const indexHtml = fs.readFileSync(path.join(distRoot, "index.html"), "utf8").replace(/<!--seo-content-start-->[\s\S]*?<!--seo-content-end-->/g, "");
 
   for (const listing of items) {
     const imageOverride = await createPropertyOgImage(listing, publicRoot, distRoot, meta.inventoryVersion);
@@ -169,6 +177,32 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
       }),
     );
   }
+
+  // Visible HTML for visitors and crawlers before the interactive app starts.
+  const pageCount = Math.max(1, Math.ceil(items.length / 12));
+  fs.writeFileSync(path.join(distRoot, "data", "seo-routes.json"), JSON.stringify({ properties: items.map((item) => item.slug), cataloguePages: pageCount }));
+  const cards = (listings) => listings.map((listing) => `<article class="property-card"><a class="property-photo" href="/property/${htmlEscape(listing.slug)}">${listing.photos[0] ? staticPhoto(listing.photos[0], listing.title, true) : ""}</a><div class="property-content"><h2><a href="/property/${htmlEscape(listing.slug)}">${htmlEscape(listing.title)}</a></h2><p>${htmlEscape(listing.location)}</p><strong>${htmlEscape(formatPrice(listing.price, listing.intent))}</strong><p>${htmlEscape(listing.propertyType)} · ${htmlEscape(listing.furnishing)}</p></div></article>`).join("");
+  const pages = Array.from({ length: pageCount }, (_, index) => `<a href="/catalogue/page/${index + 1}/">Page ${index + 1}</a>`).join(" · ");
+  const catalogueContent = (listings, heading) => `<main class="page-width home-stack"><header><a href="/">Properties</a> · <a href="/inquiries">Find a Property</a><h1>${heading}</h1><p>Properties for sale and rent in Klang Valley, listed by HS Ong, Real Estate Negotiator at The Roof Realty Sdn Bhd.</p></header><div class="property-grid">${cards(listings)}</div><nav aria-label="Catalogue pages">${pages}</nav></main>`;
+  fs.writeFileSync(path.join(distRoot, "index.html"), indexHtml.replace('<div id="root"></div>', `<div id="root"><!--seo-content-start-->${catalogueContent(items.filter((item) => item.intent === "WTL" || item.alternateIntent === "WTL").slice(0, 12), "HS Ong Property Inventory — Klang Valley")}<!--seo-content-end--></div>`));
+  for (let page = 1; page <= pageCount; page++) {
+    const canonical = `${SITE_ORIGIN}/catalogue/page/${page}/`;
+    let html = indexHtml.replace(/<script[^>]*type="module"[^>]*>[\s\S]*?<\/script>/g, "");
+    html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>Property Catalogue — Page ${page} | HS Ong</title>`);
+    html = html.replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${canonical}">`);
+    html = html.replace(/<meta property="og:url"[^>]*>/, `<meta property="og:url" content="${canonical}">`);
+    html = html.replace('<div id="root"></div>', `<div id="root">${catalogueContent(items.slice((page - 1) * 12, page * 12), `Property Catalogue — Page ${page}`)}</div>`);
+    const directory = path.join(distRoot, "catalogue", "page", String(page));
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(path.join(directory, "index.html"), html);
+  }
+  const inquiryDirectory = path.join(distRoot, "inquiries");
+  fs.mkdirSync(inquiryDirectory, { recursive: true });
+  fs.writeFileSync(path.join(inquiryDirectory, "index.html"), indexHtml
+    .replace(/<title>[\s\S]*?<\/title>/, "<title>Find a Property for Me | HS Ong</title>")
+    .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${SITE_ORIGIN}/inquiries">`)
+    .replace(/<meta name="description"[^>]*>/, '<meta name="description" content="Tell HS Ong your budget, preferred location and requirements to find a property to rent or buy in Klang Valley.">')
+    .replace('<div id="root"></div>', '<div id="root"><main class="page-width content-page"><h1>Find a Property for Me</h1><p>Share your rental or purchase requirements with HS Ong to find matching properties in Klang Valley.</p><a href="/">Browse current properties</a><noscript><p>Please enable JavaScript to complete the property requirement form.</p></noscript></main></div>'));
 
   return { count: items.length, inventoryVersion: meta.inventoryVersion, projectRoot };
 }

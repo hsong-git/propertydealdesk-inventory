@@ -9,7 +9,7 @@ import { PublicPropertyImage } from "../components/PublicPropertyImage";
 import { ShareSelectedPhotosButton } from "../components/ShareSelectedPhotosButton";
 import { Seo } from "../components/Seo";
 import { ListingUnavailableState } from "../components/ListingUnavailableState";
-import { propertySeoDescription, SITE_ORIGIN } from "../utils/seo";
+import { propertyBreadcrumbs, propertyJsonLd, propertySeoDescription, SITE_ORIGIN } from "../utils/seo";
 import { photoSwipeDirection } from "../utils/photoSwipe";
 import { getRelatedListings } from "../utils/relatedListings";
 import { RelatedListings } from "../components/RelatedListings";
@@ -63,7 +63,7 @@ export function PropertyPage() {
     return () => { document.body.classList.remove("modal-open"); window.removeEventListener("keydown", onKeyDown); };
   }, [lightboxOpen, listing?.photos.length]);
   if (loading) return <main className="page-width page-state"><Seo title="Loading property details | HS Ong Property Inventory" canonical={seoCanonical} /><strong>Loading property details…</strong></main>;
-  if (error || !listing) return <><Seo title="Property no longer available | HS Ong Property Inventory" description="This property may have been sold, rented, withdrawn, or removed from HS Ong Property Inventory." canonical={seoCanonical} /><ListingUnavailableState code={slug} error={error} /></>;
+  if (error || !listing) return <><Seo title="Property no longer available | HS Ong Property Inventory" description="This property may have been sold, rented, withdrawn, or removed from HS Ong Property Inventory." canonical={seoCanonical} robots="noindex, follow" /><ListingUnavailableState code={slug} error={error} /></>;
   const detailItems = [
     [Building2, "Property type", listing.propertyType], [BedDouble, "Bedrooms", listing.bedrooms ?? "N/A"], [Bath, "Bathrooms", listing.bathrooms ?? "N/A"],
     [Expand, "Built-up", listing.builtUpSqFt ? `${listing.builtUpSqFt.toLocaleString()} sq ft` : "N/A"], [Warehouse, "Land size", listing.landSize || "N/A"],
@@ -101,6 +101,7 @@ export function PropertyPage() {
         ogDescription={seoDescription}
         image={listing.photos[0]}
         type="article"
+        structuredData={[propertyJsonLd(listing), propertyBreadcrumbs(listing)]}
       />
       <Link className="back-link" to="/"><ArrowLeft size={17} /> Back to Catalogue</Link>
       <div className="detail-layout">

@@ -58,11 +58,13 @@ export function applySeo({
   imageHeight,
   imageType,
   type = "website",
+  robots = "index, follow",
 } = {}) {
   const absoluteImage = absoluteUrl(image);
   const isDefaultImage = absoluteImage === defaultSeo.image;
   const resolvedImageType = imageType || (absoluteImage.toLowerCase().endsWith(".webp") ? "image/webp" : defaultSeo.imageType);
   document.title = title;
+  upsertMeta('meta[name="robots"]', { name: "robots" }, robots);
   upsertMeta('meta[name="description"]', { name: "description" }, description);
   upsertLink("canonical", canonical);
   upsertMeta('meta[property="og:title"]', { property: "og:title" }, ogTitle);
@@ -118,3 +120,29 @@ export const propertySeoDescription = (listing, priceText) => [
   priceText && `for ${priceText}`,
   listing.availability && `- ${listing.availability}`,
 ].filter(Boolean).join(" ");
+
+export const propertyJsonLd = (listing) => ({
+  "@context": "https://schema.org",
+  "@type": "RealEstateListing",
+  "@id": `${SITE_ORIGIN}/property/${listing.slug}#listing`,
+  url: `${SITE_ORIGIN}/property/${listing.slug}`,
+  name: listing.title,
+  description: listing.description,
+  image: listing.photos.map(absoluteUrl),
+  offers: [
+    { intent: listing.intent, price: listing.price },
+    ...(listing.alternateIntent && listing.alternatePrice != null ? [{ intent: listing.alternateIntent, price: listing.alternatePrice }] : []),
+  ].filter((offer) => offer.price > 0).map((offer) => ({
+    "@type": "Offer", price: offer.price, priceCurrency: "MYR",
+    businessFunction: offer.intent === "WTL" ? "http://purl.org/goodrelations/v1#LeaseOut" : "http://purl.org/goodrelations/v1#Sell",
+    url: `${SITE_ORIGIN}/property/${listing.slug}?intent=${offer.intent}`,
+  })),
+});
+
+export const propertyBreadcrumbs = (listing) => ({
+  "@context": "https://schema.org", "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Properties", item: `${SITE_ORIGIN}/` },
+    { "@type": "ListItem", position: 2, name: listing.title, item: `${SITE_ORIGIN}/property/${listing.slug}` },
+  ],
+});

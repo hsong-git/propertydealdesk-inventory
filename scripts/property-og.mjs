@@ -6,6 +6,7 @@ import { formatPrice } from "../src/utils/listing.js";
 import { absoluteUrl, defaultSeo, propertyBreadcrumbs, propertyJsonLd, propertySeoDescription, SITE_ORIGIN } from "../src/utils/seo.js";
 import { inspectPublicImage } from "./image-policy.mjs";
 import { propertyPhotoWatermark } from "../src/config/watermark.js";
+import { renderCatalogueContent } from "./catalogue-html.mjs";
 
 const OG_DESCRIPTION_LIMIT = 210;
 const CONTACT_LINE_PATTERN = /^(contact|whatsapp|phone|tel|mobile|email)\b/i;
@@ -191,7 +192,7 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
     html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>Property Catalogue — Page ${page} | HS Ong</title>`);
     html = html.replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${canonical}">`);
     html = html.replace(/<meta property="og:url"[^>]*>/, `<meta property="og:url" content="${canonical}">`);
-    html = html.replace('<div id="root"></div>', `<div id="root">${catalogueContent(items.slice((page - 1) * 12, page * 12), `Property Catalogue — Page ${page}`)}</div>`);
+    html = html.replace('<div id="root"></div>', `<div id="root">${renderCatalogueContent(items.slice((page - 1) * 12, page * 12), { heading: `Property Inventory Catalogue — Page ${page}`, page, pageCount, total: items.length })}</div>`);
     const directory = path.join(distRoot, "catalogue", "page", String(page));
     fs.mkdirSync(directory, { recursive: true });
     fs.writeFileSync(path.join(directory, "index.html"), html);

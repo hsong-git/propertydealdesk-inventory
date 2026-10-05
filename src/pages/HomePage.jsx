@@ -210,7 +210,7 @@ export function HomePage() {
           {!loading && !error && results.length ? <div className="property-grid">{results.slice(0, visible).map((listing) => <PropertyCard key={listing.publicId} listing={listing} displayIntent={filters.intent} />)}</div> : null}
           {!loading && !error && !results.length ? <div className="state-card"><strong>{items.length ? "No properties match these filters." : "No published properties are currently available."}</strong><span>{items.length ? "Try clearing one or more filters to see other opportunities." : "Please check back after the next approved inventory publication."}</span>{items.length ? <button className="button secondary" type="button" onClick={reset}>Reset Filters</button> : null}</div> : null}
           {visible < results.length ? <div className="load-more" ref={loadMoreRef}><button className="button secondary" type="button" onClick={() => setVisible((count) => Math.min(count + LOAD_MORE_COUNT, results.length))}>Load more properties</button></div> : null}
-          <p className="load-more"><a href="/catalogue/page/1/">Browse all properties by page</a></p>
+          <p className="load-more"><a className="button secondary" href="/catalogue/page/1/">Browse all properties by page</a></p>
         </section>
         <section className="co-broke-panel">
           <span className="co-broke-icon"><Handshake size={27} /></span>

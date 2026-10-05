@@ -156,6 +156,17 @@ main { flex: 1; }
 .share-button { width: 40px; padding: 0 !important; }
 .share-button span { display: none; }
 .load-more { display: flex; justify-content: center; padding-top: 4px; }
+.static-catalogue .section-heading h1 { margin: 5px 0 0; font-size: clamp(25px,3vw,34px); letter-spacing: -.035em; line-height: 1.15; }
+.catalogue-back-link { width: fit-content; color: var(--color-text-muted); font-size: 13px; font-weight: 700; }
+.catalogue-back-link:hover { color: var(--color-primary); }
+.catalogue-pagination { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; padding-block: 12px; }
+.catalogue-pagination .button { min-width: 40px; }
+@media (max-width: 760px) {
+  .static-catalogue .header-inner { flex-wrap: wrap; gap: 10px; padding-block: 12px; }
+  .static-catalogue .site-header nav { position: static; display: flex; flex-direction: row; flex-wrap: wrap; padding: 0; border: 0; box-shadow: none; background: transparent; }
+  .static-catalogue .section-heading { grid-template-columns: 1fr; }
+  .static-catalogue .section-heading p { display: block; }
+}
 .state-card { min-height: 190px; padding: 28px; border: 1px dashed var(--color-border-strong); border-radius: var(--radius-medium); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; color: var(--color-text-muted); background: rgba(255,255,255,.6); }
 .state-card strong { color: var(--color-text); }
 .state-card.error { border-color: rgba(177,58,50,.35); }

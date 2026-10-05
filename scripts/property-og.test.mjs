@@ -6,6 +6,7 @@ import test from "node:test";
 import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { listingShortUrl } from "../src/utils/listing.js";
 import { propertyOgDescription, renderPropertyRouteHtml, summarizePostingCopy } from "./property-og.mjs";
+import { renderCatalogueContent } from "./catalogue-html.mjs";
 
 const chunk = (type, data) => {
   const header = Buffer.alloc(8);
@@ -111,4 +112,20 @@ test("uses stable short URL format for share actions", () => {
   const { items } = normalizeInventoryFeed(feed);
   assert.equal(listingShortUrl(items[0]), "https://property.myeviv.com/i/WTS1004");
   assert.match(propertyOgDescription(items[0]), /Family Home/);
+});
+
+test("paginated catalogue uses the shared site theme and crawlable navigation", () => {
+  const { items } = normalizeInventoryFeed(feed);
+  const html = renderCatalogueContent(items, { heading: "Property Inventory Catalogue — Page 2", page: 2, pageCount: 3, total: 30 });
+  for (const className of ["site-shell static-catalogue", "site-header", "brand-link", "section-heading", "property-reference", "property-location", "property-price", "property-facts", "property-meta", "property-actions view-only", "site-footer"]) {
+    assert.ok(html.includes(`class="${className}"`), className);
+  }
+  assert.match(html, /<h1>Property Inventory Catalogue — Page 2<\/h1>/);
+  assert.match(html, /<h3><a href="\/property\/wts1004-family-home-bukit-tinggi\?intent=WTS">/);
+  assert.match(html, /intent-wts/);
+  assert.match(html, /\/watermarked\/color-logo-30-jpg-v3\/inventory\/WTS1004\/cover.jpg/);
+  assert.match(html, /aria-current="page"/);
+  assert.match(html, /rel="prev" href="\/catalogue\/page\/1\/"/);
+  assert.match(html, /rel="next" href="\/catalogue\/page\/3\/"/);
+  assert.doesNotMatch(html, /watermark-overlay|style="width:100%;height:auto"/);
 });

@@ -1,4 +1,4 @@
-import { Check, Copy, Eye, LoaderCircle, MailOpen, Trash2, X } from "lucide-react";
+import { Archive, ArchiveRestore, Check, Copy, Eye, LoaderCircle, MailOpen, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Seo } from "../components/Seo";
 import { formatRoomSummary } from "../data/requirementContract";
@@ -56,7 +56,7 @@ const loadAllSubmissions = async () => {
   const submissions = [];
   let offset = 0;
   while (true) {
-    const payload = await request(`/api/admin/requirements?limit=${ADMIN_PAGE_SIZE}&offset=${offset}`);
+    const payload = await request(`/api/admin/requirements?view=all&limit=${ADMIN_PAGE_SIZE}&offset=${offset}`);
     const page = Array.isArray(payload.submissions) ? payload.submissions : [];
     submissions.push(...page);
     if (page.length < ADMIN_PAGE_SIZE) return submissions;
@@ -68,6 +68,8 @@ export function RequirementsAdminPage() {
   const [state, setState] = useState({ loading: true, authenticated: false, submissions: [], error: "" });
   const [selected, setSelected] = useState(null);
   const [busy, setBusy] = useState("");
+  const [inquiryView, setInquiryView] = useState("active");
+  const [notice, setNotice] = useState("");
   const [copyState, setCopyState] = useState({ reference: "", status: "" });
 
   const load = async () => {
@@ -125,6 +127,24 @@ export function RequirementsAdminPage() {
     }
   };
 
+  const setArchived = async (item) => {
+    setBusy(item.reference);
+    setNotice("");
+    try {
+      const result = await request(`/api/admin/requirements/${item.reference}`, { method: "PATCH", body: JSON.stringify({ archived: !item.archivedAt }) });
+      setState((current) => ({ ...current, error: "", submissions: current.submissions.map((row) => row.reference === item.reference ? { ...row, archivedAt: result.archivedAt } : row) }));
+      setSelected((current) => current?.reference === item.reference ? { ...current, archivedAt: result.archivedAt } : current);
+      setNotice(`${item.reference} ${result.archivedAt ? "archived. You can restore it from Archived." : "restored to Active."}`);
+    } catch (error) {
+      setState((current) => ({ ...current, error: error.message }));
+    } finally {
+      setBusy("");
+    }
+  };
+
+  const visibleSubmissions = state.submissions.filter((item) => inquiryView === "archived" ? Boolean(item.archivedAt) : !item.archivedAt);
+  const archivedCount = state.submissions.filter((item) => item.archivedAt).length;
+
   const copyPosting = async (item) => {
     setBusy(item.reference);
     try {
@@ -153,7 +173,7 @@ export function RequirementsAdminPage() {
         <header>
           <span className="eyebrow">Protected administration</span>
           <h1>Property Inquiries</h1>
-          <p>Read and delete submitted tenant and buyer enquiries. Production requires the configured administrator login; local access uses the local inquiries database.</p>
+          <p>Manage tenant and buyer enquiries. Archive inquiries that are no longer relevant and restore them anytime. Archiving preserves their details and reference numbers.</p>
         </header>
 
         {state.loading ? <div className="state-card"><LoaderCircle className="spin" /><strong>Checking administrator access…</strong></div> : null}
@@ -162,10 +182,15 @@ export function RequirementsAdminPage() {
 
         {state.authenticated ? (
           <section className="admin-table-card">
+            <div className="admin-inquiry-views" role="group" aria-label="Inquiry view">
+              <button className="button secondary" type="button" aria-pressed={inquiryView === "active"} onClick={() => setInquiryView("active")}>Active ({state.submissions.length - archivedCount})</button>
+              <button className="button secondary" type="button" aria-pressed={inquiryView === "archived"} onClick={() => setInquiryView("archived")}>Archived ({archivedCount})</button>
+            </div>
+            {notice ? <p className="admin-archive-notice" role="status">{notice}</p> : null}
             <div className="admin-table-summary">
-              <strong>{state.submissions.length}</strong>
-              <span>saved {state.submissions.length === 1 ? "inquiry" : "inquiries"}</span>
-              <button type="button" onClick={load} disabled={state.loading}>Refresh</button>
+              <strong>{visibleSubmissions.length}</strong>
+              <span>{inquiryView} {visibleSubmissions.length === 1 ? "inquiry" : "inquiries"}</span>
+              <button type="button" onClick={load} disabled={state.loading || Boolean(busy)}>Refresh</button>
             </div>
             <div className="admin-table-wrap">
               <table>
@@ -182,7 +207,7 @@ export function RequirementsAdminPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {state.submissions.map((item) => {
+                  {visibleSubmissions.map((item) => {
                     const copied = copyState.reference === item.reference && copyState.status === "copied";
                     const copyFailed = copyState.reference === item.reference && copyState.status === "failed";
                     return (
@@ -207,6 +232,7 @@ export function RequirementsAdminPage() {
                               {copied ? <Check size={16} /> : <Copy size={16} />}
                             </button>
                             {item.status === "unread" ? <button type="button" title="Mark as read" aria-label={`Mark ${item.reference} as read`} onClick={() => markRead(item.reference)} disabled={busy === item.reference}><MailOpen size={16} /></button> : null}
+                            <button className="admin-archive-action" type="button" aria-label={`${item.archivedAt ? "Restore" : "Archive"} inquiry ${item.reference}`} onClick={() => setArchived(item)} disabled={Boolean(busy)}>{item.archivedAt ? <ArchiveRestore size={16} /> : <Archive size={16} />} {item.archivedAt ? "Restore" : "Archive"}</button>
                             <button className="danger" type="button" title="Delete inquiry" aria-label={`Delete inquiry ${item.reference}`} onClick={() => remove(item.reference)} disabled={busy === item.reference}><Trash2 size={16} /></button>
                           </div>
                         </td>
@@ -216,7 +242,7 @@ export function RequirementsAdminPage() {
                 </tbody>
               </table>
             </div>
-            {!state.submissions.length ? <div className="admin-empty">No property inquiries have been submitted.</div> : null}
+            {!visibleSubmissions.length ? <div className="admin-empty">{inquiryView === "archived" ? "No archived inquiries." : "No active inquiries."}</div> : null}
           </section>
         ) : null}
       </div>
@@ -230,6 +256,7 @@ export function RequirementsAdminPage() {
             </div>
             <dl className="admin-detail-list">
               <div><dt>Submitted</dt><dd>{formatDateTime(selected.submittedAt)}</dd></div>
+              {selected.archivedAt ? <div><dt>Archived</dt><dd>{formatDateTime(selected.archivedAt)}</dd></div> : null}
               <div><dt>Rent / Buy</dt><dd>{selected.intent === "rent" ? "Rent" : "Buy"}</dd></div>
               {Object.entries(selected.profile || {}).filter(([, value]) => value).map(([key, value]) => <div key={key}><dt>{profileLabels[key] || key}</dt><dd>{value}</dd></div>)}
               {Object.entries(selected.requirements || {}).filter(([, value]) => value !== "" && value !== null).map(([key, value]) => <div key={key}><dt>{detailLabels[key] || key}</dt><dd>{key === "budget" ? formatPrice(value, selected.intent === "rent" ? "WTL" : "WTS") : value}</dd></div>)}
@@ -237,6 +264,7 @@ export function RequirementsAdminPage() {
               <div><dt>Consent recorded</dt><dd>{formatDateTime(selected.consentedAt)}</dd></div>
             </dl>
             <div className="admin-detail-actions">
+              <button className="button secondary" type="button" onClick={() => setArchived(selected)} disabled={Boolean(busy)}>{selected.archivedAt ? <ArchiveRestore size={16} /> : <Archive size={16} />} {selected.archivedAt ? "Restore" : "Archive"}</button>
               {selected.status === "unread" ? <button className="button secondary" type="button" onClick={() => markRead(selected.reference)}><MailOpen size={16} /> Mark as Read</button> : null}
               <button className="button secondary danger" type="button" onClick={() => remove(selected.reference)}><Trash2 size={16} /> Delete</button>
             </div>

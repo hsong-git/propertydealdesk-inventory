@@ -27,7 +27,13 @@ export async function onRequestPatch(context) {
   if (!reference || !context.env.REQUIREMENTS_DB) return json({ error: "Submission not found." }, 404);
   let payload;
   try { payload = await context.request.json(); } catch { return json({ error: "Invalid request." }, 400); }
-  if (payload?.status !== "read") return json({ error: "Only mark-as-read is supported." }, 400);
+  if (typeof payload?.archived === "boolean" && !Object.hasOwn(payload, "status")) {
+    const archivedAt = payload.archived ? new Date().toISOString() : null;
+    const result = await context.env.REQUIREMENTS_DB.prepare("UPDATE property_requirements SET archived_at = ? WHERE reference = ?")
+      .bind(archivedAt, reference).run();
+    return result.meta?.changes ? json({ updated: true, archivedAt }) : json({ error: "Submission not found." }, 404);
+  }
+  if (payload?.status !== "read" || Object.hasOwn(payload, "archived")) return json({ error: "Use status: read or archived: true/false." }, 400);
   const result = await context.env.REQUIREMENTS_DB.prepare("UPDATE property_requirements SET status = 'read', read_at = ? WHERE reference = ?")
     .bind(new Date().toISOString(), reference).run();
   return result.meta?.changes ? json({ updated: true }) : json({ error: "Submission not found." }, 404);
@@ -47,4 +53,3 @@ export const onRequest = (context) => {
   if (context.request.method === "DELETE") return onRequestDelete(context);
   return methodNotAllowed("GET, PATCH, DELETE");
 };
-

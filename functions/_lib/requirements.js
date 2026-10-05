@@ -2,7 +2,7 @@ import { formatRequirementReference, validateRequirementPayload } from "../../sr
 
 export const REQUIREMENT_SELECT = `
   reference, submitted_at, intent, status, name, mobile, area, budget,
-  profile_json, requirements_json, other_needs, consented_at, read_at
+  profile_json, requirements_json, other_needs, consented_at, read_at, archived_at
 `;
 
 export const serializeRequirement = (row, { includeDetails = false } = {}) => {
@@ -11,6 +11,7 @@ export const serializeRequirement = (row, { includeDetails = false } = {}) => {
     submittedAt: row.submitted_at,
     intent: row.intent,
     status: row.status,
+    archivedAt: row.archived_at || null,
     name: row.name,
     mobile: row.mobile,
     area: row.area,
@@ -61,4 +62,3 @@ export async function createRequirement(env, raw, now = new Date()) {
   }
   return { reference, submittedAt, duplicate: false };
 }
-

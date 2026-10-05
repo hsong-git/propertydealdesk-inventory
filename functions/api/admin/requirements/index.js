@@ -7,10 +7,13 @@ export async function onRequestGet(context) {
   if (!admin) return json({ error: "Forbidden." }, 403);
   if (!context.env.REQUIREMENTS_DB) return json({ error: "Requirements database is not configured." }, 503);
   const url = new URL(context.request.url);
+  const view = url.searchParams.get("view") || "active";
+  if (!["active", "archived", "all"].includes(view)) return json({ error: "Invalid inquiry view." }, 400);
+  const where = view === "active" ? "WHERE archived_at IS NULL" : view === "archived" ? "WHERE archived_at IS NOT NULL" : "";
   const limit = Math.min(100, Math.max(1, Number(url.searchParams.get("limit")) || 50));
   const offset = Math.max(0, Number(url.searchParams.get("offset")) || 0);
   const { results = [] } = await context.env.REQUIREMENTS_DB.prepare(`
-    SELECT ${REQUIREMENT_SELECT} FROM property_requirements ORDER BY submitted_at DESC LIMIT ? OFFSET ?
+    SELECT ${REQUIREMENT_SELECT} FROM property_requirements ${where} ORDER BY submitted_at DESC, reference DESC LIMIT ? OFFSET ?
   `).bind(limit, offset).all();
   return json({ submissions: results.map((row) => serializeRequirement(row)), limit, offset });
 }

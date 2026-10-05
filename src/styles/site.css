@@ -161,6 +161,8 @@ main { flex: 1; }
 .catalogue-back-link:hover { color: var(--color-primary); }
 .catalogue-pagination { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; padding-block: 12px; }
 .catalogue-pagination .button { min-width: 40px; }
+.anonymous-browser-id { padding: 6px 0; border: 0; color: var(--color-primary); background: transparent; font: inherit; font-weight: 700; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; }
+.anonymous-browser-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; color: var(--color-text-muted); font-size: 13px; }
 @media (max-width: 760px) {
   .static-catalogue .header-inner { flex-wrap: wrap; gap: 10px; padding-block: 12px; }
   .static-catalogue .site-header nav { position: static; display: flex; flex-direction: row; flex-wrap: wrap; padding: 0; border: 0; box-shadow: none; background: transparent; }

@@ -29,7 +29,8 @@ for (const client of ["download", "native", "app", "web"]) {
     assert.deepEqual(visitor.values.slice(0, 4), ["anonymous-photo-visitor", "Anonymous", "", ""]);
     assert.deepEqual(event.values.slice(1, 5), [visitor.values[0], "WTL0092", 2, client]);
     assert.equal(event.values[5], visitor.values[4]);
-    assert.equal(response.headers.get("set-cookie"), null);
+    assert.match(response.headers.get("set-cookie"), /pd_photo_anon=[0-9a-f-]{36}; Path=\/api\/photo-share\/; Max-Age=7776000; HttpOnly; SameSite=Strict; Secure/);
+    assert.match(event.values[7], /^[0-9a-f]{64}$/);
   });
 }
 
@@ -54,6 +55,29 @@ test("cross-origin and invalid events are rejected without database writes", asy
 });
 
 test("audit outages and unsupported methods have controlled responses", async () => {
-  assert.equal((await onRequest({ request: request(), env: {} })).status, 503);
+  const unavailable = await onRequest({ request: request(), env: {} });
+  assert.equal(unavailable.status, 503);
+  assert.equal(unavailable.headers.get("set-cookie"), null);
   assert.equal((await onRequest({ request: new Request("https://property.myeviv.com/api/photo-share/event"), env: {} })).status, 405);
+});
+
+test("repeat downloads reuse the browser ID while separate browsers get different IDs", async () => {
+  const db = database();
+  const first = await onRequest({ request: request(), env: { REQUIREMENTS_DB: db } });
+  const cookie = first.headers.get("set-cookie").split(";")[0];
+  const second = await onRequest({ request: request(undefined, { cookie }), env: { REQUIREMENTS_DB: db } });
+  await onRequest({ request: request(), env: { REQUIREMENTS_DB: db } });
+  assert.equal(second.status, 200);
+  assert.equal(db.batches[0][1].values[7], db.batches[1][1].values[7]);
+  assert.notEqual(db.batches[0][1].values[7], db.batches[2][1].values[7]);
+  assert.equal(second.headers.get("set-cookie").split(";")[0], cookie);
+  assert.doesNotMatch(JSON.stringify(db.batches), new RegExp(cookie.split("=")[1]));
+});
+
+test("malformed anonymous cookies are replaced and cannot inject response headers", async () => {
+  const db = database();
+  const response = await onRequest({ request: request(undefined, { cookie: "pd_photo_anon=not-an-id; pd_photo_session=registered" }), env: { REQUIREMENTS_DB: db } });
+  assert.equal(response.status, 200);
+  assert.doesNotMatch(response.headers.get("set-cookie"), /not-an-id|registered/);
+  assert.match(db.batches[0][1].values[7], /^[0-9a-f]{64}$/);
 });

@@ -34,7 +34,7 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
     try {
       await fetch("/api/photo-share/event", {
         method: "POST",
-        credentials: "omit",
+        credentials: "same-origin",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ code: listing.code, photoCount: selectedPhotos.length, client }),
       });

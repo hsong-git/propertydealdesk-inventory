@@ -1,4 +1,5 @@
 import { json, methodNotAllowed } from "../../_lib/http.js";
+import { anonymousPhotoBrowser } from "../../_lib/anonymousPhotoBrowser.js";
 
 const CODE_PATTERN = /^(WTS|WTL)[A-Z0-9-]+$/;
 const CLIENTS = new Set(["native", "download", "app", "web"]);
@@ -16,15 +17,16 @@ export async function onRequestPost(context) {
   try {
     const db = context.env.REQUIREMENTS_DB;
     const sharedAt = new Date().toISOString();
+    const browser = await anonymousPhotoBrowser(context.request);
     // Never associate new events with a previously registered browser's identity.
     // Batch the anonymous visitor and event so the foreign key is always valid.
     await db.batch([
       db.prepare("INSERT INTO photo_download_visitors (id, name, email, contact_number, created_at, last_seen_at) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET last_seen_at = excluded.last_seen_at")
         .bind(ANONYMOUS_VISITOR_ID, "Anonymous", "", "", sharedAt, sharedAt),
-      db.prepare("INSERT INTO photo_share_events (id, visitor_id, listing_code, photo_count, share_client, shared_at, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?)")
-        .bind(crypto.randomUUID(), ANONYMOUS_VISITOR_ID, code, photoCount, client, sharedAt, (context.request.headers.get("user-agent") || "").slice(0, 300)),
+      db.prepare("INSERT INTO photo_share_events (id, visitor_id, listing_code, photo_count, share_client, shared_at, user_agent, anonymous_browser_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")
+        .bind(crypto.randomUUID(), ANONYMOUS_VISITOR_ID, code, photoCount, client, sharedAt, (context.request.headers.get("user-agent") || "").slice(0, 300), browser.id),
     ]);
-    return json({ recorded: true });
+    return json({ recorded: true }, 200, { "set-cookie": browser.cookie });
   } catch {
     return json({ error: "Photo sharing audit is unavailable." }, 503);
   }

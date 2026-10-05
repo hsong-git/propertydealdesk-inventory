@@ -4,8 +4,18 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { shareListing } from "../src/utils/listing.js";
+import { anonymousBrowserLabel } from "../src/utils/anonymousBrowser.js";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+test("anonymous audit IDs are readable and distinguish browser activity", () => {
+  assert.equal(anonymousBrowserLabel("a7".repeat(32)), "ANON-A7A7A7A7A7A7A7A7");
+  assert.equal(anonymousBrowserLabel(null), "—");
+  assert.equal(anonymousBrowserLabel("invalid"), "—");
+  const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PhotoDownloadsAdminPage.jsx"), "utf8");
+  assert.match(source, /event\.anonymous_browser_id === browserFilter/);
+  assert.match(source, /Show all browsers/);
+});
 
 test("property page does not render a separate Copy short link action", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
@@ -56,7 +66,7 @@ test("selected photo sharing is enabled unless explicitly disabled", () => {
   assert.match(sharing, /Open WhatsApp after downloading/);
   assert.match(sharing, /attach the downloaded JPG photos separately/);
   assert.doesNotMatch(sharing, /photo-share\/session|state\.name|state\.email|state\.contactNumber|stage: "register"/);
-  assert.match(sharing, /credentials: "omit"/);
+  assert.match(sharing, /credentials: "same-origin"/);
   assert.match(sharing, /No personal details required/);
   assert.ok(sharing.indexOf('await recordShare("native");') < sharing.indexOf('await navigator.share({'));
   assert.doesNotMatch(sharing, /if \(error\?\.name === "AbortError"\) await recordShare\("native"\)/);

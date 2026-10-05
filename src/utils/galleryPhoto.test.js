@@ -4,7 +4,8 @@ import test from "node:test";
 import { galleryPhotoUrl } from "./galleryPhoto.js";
 
 test("gallery saves use versioned, embedded-watermark image files", () => {
-  assert.equal(galleryPhotoUrl("/inventory/WTL0092/cover.webp"), "/watermarked/color-logo-30-v2/inventory/WTL0092/cover.webp");
+  assert.equal(galleryPhotoUrl("/inventory/WTL0092/cover.webp"), "/watermarked/color-logo-30-jpg-v3/inventory/WTL0092/cover.jpg");
+  assert.equal(galleryPhotoUrl("/inventory/WTL0092/photo-02.webp").endsWith("/photo-02.jpg"), true);
   for (const src of ["/inventory/../secret.webp", "https://example.com/photo.webp", ""]) {
     assert.throws(() => galleryPhotoUrl(src));
   }

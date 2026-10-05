@@ -29,7 +29,7 @@ for (const photo of photos) {
   await sharp(source).composite([{
     input: data, raw: { width: info.width, height: info.height, channels: 4 },
     left: width - info.width - margin, top: height - info.height - margin,
-  }]).webp({ quality: 90, effort: 1 }).toFile(output);
+  }]).jpeg({ quality: 90, mozjpeg: true }).toFile(output);
   built += 1;
 }
 console.log(`Prepared ${photos.length} right-click-saveable watermarked gallery photos (${built} rebuilt).`);

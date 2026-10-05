@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { isMobileOrTabletDevice } from "../utils/whatsapp";
 import { createWatermarkedJpegFile, desktopWhatsAppUrl, downloadPreparedFiles, nativeShareErrorMessage, PHOTO_SELECTION_LIMIT } from "../utils/photoShare";
 
-const initialState = { open: false, stage: "register", name: "", email: "", contactNumber: "", openWhatsApp: false, busy: false, message: "", error: "" };
+const initialState = { open: false, stage: "options", openWhatsApp: false, busy: false, message: "", error: "" };
 
 export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
   const [state, setState] = useState(initialState);
@@ -34,7 +34,7 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
     try {
       await fetch("/api/photo-share/event", {
         method: "POST",
-        credentials: "include",
+        credentials: "omit",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ code: listing.code, photoCount: selectedPhotos.length, client }),
       });
@@ -73,52 +73,13 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
     }
   };
 
-  const continueAfterRegistration = async () => {
-    if (mobile) { await shareNative(); return; }
-    if (state.openWhatsApp) patchState({ open: true, stage: "choose", busy: false, message: "", error: "" });
-    else await downloadSelected();
-  };
-
   const begin = async () => {
     if (!selectedPhotos.length) {
       patchState({ message: "", error: "Select at least one photo first." });
       return;
     }
-    patchState({ busy: true, message: "Checking registration…", error: "" });
-    try {
-      const response = await fetch("/api/photo-share/session", { credentials: "include", cache: "no-store" });
-      if (response.ok) {
-        if (mobile) await shareNative();
-        else patchState({ open: true, stage: "options", busy: false, message: "", error: "" });
-        return;
-      }
-      patchState({ open: true, stage: "register", busy: false, message: "", error: response.status === 401 ? "" : "Photo sharing registration is unavailable." });
-    } catch {
-      patchState({ open: true, stage: "register", busy: false, message: "", error: "Photo sharing registration is unavailable." });
-    }
-  };
-
-  const register = async (event) => {
-    event.preventDefault();
-    const normalizedContact = String(state.contactNumber || "").replace(/[\s().-]/g, "");
-    if (!/^\+?[0-9]{8,15}$/.test(normalizedContact)) {
-      patchState({ error: "Enter a valid contact number, for example 016-313 2865 or +60163132865." });
-      return;
-    }
-    patchState({ busy: true, error: "", message: "Saving your details…" });
-    try {
-      const response = await fetch("/api/photo-share/session", {
-        method: "POST",
-        credentials: "include",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ name: state.name, email: state.email, contactNumber: state.contactNumber }),
-      });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload.error || "Please enter a valid name, email and contact number.");
-      await continueAfterRegistration();
-    } catch (error) {
-      patchState({ busy: false, message: "", error: error.message || "Photo sharing registration is unavailable." });
-    }
+    if (mobile) await shareNative();
+    else patchState({ open: true, stage: "options", busy: false, message: "", error: "" });
   };
 
   const continueDesktopOptions = async () => {
@@ -145,10 +106,8 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
   const whatsappCheckbox = <><label className="photo-share-checkbox"><input type="checkbox" checked={state.openWhatsApp} onChange={(event) => patchState({ openWhatsApp: event.target.checked })} /><span>Open WhatsApp after downloading</span></label>{state.openWhatsApp ? <p className="photo-share-remark">Reminder: WhatsApp cannot attach these files automatically on desktop. Please attach the downloaded JPG photos separately in the WhatsApp conversation.</p> : null}</>;
 
   let modalContent;
-  if (state.stage === "register") {
-    modalContent = <form onSubmit={register}><span className="eyebrow">{mobile ? "Photo sharing" : "Photo download"}</span><h2>{listing.code}</h2><p>Enter your name, email and contact number once to {mobile ? "share" : "download"} this SMI’s selected JPG photos.</p><label>Name<input required value={state.name} onChange={(event) => patchState({ name: event.target.value })} autoComplete="name" /></label><label>Email<input required type="email" value={state.email} onChange={(event) => patchState({ email: event.target.value })} autoComplete="email" /></label><label>Contact No.<input required type="tel" inputMode="tel" pattern="[+0-9 ().-]{8,24}" placeholder="016-313 2865" value={state.contactNumber} onChange={(event) => patchState({ contactNumber: event.target.value })} autoComplete="tel" /></label>{!mobile ? whatsappCheckbox : null}{state.error ? <p className="form-error" role="alert">{state.error}</p> : null}<button className="button primary" type="submit" disabled={state.busy}>{state.busy ? <LoaderCircle className="spin" size={18} /> : <Check size={18} />}{state.busy ? state.message : "Continue"}</button></form>;
-  } else if (state.stage === "options") {
-    modalContent = <div className="photo-share-client-choice"><span className="eyebrow">Selected photos</span><h2>Download JPGs</h2><p>Your registration is already saved for this browser.</p>{whatsappCheckbox}<button className="button primary" type="button" onClick={continueDesktopOptions} disabled={state.busy}><Download size={18} /> {state.openWhatsApp ? "Continue" : "Download selected photos"}</button>{state.busy ? <p className="photo-share-progress"><LoaderCircle className="spin" size={16} /> {state.message}</p> : null}{state.error ? <p className="form-error" role="alert">{state.error}</p> : null}</div>;
+  if (state.stage === "options") {
+    modalContent = <div className="photo-share-client-choice"><span className="eyebrow">Selected photos</span><h2>Download JPGs</h2><p>Download your selected watermarked JPG photos. No personal details required.</p>{whatsappCheckbox}<button className="button primary" type="button" onClick={continueDesktopOptions} disabled={state.busy}><Download size={18} /> {state.openWhatsApp ? "Continue" : "Download selected photos"}</button>{state.busy ? <p className="photo-share-progress"><LoaderCircle className="spin" size={16} /> {state.message}</p> : null}{state.error ? <p className="form-error" role="alert">{state.error}</p> : null}</div>;
   } else {
     modalContent = <div className="photo-share-client-choice"><span className="eyebrow">Selected photos</span><h2>Choose WhatsApp</h2><p>The JPG files will download first. Please attach those downloaded photos separately after WhatsApp opens.</p><button className="button primary" type="button" onClick={() => openDesktopClient("app")} disabled={state.busy}><Smartphone size={18} /> WhatsApp App</button><button className="button secondary" type="button" onClick={() => openDesktopClient("web")} disabled={state.busy}><Monitor size={18} /> WhatsApp Web</button>{state.busy ? <p className="photo-share-progress"><LoaderCircle className="spin" size={16} /> {state.message}</p> : null}{state.error ? <p className="form-error" role="alert">{state.error}</p> : null}{state.message && !state.busy ? <p className="photo-share-success"><Check size={16} /> {state.message}</p> : null}</div>;
   }

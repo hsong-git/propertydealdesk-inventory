@@ -55,7 +55,9 @@ test("selected photo sharing is enabled unless explicitly disabled", () => {
   assert.match(sharing, /current\.error === "Select at least one photo first\."/);
   assert.match(sharing, /Open WhatsApp after downloading/);
   assert.match(sharing, /attach the downloaded JPG photos separately/);
-  assert.match(sharing, /name: state\.name, email: state\.email, contactNumber: state\.contactNumber/);
+  assert.doesNotMatch(sharing, /photo-share\/session|state\.name|state\.email|state\.contactNumber|stage: "register"/);
+  assert.match(sharing, /credentials: "omit"/);
+  assert.match(sharing, /No personal details required/);
   assert.ok(sharing.indexOf('await recordShare("native");') < sharing.indexOf('await navigator.share({'));
   assert.doesNotMatch(sharing, /if \(error\?\.name === "AbortError"\) await recordShare\("native"\)/);
 });

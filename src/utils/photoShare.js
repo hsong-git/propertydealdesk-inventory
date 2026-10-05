@@ -49,8 +49,7 @@ async function loadWatermarkLogo(fetcher) {
   return watermarkLogoPromise;
 }
 
-// The legacy export name is retained for callers, but shared/downloaded files
-// intentionally contain the original photo without any browser watermark.
+// Embed the same approved logo in downloaded/shared image pixels.
 export async function createWatermarkedJpegFile(photoUrl, { code, index, fetcher = fetch } = {}) {
   const response = await fetcher(new URL(photoUrl, window.location.origin), { cache: "force-cache" });
   if (!response.ok) throw new Error("Photo unavailable.");

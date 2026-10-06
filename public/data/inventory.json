@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.10.06.3",
-  "generated_at": "2026-10-06T02:36:37Z",
-  "publishedAt": "2026-10-06T02:36:37Z",
+  "inventoryVersion": "2026.10.06.4",
+  "generated_at": "2026-10-06T07:20:14Z",
+  "publishedAt": "2026-10-06T07:20:14Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -322,7 +322,7 @@
       "created_at": "2026-07-24T06:50:40Z",
       "listed_at": "2026-07-24T14:50:40Z",
       "posting_copy": "*WTL*\n\n*2R2B Corner Unit @ Trefoil, Setia Alam*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Studio\n- Property Unit Type: Corner\n- Location: Trefoil, Setia Alam\n- Furnishing: Full\n- Size Approx. 791 sqft\n- 2 Bedrooms | 2 Bathrooms\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Washing Machine\n- Refrigerator\n- Water Heater\n- TV and TV Console\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*AVAILABLE NOW!!!*\n\n*Tenant eligibility*: Selective tenant profile requirements.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0054*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0054",
-      "updated_at": "2026-10-05T23:46:41Z",
+      "updated_at": "2026-10-06T06:25:59Z",
       "cover_photo": "/inventory/WTL0054/cover.webp",
       "photos": [
         "/inventory/WTL0054/cover.webp",
@@ -1062,6 +1062,43 @@
       "features": [
         "Grills installed Furnishing can be discussed"
       ],
+      "amenities": [],
+      "why_this_property": []
+    },
+    {
+      "public_id": "pub_16251d449e8d3a2de1801063",
+      "code": "WTL0093",
+      "intent": "WTL",
+      "slug": "wtl0093-3r3b-fully-furnished-endlot-unit-dynasty-condo-klang-dynasty",
+      "title": "3R3B Fully Furnished Endlot unit @ Dynasty Condo Klang",
+      "property_type": "Condominium/Apartment",
+      "location": "Dynasty",
+      "price": 1800,
+      "alternate_intent": null,
+      "alternate_price": null,
+      "description": "Condominium/Apartment at Dynasty. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 3,
+      "bathroom_count": 3,
+      "built_up_sqft": 1410,
+      "land_size": null,
+      "furnishing": "Full",
+      "facing_direction": null,
+      "unit_type": "Endlot",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-10-06T07:06:30Z",
+      "listed_at": "2026-10-06T15:06:29Z",
+      "posting_copy": "*WTL*\n\n*3R3B Fully Furnished Endlot unit @ Dynasty Condo Klang*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Endlot\n- Location: Dynasty\n- Furnishing: Full\n- Size Approx. 1410.0 sqft\n- 3 Bedrooms | 3 Bathrooms\n- Car Parks: 2\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0093*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0093",
+      "updated_at": "2026-10-06T07:06:30Z",
+      "cover_photo": "/inventory/WTL0093/cover.webp",
+      "photos": [
+        "/inventory/WTL0093/cover.webp",
+        "/inventory/WTL0093/photo-02.webp",
+        "/inventory/WTL0093/photo-03.webp",
+        "/inventory/WTL0093/photo-04.webp",
+        "/inventory/WTL0093/photo-05.webp"
+      ],
+      "features": [],
       "amenities": [],
       "why_this_property": []
     },
@@ -3507,7 +3544,7 @@
       "created_at": "2026-10-05T05:48:25Z",
       "listed_at": "2026-10-05T13:48:24Z",
       "posting_copy": "*WTS*\n\n*2-Storey Newly Renovated House @ Dato Abdul Hamid, Taman Sentosa Klang*\nSelling Price: *RM550,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Dato Abdul Hamid, Taman Sentosa Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 60\n- Size Approx. 2400.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: North West\n\n*Feature Highlights*\n- Newly Renovated\n- Freeflood area\n- Kitchen fully extended\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1035*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1035",
-      "updated_at": "2026-10-05T23:46:41Z",
+      "updated_at": "2026-10-06T02:54:22Z",
       "cover_photo": "/inventory/WTS1035/cover.webp",
       "photos": [
         "/inventory/WTS1035/cover.webp",
@@ -3555,7 +3592,7 @@
       "created_at": "2026-07-14T07:07:19Z",
       "listed_at": "2026-07-14T15:07:19Z",
       "posting_copy": "*WTL / WTS*\n\n*4R3B Double Storey House @ Bandar Bukit Tinggi*\nRental *RM2,200*\nSale *RM789,000* (final price)\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Bukit Tinggi\n- Furnishing: Partial\n- Unit Dimensions: 20 × 70\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Kitchen Cabinet\n- Air Conditioner (Master Bedroom)\n- Ceiling Fan in all rooms\n- 24 hrs security in gated guarded community\n\n\nContact\n*HS ONG*\n*60163132865*\n*WTSL0001*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTSL0001",
-      "updated_at": "2026-10-05T23:46:41Z",
+      "updated_at": "2026-10-06T02:59:16Z",
       "cover_photo": "/inventory/WTSL0001/cover.webp",
       "photos": [
         "/inventory/WTSL0001/cover.webp",

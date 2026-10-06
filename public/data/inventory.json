@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.10.06.1",
-  "generated_at": "2026-10-06T02:10:58Z",
-  "publishedAt": "2026-10-06T02:10:58Z",
+  "inventoryVersion": "2026.10.06.2",
+  "generated_at": "2026-10-06T02:14:31Z",
+  "publishedAt": "2026-10-06T02:14:31Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -3479,6 +3479,54 @@
       "features": [
         "Built In Kitchen Cabinet Water heater Brand new aircond in all bed room and living hall Freehold",
         "Non Bumi Lot All races and foreigner are welcome. Subject to profile review. For rental - Foreigner 3 months rental deposit"
+      ],
+      "amenities": [],
+      "why_this_property": []
+    },
+    {
+      "public_id": "pub_d9544595b9e4d0c305b9d133",
+      "code": "WTS1035",
+      "intent": "WTS",
+      "slug": "wts1035-2-storey-newly-renovated-house-dato-abdul-hamid-taman-sentosa-klang-dato-abdul-hamid-taman-sentosa-klang",
+      "title": "2-Storey Newly Renovated House @ Dato Abdul Hamid, Taman Sentosa Klang",
+      "property_type": "Terrace House - 2 Storey",
+      "location": "Dato Abdul Hamid, Taman Sentosa Klang",
+      "price": 550000,
+      "alternate_intent": null,
+      "alternate_price": null,
+      "description": "Terrace House - 2 Storey at Dato Abdul Hamid, Taman Sentosa Klang. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 4,
+      "bathroom_count": 3,
+      "built_up_sqft": 2400,
+      "land_size": "20 × 60 ft",
+      "furnishing": "Basic",
+      "facing_direction": "North West",
+      "unit_type": "Intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-10-05T05:48:25Z",
+      "listed_at": "2026-10-05T13:48:24Z",
+      "posting_copy": "*WTS*\n\n*2-Storey Newly Renovated House @ Dato Abdul Hamid, Taman Sentosa Klang*\nSelling Price: *RM550,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Dato Abdul Hamid, Taman Sentosa Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 60\n- Size Approx. 2400.0 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: North West\n\n*Feature Highlights*\n- Newly Renovated\n- Freeflood area\n- Kitchen fully extended\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1035*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1035",
+      "updated_at": "2026-10-05T23:46:41Z",
+      "cover_photo": "/inventory/WTS1035/cover.webp",
+      "photos": [
+        "/inventory/WTS1035/cover.webp",
+        "/inventory/WTS1035/photo-02.webp",
+        "/inventory/WTS1035/photo-03.webp",
+        "/inventory/WTS1035/photo-04.webp",
+        "/inventory/WTS1035/photo-05.webp",
+        "/inventory/WTS1035/photo-06.webp",
+        "/inventory/WTS1035/photo-07.webp",
+        "/inventory/WTS1035/photo-08.webp",
+        "/inventory/WTS1035/photo-09.webp",
+        "/inventory/WTS1035/photo-10.webp",
+        "/inventory/WTS1035/photo-11.webp",
+        "/inventory/WTS1035/photo-12.webp",
+        "/inventory/WTS1035/photo-13.webp",
+        "/inventory/WTS1035/photo-14.webp"
+      ],
+      "features": [
+        "Newly Renovated Freeflood area Kitchen fully extended"
       ],
       "amenities": [],
       "why_this_property": []

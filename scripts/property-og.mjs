@@ -88,7 +88,7 @@ function replaceTag(html, selectorPattern, replacement) {
 }
 
 export function propertyOgMeta(listing, publicRoot) {
-  const title = `${listing.code} ${listing.title} | HS Ong Property Inventory`;
+  const title = `${listing.displayCode || listing.code} ${listing.title} | HS Ong Property Inventory`;
   const canonical = `${SITE_ORIGIN}/property/${listing.slug}`;
   const description = propertyOgDescription(listing);
   const image = propertyOgImage(listing, publicRoot);
@@ -97,11 +97,11 @@ export function propertyOgMeta(listing, publicRoot) {
     canonical,
     description,
     ogUrl: canonical,
-    ogTitle: `${listing.code} ${listing.title}`,
+    ogTitle: `${listing.displayCode || listing.code} ${listing.title}`,
     ogDescription: description,
     ogType: "article",
     image,
-    imageAlt: `${listing.code} ${listing.title} property photo`,
+    imageAlt: `${listing.displayCode || listing.code} ${listing.title} property photo`,
   };
 }
 
@@ -129,7 +129,7 @@ export function renderPropertyRouteHtml(indexHtml, listing, publicRoot, { canoni
   html = replaceTag(html, /<meta name="twitter:description" content="[^"]*"\s*\/?>/i, `<meta name="twitter:description" content="${htmlEscape(meta.ogDescription)}" />`);
   html = replaceTag(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/i, `<meta name="twitter:image" content="${htmlEscape(meta.image.url)}" />`);
   const photo = listing.photos[0];
-  const content = `<main class="page-width property-page"><a href="/">Back to Catalogue</a><section class="detail-title-block"><p>${htmlEscape(listing.code)} · ${htmlEscape(listing.availability)}</p><h1>${htmlEscape(listing.title)}</h1><p>${htmlEscape(listing.location)}</p><strong class="detail-price">${htmlEscape(formatPrice(listing.price, listing.intent))}</strong>${listing.alternateIntent && listing.alternatePrice != null ? `<p>Also available to ${listing.alternateIntent === "WTL" ? "rent" : "buy"}: ${htmlEscape(formatPrice(listing.alternatePrice, listing.alternateIntent))}</p>` : ""}</section>${photo ? `<img src="${htmlEscape(photo)}" alt="${htmlEscape(listing.title)}" style="max-width:100%;height:auto">` : ""}<section class="detail-section"><h2>Property overview</h2><p>${htmlEscape(listing.description)}</p><dl>${[["Property type", listing.propertyType], ["Bedrooms", listing.bedrooms], ["Bathrooms", listing.bathrooms], ["Built-up (sq ft)", listing.builtUpSqFt], ["Land size", listing.landSize], ["Furnishing", listing.furnishing]].filter(([, value]) => value != null).map(([label, value]) => `<dt>${label}</dt><dd>${htmlEscape(value)}</dd>`).join("")}</dl><h2>Property features</h2><ul>${listing.features.map((feature) => `<li>${htmlEscape(feature)}</li>`).join("")}</ul><a href="/inquiries">Find a property for me</a></section></main>`;
+  const content = `<main class="page-width property-page"><a href="${listing.visibility === "unlisted" ? "/cmi" : "/"}">${listing.visibility === "unlisted" ? "Back to CMI Catalogue" : "Back to Catalogue"}</a><section class="detail-title-block"><p>${htmlEscape(listing.displayCode || listing.code)} · ${htmlEscape(listing.availability)}</p><h1>${htmlEscape(listing.title)}</h1><p>${htmlEscape(listing.location)}</p><div class="detail-price-row"><strong class="detail-price">${htmlEscape(formatPrice(listing.price, listing.intent))}</strong>${listing.cmiAgentName ? `<small class="detail-cmi-agent">Agent: ${htmlEscape(listing.cmiAgentName)}</small>` : ""}</div>${listing.alternateIntent && listing.alternatePrice != null ? `<p>Also available to ${listing.alternateIntent === "WTL" ? "rent" : "buy"}: ${htmlEscape(formatPrice(listing.alternatePrice, listing.alternateIntent))}</p>` : ""}</section>${photo ? `<img src="${htmlEscape(photo)}" alt="${htmlEscape(listing.title)}" style="max-width:100%;height:auto">` : ""}<section class="detail-section"><h2>Property overview</h2><p>${htmlEscape(listing.description)}</p><dl>${[["Property type", listing.propertyType], ["Bedrooms", listing.bedrooms], ["Bathrooms", listing.bathrooms], ["Built-up (sq ft)", listing.builtUpSqFt], ["Land size", listing.landSize], ["Furnishing", listing.furnishing]].filter(([, value]) => value != null).map(([label, value]) => `<dt>${label}</dt><dd>${htmlEscape(value)}</dd>`).join("")}</dl><h2>Property features</h2><ul>${listing.features.map((feature) => `<li>${htmlEscape(feature)}</li>`).join("")}</ul><a href="/inquiries">Find a property for me</a></section></main>`;
   html = html.replace('<div id="root"></div>', `<div id="root">${photo ? content.replace(`<img src="${htmlEscape(photo)}" alt="${htmlEscape(listing.title)}" style="max-width:100%;height:auto">`, staticPhoto(photo, listing.title)) : content}</div>`);
   const structuredData = JSON.stringify([propertyJsonLd(listing), propertyBreadcrumbs(listing)]).replaceAll("<", "\\u003c");
   html = html.replace("</head>", `<script id="page-jsonld" type="application/ld+json">${structuredData}</script></head>`);
@@ -175,7 +175,7 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
       path.join(shortRouteDirectory, "index.html"),
       renderPropertyRouteHtml(indexHtml, listing, publicRoot, {
         imageOverride,
-        ogUrlOverride: `${SITE_ORIGIN}/i/${listing.code}`,
+        ogUrlOverride: `${SITE_ORIGIN}/i/${listing.displayCode || listing.code}`,
       }),
     );
   }

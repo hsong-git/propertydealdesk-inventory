@@ -13,7 +13,7 @@ export function CmiPage() {
   const [visible, setVisible] = useState(12);
   const results = useMemo(() => allItems.filter((listing) => listing.visibility === "unlisted"
     && (!intent || listing.intent === intent || listing.alternateIntent === intent)
-    && `${listing.code} ${listing.title} ${listing.location} ${listing.propertyType}`.toLowerCase().includes(search.trim().toLowerCase()))
+    && `${listing.displayCode || listing.code} ${listing.title} ${listing.location} ${listing.propertyType}`.toLowerCase().includes(search.trim().toLowerCase()))
     .sort(compareRecentlyUpdated), [allItems, search, intent]);
   return <main className="page-width home-stack">
     <Seo title="CMI Units | HS Ong Property Inventory" canonical={`${SITE_ORIGIN}/cmi`} robots="noindex, nofollow" />

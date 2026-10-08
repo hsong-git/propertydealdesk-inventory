@@ -13,7 +13,7 @@ function RelatedListingCard({ listing }) {
         <span className={`intent intent-${listing.intent.toLowerCase()}`}>{listing.intent}</span>
       </Link>
       <div className="related-listing-copy">
-        <div className="property-reference"><span>{listing.code}</span></div>
+        <div className="property-reference"><span>{listing.displayCode || listing.code}</span></div>
         <h3><Link to={`/property/${listing.slug}`}>{listing.title}</Link></h3>
         <p className="property-location"><MapPin size={14} /> {listing.location}</p>
         <strong>{formatPrice(listing.price, listing.intent)}</strong>

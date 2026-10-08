@@ -37,7 +37,7 @@ export function PropertyPage() {
   const displayPrice = displayIntent === listing?.alternateIntent ? listing?.alternatePrice : listing?.price;
   const otherIntent = displayIntent === listing?.alternateIntent ? listing?.intent : listing?.alternateIntent;
   const otherPrice = displayIntent === listing?.alternateIntent ? listing?.price : listing?.alternatePrice;
-  const seoTitle = listing ? `${listing.title} | ${listing.code} | HS Ong Property Inventory` : "Property Details | HS Ong Property Inventory";
+  const seoTitle = listing ? `${listing.title} | ${listing.displayCode || listing.code} | HS Ong Property Inventory` : "Property Details | HS Ong Property Inventory";
   const seoDescription = listing ? propertySeoDescription(listing, formatPrice(displayPrice, displayIntent)) : "Public property details from HS Ong Property Inventory.";
   const seoCanonical = `${SITE_ORIGIN}/property/${slug}`;
   function movePhoto(direction) {
@@ -98,13 +98,13 @@ export function PropertyPage() {
         robots={listing.visibility === "unlisted" ? "noindex, nofollow" : "index, follow"}
         description={seoDescription}
         canonical={seoCanonical}
-        ogTitle={`${listing.title} | ${listing.code}`}
+        ogTitle={`${listing.title} | ${listing.displayCode || listing.code}`}
         ogDescription={seoDescription}
         image={listing.photos[0]}
         type="article"
         structuredData={[propertyJsonLd(listing), propertyBreadcrumbs(listing)]}
       />
-      <Link className="back-link" to="/"><ArrowLeft size={17} /> Back to Catalogue</Link>
+      <Link className="back-link" to={listing.visibility === "unlisted" ? "/cmi" : "/"}><ArrowLeft size={17} /> {listing.visibility === "unlisted" ? "Back to CMI Catalogue" : "Back to Catalogue"}</Link>
       <div className="detail-layout">
         <div className="detail-main">
           <section className="gallery" aria-label="Property photos">
@@ -115,8 +115,8 @@ export function PropertyPage() {
             {photoSharingEnabled && listing.photos.length > 0 ? <><div className="gallery-thumbnails">{listing.photos.map((photo, index) => { const selected = selectedPhotos.includes(photo); const blocked = selectedPhotos.length >= PHOTO_SELECTION_LIMIT && !selected; return <div className="gallery-thumbnail-choice" key={photo}><button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button><button type="button" disabled={blocked} className={`photo-select-toggle${selected ? " selected" : ""}${blocked ? " is-blocked" : ""}`} aria-label={`${selected ? "Deselect" : "Select"} photo ${index + 1}`} aria-pressed={selected} onClick={() => setSelectedPhotos((current) => selected ? current.filter((item) => item !== photo) : current.length < PHOTO_SELECTION_LIMIT ? [...current, photo] : current)}>{selected ? <Check size={14} /> : <span />}</button></div>; })}</div><button className="select-first-photos" type="button" onClick={selectFirstPhotos} disabled={!listing.photos.length} aria-pressed={firstPhotosSelected}>{firstPhotosSelected ? "Deselect first " : "Select first "}{Math.min(PHOTO_SELECTION_LIMIT, listing.photos.length)}</button><ShareSelectedPhotosButton listing={listing} selectedPhotos={selectedPhotos} /></> : listing.photos.length > 1 ? <div className="gallery-thumbnails">{listing.photos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
           </section>
           <section className="detail-title-block">
-            <div className="property-reference"><span>{listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
-            <h1>{listing.title}</h1><p className="property-location"><MapPin size={17} /> {listing.location}</p><strong className={`detail-price ${displayIntent === "WTL" && otherIntent === "WTS" ? "detail-price-rental" : ""} ${displayIntent === "WTS" ? "detail-price-sale" : ""}`}>{formatPrice(displayPrice, displayIntent)}</strong>{otherIntent && otherPrice != null ? <p className={`detail-alternate-offer ${displayIntent === "WTS" && otherIntent === "WTL" ? "detail-rental-offer" : ""}`}>Also available to {otherIntent === "WTL" ? "rent" : "buy"}: <strong>{formatPrice(otherPrice, otherIntent)}</strong></p> : null}
+            <div className="property-reference"><span>{listing.displayCode || listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
+            <h1>{listing.title}</h1><p className="property-location"><MapPin size={17} /> {listing.location}</p><div className="detail-price-row"><strong className={`detail-price ${displayIntent === "WTL" && otherIntent === "WTS" ? "detail-price-rental" : ""} ${displayIntent === "WTS" ? "detail-price-sale" : ""}`}>{formatPrice(displayPrice, displayIntent)}</strong>{listing.cmiAgentName ? <small className="detail-cmi-agent">Agent: {listing.cmiAgentName}</small> : null}</div>{otherIntent && otherPrice != null ? <p className={`detail-alternate-offer ${displayIntent === "WTS" && otherIntent === "WTL" ? "detail-rental-offer" : ""}`}>Also available to {otherIntent === "WTL" ? "rent" : "buy"}: <strong>{formatPrice(otherPrice, otherIntent)}</strong></p> : null}
           </section>
           <section className="detail-section"><h2>Property overview</h2><p>{listing.description}</p><div className="detail-facts">{detailItems.map(([Icon, label, value]) => <div key={label}><Icon size={19} /><span>{label}</span><strong>{value}</strong></div>)}</div></section>
           {listing.features.length ? <section className="detail-section"><h2>Property features</h2><ul className="check-list">{listing.features.map((item) => <li key={item}><Check size={17} /> {item}</li>)}</ul></section> : null}

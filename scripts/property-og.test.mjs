@@ -91,7 +91,7 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
     const distRoot = path.join(root, "dist");
     fs.mkdirSync(path.join(publicRoot, "data"), { recursive: true });
     fs.mkdirSync(path.join(distRoot, "data"), { recursive: true });
-    const hidden = { ...feed.listings[0], code: "WTL0099", slug: "cmi-unlisted-only", title: "CMI Direct Link Test", visibility: "unlisted", photos: [], cover_photo: null };
+    const hidden = { ...feed.listings[0], code: "WTL0099", slug: "cmi-unlisted-only", title: "CMI Direct Link Test", visibility: "unlisted", cmi_agent_name: "Bee Ang", photos: [], cover_photo: null };
     const visible = { ...feed.listings[0], photos: [], cover_photo: null };
     fs.writeFileSync(path.join(publicRoot, "data", "inventory.json"), JSON.stringify({ ...feed, listings: [visible, hidden] }));
     fs.writeFileSync(path.join(distRoot, "index.html"), shell);
@@ -101,6 +101,9 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
     for (const route of [path.join("property", hidden.slug), path.join("i", hidden.code)]) {
       const html = fs.readFileSync(path.join(distRoot, route, "index.html"), "utf8");
       assert.match(html, /CMI Direct Link Test/);
+      assert.match(html, /CMI-WTL0099/);
+      assert.match(html, /href="\/cmi">Back to CMI Catalogue/);
+      assert.match(html, /Agent: Bee Ang/);
       assert.match(html, /noindex, nofollow/);
     }
     const manifest = JSON.parse(fs.readFileSync(path.join(distRoot, "data", "seo-routes.json"), "utf8"));

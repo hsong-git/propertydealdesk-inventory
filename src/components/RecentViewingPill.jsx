@@ -81,9 +81,9 @@ export function RecentViewingPill() {
 
   if (!current || location.pathname.startsWith("/admin") || location.pathname === "/inquiries" || !visible) return null;
   return <aside className={`recent-viewing-pill${leaving ? " is-leaving" : ""}`} role="status">
-    <Link to={`/property/${current.slug}`} aria-label={`Open recently viewed listing ${current.code}`}>
+    <Link to={`/property/${current.slug}`} aria-label={`Open recently viewed listing ${current.displayCode || current.code}`}>
       {coverPhoto(current) ? <PublicPropertyImage className="recent-viewing-thumb" src={coverPhoto(current)} alt="" loading="lazy" /> : <Eye size={16} />}
-      <span><strong>{current.code}</strong> — {current.title} was recently viewed</span>
+      <span><strong>{current.displayCode || current.code}</strong> — {current.title} was recently viewed</span>
     </Link>
     <button type="button" onClick={() => { setDismissed(true); setLeaving(true); window.setTimeout(() => setVisible(false), 2000); }} aria-label="Dismiss recently viewed notice"><X size={15} /></button>
   </aside>;

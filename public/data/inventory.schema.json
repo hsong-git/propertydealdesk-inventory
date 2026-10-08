@@ -116,6 +116,7 @@
           "type": "array",
           "items": { "$ref": "#/$defs/stablePhotoPath" }
         },
+        "cmi_agent_name": { "type": ["string", "null"] },
         "posting_copy": {
           "type": ["string", "null"],
           "maxLength": 8000,

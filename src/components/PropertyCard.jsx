@@ -39,14 +39,14 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
         {listing.featured ? <span className="featured-badge">Featured</span> : null}
       </Link>
       <div className="property-content">
-        <div className="property-reference"><span>{listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
+        <div className="property-reference"><span>{listing.displayCode || listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
         <h3><Link to={propertyHref}>{listing.title}</Link></h3>
         <p className="property-location"><MapPin size={15} /> {listing.location}</p>
         <div className="property-price-row">
           <strong className="property-price">{formatPrice(displayedPrice, displayedIntent)}</strong>
           <span className="copy-posting-control">
             {postingCopied ? <span className="copy-posting-prompt">Copied</span> : null}
-            <button className="copy-posting-icon-button" type="button" onClick={copyPosting} aria-label={`Copy posting for ${listing.code}`} title={postingCopied ? "Copied" : "Copy posting"}>
+            <button className="copy-posting-icon-button" type="button" onClick={copyPosting} aria-label={`Copy posting for ${listing.displayCode || listing.code}`} title={postingCopied ? "Copied" : "Copy posting"}>
               <Copy size={16} />
             </button>
           </span>
@@ -62,7 +62,7 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
       <div className={`property-actions ${viewOnly ? "view-only" : ""}`}>
         <Link className="button secondary" to={propertyHref}>View Details</Link>
         {viewOnly ? null : <a className="button primary icon-only-mobile" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><MessageCircle size={18} /><span>Enquire</span></a>}
-        {viewOnly ? null : <button className="button tertiary share-button" type="button" onClick={share} aria-label={`Share ${listing.code}`}><Share2 size={18} /><span>{shared ? "Copied" : "Share"}</span></button>}
+        {viewOnly ? null : <button className="button tertiary share-button" type="button" onClick={share} aria-label={`Share ${listing.displayCode || listing.code}`}><Share2 size={18} /><span>{shared ? "Copied" : "Share"}</span></button>}
       </div>
     </article>
   );

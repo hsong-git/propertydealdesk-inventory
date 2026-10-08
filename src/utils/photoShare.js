@@ -17,7 +17,7 @@ export function photoShareFileName(code, index) {
 
 export function photoShareMessage(listing, profile) {
   if (profile) return postingText(listing, profile);
-  return `${listing.code} — ${listing.title}\n${SITE_ORIGIN}/i/${String(listing.code || "").toUpperCase()}`;
+  return `${listing.displayCode || listing.code} — ${listing.title}\n${SITE_ORIGIN}/i/${String(listing.code || "").toUpperCase()}`;
 }
 
 export function desktopWhatsAppUrl(client, message) {

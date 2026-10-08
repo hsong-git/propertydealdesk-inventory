@@ -47,13 +47,13 @@ export const intentLabels = {
 
 export const enquiryText = (listing, displayName) => {
   const action = listing.intent === "WTL" ? "renting" : "this property";
-  return `Hi ${displayName}, I am interested in listing ${listing.code}, ${listing.title} at ${listing.location}. Could you share the latest availability and details for ${action}?`;
+  return `Hi ${displayName}, I am interested in listing ${listing.displayCode || listing.code}, ${listing.title} at ${listing.location}. Could you share the latest availability and details for ${action}?`;
 };
 
 export const photoDownloadRequestText = (listing, displayName) => [
   `Hi ${displayName}, PM for photos.`,
   "",
-  `Property code: ${listing.code}`,
+  `Property code: ${listing.displayCode || listing.code}`,
   `Title: ${listing.title}`,
   `Location: ${listing.location}`,
   `Price: ${formatPrice(listing.price, listing.intent)}`,
@@ -89,7 +89,13 @@ export const withPostingShortLinkFootnote = (text, listing) => {
 };
 
 export const postingText = (listing, profile) => {
-  if (listing.postingCopy) return withPostingShortLinkFootnote(listing.postingCopy, listing);
+  if (listing.postingCopy) {
+    const escapedCode = String(listing.code || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const copy = listing.displayCode && listing.displayCode !== listing.code && escapedCode
+      ? listing.postingCopy.replace(new RegExp(`(?<![A-Za-z0-9_/-])${escapedCode}(?![A-Za-z0-9_-])`, "g"), listing.displayCode)
+      : listing.postingCopy;
+    return withPostingShortLinkFootnote(copy, listing);
+  }
 
   const facts = [
     listing.propertyType && `Property type: ${listing.propertyType}`,
@@ -103,7 +109,7 @@ export const postingText = (listing, profile) => {
   ].filter(Boolean);
   const features = (listing.features || []).filter(Boolean);
   return withPostingShortLinkFootnote([
-    `${listing.intent} | ${listing.code}`,
+    `${listing.intent} | ${listing.displayCode || listing.code}`,
     listing.title,
     `Location: ${listing.location}`,
     `Price: ${formatPrice(listing.price, listing.intent)}`,
@@ -119,7 +125,7 @@ export const postingText = (listing, profile) => {
 
 export async function shareListing(listing) {
   const url = listingShortUrl(listing);
-  const data = { title: `${listing.code} · ${listing.title}`, text: `${listing.title} at ${listing.location}`, url };
+  const data = { title: `${listing.displayCode || listing.code} · ${listing.title}`, text: `${listing.title} at ${listing.location}`, url };
   if (navigator.share) return navigator.share(data);
   await navigator.clipboard.writeText(url);
   return "copied";

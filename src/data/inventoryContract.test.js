@@ -32,10 +32,21 @@ const stableListing = {
 };
 
 test("unlisted CMI remains available by direct link but not browse, search or suggestions", () => {
-  const hidden = { ...stableListing, code: "WTL0099", slug: "cmi-direct-link", visibility: "unlisted", internal_note: "private" };
+  const hidden = { ...stableListing, code: "WTL0099", slug: "cmi-direct-link", visibility: "unlisted", cmi_agent_name: "Bee Ang", internal_note: "private" };
   const { items, allItems } = normalizeInventoryFeed(productionFeed([stableListing, hidden]));
   assert.deepEqual(items.map((item) => item.code), ["WTS1004"]);
   assert.equal(allItems.find((item) => item.code === "WTL0099").visibility, "unlisted");
+  assert.equal(allItems[1].displayCode, "CMI-WTL0099");
+  assert.equal(allItems[1].cmiAgentName, "Bee Ang");
+  assert.equal(normalizeInventoryFeed(productionFeed([{ ...stableListing, cmi_agent_name: "Private Owner" }])).items[0].cmiAgentName, null);
+  assert.equal(items[0].displayCode, "WTS1004");
+  assert.equal(allItems[1].slug, "cmi-direct-link");
+  assert.match(postingText(allItems[1], { displayName: "HS Ong", phoneDisplay: "" }), /CMI-WTL0099/);
+  const copy = postingText({ ...allItems[1], postingCopy: "*WTL0099*\nCMI-WTL0099\nhttps://property.myeviv.com/i/WTL0099" }, {});
+  assert.match(copy, /\*CMI-WTL0099\*/);
+  assert.doesNotMatch(copy, /CMI-CMI-/);
+  assert.match(copy, /https:\/\/property\.myeviv\.com\/i\/WTL0099/);
+  assert.equal(normalizeInventoryFeed(productionFeed([{ ...hidden, code: "CMI-WTL0099" }])).allItems[0].displayCode, "CMI-WTL0099");
   assert.equal("internal_note" in allItems[1], false);
   assert.equal(normalizeInventoryFeed(productionFeed([{ ...hidden, visibility: "invalid" }])).allItems.length, 0);
 });

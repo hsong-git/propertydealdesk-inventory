@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { DatabaseSync } from "node:sqlite";
+import { readFileSync } from "node:fs";
+import { anonymousPhotoBrowser } from "../../_lib/anonymousPhotoBrowser.js";
 import { onRequest } from "./event.js";
 
 function request(payload = { code: "WTL0092", photoCount: 2, client: "download" }, headers = {}) {
@@ -80,4 +83,36 @@ test("malformed anonymous cookies are replaced and cannot inject response header
   assert.equal(response.status, 200);
   assert.doesNotMatch(response.headers.get("set-cookie"), /not-an-id|registered/);
   assert.match(db.batches[0][1].values[7], /^[0-9a-f]{64}$/);
+});
+
+test("database exclusions suppress repeat events without blocking downloads or other browsers", async () => {
+  const sqlite = new DatabaseSync(":memory:");
+  try {
+    for (const file of ["0002_photo_download_tracking.sql", "0003_photo_download_contact.sql", "0004_photo_share_tracking.sql", "0006_anonymous_photo_browser.sql", "0008_photo_audit_exclusions.sql"]) {
+      sqlite.exec(readFileSync(new URL(`../../../migrations/${file}`, import.meta.url), "utf8"));
+    }
+    const cookie = "pd_photo_anon=11111111-1111-4111-8111-111111111111";
+    const browser = await anonymousPhotoBrowser(request(undefined, { cookie }));
+    sqlite.prepare("INSERT INTO photo_audit_excluded_browsers (anonymous_browser_id) VALUES (?)").run(browser.id);
+    const db = {
+      prepare(sql) { return { bind(...values) { return { sql, values }; } }; },
+      async batch(statements) {
+        return statements.map(({ sql, values }) => ({ success: true, meta: sqlite.prepare(sql).run(...values) }));
+      },
+    };
+    for (const client of ["download", "native", "app", "web"]) {
+      const response = await onRequest({ request: request({ code: "WTL0092", photoCount: 2, client }, { cookie }), env: { REQUIREMENTS_DB: db } });
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get("set-cookie").split(";")[0], cookie);
+    }
+    assert.equal(sqlite.prepare("SELECT COUNT(*) AS count FROM photo_share_events").get().count, 0);
+    assert.equal((await onRequest({ request: request(), env: { REQUIREMENTS_DB: db } })).status, 200);
+    assert.equal(sqlite.prepare("SELECT COUNT(*) AS count FROM photo_share_events").get().count, 1);
+    assert.notEqual(sqlite.prepare("SELECT anonymous_browser_id FROM photo_share_events").get().anonymous_browser_id, browser.id);
+    // Reapplying the migration is safe and cannot remove the exclusion.
+    sqlite.exec(readFileSync(new URL("../../../migrations/0008_photo_audit_exclusions.sql", import.meta.url), "utf8"));
+    assert.equal(sqlite.prepare("SELECT COUNT(*) AS count FROM photo_audit_excluded_browsers").get().count, 1);
+  } finally {
+    sqlite.close();
+  }
 });

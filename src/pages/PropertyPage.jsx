@@ -10,6 +10,7 @@ import { ShareSelectedPhotosButton } from "../components/ShareSelectedPhotosButt
 import { Seo } from "../components/Seo";
 import { ListingUnavailableState } from "../components/ListingUnavailableState";
 import { propertyBreadcrumbs, propertyJsonLd, propertySeoDescription, SITE_ORIGIN } from "../utils/seo";
+import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
 import { photoSwipeDirection } from "../utils/photoSwipe";
 import { getRelatedListings } from "../utils/relatedListings";
 import { RelatedListings } from "../components/RelatedListings";
@@ -95,7 +96,7 @@ export function PropertyPage() {
     <main className="page-width property-page">
       <Seo
         title={seoTitle}
-        robots={listing.visibility === "unlisted" ? "noindex, nofollow" : "index, follow"}
+        robots={listing.visibility === "unlisted" && !COMBINED_CATALOGUE ? "noindex, nofollow" : "index, follow"}
         description={seoDescription}
         canonical={seoCanonical}
         ogTitle={`${listing.title} | ${listing.displayCode || listing.code}`}
@@ -104,7 +105,7 @@ export function PropertyPage() {
         type="article"
         structuredData={[propertyJsonLd(listing), propertyBreadcrumbs(listing)]}
       />
-      <Link className="back-link" to={listing.visibility === "unlisted" ? "/cmi" : "/"}><ArrowLeft size={17} /> {listing.visibility === "unlisted" ? "Back to CMI Catalogue" : "Back to Catalogue"}</Link>
+      <Link className="back-link" to={listing.visibility === "unlisted" && !COMBINED_CATALOGUE ? "/cmi" : "/"}><ArrowLeft size={17} /> {listing.visibility === "unlisted" && !COMBINED_CATALOGUE ? "Back to CMI Catalogue" : "Back to Catalogue"}</Link>
       <div className="detail-layout">
         <div className="detail-main">
           <section className="gallery" aria-label="Property photos">

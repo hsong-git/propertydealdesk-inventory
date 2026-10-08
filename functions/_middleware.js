@@ -5,6 +5,12 @@ const notFound = (method) => new Response(method === "HEAD" ? null : '<!doctype 
 export async function onRequest(context) {
   const url = new URL(context.request.url);
   const pathname = url.pathname.replace(/\/+$/, "") || "/";
+  const combined = url.hostname === "scmi.myeviv.com" || context.env.VITE_CATALOGUE_MODE === "scmi";
+  if (combined && pathname === "/cmi") return Response.redirect(new URL("/", url), 302);
+  // Keep administration on the existing Access-protected site.
+  if (combined && (pathname === "/admin" || pathname.startsWith("/admin/"))) {
+    return Response.redirect(new URL(`${pathname}${url.search}`, "https://property.myeviv.com"), 302);
+  }
   let unlisted = false;
   if (!["GET", "HEAD"].includes(context.request.method) || pathname.startsWith("/api/") || pathname.startsWith("/i/")) return context.next();
   if (["/about", "/contact", "/requirements"].includes(pathname)) {
@@ -23,7 +29,7 @@ export async function onRequest(context) {
   if (!(response.headers.get("content-type") || "").includes("text/html")) return response;
   const known = appRoutes.has(pathname) || /^\/(property|catalogue)\//.test(pathname) || /^\/download\/[^/]+$/.test(pathname);
   if (!known) return notFound(context.request.method);
-  if (unlisted || pathname === "/cmi" || pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/download/")) {
+  if ((unlisted && !combined) || pathname === "/cmi" || pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/download/")) {
     const privateResponse = new Response(response.body, response);
     privateResponse.headers.set("X-Robots-Tag", "noindex, nofollow");
     return privateResponse;

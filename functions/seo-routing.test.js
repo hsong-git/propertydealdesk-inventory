@@ -38,3 +38,15 @@ test("private HTML is excluded from indexing without changing API or static asse
   assert.equal((await run("/api/admin/session", "application/json")).status, 200);
   assert.equal((await run("/assets/app.js", "application/javascript")).status, 200);
 });
+
+test("SCMI keeps admin on the existing protected origin and uses its combined catalogue", async () => {
+  const runScmi = (path) => onRequest({
+    request: new Request(`https://scmi.myeviv.com${path}`),
+    env: { ASSETS: { fetch: async () => Response.json({ properties: ["cmi-unit"], cataloguePages: 1 }) } },
+    next: async () => new Response("page", { headers: { "content-type": "text/html" } }),
+  });
+  assert.equal((await runScmi("/cmi")).headers.get("location"), "https://scmi.myeviv.com/");
+  assert.equal((await runScmi("/admin/inquiries")).headers.get("location"), "https://property.myeviv.com/admin/inquiries");
+  assert.equal((await runScmi("/property/cmi-unit")).status, 200);
+  assert.equal((await runScmi("/property/cmi-unit")).headers.get("x-robots-tag"), null);
+});

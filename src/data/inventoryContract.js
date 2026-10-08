@@ -1,3 +1,5 @@
+import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
+
 const CONTRACT_SCHEMA = "propertydealdesk-public-inventory";
 const SUPPORTED_SCHEMA_VERSIONS = new Set(["1", "1.0", "1.1", "1.2"]);
 const SUPPLY_INTENTS = new Set(["WTS", "WTL"]);
@@ -101,7 +103,7 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
   };
 }
 
-export function normalizeInventoryFeed(payload) {
+export function normalizeInventoryFeed(payload, { includeCmi = COMBINED_CATALOGUE } = {}) {
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
     throw new Error("The public inventory file is not a valid JSON object.");
   }
@@ -126,7 +128,7 @@ export function normalizeInventoryFeed(payload) {
 
   return {
     // Browse/search only use items; direct-link pages use allItems.
-    items: allItems.filter((item) => item.visibility !== "unlisted"),
+    items: includeCmi ? allItems : allItems.filter((item) => item.visibility !== "unlisted"),
     allItems,
     meta: {
       schema,

@@ -20,7 +20,7 @@ function noStoreHeaders(contentType = "text/html; charset=utf-8") {
   };
 }
 
-export function renderUnavailableShortcutHtml(code = "") {
+export function renderUnavailableShortcutHtml(code = "", origin = SITE_ORIGIN) {
   const normalizedCode = String(code || "").trim().toUpperCase();
   const title = "This property is no longer available";
   const message = normalizedCode
@@ -35,7 +35,7 @@ export function renderUnavailableShortcutHtml(code = "") {
     <title>${title} | HS Ong Property Inventory</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="This property may already be sold, rented, withdrawn, or no longer available in HS Ong Property Inventory." />
-    <link rel="canonical" href="${SITE_ORIGIN}/" />
+    <link rel="canonical" href="${escapeHtml(origin)}/" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <style>
       :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #17231f; background: #f7faf8; }
@@ -163,7 +163,7 @@ export async function onRequestGet({ env, params, request }) {
     // Fall through to the unavailable page; deleted short links must fail soft.
   }
 
-  return new Response(renderUnavailableShortcutHtml(code), {
+  return new Response(renderUnavailableShortcutHtml(code, new URL(request.url).origin), {
     status: 404,
     headers: noStoreHeaders(),
   });

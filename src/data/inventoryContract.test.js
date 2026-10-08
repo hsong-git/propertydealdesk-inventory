@@ -35,6 +35,7 @@ test("unlisted CMI remains available by direct link but not browse, search or su
   const hidden = { ...stableListing, code: "WTL0099", slug: "cmi-direct-link", visibility: "unlisted", cmi_agent_name: "Bee Ang", internal_note: "private" };
   const { items, allItems } = normalizeInventoryFeed(productionFeed([stableListing, hidden]));
   assert.deepEqual(items.map((item) => item.code), ["WTS1004"]);
+  assert.deepEqual(normalizeInventoryFeed(productionFeed([stableListing, hidden]), { includeCmi: true }).items.map((item) => item.code), ["WTS1004", "WTL0099"]);
   assert.equal(allItems.find((item) => item.code === "WTL0099").visibility, "unlisted");
   assert.equal(allItems[1].displayCode, "CMI-WTL0099");
   assert.equal(allItems[1].cmiAgentName, "Bee Ang");

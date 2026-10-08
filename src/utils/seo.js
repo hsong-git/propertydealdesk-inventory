@@ -1,4 +1,5 @@
-export const SITE_ORIGIN = "https://property.myeviv.com";
+import { CATALOGUE_ORIGIN } from "../config/catalogueSite.js";
+export const SITE_ORIGIN = CATALOGUE_ORIGIN;
 
 export const defaultSeo = {
   title: "HS Ong Property Inventory | Klang & Shah Alam Listings",

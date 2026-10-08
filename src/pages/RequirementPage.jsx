@@ -13,6 +13,7 @@ import {
 import { useInventory } from "../hooks";
 import { buildLocationOptions } from "../utils/locationFilter";
 import { formatPrice } from "../utils/listing";
+import { SITE_ORIGIN } from "../utils/seo";
 import { matchRequirements } from "../utils/requirementMatching";
 import { buildWhatsAppUrl, isMobileOrTabletDevice } from "../utils/whatsapp";
 
@@ -394,7 +395,7 @@ export function RequirementPage() {
       }
     };
     return (
-    <main className="requirement-page"><Seo title={`Requirement ${result.reference}`} canonical="https://property.myeviv.com/inquiries" robots="noindex, follow" />
+    <main className="requirement-page"><Seo title={`Requirement ${result.reference}`} canonical={`${SITE_ORIGIN}/inquiries`} robots="noindex, follow" />
       <div className="page-width requirement-result">
         <section className="requirement-success"><span className="success-sparkle">✦</span><CheckCircle2 size={36} /><span className="eyebrow">Your search is underway</span><h1>We&apos;ve got you, {result.submission.profile.name}.</h1><p>Your reference is <strong>{result.reference}</strong>. We found a few places to get you started.</p></section>
         {result.matchingError ? <div className="requirement-alert warning">{result.matchingError}</div> : null}
@@ -410,7 +411,7 @@ export function RequirementPage() {
   }
 
   return (
-    <main className="requirement-page"><Seo title="Find a Property for Me | HS Ong" canonical="https://property.myeviv.com/inquiries" description="Tell HS Ong your budget, preferred location and requirements to find a property to rent or buy in Klang Valley." />
+    <main className="requirement-page"><Seo title="Find a Property for Me | HS Ong" canonical={`${SITE_ORIGIN}/inquiries`} description="Tell HS Ong your budget, preferred location and requirements to find a property to rent or buy in Klang Valley." />
       <div className="page-width requirement-shell">
         <header className="requirement-intro"><span className="eyebrow"><Search size={14} /> Property requirement</span><h1>Find a Property for Me</h1><p>Let&apos;s find a place that feels right. A few quick choices, then we&apos;ll do the searching for you.</p></header>
         <div className="requirement-progress-meta"><span>{step === 0 ? "Let's get started" : `Step ${step} of ${finalStep}`}</span><strong>{step === 0 ? "0%" : `${Math.round((step / finalStep) * 100)}% complete`}</strong></div>

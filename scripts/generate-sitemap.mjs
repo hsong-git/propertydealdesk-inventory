@@ -54,3 +54,5 @@ await writeFile(
 );
 
 console.log(`Generated public/sitemap.xml with ${urls.length} URLs for inventory ${meta.inventoryVersion}.`);
+// Also replace the build-specific robots origin; public/data remains the same export.
+await writeFile(path.join(projectRoot, "public", "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE_ORIGIN}/sitemap.xml\n`);

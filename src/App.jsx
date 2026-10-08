@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { HomePage } from "./pages/HomePage";
+import { CmiPage } from "./pages/CmiPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { PropertyPage } from "./pages/PropertyPage";
 import { DownloadGrantPage } from "./pages/DownloadGrantPage";
@@ -16,6 +17,7 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
+          <Route path="cmi" element={<CmiPage />} />
           <Route path="about" element={<Navigate to="/" replace />} />
           <Route path="contact" element={<Navigate to="/" replace />} />
           <Route path="inquiries" element={<RequirementPage />} />

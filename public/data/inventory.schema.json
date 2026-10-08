@@ -85,6 +85,7 @@
         },
         "code": { "type": "string", "pattern": "^(WTS|WTL)[A-Za-z0-9-]+$" },
         "intent": { "type": "string", "enum": ["WTS", "WTL"] },
+        "visibility": { "enum": ["listed", "unlisted"] },
         "slug": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
         "title": { "type": "string", "minLength": 1 },
         "property_type": { "type": "string", "minLength": 1 },

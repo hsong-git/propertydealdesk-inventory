@@ -56,6 +56,7 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
   const allowedIntents = isMockData ? MOCK_INTENTS : SUPPLY_INTENTS;
   const availability = cleanText(raw.availability, "Contact for availability");
   if (!code || !allowedIntents.has(intent) || !title || !location) return null;
+  if (raw.visibility !== undefined && !["listed", "unlisted"].includes(raw.visibility)) return null;
   if (!isMockData && !PUBLIC_AVAILABILITY.has(availability)) return null;
 
   const updatedAt = cleanText(firstValue(raw.updatedAt, raw.updated_at, fallbackTimestamp));
@@ -68,6 +69,7 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
   return {
     publicId: cleanText(firstValue(raw.publicId, raw.public_id, code)),
     code,
+    visibility: raw.visibility === "unlisted" ? "unlisted" : "listed",
     slug,
     intent,
     alternateIntent: cleanNullableText(firstValue(raw.alternateIntent, raw.alternate_intent)),
@@ -116,12 +118,14 @@ export function normalizeInventoryFeed(payload) {
     generatedAt,
     "unversioned",
   ));
-  const items = (Array.isArray(payload.listings) ? payload.listings : [])
+  const allItems = (Array.isArray(payload.listings) ? payload.listings : [])
     .map((listing) => normalizePublicListing(listing, { isMockData, fallbackTimestamp: publishedAt || generatedAt }))
     .filter(Boolean);
 
   return {
-    items,
+    // Browse/search only use items; direct-link pages use allItems.
+    items: allItems.filter((item) => item.visibility !== "unlisted"),
+    allItems,
     meta: {
       schema,
       schemaVersion,

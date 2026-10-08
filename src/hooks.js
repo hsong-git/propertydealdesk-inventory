@@ -4,7 +4,7 @@ import { INVENTORY_REFRESH_INTERVAL_MS, inventoryFeedUrl } from "./data/inventor
 import { loadLocationDictionary } from "./data/locationDictionary";
 
 export function useInventory() {
-  const [state, setState] = useState({ items: [], meta: null, locationDictionary: null, loading: true, error: "" });
+  const [state, setState] = useState({ items: [], allItems: [], meta: null, locationDictionary: null, loading: true, error: "" });
 
   useEffect(() => {
     let active = true;
@@ -23,15 +23,15 @@ export function useInventory() {
         });
         if (!response.ok) throw new Error("The public inventory could not be loaded.");
         const [payload, locationDictionary] = await Promise.all([response.json(), loadLocationDictionary()]);
-        const { items, meta } = normalizeInventoryFeed(payload);
+        const { items, allItems, meta } = normalizeInventoryFeed(payload);
         if (active && currentRequestId === requestId) {
-          setState({ items, meta, locationDictionary, loading: false, error: "" });
+          setState({ items, allItems, meta, locationDictionary, loading: false, error: "" });
         }
       } catch (error) {
         if (error.name === "AbortError" || !active || currentRequestId !== requestId) return;
         setState((previous) => previous.meta
           ? { ...previous, loading: false }
-          : { items: [], meta: null, locationDictionary: null, loading: false, error: error.message });
+          : { items: [], allItems: [], meta: null, locationDictionary: null, loading: false, error: error.message });
       }
     };
 

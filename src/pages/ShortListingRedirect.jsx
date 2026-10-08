@@ -7,8 +7,8 @@ import { SITE_ORIGIN } from "../utils/seo";
 export function ShortListingRedirect() {
   const { code = "" } = useParams();
   const normalizedCode = code.toUpperCase();
-  const { items, loading, error } = useInventory();
-  const listing = items.find((item) => item.code === normalizedCode);
+  const { allItems, loading, error } = useInventory();
+  const listing = allItems.find((item) => item.code === normalizedCode);
 
   if (listing) return <Navigate to={`/property/${listing.slug}`} replace />;
 

@@ -31,6 +31,15 @@ const stableListing = {
   photos: ["/inventory/WTS1004/cover.webp", "/inventory/WTS1004/living.webp"],
 };
 
+test("unlisted CMI remains available by direct link but not browse, search or suggestions", () => {
+  const hidden = { ...stableListing, code: "WTL0099", slug: "cmi-direct-link", visibility: "unlisted", internal_note: "private" };
+  const { items, allItems } = normalizeInventoryFeed(productionFeed([stableListing, hidden]));
+  assert.deepEqual(items.map((item) => item.code), ["WTS1004"]);
+  assert.equal(allItems.find((item) => item.code === "WTL0099").visibility, "unlisted");
+  assert.equal("internal_note" in allItems[1], false);
+  assert.equal(normalizeInventoryFeed(productionFeed([{ ...hidden, visibility: "invalid" }])).allItems.length, 0);
+});
+
 test("normalizes the Stable snake_case contract into the browser allowlist", () => {
   const raw = {
     ...stableListing,

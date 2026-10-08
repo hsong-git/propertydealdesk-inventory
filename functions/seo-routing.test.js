@@ -14,6 +14,16 @@ test("SEO routing preserves valid properties and rejects removed properties and 
   assert.equal((await run("/catalogue/page/2/")).status, 200);
   assert.equal((await run("/catalogue/page/3/")).status, 404);
 });
+
+test("unlisted direct-link routes work with noindex without entering discoverable properties", async () => {
+  const response = await onRequest({
+    request: new Request("https://property.myeviv.com/property/cmi-direct-link"),
+    env: { ASSETS: { fetch: async () => Response.json({ properties: [], unlistedProperties: ["cmi-direct-link"], cataloguePages: 1 }) } },
+    next: async () => new Response("CMI details", { headers: { "content-type": "text/html" } }),
+  });
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("x-robots-tag"), "noindex, nofollow");
+});
 test("SEO routing permanently redirects removed contact and legacy requirement routes", async () => {
   const contact = await run("/contact");
   assert.equal(contact.status, 301);
@@ -21,6 +31,8 @@ test("SEO routing permanently redirects removed contact and legacy requirement r
   assert.equal((await run("/requirements")).headers.get("location"), "https://property.myeviv.com/inquiries");
 });
 test("private HTML is excluded from indexing without changing API or static asset responses", async () => {
+  assert.equal((await run("/cmi")).status, 200);
+  assert.equal((await run("/cmi")).headers.get("x-robots-tag"), "noindex, nofollow");
   assert.equal((await run("/admin")).headers.get("x-robots-tag"), "noindex, nofollow");
   assert.equal((await run("/download/token")).headers.get("x-robots-tag"), "noindex, nofollow");
   assert.equal((await run("/api/admin/session", "application/json")).status, 200);

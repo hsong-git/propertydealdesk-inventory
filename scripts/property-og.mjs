@@ -111,6 +111,7 @@ export function renderPropertyRouteHtml(indexHtml, listing, publicRoot, { canoni
   if (canonicalOverride) meta.canonical = canonicalOverride;
   if (ogUrlOverride) meta.ogUrl = ogUrlOverride;
   let html = indexHtml;
+  html = replaceTag(html, /<meta name="robots" content="[^"]*"\s*\/?>/i, `<meta name="robots" content="${listing.visibility === "unlisted" ? "noindex, nofollow" : "index, follow"}" />`);
   html = replaceTag(html, /<title>[\s\S]*?<\/title>/i, `<title>${htmlEscape(meta.title)}</title>`);
   html = replaceTag(html, /<meta name="description" content="[^"]*"\s*\/?>/i, `<meta name="description" content="${htmlEscape(meta.description)}" />`);
   html = replaceTag(html, /<link rel="canonical" href="[^"]*"\s*\/?>/i, `<link rel="canonical" href="${htmlEscape(meta.canonical)}" />`);
@@ -155,10 +156,10 @@ async function createPropertyOgImage(listing, publicRoot, distRoot, inventoryVer
 
 export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distRoot }) {
   const inventory = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "inventory.json"), "utf8"));
-  const { items, meta } = normalizeInventoryFeed(inventory);
+  const { items, allItems, meta } = normalizeInventoryFeed(inventory);
   const indexHtml = fs.readFileSync(path.join(distRoot, "index.html"), "utf8").replace(/<!--seo-content-start-->[\s\S]*?<!--seo-content-end-->/g, "");
 
-  for (const listing of items) {
+  for (const listing of allItems) {
     const imageOverride = await createPropertyOgImage(listing, publicRoot, distRoot, meta.inventoryVersion);
     const propertyRouteDirectory = path.join(distRoot, "property", listing.slug);
     fs.mkdirSync(propertyRouteDirectory, { recursive: true });
@@ -181,7 +182,8 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
 
   // Visible HTML for visitors and crawlers before the interactive app starts.
   const pageCount = Math.max(1, Math.ceil(items.length / 12));
-  fs.writeFileSync(path.join(distRoot, "data", "seo-routes.json"), JSON.stringify({ properties: items.map((item) => item.slug), cataloguePages: pageCount }));
+  // Direct-link routes are kept separate from discoverable SEO properties.
+  fs.writeFileSync(path.join(distRoot, "data", "seo-routes.json"), JSON.stringify({ properties: items.map((item) => item.slug), unlistedProperties: allItems.filter((item) => item.visibility === "unlisted").map((item) => item.slug), cataloguePages: pageCount }));
   const cards = (listings) => listings.map((listing) => `<article class="property-card"><a class="property-photo" href="/property/${htmlEscape(listing.slug)}">${listing.photos[0] ? staticPhoto(listing.photos[0], listing.title, true) : ""}</a><div class="property-content"><h2><a href="/property/${htmlEscape(listing.slug)}">${htmlEscape(listing.title)}</a></h2><p>${htmlEscape(listing.location)}</p><strong>${htmlEscape(formatPrice(listing.price, listing.intent))}</strong><p>${htmlEscape(listing.propertyType)} · ${htmlEscape(listing.furnishing)}</p></div></article>`).join("");
   const pages = Array.from({ length: pageCount }, (_, index) => `<a href="/catalogue/page/${index + 1}/">Page ${index + 1}</a>`).join(" · ");
   const catalogueContent = (listings, heading) => `<main class="page-width home-stack"><header><a href="/">Properties</a> · <a href="/inquiries">Find a Property</a><h1>${heading}</h1><p>Properties for sale and rent in Klang Valley, listed by HS Ong, Real Estate Negotiator at The Roof Realty Sdn Bhd.</p></header><div class="property-grid">${cards(listings)}</div><nav aria-label="Catalogue pages">${pages}</nav></main>`;
@@ -205,5 +207,5 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
     .replace(/<meta name="description"[^>]*>/, '<meta name="description" content="Tell HS Ong your budget, preferred location and requirements to find a property to rent or buy in Klang Valley.">')
     .replace('<div id="root"></div>', '<div id="root"><main class="page-width content-page"><h1>Find a Property for Me</h1><p>Share your rental or purchase requirements with HS Ong to find matching properties in Klang Valley.</p><a href="/">Browse current properties</a><noscript><p>Please enable JavaScript to complete the property requirement form.</p></noscript></main></div>'));
 
-  return { count: items.length, inventoryVersion: meta.inventoryVersion, projectRoot };
+  return { count: allItems.length, inventoryVersion: meta.inventoryVersion, projectRoot };
 }

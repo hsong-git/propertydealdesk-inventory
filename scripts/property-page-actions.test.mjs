@@ -139,6 +139,17 @@ test("missing property and short-link routes show unavailable listing guidance",
   assert.match(css, /\.listing-unavailable-card/);
 });
 
+test("footer opens a separate searchable CMI page without adding CMI to the main catalogue", () => {
+  const layout = fs.readFileSync(path.join(projectRoot, "src", "components", "Layout.jsx"), "utf8");
+  const page = fs.readFileSync(path.join(projectRoot, "src", "pages", "CmiPage.jsx"), "utf8");
+  const home = fs.readFileSync(path.join(projectRoot, "src", "pages", "HomePage.jsx"), "utf8");
+  assert.match(layout, /to="\/cmi">CMI Units/);
+  assert.match(page, /listing.visibility === "unlisted"/);
+  assert.match(page, /robots="noindex, nofollow"/);
+  assert.match(page, /aria-label="Search CMI units"/);
+  assert.doesNotMatch(home, /allItems/);
+});
+
 test("Share property falls back to copying the public short URL", async () => {
   const previousNavigator = globalThis.navigator;
   const writes = [];

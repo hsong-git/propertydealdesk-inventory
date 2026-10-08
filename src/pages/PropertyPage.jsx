@@ -22,8 +22,8 @@ const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false
 export function PropertyPage() {
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
-  const { items, locationDictionary, loading, error } = useInventory();
-  const listing = items.find((item) => item.slug === slug);
+  const { items, allItems, locationDictionary, loading, error } = useInventory();
+  const listing = allItems.find((item) => item.slug === slug);
   const [activePhoto, setActivePhoto] = useState(0);
   const [copied, setCopied] = useState(false);
   const [postingCopied, setPostingCopied] = useState(false);
@@ -95,6 +95,7 @@ export function PropertyPage() {
     <main className="page-width property-page">
       <Seo
         title={seoTitle}
+        robots={listing.visibility === "unlisted" ? "noindex, nofollow" : "index, follow"}
         description={seoDescription}
         canonical={seoCanonical}
         ogTitle={`${listing.title} | ${listing.code}`}

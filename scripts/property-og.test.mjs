@@ -5,7 +5,7 @@ import path from "node:path";
 import test from "node:test";
 import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { listingShortUrl } from "../src/utils/listing.js";
-import { propertyOgDescription, renderPropertyRouteHtml, summarizePostingCopy } from "./property-og.mjs";
+import { propertyOgDescription, renderPropertyRouteHtml, summarizePostingCopy, prerenderPropertyOgRoutes } from "./property-og.mjs";
 import { renderCatalogueContent } from "./catalogue-html.mjs";
 
 const chunk = (type, data) => {
@@ -73,6 +73,42 @@ const feed = {
     posting_copy: "*WTS*\n\n*Family Home @ Bukit Tinggi*\nPrice *RM680,000*\n\n- Renovated kitchen\n- Near shops\n\nContact\n*HS ONG*\n*60163132865*",
   }],
 };
+
+test("unlisted detail and shortcut HTML retains details but opts out of indexing", () => {
+  const { items, allItems } = normalizeInventoryFeed({ ...feed, listings: [{ ...feed.listings[0], visibility: "unlisted", photos: [], cover_photo: null }] });
+  assert.equal(items.length, 0);
+  const html = renderPropertyRouteHtml(shell, allItems[0], ".");
+  assert.match(html, /name="robots" content="noindex, nofollow"/);
+  assert.match(html, /Family Home in Bukit Tinggi/);
+});
+
+test("prerender keeps CMI detail links but hides them from home, catalogue and SEO properties", async () => {
+  const runtime = path.resolve(".runtime");
+  fs.mkdirSync(runtime, { recursive: true });
+  const root = fs.mkdtempSync(path.join(runtime, "unlisted-test-"));
+  try {
+    const publicRoot = path.join(root, "public");
+    const distRoot = path.join(root, "dist");
+    fs.mkdirSync(path.join(publicRoot, "data"), { recursive: true });
+    fs.mkdirSync(path.join(distRoot, "data"), { recursive: true });
+    const hidden = { ...feed.listings[0], code: "WTL0099", slug: "cmi-unlisted-only", title: "CMI Direct Link Test", visibility: "unlisted", photos: [], cover_photo: null };
+    const visible = { ...feed.listings[0], photos: [], cover_photo: null };
+    fs.writeFileSync(path.join(publicRoot, "data", "inventory.json"), JSON.stringify({ ...feed, listings: [visible, hidden] }));
+    fs.writeFileSync(path.join(distRoot, "index.html"), shell);
+    await prerenderPropertyOgRoutes({ projectRoot: root, publicRoot, distRoot });
+    assert.doesNotMatch(fs.readFileSync(path.join(distRoot, "index.html"), "utf8"), /CMI Direct Link Test/);
+    assert.doesNotMatch(fs.readFileSync(path.join(distRoot, "catalogue", "page", "1", "index.html"), "utf8"), /CMI Direct Link Test/);
+    for (const route of [path.join("property", hidden.slug), path.join("i", hidden.code)]) {
+      const html = fs.readFileSync(path.join(distRoot, route, "index.html"), "utf8");
+      assert.match(html, /CMI Direct Link Test/);
+      assert.match(html, /noindex, nofollow/);
+    }
+    const manifest = JSON.parse(fs.readFileSync(path.join(distRoot, "data", "seo-routes.json"), "utf8"));
+    assert.deepEqual(manifest.properties, [visible.slug]);
+    assert.deepEqual(manifest.unlistedProperties, [hidden.slug]);
+    assert.equal(manifest.cataloguePages, 1);
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
 
 test("summarizes Stable posting copy without contact details", () => {
   const summary = summarizePostingCopy(feed.listings[0].posting_copy);

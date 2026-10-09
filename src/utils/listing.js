@@ -1,6 +1,9 @@
-import { SITE_ORIGIN } from "./seo.js";
-
 const AGENT_TOOLS_ORIGIN = "https://agenttools.myeviv.com";
+
+// Sharing follows the inventory classification, not the catalogue being browsed.
+export const listingPublicOrigin = (listing) => listing.visibility === "unlisted"
+  ? "https://scmi.myeviv.com"
+  : "https://property.myeviv.com";
 
 export const formatPrice = (value, intent) => {
   if (!value) return "Price on request";
@@ -61,11 +64,11 @@ export const photoDownloadRequestText = (listing, displayName) => [
 
 export const whatsappUrl = (number, message) => `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 
-export const listingDetailUrl = (listing, origin = SITE_ORIGIN) => `${origin}/property/${listing.slug}`;
+export const listingDetailUrl = (listing, origin = listingPublicOrigin(listing)) => `${origin}/property/${listing.slug}`;
 
 const supplyIntents = new Set(["WTS", "WTL"]);
 
-export const listingShortUrl = (listing, origin = SITE_ORIGIN) => `${origin}/i/${String(listing.code || "").toUpperCase()}`;
+export const listingShortUrl = (listing, origin = listingPublicOrigin(listing)) => `${origin}/i/${String(listing.code || "").toUpperCase()}`;
 
 export const postingFootnoteUrl = (listing) => {
   const intent = String(listing.intent || "").toUpperCase();
@@ -89,10 +92,12 @@ export const withPostingShortLinkFootnote = (text, listing) => {
 };
 
 export const postingText = (listing, profile) => {
+  const baseCode = String(listing.code || "").replace(/^(?:CMI-)+/, "");
+  const displayCode = `${listing.visibility === "unlisted" ? "CMI-" : ""}${baseCode}`;
   if (listing.postingCopy) {
-    const escapedCode = String(listing.code || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const copy = listing.displayCode && listing.displayCode !== listing.code && escapedCode
-      ? listing.postingCopy.replace(new RegExp(`(?<![A-Za-z0-9_/-])${escapedCode}(?![A-Za-z0-9_-])`, "g"), listing.displayCode)
+    const escapedCode = baseCode.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const copy = escapedCode
+      ? listing.postingCopy.replace(new RegExp(`(?<![A-Za-z0-9_/-])(?:CMI-)*${escapedCode}(?![A-Za-z0-9_-])`, "g"), displayCode)
       : listing.postingCopy;
     return withPostingShortLinkFootnote(copy, listing);
   }
@@ -109,7 +114,7 @@ export const postingText = (listing, profile) => {
   ].filter(Boolean);
   const features = (listing.features || []).filter(Boolean);
   return withPostingShortLinkFootnote([
-    `${listing.intent} | ${listing.displayCode || listing.code}`,
+    `${listing.intent} | ${displayCode}`,
     listing.title,
     `Location: ${listing.location}`,
     `Price: ${formatPrice(listing.price, listing.intent)}`,

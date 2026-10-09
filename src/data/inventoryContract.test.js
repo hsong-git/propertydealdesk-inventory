@@ -72,6 +72,16 @@ test("normalizes the Stable snake_case contract into the browser allowlist", () 
   assert.equal("database_id" in items[0], false);
 });
 
+test("SMI posting removes stale CMI prefixes and uses the property domain", () => {
+  const { items } = normalizeInventoryFeed(productionFeed([{ ...stableListing, visibility: "listed",
+    posting_copy: "*CMI-WTS1004*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTS1004" }]));
+  assert.equal(items[0].displayCode, "WTS1004");
+  const copy = postingText(items[0], {});
+  assert.match(copy, /\*WTS1004\*/);
+  assert.doesNotMatch(copy, /CMI-WTS1004|scmi\.myeviv/);
+  assert.match(copy, /https:\/\/property\.myeviv\.com\/i\/WTS1004/);
+});
+
 test("treats listings array membership as authoritative and accepts an empty feed", () => {
   const { items } = normalizeInventoryFeed(productionFeed([]));
   assert.deepEqual(items, []);

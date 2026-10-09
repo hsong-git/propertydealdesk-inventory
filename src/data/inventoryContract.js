@@ -71,7 +71,7 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
   return {
     publicId: cleanText(firstValue(raw.publicId, raw.public_id, code)),
     code,
-    displayCode: raw.visibility === "unlisted" && !code.startsWith("CMI-") ? `CMI-${code}` : code,
+    displayCode: `${raw.visibility === "unlisted" ? "CMI-" : ""}${code.replace(/^(?:CMI-)+/, "")}`,
     cmiAgentName: raw.visibility === "unlisted" ? cleanNullableText(raw.cmi_agent_name) : null,
     visibility: raw.visibility === "unlisted" ? "unlisted" : "listed",
     slug,

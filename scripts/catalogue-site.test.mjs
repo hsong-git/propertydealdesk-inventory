@@ -6,7 +6,7 @@ function buildMode(mode) {
   return JSON.parse(execFileSync(process.execPath, ["--input-type=module", "-e", `
     import { normalizeInventoryFeed } from './src/data/inventoryContract.js';
     import { SITE_ORIGIN } from './src/utils/seo.js';
-    import { postingText } from './src/utils/listing.js';
+    import { postingText, listingShortUrl, listingDetailUrl } from './src/utils/listing.js';
     import { renderPropertyRouteHtml } from './scripts/property-og.mjs';
     import { renderCatalogueContent } from './scripts/catalogue-html.mjs';
     const base = { intent:'WTL', title:'Unit', location:'Klang', availability:'Available', photos:[] };
@@ -17,6 +17,8 @@ function buildMode(mode) {
     const {items,allItems} = normalizeInventoryFeed(feed);
     const cmi=allItems[1];
     console.log(JSON.stringify({origin:SITE_ORIGIN,codes:items.map(x=>x.code),
+      smiShare:listingShortUrl(allItems[0]),smiDetail:listingDetailUrl(allItems[0]),
+      cmiShare:listingShortUrl(cmi),smiPosting:postingText(allItems[0],{}),
       posting:postingText({...cmi,postingCopy:'*WTL0002*'},{}),
       html:renderPropertyRouteHtml('<html><head></head><body><div id="root"></div></body></html>',cmi,'.'),
       catalogue:renderCatalogueContent(items,{heading:'Inventory'})}));
@@ -27,6 +29,9 @@ test("SCMI build combines only exported SMI/CMI and keeps links on its own origi
   const result = buildMode("scmi");
   assert.equal(result.origin, "https://scmi.myeviv.com");
   assert.deepEqual(result.codes, ["WTL0001", "WTL0002"]);
+  assert.equal(result.smiShare, "https://property.myeviv.com/i/WTL0001");
+  assert.equal(result.smiDetail, "https://property.myeviv.com/property/smi-unit");
+  assert.match(result.smiPosting, /https:\/\/property\.myeviv\.com\/i\/WTL0001/);
   assert.match(result.posting, /CMI-WTL0002/);
   assert.match(result.posting, /https:\/\/scmi\.myeviv\.com\/i\/WTL0002/);
   assert.match(result.html, /href="\/">Back to Catalogue/);
@@ -40,6 +45,8 @@ test("property build remains SMI-only, with existing unlisted direct links", () 
   const result = buildMode("");
   assert.equal(result.origin, "https://property.myeviv.com");
   assert.deepEqual(result.codes, ["WTL0001"]);
+  assert.equal(result.smiShare, "https://property.myeviv.com/i/WTL0001");
+  assert.equal(result.cmiShare, "https://scmi.myeviv.com/i/WTL0002");
   assert.match(result.html, /noindex, nofollow/);
   assert.doesNotMatch(result.catalogue, /CMI Units/);
 });

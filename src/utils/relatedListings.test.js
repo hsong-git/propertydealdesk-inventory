@@ -27,6 +27,14 @@ const listing = (overrides) => ({
   ...overrides,
 });
 
+test("related listing candidates include both SMI and CMI without classification bias", () => {
+  const smi = listing({ code: "WTS0090", visibility: "listed" });
+  const cmi = listing({ code: "WTS0091", visibility: "unlisted" });
+  const related = getRelatedListings(current, [current, smi, cmi], 8);
+  assert.deepEqual(related.map((item) => item.code), ["WTS0090", "WTS0091"]);
+  assert.equal(relatedListingScore(current, smi), relatedListingScore(current, cmi));
+});
+
 test("scores related listings with intent ahead of location, type and price", () => {
   const closest = listing({ code: "WTS0002" });
   const differentIntentPerfectMatch = listing({ code: "WTL0003", intent: "WTL" });

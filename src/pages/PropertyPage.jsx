@@ -14,6 +14,7 @@ import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
 import { photoSwipeDirection } from "../utils/photoSwipe";
 import { getRelatedListings } from "../utils/relatedListings";
 import { RelatedListings } from "../components/RelatedListings";
+import { InventoryBadge } from "../components/InventoryBadge";
 import { rememberListingView } from "../components/RecentViewingPill";
 import { PHOTO_SELECTION_LIMIT } from "../utils/photoShare";
 import { PortraitModal } from "../components/PortraitModal";
@@ -78,7 +79,7 @@ export function PropertyPage() {
     setPostingCopied(true);
     window.setTimeout(() => setPostingCopied(false), 1800);
   };
-  const relatedListings = getRelatedListings(listing, items, 8, locationDictionary);
+  const relatedListings = getRelatedListings(listing, COMBINED_CATALOGUE ? allItems : items, 8, locationDictionary);
   const firstPhotoSelection = listing.photos.slice(0, PHOTO_SELECTION_LIMIT);
   const firstPhotosSelected = firstPhotoSelection.length > 0 && firstPhotoSelection.every((photo) => selectedPhotos.includes(photo));
   const selectFirstPhotos = () => setSelectedPhotos((current) => firstPhotosSelected ? current.filter((photo) => !firstPhotoSelection.includes(photo)) : firstPhotoSelection);
@@ -116,7 +117,7 @@ export function PropertyPage() {
             {photoSharingEnabled && listing.photos.length > 0 ? <><div className="gallery-thumbnails">{listing.photos.map((photo, index) => { const selected = selectedPhotos.includes(photo); const blocked = selectedPhotos.length >= PHOTO_SELECTION_LIMIT && !selected; return <div className="gallery-thumbnail-choice" key={photo}><button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button><button type="button" disabled={blocked} className={`photo-select-toggle${selected ? " selected" : ""}${blocked ? " is-blocked" : ""}`} aria-label={`${selected ? "Deselect" : "Select"} photo ${index + 1}`} aria-pressed={selected} onClick={() => setSelectedPhotos((current) => selected ? current.filter((item) => item !== photo) : current.length < PHOTO_SELECTION_LIMIT ? [...current, photo] : current)}>{selected ? <Check size={14} /> : <span />}</button></div>; })}</div><button className="select-first-photos" type="button" onClick={selectFirstPhotos} disabled={!listing.photos.length} aria-pressed={firstPhotosSelected}>{firstPhotosSelected ? "Deselect first " : "Select first "}{Math.min(PHOTO_SELECTION_LIMIT, listing.photos.length)}</button><ShareSelectedPhotosButton listing={listing} selectedPhotos={selectedPhotos} /></> : listing.photos.length > 1 ? <div className="gallery-thumbnails">{listing.photos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
           </section>
           <section className="detail-title-block">
-            <div className="property-reference"><span>{listing.displayCode || listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
+            <div className="property-reference"><span className="property-code"><InventoryBadge listing={listing} />{listing.displayCode || listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
             <h1>{listing.title}</h1><p className="property-location"><MapPin size={17} /> {listing.location}</p><div className="detail-price-row"><strong className={`detail-price ${displayIntent === "WTL" && otherIntent === "WTS" ? "detail-price-rental" : ""} ${displayIntent === "WTS" ? "detail-price-sale" : ""}`}>{formatPrice(displayPrice, displayIntent)}</strong>{listing.cmiAgentName ? <small className="detail-cmi-agent">Agent: {listing.cmiAgentName}</small> : null}</div>{otherIntent && otherPrice != null ? <p className={`detail-alternate-offer ${displayIntent === "WTS" && otherIntent === "WTL" ? "detail-rental-offer" : ""}`}>Also available to {otherIntent === "WTL" ? "rent" : "buy"}: <strong>{formatPrice(otherPrice, otherIntent)}</strong></p> : null}
           </section>
           <section className="detail-section"><h2>Property overview</h2><p>{listing.description}</p><div className="detail-facts">{detailItems.map(([Icon, label, value]) => <div key={label}><Icon size={19} /><span>{label}</span><strong>{value}</strong></div>)}</div></section>

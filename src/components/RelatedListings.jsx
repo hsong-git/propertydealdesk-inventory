@@ -2,6 +2,7 @@ import { Building2, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatPrice } from "../utils/listing";
 import { PublicPropertyImage } from "./PublicPropertyImage";
+import { InventoryBadge } from "./InventoryBadge";
 
 function RelatedListingCard({ listing }) {
   return (
@@ -13,7 +14,7 @@ function RelatedListingCard({ listing }) {
         <span className={`intent intent-${listing.intent.toLowerCase()}`}>{listing.intent}</span>
       </Link>
       <div className="related-listing-copy">
-        <div className="property-reference"><span>{listing.displayCode || listing.code}</span></div>
+        <div className="property-reference"><span className="property-code"><InventoryBadge listing={listing} />{listing.displayCode || listing.code}</span></div>
         <h3><Link to={`/property/${listing.slug}`}>{listing.title}</Link></h3>
         <p className="property-location"><MapPin size={14} /> {listing.location}</p>
         <strong>{formatPrice(listing.price, listing.intent)}</strong>

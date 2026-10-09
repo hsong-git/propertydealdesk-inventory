@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
 import { PublicPropertyImage } from "./PublicPropertyImage";
+import { InventoryBadge } from "./InventoryBadge";
 import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing, whatsappUrl } from "../utils/listing";
 import { formatRoomSummary } from "../data/requirementContract";
 
@@ -39,7 +40,7 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
         {listing.featured ? <span className="featured-badge">Featured</span> : null}
       </Link>
       <div className="property-content">
-        <div className="property-reference"><span>{listing.displayCode || listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
+        <div className="property-reference"><span className="property-code"><InventoryBadge listing={listing} />{listing.displayCode || listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
         <h3><Link to={propertyHref}>{listing.title}</Link></h3>
         <p className="property-location"><MapPin size={15} /> {listing.location}</p>
         <div className="property-price-row">

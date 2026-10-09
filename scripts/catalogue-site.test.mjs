@@ -38,6 +38,8 @@ test("SCMI build combines only exported SMI/CMI and keeps links on its own origi
   assert.match(result.html, /Agent: Bee Ang/);
   assert.match(result.html, /https:\/\/scmi\.myeviv\.com\/property\/cmi-unit/);
   assert.doesNotMatch(result.catalogue, /CMI Units/);
+  assert.match(result.catalogue, /inventory-badge-smi">SMI/);
+  assert.match(result.catalogue, /inventory-badge-cmi">CMI/);
   assert.match(result.catalogue, /https:\/\/property\.myeviv\.com\/admin\/inquiries/);
 });
 

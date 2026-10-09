@@ -19,6 +19,7 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
         <button className="button secondary mobile-filter-button" type="button" onClick={() => setMobileOpen(true)}><SlidersHorizontal size={18} /> Filters {activeCount ? <b>{activeCount}</b> : null}</button>
         <label className="sort-field"><span>Sort</span><select value={filters.sort} onChange={(event) => update("sort", event.target.value)}><option value="recent">Recently listed</option><option value="newest">Newest</option><option value="price-asc">Price low to high</option><option value="price-desc">Price high to low</option><option value="title">Property title</option></select><ChevronDown size={16} /></label>
       </div>
+      <div className="primary-filter-toggles">
       <fieldset className="filter-toggle-field persistent-intent-filter">
         <legend>Intent</legend>
         <div className="catalogue-mode-toggle intent-toggle" aria-label="Intent">
@@ -35,14 +36,15 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
           ))}
         </div>
       </fieldset>
-      {COMBINED_CATALOGUE ? <fieldset className="filter-toggle-field persistent-intent-filter">
+      {COMBINED_CATALOGUE ? <fieldset className="filter-toggle-field persistent-intent-filter inventory-classification-field">
         <legend>Inventory</legend>
-        <div className="catalogue-mode-toggle" aria-label="Inventory classification">
+        <div className="catalogue-mode-toggle inventory-classification-toggle" aria-label="Inventory classification">
           {[{ key: "", label: "All" }, { key: "smi", label: "SMI" }, { key: "cmi", label: "CMI" }].map((option) => (
             <button key={option.label} type="button" className={(filters.classification || "") === option.key ? "active" : ""} aria-pressed={(filters.classification || "") === option.key} onClick={() => update("classification", option.key)}>{option.label}</button>
           ))}
         </div>
       </fieldset> : null}
+      </div>
       <div className={`advanced-filter-shell ${mobileOpen ? "mobile-open" : ""}`}>
         <div className="filter-drawer-heading"><strong>Filter properties</strong><button className="icon-button" type="button" onClick={() => setMobileOpen(false)} aria-label="Close filters"><X size={20} /></button></div>
         <div className="filter-grid">

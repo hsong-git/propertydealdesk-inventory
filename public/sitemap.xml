@@ -133,12 +133,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://property.myeviv.com/property/wtl0071-brand-new-3r2b-condo-d-sini-residences-setia-alam-d-sini-residences-setia-alam</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://property.myeviv.com/property/wtl0072-3r2b-condo-gravit8-adria-residences-klang-gravit8-adria-residences-klang</loc>
     <lastmod>2026-10-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -158,7 +152,7 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wtl0079-1-1r-1b-fully-furnished-unit-trio-by-setia-trio-bandar-bukit-tinggi-klang</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -195,6 +189,12 @@
   <url>
     <loc>https://property.myeviv.com/property/wtl0095-3r2b-condo-seri-mutiara-apartment-setia-alam-seri-mutiara-apartment-setia-alam</loc>
     <lastmod>2026-10-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://property.myeviv.com/property/wtl0096-2r2b-fully-furnishing-condo-maple-residence-maple-residence-bandar-bestari-klang</loc>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -1,5 +1,11 @@
 const AGENT_TOOLS_ORIGIN = "https://agenttools.myeviv.com";
 
+export const normalizeInventoryFilter = (value) => ["smi", "cmi"].includes(value) ? value : "";
+export const matchesInventoryFilter = (listing, value) => {
+  const filter = normalizeInventoryFilter(value);
+  return !filter || (listing.visibility === "unlisted" ? "cmi" : "smi") === filter;
+};
+
 // Sharing follows the inventory classification, not the catalogue being browsed.
 export const listingPublicOrigin = (listing) => listing.visibility === "unlisted"
   ? "https://scmi.myeviv.com"

@@ -1,4 +1,5 @@
 import { Check, ChevronDown, RotateCcw, Search, Share2, SlidersHorizontal, X } from "lucide-react";
+import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
 
 const intentOptions = [
   { key: "WTL", label: "WTL" },
@@ -34,6 +35,14 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
           ))}
         </div>
       </fieldset>
+      {COMBINED_CATALOGUE ? <fieldset className="filter-toggle-field persistent-intent-filter">
+        <legend>Inventory</legend>
+        <div className="catalogue-mode-toggle" aria-label="Inventory classification">
+          {[{ key: "", label: "All" }, { key: "smi", label: "SMI" }, { key: "cmi", label: "CMI" }].map((option) => (
+            <button key={option.label} type="button" className={(filters.classification || "") === option.key ? "active" : ""} aria-pressed={(filters.classification || "") === option.key} onClick={() => update("classification", option.key)}>{option.label}</button>
+          ))}
+        </div>
+      </fieldset> : null}
       <div className={`advanced-filter-shell ${mobileOpen ? "mobile-open" : ""}`}>
         <div className="filter-drawer-heading"><strong>Filter properties</strong><button className="icon-button" type="button" onClick={() => setMobileOpen(false)} aria-label="Close filters"><X size={20} /></button></div>
         <div className="filter-grid">

@@ -134,7 +134,7 @@ main { flex: 1; }
 .property-code { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px; }
 .inventory-badge { display: inline-flex; align-items: center; padding: 3px 6px; border: 1px solid; border-radius: var(--radius-pill); font-size: 10px; font-weight: 850; line-height: 1.2; letter-spacing: .03em; }
 .inventory-badge-smi { color: var(--color-primary); background: var(--color-primary-soft); border-color: #a8d9ca; }
-.inventory-badge-cmi { color: #2b59a1; background: #eaf1ff; border-color: #bdd0ef; }
+.inventory-badge-cmi { color: #854000; background: #fff1a8; border-color: #e88322; }
 .availability { padding: 4px 7px; border-radius: var(--radius-pill); color: var(--color-text-muted); background: var(--color-surface-muted); font-size: 9px; letter-spacing: 0; }
 .availability-available { color: var(--color-primary); background: var(--color-primary-soft); }
 .property-content h3 { margin: 0; font-size: 16px; line-height: 1.35; letter-spacing: -.01em; }

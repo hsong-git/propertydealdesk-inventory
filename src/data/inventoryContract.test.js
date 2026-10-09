@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { normalizeInventoryFeed } from "./inventoryContract.js";
-import { compareRecentlyUpdated, photoDownloadRequestText, postingFootnoteUrl, postingText } from "../utils/listing.js";
+import { compareRecentlyUpdated, photoDownloadRequestText, postingFootnoteUrl, postingText, matchesInventoryFilter, normalizeInventoryFilter } from "../utils/listing.js";
 
 const productionFeed = (listings) => ({
   schema: "propertydealdesk-public-inventory",
@@ -30,6 +30,18 @@ const stableListing = {
   cover_photo: "/inventory/WTS1004/cover.webp",
   photos: ["/inventory/WTS1004/cover.webp", "/inventory/WTS1004/living.webp"],
 };
+
+test("inventory toggle filters All, SMI and CMI independently of property intent", () => {
+  const smi = { ...stableListing, visibility: "listed" };
+  const cmi = { ...stableListing, visibility: "unlisted" };
+  assert.equal(matchesInventoryFilter(smi, ""), true);
+  assert.equal(matchesInventoryFilter(cmi, ""), true);
+  assert.equal(matchesInventoryFilter(smi, "smi"), true);
+  assert.equal(matchesInventoryFilter(cmi, "smi"), false);
+  assert.equal(matchesInventoryFilter(cmi, "cmi"), true);
+  assert.equal(matchesInventoryFilter(smi, "cmi"), false);
+  assert.equal(normalizeInventoryFilter("invalid"), "");
+});
 
 test("unlisted CMI remains available by direct link but not browse, search or suggestions", () => {
   const hidden = { ...stableListing, code: "WTL0099", slug: "cmi-direct-link", visibility: "unlisted", cmi_agent_name: "Bee Ang", internal_note: "private" };

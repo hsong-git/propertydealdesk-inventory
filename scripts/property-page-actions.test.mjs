@@ -95,7 +95,11 @@ test("intent selection remains outside the collapsible mobile filter drawer", ()
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
   assert.ok(source.indexOf('className="filter-toggle-field persistent-intent-filter"') < source.indexOf("advanced-filter-shell"));
   assert.equal((source.match(/<legend>Intent<\/legend>/g) || []).length, 1);
-  assert.match(css, /\.persistent-intent-filter \{[^}]*width: min\(100%,376px\);/);
+  assert.match(css, /\.persistent-intent-filter \{[^}]*width: min\(100%,240px\);/);
+  assert.ok(source.indexOf('className="primary-filter-toggles"') < source.indexOf("advanced-filter-shell"));
+  assert.match(css, /\.primary-filter-toggles \{[^}]*display: flex;[^}]*flex-wrap: wrap;/);
+  assert.match(css, /\.inventory-classification-field \{[^}]*width: min\(100%,264px\);/);
+  assert.match(css, /\.inventory-classification-toggle button \{[^}]*flex: 1;[^}]*text-align: center;/);
 });
 
 test("homepage profile keeps a compact mobile action row", () => {

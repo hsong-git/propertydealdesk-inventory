@@ -15,6 +15,17 @@ test("location options normalize duplicated raw Klang variants into one canonica
   assert.equal(options.includes("Regency Condominium, Klang"), false);
 });
 
+test("location options sort canonical and fallback labels together alphabetically", () => {
+  const dictionary = [
+    { label: "Zebra Heights", aliases: ["zebra heights"] },
+    { label: "Bandar Botanic", aliases: ["bandar botanic"] },
+    { label: "Klang", aliases: ["klang"], broad: true },
+  ];
+  const listings = ["Zebra Heights", "Klang", "Bandar Botanic", "Alpha Gardens", "Klang"]
+    .map((location) => ({ location }));
+  assert.deepEqual(buildLocationOptions(listings, dictionary), ["Alpha Gardens", "Bandar Botanic", "Klang", "Zebra Heights"]);
+});
+
 test("canonical location selection matches aliases and combined raw locations", () => {
   const listing = {
     title: "Condominium Apartment at Huni Eco Ardence",

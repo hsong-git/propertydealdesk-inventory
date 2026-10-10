@@ -99,10 +99,7 @@ export function buildLocationOptions(listings, dictionary = FALLBACK_AREAS) {
   for (const listing of listings || []) {
     for (const location of canonicalLocationsForListing(listing, areas)) available.add(location);
   }
-  return [
-    ...areas.map((area) => area.label).filter((label) => available.has(label)),
-    ...[...available].filter((label) => !areas.some((area) => area.label === label)).sort((a, b) => a.localeCompare(b)),
-  ];
+  return [...available].sort((a, b) => a.localeCompare(b, "en", { sensitivity: "base", numeric: true }));
 }
 
 export function matchesLocationFilter(listing, selectedLocation, dictionary = FALLBACK_AREAS) {

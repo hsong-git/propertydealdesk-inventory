@@ -1,5 +1,12 @@
 const AGENT_TOOLS_ORIGIN = "https://agenttools.myeviv.com";
 
+export function tenantEligibilityDescription(listing) {
+  const copy = String(listing.postingCopy || "");
+  if (listing.acceptAllRaces === false || (listing.acceptAllRaces == null && /Tenant eligibility\*?:\s*(?:Selective tenant profile requirements\.|Prefer locals and selective tenant profile only\.)/i.test(copy))) return "Prefer locals and selective tenant profile only.";
+  if (listing.acceptAllRaces === true || (listing.acceptAllRaces == null && /Tenant eligibility\*?:\s*All suitable tenants are welcome\./i.test(copy))) return "All suitable tenants are welcome.";
+  return "Subject to the owner’s review of the tenant profile.";
+}
+
 export const normalizeInventoryFilter = (value) => ["smi", "cmi"].includes(value) ? value : "";
 export const matchesInventoryFilter = (listing, value) => {
   const filter = normalizeInventoryFilter(value);

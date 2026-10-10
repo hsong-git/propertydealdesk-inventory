@@ -87,6 +87,7 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
     builtUpSqFt: cleanInteger(firstValue(raw.builtUpSqFt, raw.built_up_sqft, raw.unit_size)),
     landSize: cleanNullableText(firstValue(raw.landSize, raw.land_size)),
     furnishing: cleanText(raw.furnishing, "Not specified"),
+    acceptAllRaces: typeof raw.accept_all_races === "boolean" ? raw.accept_all_races : null,
     facing: cleanNullableText(firstValue(raw.facing, raw.facing_direction)),
     unitType: cleanNullableText(firstValue(raw.unitType, raw.unit_type)),
     availability,

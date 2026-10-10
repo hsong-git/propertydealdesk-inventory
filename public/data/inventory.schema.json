@@ -189,7 +189,8 @@
           "type": "array",
           "items": { "$ref": "#/$defs/mockPhotoPath" }
         },
-        "description": { "type": "string" },
+          "description": { "type": "string" },
+          "accept_all_races": { "type": ["boolean", "null"] },
         "features": { "$ref": "#/$defs/publicStringList" },
         "amenities": { "$ref": "#/$defs/publicStringList" },
         "whyThisProperty": { "$ref": "#/$defs/publicStringList" }

@@ -412,6 +412,10 @@ main { flex: 1; }
 .detail-rental-offer { margin-top: 10px; font-size: 16px; }
 .detail-rental-offer strong { color: var(--color-primary); }
 .detail-section { padding: 22px; }
+.tenant-eligibility-section { border: 1px solid #dfbd65; background: #fff9e8; }
+.tenant-eligibility-section .eyebrow { display: block; margin-bottom: 8px; }
+.tenant-eligibility-section > p { color: var(--color-text); font-weight: 750; }
+.tenant-eligibility-section > small { display: block; margin-top: 10px; color: var(--color-text-muted); line-height: 1.6; }
 .detail-section h2 { margin: 0 0 12px; font-size: 19px; }
 .detail-section > p { margin: 0; color: var(--color-text-muted); font-size: 14px; line-height: 1.7; }
 .detail-facts { margin-top: 20px; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }

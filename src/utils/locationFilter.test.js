@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { matchesSelection, normalizeMultiFilters, readFilterParams, selectedValues, writeFilterParams } from "./multiSelect.js";
 import { buildLocationOptions, canonicalLocationsForListing, matchesKeywordSearch, matchesLocationFilter, normalizeLocationDictionary } from "./locationFilter.js";
 
 test("location options normalize duplicated raw Klang variants into one canonical option", () => {
@@ -83,4 +84,39 @@ test("invalid or absent dictionary falls back to built-in public aliases", () =>
   };
 
   assert.deepEqual(canonicalLocationsForListing(listing, { schema: "wrong", locations: [] }), ["Setia Alam"]);
+});
+test("multi-select filters accept legacy values and match any selected value", () => {
+  assert.deepEqual(selectedValues("Full"), ["Full"]);
+  assert.deepEqual(selectedValues(["Full", "Full", " Partial ", "", null]), ["Full", "Partial"]);
+  assert.equal(matchesSelection("Basic", []), true);
+  assert.equal(matchesSelection("Full", ["Full", "Partial"]), true);
+  assert.equal(matchesSelection("Basic", ["Full", "Partial"]), false);
+  assert.deepEqual(normalizeMultiFilters({ propertyType: "Terrace House", location: "Klang", furnishing: "" }), { propertyType: ["Terrace House"], location: ["Klang"], furnishing: [] });
+});
+
+test("shared searches round-trip multiple values without splitting location commas", () => {
+  const keys = { propertyType: "type", location: "location", furnishing: "furnishing", intent: "intent" };
+  const defaults = { propertyType: [], location: [], furnishing: [], intent: "WTL" };
+  const filters = { ...defaults, propertyType: ["Terrace House", "Condominium/Apartment"], location: ["Klang, Selangor", "Setia Alam"], furnishing: ["Full", "Partial"], intent: "WTS" };
+  const params = writeFilterParams(filters, keys, defaults);
+  assert.deepEqual(params.getAll("location"), filters.location);
+  assert.deepEqual(readFilterParams(new URLSearchParams(params.toString()), keys, defaults), filters);
+  assert.equal(writeFilterParams(defaults, keys, defaults).toString(), "");
+  const legacy = readFilterParams(new URLSearchParams("type=Terrace+House&location=Klang&furnishing=Full"), keys, defaults);
+  assert.deepEqual(legacy, { ...defaults, propertyType: ["Terrace House"], location: ["Klang"], furnishing: ["Full"] });
+});
+
+test("multiple fields narrow results together and location selections retain alias matching", () => {
+  const listings = [
+    { propertyType: "Terrace House", furnishing: "Full", location: "Setia Alam, Shah Alam" },
+    { propertyType: "Condominium/Apartment", furnishing: "Partial", location: "Klang, Selangor" },
+    { propertyType: "Office Lot", furnishing: "Full", location: "Klang" },
+    { propertyType: "Terrace House", furnishing: "Basic", location: "Klang" },
+  ];
+  const types = ["Terrace House", "Condominium/Apartment"];
+  const locations = ["Klang", "Setia Alam"];
+  const furnishing = ["Full", "Partial"];
+  assert.deepEqual(listings.filter((listing) => matchesSelection(listing.propertyType, types)
+    && locations.some((location) => matchesLocationFilter(listing, location))
+    && matchesSelection(listing.furnishing, furnishing)), listings.slice(0, 2));
 });

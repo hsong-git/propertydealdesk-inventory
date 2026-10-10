@@ -10,11 +10,12 @@ import { useInventory } from "../hooks";
 import { compareRecentlyUpdated, formatDateTime, matchesInventoryFilter, normalizeInventoryFilter } from "../utils/listing";
 import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
 import { buildLocationOptions, matchesKeywordSearch, matchesLocationFilter } from "../utils/locationFilter";
+import { matchesSelection, normalizeMultiFilters, readFilterParams, selectedValues, writeFilterParams } from "../utils/multiSelect.js";
 
 const defaultIntent = "WTL";
 const INITIAL_VISIBLE_COUNT = 12;
 const LOAD_MORE_COUNT = 6;
-const defaults = { keyword: "", intent: defaultIntent, propertyType: "", location: "", minPrice: "", maxPrice: "", bedrooms: "", furnishing: "", sort: "recent", classification: "" };
+const defaults = { keyword: "", intent: defaultIntent, propertyType: [], location: [], minPrice: "", maxPrice: "", bedrooms: "", furnishing: [], sort: "recent", classification: "" };
 const CATALOGUE_STATE_KEY = "pdd-catalogue-state";
 const CATALOGUE_SCROLL_KEY = "pdd-catalogue-scroll-y";
 const shareableFilterKeys = {
@@ -35,10 +36,7 @@ function readSharedCatalogueState() {
   const params = new URLSearchParams(window.location.search);
   const hasSharedFilters = Object.values(shareableFilterKeys).some((key) => params.has(key)) || params.has("view");
   if (!hasSharedFilters) return null;
-  const filters = { ...defaults };
-  Object.entries(shareableFilterKeys).forEach(([filterKey, queryKey]) => {
-    if (params.has(queryKey)) filters[filterKey] = params.get(queryKey) || "";
-  });
+  const filters = readFilterParams(params, shareableFilterKeys, defaults);
   filters.classification = COMBINED_CATALOGUE ? normalizeInventoryFilter(filters.classification) : "";
   return {
     filters: { ...defaults, ...filters },
@@ -48,12 +46,7 @@ function readSharedCatalogueState() {
 }
 
 function catalogueSearchParams(filters, catalogueMode) {
-  const params = new URLSearchParams();
-  Object.entries(shareableFilterKeys).forEach(([filterKey, queryKey]) => {
-    const value = filters[filterKey];
-    const isDefault = value === defaults[filterKey];
-    if (value && !isDefault) params.set(queryKey, value);
-  });
+  const params = writeFilterParams(filters, shareableFilterKeys, defaults);
   if (catalogueMode === "featured") params.set("view", catalogueMode);
   return params;
 }
@@ -73,7 +66,7 @@ function readCatalogueState() {
   try {
     const saved = JSON.parse(window.sessionStorage.getItem(CATALOGUE_STATE_KEY) || "null");
     return {
-      filters: saved?.filters && typeof saved.filters === "object" ? { ...defaults, ...saved.filters, classification: COMBINED_CATALOGUE ? normalizeInventoryFilter(saved.filters.classification) : "" } : defaults,
+      filters: saved?.filters && typeof saved.filters === "object" ? normalizeMultiFilters({ ...defaults, ...saved.filters, classification: COMBINED_CATALOGUE ? normalizeInventoryFilter(saved.filters.classification) : "" }) : defaults,
       catalogueMode: saved?.catalogueMode === "featured" ? "featured" : "all",
       visible: Number.isInteger(saved?.visible) && saved.visible >= INITIAL_VISIBLE_COUNT ? saved.visible : INITIAL_VISIBLE_COUNT,
     };
@@ -90,7 +83,7 @@ export function HomePage() {
   const [agentToolsPreviewOpen, setAgentToolsPreviewOpen] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
   const loadMoreRef = useRef(null);
-  const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && key !== "intent" && value).length
+  const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && key !== "intent" && (Array.isArray(value) ? value.length : value)).length
     + (filters.intent !== defaultIntent ? 1 : 0)
     + (catalogueMode === "featured" ? 1 : 0);
   const options = useMemo(() => ({
@@ -105,12 +98,12 @@ export function HomePage() {
         && matchesInventoryFilter(item, filters.classification)
         && matchesKeywordSearch(item, filters.keyword)
         && Boolean(selectedOffer)
-        && (!filters.propertyType || item.propertyType === filters.propertyType)
-        && matchesLocationFilter(item, filters.location, locationDictionary)
+        && matchesSelection(item.propertyType, filters.propertyType)
+        && (!selectedValues(filters.location).length || selectedValues(filters.location).some((location) => matchesLocationFilter(item, location, locationDictionary)))
         && (!filters.minPrice || selectedOffer.price >= Number(filters.minPrice))
         && (!filters.maxPrice || selectedOffer.price <= Number(filters.maxPrice))
         && (!filters.bedrooms || Number(item.bedrooms || 0) >= Number(filters.bedrooms))
-        && (!filters.furnishing || item.furnishing === filters.furnishing);
+        && matchesSelection(item.furnishing, filters.furnishing);
     });
     return [...filtered].sort((a, b) => {
       if (filters.sort === "newest") return new Date(b.createdAt) - new Date(a.createdAt);

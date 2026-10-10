@@ -95,6 +95,23 @@ main { flex: 1; }
 .advanced-filter-shell { padding: 12px; border-top: 1px solid var(--color-border); }
 .filter-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
 .filter-grid label { display: grid; gap: 5px; color: var(--color-text-muted); font-size: 11px; font-weight: 800; }
+.multi-select-filter { min-width: 0; display: grid; align-content: start; gap: 5px; }
+.multi-select-label { color: var(--color-text-muted); font-size: 11px; font-weight: 800; }
+.multi-select-dropdown { position: relative; min-width: 0; }
+.multi-select-dropdown summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 40px; padding: 0 10px; border: 1px solid var(--color-border); border-radius: var(--radius-small); color: var(--color-text); background: #fff; font-size: 12px; cursor: pointer; list-style: none; }
+.multi-select-dropdown summary::-webkit-details-marker { display: none; }
+.multi-select-dropdown summary span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.multi-select-dropdown summary svg { flex-shrink: 0; }
+.multi-select-dropdown[open] summary, .multi-select-dropdown summary:focus-visible { border-color: var(--color-primary); outline: 0; box-shadow: 0 0 0 3px rgba(17,124,91,.1); }
+.multi-select-menu { position: absolute; z-index: 70; top: calc(100% + 5px); left: 0; width: 100%; min-width: 200px; padding: 10px; border: 1px solid var(--color-border); border-radius: var(--radius-small); background: #fff; box-shadow: 0 8px 24px rgba(15,31,26,.14); }
+.multi-select-actions { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; color: var(--color-text-muted); font-size: 11px; }
+.multi-select-actions button { padding: 4px 6px; border: 0; color: var(--color-primary); background: transparent; font: inherit; font-weight: 700; cursor: pointer; }
+.multi-select-actions button:disabled { opacity: .45; cursor: default; }
+.multi-select-options { display: grid; max-height: 240px; overflow-y: auto; margin: 0; padding: 0; border: 0; }
+.filter-grid .multi-select-options label { display: flex; align-items: center; gap: 9px; min-height: 40px; padding: 5px; color: var(--color-text); font-size: 12px; font-weight: 500; cursor: pointer; }
+.filter-grid .multi-select-options input { width: 16px; min-height: 16px; height: 16px; margin: 0; padding: 0; flex-shrink: 0; accent-color: var(--color-primary); }
+.multi-select-options label:hover { background: var(--color-surface); }
+.multi-select-options p { margin: 8px 0; font-size: 12px; color: var(--color-text-muted); }
 .filter-toggle-field { display: grid; gap: 5px; min-width: 0; margin: 0; padding: 0; border: 0; color: var(--color-text-muted); font-size: 11px; font-weight: 800; }
 .filter-toggle-field legend { padding: 0; }
 .primary-filter-toggles { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px 16px; padding: 0 12px 12px; }
@@ -646,6 +663,7 @@ main { flex: 1; }
   .mobile-filter-button b { min-width: 20px; height: 20px; border-radius: 999px; display: grid; place-items: center; color: #fff; background: var(--color-primary); font-size: 10px; }
   .advanced-filter-shell { position: fixed; z-index: 60; left: 0; right: 0; bottom: 0; max-height: 88vh; padding: 14px; border: 0; border-radius: 18px 18px 0 0; overflow-y: auto; display: none; background: #fff; box-shadow: 0 -22px 60px rgba(15,31,26,.2); }
   .advanced-filter-shell.mobile-open { display: block; }
+  .multi-select-menu { position: static; min-width: 0; margin-top: 5px; box-shadow: none; }
   .filter-drawer-heading { margin-bottom: 13px; display: flex; align-items: center; justify-content: space-between; }
   .filter-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .filter-footer { margin-top: 14px; justify-content: space-between; gap: 10px; }

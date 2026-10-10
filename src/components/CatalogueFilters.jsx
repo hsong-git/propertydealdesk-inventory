@@ -1,5 +1,6 @@
 import { Check, ChevronDown, RotateCcw, Search, Share2, SlidersHorizontal, X } from "lucide-react";
 import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
+import { MultiSelectFilter } from "./MultiSelectFilter.jsx";
 
 const intentOptions = [
   { key: "WTL", label: "WTL" },
@@ -48,12 +49,12 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
       <div className={`advanced-filter-shell ${mobileOpen ? "mobile-open" : ""}`}>
         <div className="filter-drawer-heading"><strong>Filter properties</strong><button className="icon-button" type="button" onClick={() => setMobileOpen(false)} aria-label="Close filters"><X size={20} /></button></div>
         <div className="filter-grid">
-          <label>Property type<select value={filters.propertyType} onChange={(event) => update("propertyType", event.target.value)}><option value="">All types</option>{options.propertyTypes.map((value) => <option key={value}>{value}</option>)}</select></label>
-          <label>Location<select value={filters.location} onChange={(event) => update("location", event.target.value)}><option value="">All locations</option>{options.locations.map((value) => <option key={value}>{value}</option>)}</select></label>
+          <MultiSelectFilter label="Property type" placeholder="All types" options={options.propertyTypes} value={filters.propertyType} onChange={(value) => update("propertyType", value)} />
+          <MultiSelectFilter label="Location" placeholder="All locations" options={options.locations} value={filters.location} onChange={(value) => update("location", value)} />
           <label>Minimum price<input type="number" min="0" step="100" value={filters.minPrice} onChange={(event) => update("minPrice", event.target.value)} placeholder="No minimum" /></label>
           <label>Maximum price<input type="number" min="0" step="100" value={filters.maxPrice} onChange={(event) => update("maxPrice", event.target.value)} placeholder="No maximum" /></label>
           <label>Bedrooms<select value={filters.bedrooms} onChange={(event) => update("bedrooms", event.target.value)}><option value="">Any bedrooms</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></label>
-          <label>Furnishing<select value={filters.furnishing} onChange={(event) => update("furnishing", event.target.value)}><option value="">Any furnishing</option>{options.furnishing.map((value) => <option key={value}>{value}</option>)}</select></label>
+          <MultiSelectFilter label="Furnishing" placeholder="Any furnishing" options={options.furnishing} value={filters.furnishing} onChange={(value) => update("furnishing", value)} />
           <fieldset className="filter-toggle-field filter-view-field">
             <legend>Inventory view</legend>
             <div className="catalogue-mode-toggle inventory-view-toggle" aria-label="Inventory view">

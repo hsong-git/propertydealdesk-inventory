@@ -15,6 +15,13 @@ export function tenantEligibilitySummary(listing) {
   return "Subject to owner review";
 }
 
+export function tenantEligibilityTone(listing) {
+  const description = tenantEligibilityDescription(listing);
+  if (description === "All suitable tenants are welcome.") return "welcome";
+  if (description === "Prefer locals and selective tenant profile only.") return "selective";
+  return "review";
+}
+
 export const normalizeInventoryFilter = (value) => ["smi", "cmi"].includes(value) ? value : "";
 export const matchesInventoryFilter = (listing, value) => {
   const filter = normalizeInventoryFilter(value);

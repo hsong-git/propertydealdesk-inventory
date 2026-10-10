@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { tenantEligibilityDescription, tenantEligibilitySummary } from "./listing.js";
+import { tenantEligibilityDescription, tenantEligibilitySummary, tenantEligibilityTone } from "./listing.js";
 import { renderCatalogueContent } from "../../scripts/catalogue-html.mjs";
 
 test("tenant eligibility uses explicit flags and supports existing published copies", () => {
@@ -20,4 +20,11 @@ test("rental cards show short eligibility for SMI and CMI but sale-only cards do
   assert.equal(tenantEligibilitySummary({ intent: "WTS" }), null);
   const listing = { intent: "WTL", code: "WTL0001", slug: "unit", title: "Unit", location: "Klang", propertyType: "Condo", availability: "Available", photos: [], acceptAllRaces: false, createdAt: "2026-10-10" };
   assert.match(renderCatalogueContent([listing]), /<span>Tenant eligibility:<\/span> Locals preferred · selective profile/);
+  for (const [acceptAllRaces, tone] of [[true, "welcome"], [false, "selective"], [null, "review"]]) {
+    const fixture = { ...listing, acceptAllRaces };
+    assert.equal(tenantEligibilityTone(fixture), tone);
+    assert.match(renderCatalogueContent([fixture]), new RegExp(`property-tenant-eligibility eligibility-${tone}`));
+  }
+  assert.equal(tenantEligibilityTone({ postingCopy: "*Tenant eligibility*: All suitable tenants are welcome." }), "welcome");
+  assert.equal(tenantEligibilityTone({ postingCopy: "*Tenant eligibility*: Selective tenant profile requirements." }), "selective");
 });

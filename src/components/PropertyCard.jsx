@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
 import { PublicPropertyImage } from "./PublicPropertyImage";
 import { InventoryBadge } from "./InventoryBadge";
-import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing, whatsappUrl, tenantEligibilitySummary, tenantEligibilityDescription } from "../utils/listing";
+import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing, whatsappUrl, tenantEligibilitySummary, tenantEligibilityDescription, tenantEligibilityTone } from "../utils/listing";
 import { formatRoomSummary } from "../data/requirementContract";
 
 export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) {
@@ -59,7 +59,7 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
           {listing.builtUpSqFt ? <span><Expand size={16} /> {listing.builtUpSqFt.toLocaleString()} sq ft</span> : null}
         </div>
         <div className="property-meta"><span>{listing.furnishing}</span><span><CalendarDays size={14} /> {listing.listedAt ? "Listed" : "Recorded"} {formatDate(listing.listedAt || listing.createdAt)}</span></div>
-        {tenantEligibilitySummary(listing) ? <p className="property-tenant-eligibility" title={tenantEligibilityDescription(listing)}><span>Tenant eligibility:</span>{" "}{tenantEligibilitySummary(listing)}</p> : null}
+        {tenantEligibilitySummary(listing) ? <p className={`property-tenant-eligibility eligibility-${tenantEligibilityTone(listing)}`} title={tenantEligibilityDescription(listing)}><span>Tenant eligibility:</span>{" "}{tenantEligibilitySummary(listing)}</p> : null}
       </div>
       <div className={`property-actions ${viewOnly ? "view-only" : ""}`}>
         <Link className="button secondary" to={propertyHref}>View Details</Link>

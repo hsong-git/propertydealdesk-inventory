@@ -156,8 +156,10 @@ main { flex: 1; }
 .property-facts svg { color: var(--color-primary); }
 .property-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--color-text-muted); font-size: 10px; }
 .property-meta span:last-child { display: flex; align-items: center; gap: 4px; }
-.property-tenant-eligibility { margin: 0; padding: 7px 9px; border-radius: 7px; background: #fff9e8; color: var(--color-text); font-size: 11px; line-height: 1.5; }
-.property-tenant-eligibility > span { display: inline; color: var(--color-text-muted); font-size: inherit; font-weight: 700; }
+.property-tenant-eligibility { margin: 0; padding: 7px 9px; border: 1px solid #d8dee5; border-radius: 7px; background: #f1f3f5; color: #465463; font-size: 11px; line-height: 1.5; }
+.property-tenant-eligibility.eligibility-welcome { background: #e7f5ed; border-color: #acd6bc; color: #235d3c; }
+.property-tenant-eligibility.eligibility-selective { background: #fff4dc; border-color: #e7c579; color: #76500f; }
+.property-tenant-eligibility > span { display: inline; color: inherit; font-size: inherit; font-weight: 700; }
 .property-actions { margin-top: auto; padding: 0 14px 14px; display: grid; grid-template-columns: 1fr 1fr auto; gap: 6px; }
 .property-actions.view-only { grid-template-columns: 1fr; }
 .property-actions .button { min-width: 0; min-height: 38px; padding-inline: 9px; }

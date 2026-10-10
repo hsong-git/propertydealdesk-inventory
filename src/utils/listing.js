@@ -7,6 +7,14 @@ export function tenantEligibilityDescription(listing) {
   return "Subject to the owner’s review of the tenant profile.";
 }
 
+export function tenantEligibilitySummary(listing) {
+  if (![listing.intent, listing.alternateIntent].includes("WTL")) return null;
+  const description = tenantEligibilityDescription(listing);
+  if (description === "All suitable tenants are welcome.") return "All suitable tenants welcome";
+  if (description === "Prefer locals and selective tenant profile only.") return "Locals preferred · selective profile";
+  return "Subject to owner review";
+}
+
 export const normalizeInventoryFilter = (value) => ["smi", "cmi"].includes(value) ? value : "";
 export const matchesInventoryFilter = (listing, value) => {
   const filter = normalizeInventoryFilter(value);

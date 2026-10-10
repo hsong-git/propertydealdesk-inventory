@@ -19,5 +19,5 @@ test("rental cards show short eligibility for SMI and CMI but sale-only cards do
   }
   assert.equal(tenantEligibilitySummary({ intent: "WTS" }), null);
   const listing = { intent: "WTL", code: "WTL0001", slug: "unit", title: "Unit", location: "Klang", propertyType: "Condo", availability: "Available", photos: [], acceptAllRaces: false, createdAt: "2026-10-10" };
-  assert.match(renderCatalogueContent([listing]), /property-tenant-eligibility[\s\S]*Locals preferred · selective profile/);
+  assert.match(renderCatalogueContent([listing]), /<span>Tenant eligibility:<\/span> Locals preferred · selective profile/);
 });

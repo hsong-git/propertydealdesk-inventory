@@ -14,7 +14,7 @@ export function renderCatalogueContent(listings, { heading, page = 1, pageCount 
     const label = listing.visibility === "unlisted" ? "CMI" : "SMI";
     const code = escape(listing.displayCode || listing.code);
     const summary = tenantEligibilitySummary(listing);
-    const withEligibility = summary ? html.replace('<div class="property-meta">', `<p class="property-tenant-eligibility" title="${escape(tenantEligibilityDescription(listing))}"><span>Tenant eligibility</span>${escape(summary)}</p><div class="property-meta">`) : html;
+    const withEligibility = summary ? html.replace('<div class="property-meta">', `<p class="property-tenant-eligibility" title="${escape(tenantEligibilityDescription(listing))}"><span>Tenant eligibility:</span> ${escape(summary)}</p><div class="property-meta">`) : html;
     return withEligibility.replace(`<span>${code}</span>`, `<span class="property-code"><span class="inventory-badge inventory-badge-${label.toLowerCase()}">${label}</span>${code}</span>`);
   }).join("");
   const pages = Array.from({ length: pageCount }, (_, index) => `<a class="button ${index + 1 === page ? "primary" : "secondary"}" href="/catalogue/page/${index + 1}/"${index + 1 === page ? ' aria-current="page"' : ""}>${index + 1}<span class="sr-only">${index + 1 === page ? " (current page)" : " — catalogue page"}</span></a>`).join("");

@@ -117,6 +117,10 @@
           "items": { "$ref": "#/$defs/stablePhotoPath" }
         },
         "cmi_agent_name": { "type": ["string", "null"] },
+        "accept_all_races": {
+          "type": ["boolean", "null"],
+          "description": "Public tenant eligibility: true welcomes suitable tenants, false prefers locals and a selective profile, null requires owner review."
+        },
         "posting_copy": {
           "type": ["string", "null"],
           "maxLength": 8000,

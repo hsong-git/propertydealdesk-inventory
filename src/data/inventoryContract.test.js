@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import fs from "node:fs";
+import Ajv2020 from "ajv/dist/2020.js";
+import addFormats from "ajv-formats";
 import { normalizeInventoryFeed } from "./inventoryContract.js";
 import { compareRecentlyUpdated, photoDownloadRequestText, postingFootnoteUrl, postingText, matchesInventoryFilter, normalizeInventoryFilter } from "../utils/listing.js";
 
@@ -30,6 +33,23 @@ const stableListing = {
   cover_photo: "/inventory/WTS1004/cover.webp",
   photos: ["/inventory/WTS1004/cover.webp", "/inventory/WTS1004/living.webp"],
 };
+
+test("publication schema accepts explicit tenant eligibility without relaxing private-field protection", () => {
+  const schema = JSON.parse(fs.readFileSync(new URL("../../public/data/inventory.schema.json", import.meta.url), "utf8"));
+  const ajv = new Ajv2020({ allErrors: true, strict: true });
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  for (const visibility of ["listed", "unlisted"]) {
+    for (const eligibility of [true, false, null]) {
+      const listing = { ...stableListing, visibility, accept_all_races: eligibility };
+      assert.equal(validate(productionFeed([listing])), true, JSON.stringify(validate.errors));
+      assert.equal(normalizeInventoryFeed(productionFeed([listing])).allItems[0].acceptAllRaces, eligibility);
+    }
+  }
+  assert.equal(validate(productionFeed([stableListing])), true);
+  assert.equal(validate(productionFeed([{ ...stableListing, accept_all_races: "NO" }])), false);
+  assert.equal(validate(productionFeed([{ ...stableListing, owner_phone: "private" }])), false);
+});
 
 test("inventory toggle filters All, SMI and CMI independently of property intent", () => {
   const smi = { ...stableListing, visibility: "listed" };

@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.10.12.4",
-  "generated_at": "2026-10-12T07:59:14Z",
-  "publishedAt": "2026-10-12T07:59:14Z",
+  "inventoryVersion": "2026.10.12.5",
+  "generated_at": "2026-10-12T09:53:35Z",
+  "publishedAt": "2026-10-12T09:53:35Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -434,7 +434,7 @@
       "created_at": "2026-07-27T06:24:36Z",
       "listed_at": "2026-07-27T14:24:36Z",
       "posting_copy": "*WTL*\n\n*3R2B Condo @ Huni @ Eco Ardence, Setia Alam*\n***AAA Stock***\nRental *RM2,700*\n\n*Property Details*\n* Property Type : Condominium/Apartment\n* Property Unit Type: Intermediate\n* Location: Huni @ Eco Ardence, Setia Alam\n* Furnishing: Full\n* Size Approx. 1000 sqft\n* 3 Bedrooms | 2 Bathrooms\n* Comfortable Sofa & Coffee Table for Living Area\n* Television & TV Cabinet\n* Dining Table & Chairs\n* Complete Kitchen Cabinet with Fridge\n* Washing Machine\n* Bed Frames & Premium Mattresses in all rooms\n* Built-in Wardrobes & Curtains\n* Full Air-conditioning\n* High Floor\n* *Available in November*\n\n*Accept any type of good tenant, subject to profile review.*\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0055*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0055",
-      "updated_at": "2026-10-11T23:23:57Z",
+      "updated_at": "2026-10-12T09:36:36Z",
       "cover_photo": "/inventory/WTL0055/cover.webp",
       "photos": [
         "/inventory/WTL0055/cover.webp",
@@ -2635,8 +2635,7 @@
         "/inventory/WTS0035/photo-14.webp",
         "/inventory/WTS0035/photo-15.webp",
         "/inventory/WTS0035/photo-16.webp",
-        "/inventory/WTS0035/photo-17.webp",
-        "/inventory/WTS0035/photo-18.webp"
+        "/inventory/WTS0035/photo-17.webp"
       ],
       "features": [
         "Brand NEW Unit",
@@ -2646,7 +2645,10 @@
         "Facing North"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "layouts": [
+        "/inventory/WTS0035/layout-01.webp"
+      ]
     },
     {
       "public_id": "pub_356804fe9c7ada9761c0c994",
@@ -3534,14 +3536,16 @@
         "/inventory/WTS1014/photo-17.webp",
         "/inventory/WTS1014/photo-18.webp",
         "/inventory/WTS1014/photo-19.webp",
-        "/inventory/WTS1014/photo-20.webp",
-        "/inventory/WTS1014/photo-21.webp"
+        "/inventory/WTS1014/photo-20.webp"
       ],
       "features": [
         "1.5 storeys Freehold Non Bumi Lot"
       ],
       "amenities": [],
       "why_this_property": [],
+      "layouts": [
+        "/inventory/WTS1014/layout-01.webp"
+      ],
       "videos": [
         "/inventory/WTS1014/video-e565b7bbb281539d0741.mp4"
       ]

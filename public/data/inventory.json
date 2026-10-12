@@ -1,12 +1,62 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.10.12.1",
-  "generated_at": "2026-10-12T03:47:00Z",
-  "publishedAt": "2026-10-12T03:47:00Z",
+  "inventoryVersion": "2026.10.12.2",
+  "generated_at": "2026-10-12T06:22:03Z",
+  "publishedAt": "2026-10-12T06:22:03Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
+    {
+      "public_id": "pub_8c8abb96bd82da0a9afdb1b7",
+      "code": "WTL0009",
+      "intent": "WTL",
+      "visibility": "listed",
+      "slug": "wtl0009-4r2b-single-storey-terrace-house-taman-sentosa-next-to-nsk-taman-sri-sentosa-perdana-klang",
+      "title": "4R2B Single Storey Terrace House @ Taman Sentosa Next to NSK",
+      "property_type": "Terrace House - 1 Storey",
+      "location": "Taman Sri Sentosa Perdana, Klang",
+      "price": 1400,
+      "alternate_intent": null,
+      "alternate_price": null,
+      "accept_all_races": true,
+      "description": "Terrace House - 1 Storey at Taman Sri Sentosa Perdana, Klang. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 4,
+      "bathroom_count": 2,
+      "built_up_sqft": 1540,
+      "land_size": "20 × 70 ft",
+      "furnishing": "Partial",
+      "facing_direction": "North East",
+      "unit_type": "Intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-10-12T05:57:59Z",
+      "listed_at": null,
+      "posting_copy": "For Rent – Taman Sentosa, Klang (Single-Storey Terrace House)\nRental Price: RM1,400\n\nA single-storey terrace house located in Taman Sentosa, Klang, conveniently situated near NSK Hypermarket. Ideal for families seeking a practical home in a well-established and accessible neighborhood.\n\nProperty Details:\n- Property Type: Single-Storey Terrace House\n- Built-Up: 1,540 sqft\n- Bedrooms: 4\n- Bathrooms: 2\n- Furnishing: Partially Furnished\n\nKey Features:\n- Spacious 4-bedroom layout\n- Located next to NSK Hypermarket\n- Situated in the Sentosa area\n- Practical and family-friendly home\n- Affordable rental for a landed property\n\nThis property offers great value for tenants looking for a single-storey home in Klang.\n\nFor further details or to arrange a viewing, please feel free to contact me.\n\n*Furnishing Included*\n- Lighting and Ceiling Fans\n- Table top and Cabinet\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0009",
+      "updated_at": "2026-10-12T06:07:07Z",
+      "cover_photo": "/inventory/WTL0009/cover.webp",
+      "photos": [
+        "/inventory/WTL0009/cover.webp",
+        "/inventory/WTL0009/photo-02.webp",
+        "/inventory/WTL0009/photo-03.webp",
+        "/inventory/WTL0009/photo-04.webp",
+        "/inventory/WTL0009/photo-05.webp",
+        "/inventory/WTL0009/photo-06.webp",
+        "/inventory/WTL0009/photo-07.webp",
+        "/inventory/WTL0009/photo-08.webp",
+        "/inventory/WTL0009/photo-09.webp",
+        "/inventory/WTL0009/photo-10.webp",
+        "/inventory/WTL0009/photo-11.webp"
+      ],
+      "features": [
+        "Walking distance to NSK Hypermarket."
+      ],
+      "amenities": [],
+      "why_this_property": [],
+      "videos": [
+        "/inventory/WTL0009/video-02d6cee116d36d84ddfc.mp4"
+      ]
+    },
     {
       "public_id": "pub_9751a24873263da7695700b6",
       "code": "WTL0010",
@@ -403,7 +453,10 @@
         "**AAA Stock*** Comfortable Sofa & Coffee Table for Living Area Television & TV Cabinet Dining Table & Chairs Complete Kitchen Cabinet with Fridge Washing Machine Bed Frames & Premium Mattresses in all rooms Built-in Wardrobes & Curtains Full Air-conditioning Unit on 20th Floor Car Park on 5th Floor Available in November. *Accept any type of good tenant, subject to profile review.*"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "videos": [
+        "/inventory/WTL0055/video-95cdd860c862bb074821.mp4"
+      ]
     },
     {
       "public_id": "pub_5731ebc7bb58b9ced25f7a9f",
@@ -1600,10 +1653,10 @@
       "title": "2R2B Fully Furnishing Condo @ Impiria Residence link to AEON Bukit Tinggi Klang",
       "property_type": "Condominium/Apartment",
       "location": "Impiria Residence link to AEON Bukit Tinggi Klang",
-      "price": 2200,
+      "price": 2100,
       "alternate_intent": null,
       "alternate_price": null,
-      "accept_all_races": null,
+      "accept_all_races": false,
       "description": "Condominium/Apartment at Impiria Residence link to AEON Bukit Tinggi Klang. Contact HS Ong to confirm current availability and viewing details.",
       "bedroom_count": 2,
       "bathroom_count": 2,
@@ -1616,8 +1669,8 @@
       "featured": false,
       "created_at": "2026-10-12T02:13:50Z",
       "listed_at": "2026-10-12T10:13:50Z",
-      "posting_copy": "*WTL*\n\n*2R2B Fully Furnishing Condo @ Impiria Residence link to AEON Bukit Tinggi Klang*\nRental *RM2,200*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Impiria Residence link to AEON Bukit Tinggi Klang\n- Furnishing: Full\n- Size Approx. 866 sqft\n- 2 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Block B\n- Level 23\n- Side by side car park\n- Link bridge to AEON Bukit Tinggi\n- Accept foreigner/professional staff tenancy by company\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0098*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0098",
-      "updated_at": "2026-10-12T02:44:25Z",
+      "posting_copy": "*WTL*\n\n*2R2B Fully Furnishing Condo @ Impiria Residence link to AEON Bukit Tinggi Klang*\nRental *RM2,100*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Impiria Residence link to AEON Bukit Tinggi Klang\n- Furnishing: Full\n- Size Approx. 866 sqft\n- 2 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Block B\n- Level 23\n- Side by side car park\n- Link bridge to AEON Bukit Tinggi\n- Accept foreigner/professional staff tenancy by company\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0098*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0098",
+      "updated_at": "2026-10-12T04:00:16Z",
       "cover_photo": "/inventory/WTL0098/cover.webp",
       "photos": [
         "/inventory/WTL0098/cover.webp",
@@ -2214,7 +2267,10 @@
         "A-B-C co-broke deal"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "videos": [
+        "/inventory/WTS0027/video-460f5323b879801460bd.mp4"
+      ]
     },
     {
       "public_id": "pub_55128b343334223e16ff0563",
@@ -3466,13 +3522,27 @@
         "/inventory/WTS1014/photo-06.webp",
         "/inventory/WTS1014/photo-07.webp",
         "/inventory/WTS1014/photo-08.webp",
-        "/inventory/WTS1014/photo-09.webp"
+        "/inventory/WTS1014/photo-09.webp",
+        "/inventory/WTS1014/photo-10.webp",
+        "/inventory/WTS1014/photo-11.webp",
+        "/inventory/WTS1014/photo-12.webp",
+        "/inventory/WTS1014/photo-13.webp",
+        "/inventory/WTS1014/photo-14.webp",
+        "/inventory/WTS1014/photo-15.webp",
+        "/inventory/WTS1014/photo-16.webp",
+        "/inventory/WTS1014/photo-17.webp",
+        "/inventory/WTS1014/photo-18.webp",
+        "/inventory/WTS1014/photo-19.webp",
+        "/inventory/WTS1014/photo-20.webp"
       ],
       "features": [
         "1.5 storeys Freehold Non Bumi Lot"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "videos": [
+        "/inventory/WTS1014/video-e565b7bbb281539d0741.mp4"
+      ]
     },
     {
       "public_id": "pub_d1f8c9a2c4e935812923a776",
@@ -4275,7 +4345,7 @@
       "created_at": "2026-10-12T02:43:17Z",
       "listed_at": "2026-10-12T10:43:16Z",
       "posting_copy": "*WTS*\n\n*2 Storey Newly Renovated Fully Extended House @ Amelia Bandar Bukit Tinggi 2*\nSelling Price: *RM780,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Amelia Bandar Bukit Tinggi 2\n- Furnishing: Basic\n- Unit Dimensions: 20 × 70\n- Size Approx. 2000 sqft\n- 4 Bedrooms | 4 Bathrooms\n- Facing Direction: South\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Feature Highlights*\n- Newly painted and in good condition.\n- Extended Car Porch with an awning\n- Extended Kitchen with new cabinets and a table top.\n- Gated and guarded community.\n\n*AVAILABLE NOW!!!*\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1037*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1037",
-      "updated_at": "2026-10-12T02:43:17Z",
+      "updated_at": "2026-10-12T04:05:55Z",
       "cover_photo": "/inventory/WTS1037/cover.webp",
       "photos": [
         "/inventory/WTS1037/cover.webp",

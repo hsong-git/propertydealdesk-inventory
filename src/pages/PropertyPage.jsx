@@ -29,6 +29,8 @@ export function PropertyPage() {
   const listing = allItems.find((item) => item.slug === slug);
   const [activePhoto, setActivePhoto] = useState(0);
   const [activeVideo, setActiveVideo] = useState(null);
+  const [activeGallery, setActiveGallery] = useState("photos");
+  const galleryPhotos = activeGallery === "layout" ? (listing?.layouts || []) : (listing?.photos || []);
   const [copied, setCopied] = useState(false);
   const [postingCopied, setPostingCopied] = useState(false);
   const [selectedPhotos, setSelectedPhotos] = useState([]);
@@ -45,11 +47,11 @@ export function PropertyPage() {
   const seoDescription = listing ? propertySeoDescription(listing, formatPrice(displayPrice, displayIntent)) : "Public property details from HS Ong Property Inventory.";
   const seoCanonical = `${SITE_ORIGIN}/property/${slug}`;
   function movePhoto(direction) {
-    if (!listing?.photos.length) return;
+    if (!galleryPhotos.length) return;
     setLightboxSlide(direction > 0 ? "next" : "previous");
-    setActivePhoto((current) => (current + direction + listing.photos.length) % listing.photos.length);
+    setActivePhoto((current) => (current + direction + galleryPhotos.length) % galleryPhotos.length);
   }
-  useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); setActiveVideo(null); setSelectedPhotos([]); setLightboxSlide(""); }, [slug]);
+  useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); setActiveVideo(null); setActiveGallery("photos"); setSelectedPhotos([]); setLightboxSlide(""); }, [slug]);
   useEffect(() => {
     if (!listing?.code) return;
     rememberListingView(listing.code);
@@ -65,7 +67,7 @@ export function PropertyPage() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => { document.body.classList.remove("modal-open"); window.removeEventListener("keydown", onKeyDown); };
-  }, [lightboxOpen, listing?.photos.length]);
+  }, [lightboxOpen, galleryPhotos.length]);
   if (loading) return <main className="page-width page-state"><Seo title="Loading property details | HS Ong Property Inventory" canonical={seoCanonical} /><strong>Loading property details…</strong></main>;
   if (error || !listing) return <><Seo title="Property no longer available | HS Ong Property Inventory" description="This property may have been sold, rented, withdrawn, or removed from HS Ong Property Inventory." canonical={seoCanonical} robots="noindex, follow" /><ListingUnavailableState code={slug} error={error} /></>;
   const detailItems = [
@@ -93,7 +95,7 @@ export function PropertyPage() {
     const touch = event.changedTouches?.[0];
     const direction = photoSwipeDirection(swipeStart.current, touch && { x: touch.clientX, y: touch.clientY });
     swipeStart.current = null;
-    if (direction && listing.photos.length > 1) movePhoto(direction);
+    if (direction && galleryPhotos.length > 1) movePhoto(direction);
   };
   return (
     <main className="page-width property-page">
@@ -114,14 +116,15 @@ export function PropertyPage() {
           <section className="gallery" aria-label="Property photos and videos">
             {activeVideo && listing.videos?.includes(activeVideo) ? <PropertyVideo src={activeVideo} title={listing.title} poster={listing.photos[0]} /> : null}
             <div hidden={activeVideo !== null && listing.videos?.includes(activeVideo)}>
-            <div className="gallery-main">{listing.photos[activePhoto]
-              ? <button className="gallery-open" type="button" onClick={() => setLightboxOpen(true)} aria-label={`Open photo ${activePhoto + 1} of ${listing.photos.length} fullscreen`}><PublicPropertyImage allowIndividualSave src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1}`} /><span className="gallery-open-label"><Maximize2 size={17} /> Full view</span></button>
+            <div className={`gallery-main${activeGallery === "layout" ? " is-layout" : ""}`}>{galleryPhotos[activePhoto]
+              ? <button className="gallery-open" type="button" onClick={() => setLightboxOpen(true)} aria-label={`Open ${activeGallery === "layout" ? "layout" : "photo"} ${activePhoto + 1} of ${galleryPhotos.length} fullscreen`}><PublicPropertyImage allowIndividualSave src={galleryPhotos[activePhoto]} alt={`${listing.title} ${activeGallery === "layout" ? "layout" : "photo"} ${activePhoto + 1}`} /><span className="gallery-open-label"><Maximize2 size={17} /> Full view</span></button>
               : <span className="property-photo-placeholder detail-placeholder"><ImageOff size={38} /><small>No public photo supplied</small></span>}
               <span className={`intent intent-${displayIntent.toLowerCase()}`}>{displayIntent}<small>{intentLabels[displayIntent]}</small></span></div>
             </div>
-            {listing.videos?.length ? <div className="gallery-video-controls" aria-label="Property videos"><button type="button" className={activeVideo === null ? "active" : ""} onClick={() => setActiveVideo(null)}>Photos</button>{listing.videos.map((src, index) => <button type="button" className={activeVideo === src ? "active" : ""} key={src} aria-pressed={activeVideo === src} onClick={() => setActiveVideo(src)}>▶ Video {index + 1}</button>)}</div> : null}
+            {listing.layouts?.length || listing.videos?.length ? <div className="gallery-video-controls" aria-label="Property media"><button type="button" className={activeGallery === "photos" ? "active" : ""} aria-pressed={activeGallery === "photos"} onClick={() => { setActiveGallery("photos"); setActivePhoto(0); setActiveVideo(null); }}>Photos</button>{listing.layouts?.length ? <button type="button" className={activeGallery === "layout" ? "active" : ""} aria-pressed={activeGallery === "layout"} onClick={() => { setActiveGallery("layout"); setActivePhoto(0); setActiveVideo(null); }}>Layout</button> : null}{listing.videos?.length ? <button type="button" className={activeGallery === "videos" ? "active" : ""} aria-pressed={activeGallery === "videos"} onClick={() => { setActiveGallery("videos"); setActiveVideo(listing.videos[0]); }}>Videos</button> : null}</div> : null}
+            {activeGallery === "videos" && listing.videos?.length > 1 ? <div className="gallery-video-controls" aria-label="Choose video">{listing.videos.map((src, index) => <button type="button" key={src} className={activeVideo === src ? "active" : ""} aria-pressed={activeVideo === src} onClick={() => setActiveVideo(src)}>▶ Video {index + 1}</button>)}</div> : null}
             <div hidden={activeVideo !== null && listing.videos?.includes(activeVideo)}>
-            {photoSharingEnabled && listing.photos.length > 0 ? <><div className="gallery-thumbnails">{listing.photos.map((photo, index) => { const selected = selectedPhotos.includes(photo); const blocked = selectedPhotos.length >= PHOTO_SELECTION_LIMIT && !selected; return <div className="gallery-thumbnail-choice" key={photo}><button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button><button type="button" disabled={blocked} className={`photo-select-toggle${selected ? " selected" : ""}${blocked ? " is-blocked" : ""}`} aria-label={`${selected ? "Deselect" : "Select"} photo ${index + 1}`} aria-pressed={selected} onClick={() => setSelectedPhotos((current) => selected ? current.filter((item) => item !== photo) : current.length < PHOTO_SELECTION_LIMIT ? [...current, photo] : current)}>{selected ? <Check size={14} /> : <span />}</button></div>; })}</div><button className="select-first-photos" type="button" onClick={selectFirstPhotos} disabled={!listing.photos.length} aria-pressed={firstPhotosSelected}>{firstPhotosSelected ? "Deselect first " : "Select first "}{Math.min(PHOTO_SELECTION_LIMIT, listing.photos.length)}</button><ShareSelectedPhotosButton listing={listing} selectedPhotos={selectedPhotos} /></> : listing.photos.length > 1 ? <div className="gallery-thumbnails">{listing.photos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
+            {activeGallery === "photos" && photoSharingEnabled && galleryPhotos.length > 0 ? <><div className="gallery-thumbnails">{galleryPhotos.map((photo, index) => { const selected = selectedPhotos.includes(photo); const blocked = selectedPhotos.length >= PHOTO_SELECTION_LIMIT && !selected; return <div className="gallery-thumbnail-choice" key={photo}><button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button><button type="button" disabled={blocked} className={`photo-select-toggle${selected ? " selected" : ""}${blocked ? " is-blocked" : ""}`} aria-label={`${selected ? "Deselect" : "Select"} photo ${index + 1}`} aria-pressed={selected} onClick={() => setSelectedPhotos((current) => selected ? current.filter((item) => item !== photo) : current.length < PHOTO_SELECTION_LIMIT ? [...current, photo] : current)}>{selected ? <Check size={14} /> : <span />}</button></div>; })}</div><button className="select-first-photos" type="button" onClick={selectFirstPhotos} disabled={!galleryPhotos.length} aria-pressed={firstPhotosSelected}>{firstPhotosSelected ? "Deselect first " : "Select first "}{Math.min(PHOTO_SELECTION_LIMIT, galleryPhotos.length)}</button><ShareSelectedPhotosButton listing={listing} selectedPhotos={selectedPhotos} /></> : galleryPhotos.length > 1 ? <div className="gallery-thumbnails">{galleryPhotos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
             </div>
           </section>
           <section className="detail-title-block">
@@ -142,7 +145,7 @@ export function PropertyPage() {
         </aside>
       </div>
       <RelatedListings listings={relatedListings} />
-      {lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={`${listing.title} photo viewer`}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label="Close full photo view" autoFocus><X size={24} /></button>{listing.photos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label="Previous photo"><ChevronLeft size={32} /></button> : null}<div className={`lightbox-image${lightboxSlide ? ` slide-${lightboxSlide}` : ""}`} onTouchStart={onLightboxTouchStart} onTouchEnd={onLightboxTouchEnd} onTouchCancel={() => { swipeStart.current = null; }} onAnimationEnd={() => setLightboxSlide("")}><PublicPropertyImage allowIndividualSave key={listing.photos[activePhoto]} src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1} fullscreen`} /><span className="lightbox-counter">{activePhoto + 1} / {listing.photos.length}</span></div>{listing.photos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label="Next photo"><ChevronRight size={32} /></button> : null}</div> : null}
+      {lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={`${listing.title} photo viewer`}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label="Close full photo view" autoFocus><X size={24} /></button>{galleryPhotos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label="Previous photo"><ChevronLeft size={32} /></button> : null}<div className={`lightbox-image${lightboxSlide ? ` slide-${lightboxSlide}` : ""}`} onTouchStart={onLightboxTouchStart} onTouchEnd={onLightboxTouchEnd} onTouchCancel={() => { swipeStart.current = null; }} onAnimationEnd={() => setLightboxSlide("")}><PublicPropertyImage allowIndividualSave key={galleryPhotos[activePhoto]} src={galleryPhotos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1} fullscreen`} /><span className="lightbox-counter">{activePhoto + 1} / {galleryPhotos.length}</span></div>{galleryPhotos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label="Next photo"><ChevronRight size={32} /></button> : null}</div> : null}
       <PortraitModal open={agentPortraitOpen} src={agentProfile.portrait} alt={`${agentProfile.displayName}, ${agentProfile.title}`} onClose={() => setAgentPortraitOpen(false)} />
     </main>
   );

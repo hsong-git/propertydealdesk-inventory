@@ -126,6 +126,10 @@
           "uniqueItems": true,
           "items": { "type": "string", "pattern": "^/inventory/(WTSL|WTS|WTL)[0-9]+/video-[a-f0-9]{20}\\.mp4$" }
         },
+        "layouts": {
+          "type": "array", "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^/inventory/(WTSL|WTS|WTL)[0-9]+/layout-[0-9]+\\.webp$" }
+        },
         "posting_copy": {
           "type": ["string", "null"],
           "maxLength": 8000,

@@ -10,8 +10,11 @@ const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 
 test("photo and video switches sit below the main picture and above thumbnails", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
-  assert.ok(source.indexOf('className="gallery-main"') < source.indexOf('className="gallery-video-controls"'));
+  assert.ok(source.indexOf('gallery-main') < source.indexOf('className="gallery-video-controls"'));
   assert.ok(source.indexOf('className="gallery-video-controls"') < source.indexOf('className="gallery-thumbnails"'));
+  const controls = source.slice(source.indexOf('aria-label="Property media"'), source.indexOf('aria-label="Choose video"'));
+  assert.ok(controls.indexOf('>Photos</button>') < controls.indexOf('>Layout</button>'));
+  assert.ok(controls.indexOf('>Layout</button>') < controls.indexOf('>Videos</button>'));
 });
 
 test("anonymous audit IDs are readable and distinguish browser activity", () => {
@@ -59,7 +62,7 @@ test("selected photo sharing is enabled unless explicitly disabled", () => {
   const sharing = fs.readFileSync(path.join(projectRoot, "src", "components", "ShareSelectedPhotosButton.jsx"), "utf8");
   const styles = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
   assert.match(page, /VITE_ENABLE_PHOTO_SHARING !== "false"/);
-  assert.match(page, /photoSharingEnabled && listing\.photos\.length > 0/);
+  assert.match(page, /activeGallery === "photos" && photoSharingEnabled && galleryPhotos\.length > 0/);
   assert.match(sharing, /createWatermarkedJpegFile/);
   assert.match(sharing, /WhatsApp App/);
   assert.match(sharing, /WhatsApp Web/);

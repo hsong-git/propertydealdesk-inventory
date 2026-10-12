@@ -51,6 +51,20 @@ test("publication schema accepts explicit tenant eligibility without relaxing pr
   assert.equal(validate(productionFeed([{ ...stableListing, owner_phone: "private" }])), false);
 });
 
+test("catalogue accepts only same-listing layout image paths", () => {
+  const schema = JSON.parse(fs.readFileSync(new URL("../../public/data/inventory.schema.json", import.meta.url), "utf8"));
+  const ajv = new Ajv2020();
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  const path = "/inventory/WTS0001/layout-01.webp";
+  const feed = productionFeed([{ ...stableListing, code: "WTS0001", layouts: [path] }]);
+  assert.equal(validate(feed), true);
+  assert.deepEqual(normalizeInventoryFeed(feed).allItems[0].layouts, [path]);
+  for (const unsafe of ["/Documents/private.png", "/inventory/WTL0002/layout-01.webp", "/inventory/WTS0001/../private.webp"]) {
+    assert.deepEqual(normalizeInventoryFeed(productionFeed([{ ...stableListing, code: "WTS0001", layouts: [unsafe] }])).allItems[0].layouts, []);
+  }
+});
+
 test("catalogue accepts safe listing videos without treating them as photos", () => {
   const path = "/inventory/WTS1004/video-" + "a".repeat(20) + ".mp4";
   const schema = JSON.parse(fs.readFileSync(new URL("../../public/data/inventory.schema.json", import.meta.url), "utf8"));

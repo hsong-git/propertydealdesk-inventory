@@ -10,7 +10,7 @@ const publicRoot = path.join(root, "public");
 const inventory = JSON.parse(await fs.readFile(path.join(publicRoot, "data/inventory.json"), "utf8"));
 const logoPath = path.join(publicRoot, propertyPhotoWatermark.logo);
 const logoStat = await fs.stat(logoPath);
-const photos = [...new Set(inventory.listings.flatMap((listing) => listing.photos || []))];
+const photos = [...new Set(inventory.listings.flatMap((listing) => [...(listing.photos || []), ...(listing.layouts || [])]))];
 let built = 0;
 // Sequential processing bounds memory use even with a large inventory.
 for (const photo of photos) {

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test:videos": "node --test scripts/video-policy.test.mjs",
+    "test:videos": "node --test scripts/video-policy.test.mjs functions/video-range.test.js",
     "predev": "node scripts/build-gallery-photos.mjs",
     "dev": "vite",
     "test:seo": "node --test functions/seo-routing.test.js scripts/property-og.test.mjs scripts/catalogue-site.test.mjs",

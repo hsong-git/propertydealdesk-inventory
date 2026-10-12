@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.10.12.3",
-  "generated_at": "2026-10-12T07:48:54Z",
-  "publishedAt": "2026-10-12T07:48:54Z",
+  "inventoryVersion": "2026.10.12.4",
+  "generated_at": "2026-10-12T07:59:14Z",
+  "publishedAt": "2026-10-12T07:59:14Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -2606,7 +2606,7 @@
       "description": "Terrace House - 2 Storey at Setia Bayuemas (Laelia 3). Contact HS Ong to confirm current availability and viewing details.",
       "bedroom_count": 4,
       "bathroom_count": 4,
-      "built_up_sqft": null,
+      "built_up_sqft": 1850,
       "land_size": "22 × 75 ft",
       "furnishing": "Basic",
       "facing_direction": "North",
@@ -2615,8 +2615,8 @@
       "featured": false,
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
-      "posting_copy": "*WTS*\n\n*WTS Double Storey @ Setia Bayuemas (Laelia 3)*\nSelling Price: *RM838,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Setia Bayuemas (Laelia 3)\n- Furnishing: Basic\n- Unit Dimensions: 22 × 75\n- 4 Bedrooms | 4 Bathrooms\n- Facing Direction: North\n\n*Feature Highlights*\n- Brand NEW Unit\n- Condition: Vacant & Move-In Ready\n- Facing North\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0035*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0035",
-      "updated_at": "2026-10-11T23:23:57Z",
+      "posting_copy": "*WTS*\n\n*WTS Double Storey @ Setia Bayuemas (Laelia 3)*\nSelling Price: *RM838,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Setia Bayuemas (Laelia 3)\n- Furnishing: Basic\n- Unit Dimensions: 22 × 75\n- Size Approx. 1850 sqft\n- 4 Bedrooms | 4 Bathrooms\n- Facing Direction: North\n\n*Feature Highlights*\n- Brand NEW Unit\n- Condition: Vacant & Move-In Ready\n- Facing North\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0035*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0035",
+      "updated_at": "2026-10-12T07:56:49Z",
       "cover_photo": "/inventory/WTS0035/cover.webp",
       "photos": [
         "/inventory/WTS0035/cover.webp",
@@ -2635,7 +2635,8 @@
         "/inventory/WTS0035/photo-14.webp",
         "/inventory/WTS0035/photo-15.webp",
         "/inventory/WTS0035/photo-16.webp",
-        "/inventory/WTS0035/photo-17.webp"
+        "/inventory/WTS0035/photo-17.webp",
+        "/inventory/WTS0035/photo-18.webp"
       ],
       "features": [
         "Brand NEW Unit",

@@ -8,6 +8,12 @@ import { anonymousBrowserLabel } from "../src/utils/anonymousBrowser.js";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
+test("photo and video switches sit below the main picture and above thumbnails", () => {
+  const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
+  assert.ok(source.indexOf('className="gallery-main"') < source.indexOf('className="gallery-video-controls"'));
+  assert.ok(source.indexOf('className="gallery-video-controls"') < source.indexOf('className="gallery-thumbnails"'));
+});
+
 test("anonymous audit IDs are readable and distinguish browser activity", () => {
   assert.equal(anonymousBrowserLabel("a7".repeat(32)), "ANON-A7A7A7A7A7A7A7A7");
   assert.equal(anonymousBrowserLabel(null), "—");

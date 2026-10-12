@@ -51,6 +51,23 @@ test("publication schema accepts explicit tenant eligibility without relaxing pr
   assert.equal(validate(productionFeed([{ ...stableListing, owner_phone: "private" }])), false);
 });
 
+test("catalogue accepts safe listing videos without treating them as photos", () => {
+  const path = "/inventory/WTS1004/video-" + "a".repeat(20) + ".mp4";
+  const schema = JSON.parse(fs.readFileSync(new URL("../../public/data/inventory.schema.json", import.meta.url), "utf8"));
+  const ajv = new Ajv2020();
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  assert.equal(validate(productionFeed([{ ...stableListing, videos: [path] }])), true);
+  for (const unsafe of ["/inventory/WTL9999/video-" + "a".repeat(20) + ".mp4", "https://example.com/private.mp4", "/inventory/WTS1004/../private.mp4"]) {
+    assert.deepEqual(normalizeInventoryFeed(productionFeed([{ ...stableListing, videos: [unsafe] }])).allItems[0].videos, []);
+  }
+  const item = normalizeInventoryFeed(productionFeed([{ ...stableListing, videos: [path, path] }])).allItems[0];
+  assert.deepEqual(item.videos, [path]);
+  assert.ok(!item.photos.includes(path));
+  assert.deepEqual(normalizeInventoryFeed(productionFeed([stableListing])).allItems[0].videos, []);
+  assert.equal(validate(productionFeed([{ ...stableListing, videos: ["/Documents/private.mp4"] }])), false);
+});
+
 test("inventory toggle filters All, SMI and CMI independently of property intent", () => {
   const smi = { ...stableListing, visibility: "listed" };
   const cmi = { ...stableListing, visibility: "unlisted" };

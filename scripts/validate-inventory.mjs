@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import { inspectPublicImage } from "./image-policy.mjs";
+import { inspectPublicVideo } from "./video-policy.mjs";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const dataDirectory = path.join(projectRoot, "public", "data");
@@ -46,6 +47,7 @@ const publicIds = new Set();
 const slugs = new Set();
 const missingPhotos = [];
 const referencedPhotos = new Set();
+const referencedVideos = new Set();
 
 for (const listing of inventory.listings) {
   const publicId = listing.public_id || listing.publicId || listing.code;
@@ -54,6 +56,11 @@ for (const listing of inventory.listings) {
   publicIds.add(publicId);
   slugs.add(listing.slug);
   const photos = [listing.cover_photo, ...(listing.photos || [])].filter(Boolean);
+  for (const video of listing.videos || []) {
+    if (!video.startsWith(`/inventory/${listing.code}/`)) throw new Error(`Video does not belong to ${listing.code}`);
+    if (!referencedVideos.has(video)) inspectPublicVideo(path.join(projectRoot, "public", video.slice(1)));
+    referencedVideos.add(video);
+  }
   for (const photo of new Set(photos)) {
     referencedPhotos.add(photo);
     const photoPath = path.join(projectRoot, "public", photo.replace(/^\//, ""));
@@ -104,3 +111,4 @@ if (!inventory.isMockData) {
 
 console.log(`Inventory valid: ${inventory.listings.length} ${inventory.isMockData ? "development placeholder" : "published Stable"} listings, ${referencedPhotos.size} metadata-free display images (${(totalPhotoBytes / 1024 / 1024).toFixed(1)} MiB), schema ${inventory.schema_version}, version ${inventory.inventoryVersion}.`);
 console.log("Static download grants disabled: legacy manifest is empty; runtime grants require Access + KV + R2.");
+console.log(`Public videos valid: ${referencedVideos.size} streaming-ready MP4 files.`);

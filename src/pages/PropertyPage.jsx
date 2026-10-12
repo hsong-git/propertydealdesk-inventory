@@ -18,6 +18,7 @@ import { InventoryBadge } from "../components/InventoryBadge";
 import { rememberListingView } from "../components/RecentViewingPill";
 import { PHOTO_SELECTION_LIMIT } from "../utils/photoShare";
 import { PortraitModal } from "../components/PortraitModal";
+import { PropertyVideo } from "../components/PropertyVideo";
 
 const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false";
 
@@ -27,6 +28,7 @@ export function PropertyPage() {
   const { items, allItems, locationDictionary, loading, error } = useInventory();
   const listing = allItems.find((item) => item.slug === slug);
   const [activePhoto, setActivePhoto] = useState(0);
+  const [activeVideo, setActiveVideo] = useState(null);
   const [copied, setCopied] = useState(false);
   const [postingCopied, setPostingCopied] = useState(false);
   const [selectedPhotos, setSelectedPhotos] = useState([]);
@@ -47,7 +49,7 @@ export function PropertyPage() {
     setLightboxSlide(direction > 0 ? "next" : "previous");
     setActivePhoto((current) => (current + direction + listing.photos.length) % listing.photos.length);
   }
-  useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); setSelectedPhotos([]); setLightboxSlide(""); }, [slug]);
+  useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); setActiveVideo(null); setSelectedPhotos([]); setLightboxSlide(""); }, [slug]);
   useEffect(() => {
     if (!listing?.code) return;
     rememberListingView(listing.code);
@@ -109,12 +111,16 @@ export function PropertyPage() {
       <Link className="back-link" to={listing.visibility === "unlisted" && !COMBINED_CATALOGUE ? "/cmi" : "/"}><ArrowLeft size={17} /> {listing.visibility === "unlisted" && !COMBINED_CATALOGUE ? "Back to CMI Catalogue" : "Back to Catalogue"}</Link>
       <div className="detail-layout">
         <div className="detail-main">
-          <section className="gallery" aria-label="Property photos">
+          <section className="gallery" aria-label="Property photos and videos">
+            {listing.videos?.length ? <div className="gallery-video-controls" aria-label="Property videos"><button type="button" className={activeVideo === null ? "active" : ""} onClick={() => setActiveVideo(null)}>Photos</button>{listing.videos.map((src, index) => <button type="button" className={activeVideo === src ? "active" : ""} key={src} aria-pressed={activeVideo === src} onClick={() => setActiveVideo(src)}>▶ Video {index + 1}</button>)}</div> : null}
+            {activeVideo && listing.videos?.includes(activeVideo) ? <PropertyVideo src={activeVideo} title={listing.title} poster={listing.photos[0]} /> : null}
+            <div hidden={activeVideo !== null && listing.videos?.includes(activeVideo)}>
             <div className="gallery-main">{listing.photos[activePhoto]
               ? <button className="gallery-open" type="button" onClick={() => setLightboxOpen(true)} aria-label={`Open photo ${activePhoto + 1} of ${listing.photos.length} fullscreen`}><PublicPropertyImage allowIndividualSave src={listing.photos[activePhoto]} alt={`${listing.title} photo ${activePhoto + 1}`} /><span className="gallery-open-label"><Maximize2 size={17} /> Full view</span></button>
               : <span className="property-photo-placeholder detail-placeholder"><ImageOff size={38} /><small>No public photo supplied</small></span>}
               <span className={`intent intent-${displayIntent.toLowerCase()}`}>{displayIntent}<small>{intentLabels[displayIntent]}</small></span></div>
             {photoSharingEnabled && listing.photos.length > 0 ? <><div className="gallery-thumbnails">{listing.photos.map((photo, index) => { const selected = selectedPhotos.includes(photo); const blocked = selectedPhotos.length >= PHOTO_SELECTION_LIMIT && !selected; return <div className="gallery-thumbnail-choice" key={photo}><button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button><button type="button" disabled={blocked} className={`photo-select-toggle${selected ? " selected" : ""}${blocked ? " is-blocked" : ""}`} aria-label={`${selected ? "Deselect" : "Select"} photo ${index + 1}`} aria-pressed={selected} onClick={() => setSelectedPhotos((current) => selected ? current.filter((item) => item !== photo) : current.length < PHOTO_SELECTION_LIMIT ? [...current, photo] : current)}>{selected ? <Check size={14} /> : <span />}</button></div>; })}</div><button className="select-first-photos" type="button" onClick={selectFirstPhotos} disabled={!listing.photos.length} aria-pressed={firstPhotosSelected}>{firstPhotosSelected ? "Deselect first " : "Select first "}{Math.min(PHOTO_SELECTION_LIMIT, listing.photos.length)}</button><ShareSelectedPhotosButton listing={listing} selectedPhotos={selectedPhotos} /></> : listing.photos.length > 1 ? <div className="gallery-thumbnails">{listing.photos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
+            </div>
           </section>
           <section className="detail-title-block">
             <div className="property-reference"><span className="property-code"><InventoryBadge listing={listing} />{listing.displayCode || listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>

@@ -121,6 +121,11 @@
           "type": ["boolean", "null"],
           "description": "Public tenant eligibility: true welcomes suitable tenants, false prefers locals and a selective profile, null requires owner review."
         },
+        "videos": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^/inventory/(WTSL|WTS|WTL)[0-9]+/video-[a-f0-9]{20}\\.mp4$" }
+        },
         "posting_copy": {
           "type": ["string", "null"],
           "maxLength": 8000,

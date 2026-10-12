@@ -96,6 +96,8 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
     listedAt,
     updatedAt,
     photos: normalizePhotoPaths(raw, code, isMockData),
+    videos: [...new Set((Array.isArray(raw.videos) ? raw.videos : []).filter((video) =>
+      typeof video === "string" && video.startsWith(`/inventory/${code}/`) && /^\/inventory\/(?:WTSL|WTS|WTL)\d+\/video-[a-f0-9]{20}\.mp4$/.test(video)))],
     postingCopy: cleanNullableText(firstValue(raw.postingCopy, raw.posting_copy)),
     description: cleanText(raw.description, "Contact HS Ong for current public listing details."),
     features: cleanStringList(raw.features),

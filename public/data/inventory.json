@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.10.13.1",
-  "generated_at": "2026-10-13T04:59:44Z",
-  "publishedAt": "2026-10-13T04:59:44Z",
+  "inventoryVersion": "2026.10.13.2",
+  "generated_at": "2026-10-13T05:07:54Z",
+  "publishedAt": "2026-10-13T05:07:54Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -1696,6 +1696,62 @@
       "why_this_property": []
     },
     {
+      "public_id": "pub_8654ddeacfae592096356311",
+      "code": "WTL0099",
+      "intent": "WTL",
+      "visibility": "unlisted",
+      "slug": "wtl0099-3r2b-brand-new-partial-furnishing-tuai-timur-setia-alam-tuai-timur-setia-alam",
+      "title": "3R2B Brand New Partial Furnishing @ Tuai Timur, Setia Alam",
+      "property_type": "Condominium/Apartment",
+      "location": "Tuai Timur, Setia Alam",
+      "price": 2300,
+      "alternate_intent": null,
+      "alternate_price": null,
+      "accept_all_races": true,
+      "description": "Condominium/Apartment at Tuai Timur, Setia Alam. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 3,
+      "bathroom_count": 2,
+      "built_up_sqft": 1216,
+      "land_size": null,
+      "furnishing": "Partial",
+      "facing_direction": null,
+      "unit_type": "Intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-10-13T01:35:54Z",
+      "listed_at": "2026-10-13T09:35:53Z",
+      "posting_copy": "*WTL*\n\n*3R2B Brand New Partial Furnishing @ Tuai Timur, Setia Alam*\nRental *RM2,300*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Tuai Timur, Setia Alam\n- Furnishing: Partial\n- Size Approx. 1216 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Furnishing Included*\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Water Heater\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*Feature Highlights*\n- Brand New Unit\n- Newly furnishing\n- all items are new\n- Malay owner\n- Balcony facing ECO Ardence\n- AVAILABLE in NOV 2026\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0099*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0099",
+      "updated_at": "2026-10-13T04:38:27Z",
+      "cover_photo": "/inventory/WTL0099/cover.webp",
+      "photos": [
+        "/inventory/WTL0099/cover.webp",
+        "/inventory/WTL0099/photo-02.webp",
+        "/inventory/WTL0099/photo-03.webp",
+        "/inventory/WTL0099/photo-04.webp",
+        "/inventory/WTL0099/photo-05.webp",
+        "/inventory/WTL0099/photo-06.webp",
+        "/inventory/WTL0099/photo-07.webp",
+        "/inventory/WTL0099/photo-08.webp",
+        "/inventory/WTL0099/photo-09.webp",
+        "/inventory/WTL0099/photo-10.webp",
+        "/inventory/WTL0099/photo-11.webp",
+        "/inventory/WTL0099/photo-12.webp",
+        "/inventory/WTL0099/photo-13.webp"
+      ],
+      "features": [
+        "Brand New Unit Newly furnishing, all items are new Malay owner Balcony facing ECO Ardence AVAILABLE in NOV 2026"
+      ],
+      "amenities": [],
+      "why_this_property": [],
+      "cmi_agent_name": "Andrew",
+      "layouts": [
+        "/inventory/WTL0099/layout-01.webp"
+      ],
+      "videos": [
+        "/inventory/WTL0099/video-b6f3843ffd0ab1496f74.mp4"
+      ]
+    },
+    {
       "public_id": "pub_503eacf5b432174dca5e0833",
       "code": "WTS0003",
       "intent": "WTS",
@@ -3044,7 +3100,10 @@
         "Stunning stadium view from the balcony"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "layouts": [
+        "/inventory/WTS1001/layout-01.webp"
+      ]
     },
     {
       "public_id": "pub_eee5ce43f8f4e0016b38141a",
@@ -4421,6 +4480,53 @@
       ],
       "amenities": [],
       "why_this_property": []
+    },
+    {
+      "public_id": "pub_145e5a68a0b984e3f8c360b6",
+      "code": "WTS1039",
+      "intent": "WTS",
+      "visibility": "unlisted",
+      "slug": "wts1039-3r2b-open-view-unit-huni-eco-ardence-setia-alam-huni-eco-ardence-setia-alam",
+      "title": "3R2B Open View Unit @ Huni Eco Ardence, Setia Alam",
+      "property_type": "Condominium/Apartment",
+      "location": "Huni Eco Ardence, Setia Alam",
+      "price": 470000,
+      "alternate_intent": null,
+      "alternate_price": null,
+      "accept_all_races": null,
+      "description": "Condominium/Apartment at Huni Eco Ardence, Setia Alam. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 3,
+      "bathroom_count": 2,
+      "built_up_sqft": 1000,
+      "land_size": null,
+      "furnishing": "Partial",
+      "facing_direction": "East",
+      "unit_type": "Intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-10-13T03:39:03Z",
+      "listed_at": "2026-10-13T11:39:03Z",
+      "posting_copy": "*WTS*\n\n*3R2B Open View Unit @ Huni Eco Ardence, Setia Alam*\nSelling Price: *RM470,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Huni Eco Ardence, Setia Alam\n- Furnishing: Partial\n- Size Approx. 1000 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Facing Direction: East\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Furnishing Included*\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Water Heater\n- Table top and Cabinet\n\n*Feature Highlights*\n- Block B Level 13\n- Car Park at Level 4\n- Big unit with good condition\n- Balcony with Open View\n- Parking lot near lift\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1039*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1039",
+      "updated_at": "2026-10-13T04:38:25Z",
+      "cover_photo": "/inventory/WTS1039/cover.webp",
+      "photos": [
+        "/inventory/WTS1039/cover.webp",
+        "/inventory/WTS1039/photo-02.webp",
+        "/inventory/WTS1039/photo-03.webp",
+        "/inventory/WTS1039/photo-04.webp",
+        "/inventory/WTS1039/photo-05.webp",
+        "/inventory/WTS1039/photo-06.webp",
+        "/inventory/WTS1039/photo-07.webp"
+      ],
+      "features": [
+        "Block B Level 13 Car Park at Level 4 Big unit with good condition Balcony with Open View Parking lot near lift"
+      ],
+      "amenities": [],
+      "why_this_property": [],
+      "cmi_agent_name": "June Choong",
+      "layouts": [
+        "/inventory/WTS1039/layout-01.webp"
+      ]
     },
     {
       "public_id": "pub_350167e72f692941a86449e3",

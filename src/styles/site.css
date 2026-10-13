@@ -154,10 +154,10 @@ main { flex: 1; }
 .property-reference-main { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 5px; min-width: 0; }
 .property-media-pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 7px; border: 1px solid currentColor; border-radius: var(--radius-pill); font-size: 10px; font-weight: 800; letter-spacing: 0; line-height: 1.2; white-space: nowrap; }
 .property-media-pill-layout { background: #e8f1ff; color: #1f64c8; }
-.property-media-pill-video { background: #f2eaff; color: #7137b8; }
+.property-media-pill-videos { background: #f2eaff; color: #7137b8; }
 .property-media-pill:hover { color: white; }
 .property-media-pill-layout:hover { background: #1f64c8; border-color: #1f64c8; }
-.property-media-pill-video:hover { background: #7137b8; border-color: #7137b8; }
+.property-media-pill-videos:hover { background: #7137b8; border-color: #7137b8; }
 .property-media-pill:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 .property-reference > .availability { flex-shrink: 0; }
 .inventory-badge { display: inline-flex; align-items: center; padding: 3px 6px; border: 1px solid; border-radius: var(--radius-pill); font-size: 10px; font-weight: 850; line-height: 1.2; letter-spacing: .03em; }

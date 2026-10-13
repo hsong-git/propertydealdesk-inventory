@@ -19,6 +19,7 @@ import { rememberListingView } from "../components/RecentViewingPill";
 import { PHOTO_SELECTION_LIMIT } from "../utils/photoShare";
 import { PortraitModal } from "../components/PortraitModal";
 import { PropertyVideo } from "../components/PropertyVideo";
+import { initialListingGallery } from "../utils/listingMedia";
 
 const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false";
 
@@ -51,7 +52,18 @@ export function PropertyPage() {
     setLightboxSlide(direction > 0 ? "next" : "previous");
     setActivePhoto((current) => (current + direction + galleryPhotos.length) % galleryPhotos.length);
   }
-  useEffect(() => { window.scrollTo(0, 0); setActivePhoto(0); setActiveVideo(null); setActiveGallery("photos"); setSelectedPhotos([]); setLightboxSlide(""); }, [slug]);
+  const requestedMedia = searchParams.get("media");
+  const hasLayouts = Boolean(listing?.layouts?.length);
+  const firstVideo = listing?.videos?.[0];
+  useEffect(() => {
+    const gallery = initialListingGallery(listing, requestedMedia);
+    window.scrollTo(0, 0);
+    setActivePhoto(0);
+    setActiveVideo(gallery === "videos" ? firstVideo : null);
+    setActiveGallery(gallery);
+    setSelectedPhotos([]);
+    setLightboxSlide("");
+  }, [slug, listing?.code, requestedMedia, hasLayouts, firstVideo]);
   useEffect(() => {
     if (!listing?.code) return;
     rememberListingView(listing.code);

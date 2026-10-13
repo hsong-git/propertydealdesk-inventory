@@ -1,4 +1,4 @@
-import { BedDouble, Building2, CalendarDays, Copy, Expand, MapPin, MessageCircle, Share2 } from "lucide-react";
+import { BedDouble, Building2, CalendarDays, Copy, Expand, MapPin, MessageCircle, Share2, LayoutTemplate, Video } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
@@ -6,6 +6,7 @@ import { PublicPropertyImage } from "./PublicPropertyImage";
 import { InventoryBadge } from "./InventoryBadge";
 import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing, whatsappUrl, tenantEligibilitySummary, tenantEligibilityDescription, tenantEligibilityTone } from "../utils/listing";
 import { formatRoomSummary } from "../data/requirementContract";
+import { listingMediaLinks } from "../utils/listingMedia";
 
 export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) {
   const [shared, setShared] = useState(false);
@@ -40,7 +41,7 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
         {listing.featured ? <span className="featured-badge">Featured</span> : null}
       </Link>
       <div className="property-content">
-        <div className="property-reference"><span className="property-code"><InventoryBadge listing={listing} />{listing.displayCode || listing.code}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
+        <div className="property-reference"><span className="property-reference-main"><span className="property-code"><InventoryBadge listing={listing} />{listing.displayCode || listing.code}</span>{listingMediaLinks(listing, propertyHref).map((media) => <Link key={media.media} className="property-media-pill" to={media.href} aria-label={`View ${media.label.toLowerCase()} for ${listing.displayCode || listing.code}`}>{media.media === "layout" ? <LayoutTemplate size={12} aria-hidden="true" /> : <Video size={12} aria-hidden="true" />}{media.label}</Link>)}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
         <h3><Link to={propertyHref}>{listing.title}</Link></h3>
         <p className="property-location"><MapPin size={15} /> {listing.location}</p>
         <div className="property-price-row">

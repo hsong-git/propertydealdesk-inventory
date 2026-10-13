@@ -5,8 +5,23 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { shareListing } from "../src/utils/listing.js";
 import { anonymousBrowserLabel } from "../src/utils/anonymousBrowser.js";
+import { listingMediaLinks, initialListingGallery } from "../src/utils/listingMedia.js";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+test("SMI and CMI cards only link to existing media and preserve intent", () => {
+  for (const inventoryKind of ["SMI", "CMI"]) {
+    const listing = { inventoryKind, layouts: ["layout.webp"], videos: ["video.mp4"] };
+    assert.deepEqual(listingMediaLinks(listing, "/property/unit?intent=WTL").map(({ href }) => href), ["/property/unit?intent=WTL&media=layout", "/property/unit?intent=WTL&media=videos"]);
+    assert.equal(initialListingGallery(listing, "layout"), "layout");
+    assert.equal(initialListingGallery(listing, "videos"), "videos");
+  }
+  assert.deepEqual(listingMediaLinks({}, "/property/unit"), []);
+  assert.equal(listingMediaLinks({ videos: ["video.mp4"] }, "/property/unit")[0].href, "/property/unit?media=videos");
+  assert.equal(initialListingGallery({}, "layout"), "photos");
+  assert.equal(initialListingGallery({ layouts: ["layout.webp"] }, "videos"), "photos");
+  assert.equal(initialListingGallery({}, "unknown"), "photos");
+});
 
 test("photo and video switches sit below the main picture and above thumbnails", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");

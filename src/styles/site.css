@@ -151,6 +151,11 @@ main { flex: 1; }
 .property-content { padding: 14px; display: grid; gap: 8px; }
 .property-reference { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--color-primary); font-size: 11px; font-weight: 850; letter-spacing: .03em; }
 .property-code { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.property-reference-main { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 5px; min-width: 0; }
+.property-media-pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 7px; border: 1px solid #a8d9ca; border-radius: var(--radius-pill); background: var(--color-primary-soft); color: var(--color-primary); font-size: 10px; font-weight: 800; letter-spacing: 0; line-height: 1.2; white-space: nowrap; }
+.property-media-pill:hover { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+.property-media-pill:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.property-reference > .availability { flex-shrink: 0; }
 .inventory-badge { display: inline-flex; align-items: center; padding: 3px 6px; border: 1px solid; border-radius: var(--radius-pill); font-size: 10px; font-weight: 850; line-height: 1.2; letter-spacing: .03em; }
 .inventory-badge-smi { color: var(--color-primary); background: var(--color-primary-soft); border-color: #a8d9ca; }
 .inventory-badge-cmi { color: #854000; background: #fff1a8; border-color: #e88322; }

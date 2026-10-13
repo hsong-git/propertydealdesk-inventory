@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.2",
-  "inventoryVersion": "2026.10.13.2",
-  "generated_at": "2026-10-13T05:07:54Z",
-  "publishedAt": "2026-10-13T05:07:54Z",
+  "inventoryVersion": "2026.10.13.3",
+  "generated_at": "2026-10-13T06:44:40Z",
+  "publishedAt": "2026-10-13T06:44:40Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -3060,8 +3060,8 @@
       "featured": true,
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
-      "posting_copy": "*WTS*\n\n*Parkhill Residence, Bukit Jalil*\nSelling Price: *RM600,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bukit Jalil, Puchong, Kinrara\n- Furnishing: Full\n- Size Approx. 1100 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Feature Highlights*\n- Floor: High Floor (26th)\n- Carpark: 2 (Low Floor)\n- Occupancy: Currently Tenanted\n- Shuttle service to APU\n- Next to Astro & Asia Pacific University (APU)\n- 5 minutes covered walkway to STAR LRT\n- 5 minutes walking distance to Bukit Jalil Stadium\n- 10 minutes drive to Pavilion Bukit Jalil\n- Stunning stadium view from the balcony\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1001*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1001",
-      "updated_at": "2026-10-12T23:16:25Z",
+      "posting_copy": "*WTS*\n\n*Parkhill Residence, Bukit Jalil*\nSelling Price: *RM600,000*\n\n*Sell with tenancy worth RM3,000/month\"\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bukit Jalil, Puchong, Kinrara\n- Furnishing: Full\n- Size Approx. 1100 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Lot Type: Non Bumi Lot\n- Tenure: Leasehold\n\n*Feature Highlights*\n- Floor: High Floor (26th)\n- Carpark: 2 (Low Floor)\n- Occupancy: Currently Tenanted\n- Shuttle service to APU\n- Next to Astro & Asia Pacific University (APU)\n- 5 minutes covered walkway to STAR LRT\n- 5 minutes walking distance to Bukit Jalil Stadium\n- 10 minutes drive to Pavilion Bukit Jalil\n- Stunning stadium view from the balcony\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1001*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1001",
+      "updated_at": "2026-10-13T05:41:08Z",
       "cover_photo": "/inventory/WTS1001/cover.webp",
       "photos": [
         "/inventory/WTS1001/cover.webp",
@@ -3573,7 +3573,7 @@
       "created_at": "2026-07-21T04:53:04Z",
       "listed_at": "2026-07-21T12:53:04Z",
       "posting_copy": "*WTS*\n\n*3R3B 1.5 storeys Terrace House @ Laelia 1, Bayuemas, Klang*\nSelling Price: *RM660,000*\n\n*Property Details*\n- Property Type : Terrace House\n- Property Unit Type: Intermediate\n- Location: Laelia 1, Bayuemas, Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 70\n- Size Approx. 1568 sqft\n- 3 Bedrooms | 3 Bathrooms\n- Facing Direction: North\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Feature Highlights*\n- 1.5 storeys\n- Freehold\n- Non Bumi Lot\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1014*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1014",
-      "updated_at": "2026-10-13T04:28:53Z",
+      "updated_at": "2026-10-13T05:45:15Z",
       "cover_photo": "/inventory/WTS1014/cover.webp",
       "photos": [
         "/inventory/WTS1014/cover.webp",
@@ -4289,7 +4289,10 @@
         "Non Bumi Lot All races and foreigner are welcome. Subject to profile review. For rental - Foreigner 3 months rental deposit"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "layouts": [
+        "/inventory/WTS1034/layout-01.webp"
+      ]
     },
     {
       "public_id": "pub_d9544595b9e4d0c305b9d133",
@@ -4479,7 +4482,10 @@
         "Brand new untenanted house End lot with ~8ft side land Gated and Guarded Community"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "layouts": [
+        "/inventory/WTS1038/layout-01.webp"
+      ]
     },
     {
       "public_id": "pub_145e5a68a0b984e3f8c360b6",

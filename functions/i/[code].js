@@ -149,8 +149,24 @@ function withNoStore(response) {
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }
 
+export function canonicalShortcutCode(value) {
+  return String(value || "").trim().toUpperCase().replace(/^(?:CMI-)+/, "");
+}
+
 export async function onRequestGet({ env, params, request }) {
-  const code = String(params.code || "").trim().toUpperCase();
+  const requestedCode = String(params.code || "").trim().toUpperCase();
+  const code = canonicalShortcutCode(requestedCode);
+
+  // Older CMI previews incorrectly published the display label (CMI-WTL0083)
+  // as the shortcut URL. Keep those cached/shared links working while making
+  // the real listing code the one canonical shortcut.
+  if (requestedCode !== code && code) {
+    const location = new URL(`/i/${encodeURIComponent(code)}`, request.url).toString();
+    return new Response(null, {
+      status: 301,
+      headers: { ...noStoreHeaders(), location },
+    });
+  }
 
   try {
     const inventory = await readInventory(env, request);

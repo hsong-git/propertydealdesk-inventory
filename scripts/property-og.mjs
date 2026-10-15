@@ -176,7 +176,10 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
       path.join(shortRouteDirectory, "index.html"),
       renderPropertyRouteHtml(indexHtml, listing, publicRoot, {
         imageOverride,
-        ogUrlOverride: `${SITE_ORIGIN}/i/${listing.displayCode || listing.code}`,
+        // The shortcut route is keyed by the stored listing code. CMI is a
+        // display-only prefix, so publishing it in og:url creates a URL that
+        // the Pages shortcut function cannot resolve.
+        ogUrlOverride: `${SITE_ORIGIN}/i/${encodeURIComponent(listing.code)}`,
       }),
     );
   }

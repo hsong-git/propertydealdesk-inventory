@@ -106,6 +106,9 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
       assert.match(html, /Agent: Bee Ang/);
       assert.match(html, /noindex, nofollow/);
     }
+    const shortcutHtml = fs.readFileSync(path.join(distRoot, "i", hidden.code, "index.html"), "utf8");
+    assert.match(shortcutHtml, /<meta property="og:url" content="https:\/\/property\.myeviv\.com\/i\/WTL0099" \/>/);
+    assert.doesNotMatch(shortcutHtml, /property\.myeviv\.com\/i\/CMI-WTL0099/);
     const manifest = JSON.parse(fs.readFileSync(path.join(distRoot, "data", "seo-routes.json"), "utf8"));
     assert.deepEqual(manifest.properties, [visible.slug]);
     assert.deepEqual(manifest.unlistedProperties, [hidden.slug]);

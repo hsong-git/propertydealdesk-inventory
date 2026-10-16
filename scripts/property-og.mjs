@@ -3,7 +3,7 @@ import path from "node:path";
 import sharp from "sharp";
 import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { COMBINED_CATALOGUE } from "../src/config/catalogueSite.js";
-import { formatPrice } from "../src/utils/listing.js";
+import { formatPrice, listingShortUrl } from "../src/utils/listing.js";
 import { absoluteUrl, defaultSeo, propertyBreadcrumbs, propertyJsonLd, propertySeoDescription, SITE_ORIGIN } from "../src/utils/seo.js";
 import { inspectPublicImage } from "./image-policy.mjs";
 import { propertyPhotoWatermark } from "../src/config/watermark.js";
@@ -179,7 +179,10 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
         // The shortcut route is keyed by the stored listing code. CMI is a
         // display-only prefix, so publishing it in og:url creates a URL that
         // the Pages shortcut function cannot resolve.
-        ogUrlOverride: `${SITE_ORIGIN}/i/${encodeURIComponent(listing.code)}`,
+        // Version CMI share objects so Facebook does not retain a failed or
+        // outdated scrape after a new catalogue publication. The canonical
+        // property URL remains stable.
+        ogUrlOverride: listingShortUrl(listing),
       }),
     );
   }

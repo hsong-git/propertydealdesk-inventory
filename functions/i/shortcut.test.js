@@ -19,9 +19,9 @@ test("redirects legacy CMI display-code shortcuts to the routable listing code",
   const response = await onRequestGet({
     env: { ASSETS: { fetch: () => assert.fail("legacy aliases redirect before an asset lookup") } },
     params: { code: "CMI-WTL0083" },
-    request: new Request("https://scmi.myeviv.com/i/CMI-WTL0083"),
+    request: new Request("https://scmi.myeviv.com/i/CMI-WTL0083?v=2026.10.16.2"),
   });
 
   assert.equal(response.status, 301);
-  assert.equal(response.headers.get("location"), "https://scmi.myeviv.com/i/WTL0083");
+  assert.equal(response.headers.get("location"), "https://scmi.myeviv.com/i/WTL0083?v=2026.10.16.2");
 });

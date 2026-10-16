@@ -96,7 +96,13 @@ export const listingDetailUrl = (listing, origin = listingPublicOrigin(listing))
 
 const supplyIntents = new Set(["WTS", "WTL"]);
 
-export const listingShortUrl = (listing, origin = listingPublicOrigin(listing)) => `${origin}/i/${String(listing.code || "").toUpperCase()}`;
+const shareVersion = (listing) => String(listing.inventoryVersion || listing.updatedAt || "").trim();
+
+export const listingShortUrl = (listing, origin = listingPublicOrigin(listing)) => {
+  const baseUrl = `${origin}/i/${String(listing.code || "").toUpperCase()}`;
+  const version = listing.visibility === "unlisted" ? shareVersion(listing) : "";
+  return version ? `${baseUrl}?v=${encodeURIComponent(version)}` : baseUrl;
+};
 
 export const postingFootnoteUrl = (listing) => {
   const intent = String(listing.intent || "").toUpperCase();

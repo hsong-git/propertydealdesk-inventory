@@ -161,7 +161,7 @@ export async function onRequestGet({ env, params, request }) {
   // as the shortcut URL. Keep those cached/shared links working while making
   // the real listing code the one canonical shortcut.
   if (requestedCode !== code && code) {
-    const location = new URL(`/i/${encodeURIComponent(code)}`, request.url).toString();
+    const location = new URL(`/i/${encodeURIComponent(code)}${new URL(request.url).search}`, request.url).toString();
     return new Response(null, {
       status: 301,
       headers: { ...noStoreHeaders(), location },

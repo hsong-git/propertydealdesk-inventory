@@ -49,7 +49,7 @@ function normalizePhotoPaths(raw, code, isMockData) {
     }))];
 }
 
-export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
+export function normalizePublicListing(raw, { isMockData, fallbackTimestamp, inventoryVersion = "" }) {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
   const code = cleanText(firstValue(raw.code, raw.listingCode, raw.listing_code)).toUpperCase();
   const intent = cleanText(raw.intent).toUpperCase();
@@ -95,6 +95,7 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp }) {
     createdAt,
     listedAt,
     updatedAt,
+    inventoryVersion,
     photos: normalizePhotoPaths(raw, code, isMockData),
     layouts: [...new Set((Array.isArray(raw.layouts) ? raw.layouts : []).filter((p) =>
       typeof p === "string" && p.startsWith(`/inventory/${code}/`) && /^\/inventory\/(?:WTSL|WTS|WTL)\d+\/layout-[0-9]+\.webp$/.test(p)))],
@@ -128,7 +129,11 @@ export function normalizeInventoryFeed(payload, { includeCmi = COMBINED_CATALOGU
     "unversioned",
   ));
   const allItems = (Array.isArray(payload.listings) ? payload.listings : [])
-    .map((listing) => normalizePublicListing(listing, { isMockData, fallbackTimestamp: publishedAt || generatedAt }))
+    .map((listing) => normalizePublicListing(listing, {
+      isMockData,
+      fallbackTimestamp: publishedAt || generatedAt,
+      inventoryVersion,
+    }))
     .filter(Boolean);
 
   return {

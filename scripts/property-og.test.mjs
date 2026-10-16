@@ -107,7 +107,7 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
       assert.match(html, /noindex, nofollow/);
     }
     const shortcutHtml = fs.readFileSync(path.join(distRoot, "i", hidden.code, "index.html"), "utf8");
-    assert.match(shortcutHtml, /<meta property="og:url" content="https:\/\/property\.myeviv\.com\/i\/WTL0099" \/>/);
+    assert.match(shortcutHtml, /<meta property="og:url" content="https:\/\/scmi\.myeviv\.com\/i\/WTL0099\?v=2026\.07\.29\.1" \/>/);
     assert.doesNotMatch(shortcutHtml, /property\.myeviv\.com\/i\/CMI-WTL0099/);
     const manifest = JSON.parse(fs.readFileSync(path.join(distRoot, "data", "seo-routes.json"), "utf8"));
     assert.deepEqual(manifest.properties, [visible.slug]);
@@ -154,6 +154,17 @@ test("uses stable short URL format for share actions", () => {
   const { items } = normalizeInventoryFeed(feed);
   assert.equal(listingShortUrl(items[0]), "https://property.myeviv.com/i/WTS1004");
   assert.match(propertyOgDescription(items[0]), /Family Home/);
+});
+
+test("versions CMI short URLs so social crawlers fetch a fresh preview", () => {
+  const { allItems } = normalizeInventoryFeed({
+    ...feed,
+    listings: [{ ...feed.listings[0], visibility: "unlisted" }],
+  }, { includeCmi: true });
+  assert.equal(
+    listingShortUrl(allItems[0]),
+    "https://scmi.myeviv.com/i/WTS1004?v=2026.07.29.1",
+  );
 });
 
 test("paginated catalogue uses the shared site theme and crawlable navigation", () => {

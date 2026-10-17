@@ -10,7 +10,7 @@ import { propertyPhotoWatermark } from "../src/config/watermark.js";
 import { renderCatalogueContent } from "./catalogue-html.mjs";
 
 const OG_DESCRIPTION_LIMIT = 210;
-const OG_IMAGE_RENDER_VERSION = "5";
+const OG_IMAGE_RENDER_VERSION = "6";
 const OG_ADPAGE_STRETCHED_HEIGHT = 690;
 const CONTACT_LINE_PATTERN = /^(contact|whatsapp|phone|tel|mobile|email)\b/i;
 const PHONE_LIKE_PATTERN = /(?:\+?6?01[\d\s-]{7,})/i;
@@ -146,28 +146,32 @@ async function createPropertyOgImage(listing, publicRoot, distRoot, inventoryVer
   if (!fs.existsSync(sourcePath)) return null;
   const code = String(listing.code || "listing").toUpperCase().replace(/[^A-Z0-9_-]/g, "-");
   const version = String(inventoryVersion || "current").replace(/[^A-Za-z0-9._-]/g, "-");
-  const relativePath = `/og/properties/${code}-${version}-v${OG_IMAGE_RENDER_VERSION}.jpg`;
+  const isAdPage = Boolean(listing.adPage);
+  const extension = isAdPage ? "png" : "jpg";
+  const relativePath = `/og/properties/${code}-${version}-v${OG_IMAGE_RENDER_VERSION}.${extension}`;
   const destination = path.join(distRoot, relativePath.replace(/^\//, ""));
   fs.mkdirSync(path.dirname(destination), { recursive: true });
   // Stretch AdPages slightly taller than the final Facebook canvas, then take
   // a shallow centred trim. This fills 1.91:1 without side borders while
   // avoiding the overly wide look of a direct 1200x630 non-proportional fit.
   const image = sharp(sourcePath).rotate();
-  if (listing.adPage) {
+  if (isAdPage) {
     image
       .resize({ width: 1200, height: OG_ADPAGE_STRETCHED_HEIGHT, fit: "fill" })
       .extract({ left: 0, top: (OG_ADPAGE_STRETCHED_HEIGHT - 630) / 2, width: 1200, height: 630 });
   } else {
     image.resize({ width: 1200, height: 630, fit: "cover", position: "centre" });
   }
-  await image
-    // Preserve small AdPage text and icons through Facebook's own recompression.
-    // 4:4:4 avoids the colour-edge blur caused by JPEG's default 4:2:0
-    // chroma subsampling, while a restrained sharpen restores resize detail.
-    .sharpen({ sigma: 0.6 })
-    .jpeg({ quality: 95, chromaSubsampling: "4:4:4", progressive: true, mozjpeg: true })
-    .toFile(destination);
-  return { url: `${SITE_ORIGIN}${relativePath}`, width: "1200", height: "630", type: "image/jpeg" };
+  // AdPages contain small text and icons, so keep them lossless until Facebook
+  // performs its own resizing/compression. Photo-only fallbacks remain a
+  // high-quality 4:4:4 JPEG to avoid unnecessarily large social assets.
+  image.sharpen({ sigma: 0.6 });
+  if (isAdPage) {
+    await image.png({ compressionLevel: 6, adaptiveFiltering: true, palette: false }).toFile(destination);
+  } else {
+    await image.jpeg({ quality: 95, chromaSubsampling: "4:4:4", progressive: true, mozjpeg: true }).toFile(destination);
+  }
+  return { url: `${SITE_ORIGIN}${relativePath}`, width: "1200", height: "630", type: isAdPage ? "image/png" : "image/jpeg" };
 }
 
 export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distRoot }) {

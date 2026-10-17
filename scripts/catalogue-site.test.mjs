@@ -31,7 +31,7 @@ test("SCMI build combines only exported SMI/CMI and keeps links on its own origi
   assert.deepEqual(result.codes, ["WTL0001", "WTL0002"]);
   assert.equal(result.smiShare, "https://property.myeviv.com/i/WTL0001");
   assert.equal(result.smiDetail, "https://property.myeviv.com/property/smi-unit");
-  assert.equal(result.cmiShare, "https://scmi.myeviv.com/i/WTL0002?v=2026-10-09T00%3A00%3A00Z&preview=4");
+  assert.equal(result.cmiShare, "https://scmi.myeviv.com/i/WTL0002?v=2026-10-09T00%3A00%3A00Z&preview=6");
   assert.doesNotMatch(result.smiPosting, /preview=/);
   assert.match(result.smiPosting, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTL0001$/);
   assert.match(result.posting, /CMI-WTL0002/);
@@ -51,7 +51,7 @@ test("property build remains SMI-only, with existing unlisted direct links", () 
   assert.equal(result.origin, "https://property.myeviv.com");
   assert.deepEqual(result.codes, ["WTL0001"]);
   assert.equal(result.smiShare, "https://property.myeviv.com/i/WTL0001");
-  assert.equal(result.cmiShare, "https://scmi.myeviv.com/i/WTL0002?v=2026-10-09T00%3A00%3A00Z&preview=4");
+  assert.equal(result.cmiShare, "https://scmi.myeviv.com/i/WTL0002?v=2026-10-09T00%3A00%3A00Z&preview=6");
   assert.match(result.html, /noindex, nofollow/);
   assert.doesNotMatch(result.catalogue, /CMI Units/);
 });

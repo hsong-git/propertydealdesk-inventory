@@ -92,7 +92,7 @@ export const whatsappUrl = (number, message) => `https://wa.me/${number}?text=${
 
 export const listingDetailUrl = (listing, origin = listingPublicOrigin(listing)) => `${origin}/property/${listing.slug}`;
 
-export const SOCIAL_PREVIEW_REVISION = "4";
+export const SOCIAL_PREVIEW_REVISION = "6";
 
 const shareVersion = (listing) => String(listing.inventoryVersion || listing.updatedAt || "").trim();
 

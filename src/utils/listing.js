@@ -95,13 +95,17 @@ export const whatsappUrl = (number, message) => `https://wa.me/${number}?text=${
 export const listingDetailUrl = (listing, origin = listingPublicOrigin(listing)) => `${origin}/property/${listing.slug}`;
 
 const supplyIntents = new Set(["WTS", "WTL"]);
+export const SOCIAL_PREVIEW_REVISION = "4";
 
 const shareVersion = (listing) => String(listing.inventoryVersion || listing.updatedAt || "").trim();
 
 export const listingShortUrl = (listing, origin = listingPublicOrigin(listing)) => {
   const baseUrl = `${origin}/i/${String(listing.code || "").toUpperCase()}`;
-  const version = listing.visibility === "unlisted" ? shareVersion(listing) : "";
-  return version ? `${baseUrl}?v=${encodeURIComponent(version)}` : baseUrl;
+  const needsVersionedPreview = listing.visibility === "unlisted" || Boolean(listing.adPage);
+  const version = needsVersionedPreview ? shareVersion(listing) : "";
+  if (!version) return baseUrl;
+  const query = new URLSearchParams({ v: version, preview: SOCIAL_PREVIEW_REVISION });
+  return `${baseUrl}?${query.toString()}`;
 };
 
 export const postingFootnoteUrl = (listing) => {

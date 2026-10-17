@@ -114,16 +114,20 @@ test("property cards expose a compact Copy posting action", () => {
   assert.match(css, /width: 32px/);
 });
 
-test("AdPage cards and the active AdPage gallery image do not cover artwork with intent pills", () => {
+test("intent pills are shown in listing headers and never cover catalogue or gallery photos", () => {
   const card = fs.readFileSync(path.join(projectRoot, "src", "components", "PropertyCard.jsx"), "utf8");
   const related = fs.readFileSync(path.join(projectRoot, "src", "components", "RelatedListings.jsx"), "utf8");
   const page = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
   const staticCards = fs.readFileSync(path.join(projectRoot, "scripts", "catalogue-html.mjs"), "utf8");
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
-  assert.match(card, /listing\.adPage \? null : <span className=\{`intent/);
-  assert.match(related, /listing\.adPage \? null : <span className=\{`intent/);
-  assert.match(page, /galleryPhotos\[activePhoto\] === listing\.adPage \? null : <span className=\{`intent/);
-  assert.match(staticCards, /listing\.adPage \? "" : `<span class="intent/);
+  assert.doesNotMatch(card, /listing\.adPage \? null : <span className=\{`intent/);
+  assert.doesNotMatch(related, /listing\.adPage \? null : <span className=\{`intent/);
+  assert.doesNotMatch(page, /galleryPhotos\[activePhoto\] === listing\.adPage \? null : <span className=\{`intent/);
+  assert.doesNotMatch(staticCards, /listing\.adPage \? "" : `<span class="intent/);
+  assert.match(card, /property-reference[\s\S]{0,900}<span className=\{`intent/);
+  assert.match(related, /property-reference[\s\S]{0,400}<span className=\{`intent/);
+  assert.match(page, /property-reference[\s\S]{0,400}<span className=\{`intent/);
+  assert.match(staticCards, /property-reference[\s\S]{0,300}<span class="intent/);
   assert.match(css, /\.property-photo \.watermarked-image\.is-ad-page > img \{ object-fit: contain; \}/);
 });
 

@@ -161,7 +161,7 @@ main { flex: 1; }
 .property-media-pill-layout:hover { background: #1f64c8; border-color: #1f64c8; }
 .property-media-pill-videos:hover { background: #7137b8; border-color: #7137b8; }
 .property-media-pill:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-.property-reference > .availability { flex-shrink: 0; }
+.property-reference > .availability, .property-reference > .intent { flex-shrink: 0; }
 .inventory-badge { display: inline-flex; align-items: center; padding: 3px 6px; border: 1px solid; border-radius: var(--radius-pill); font-size: 10px; font-weight: 850; line-height: 1.2; letter-spacing: .03em; }
 .inventory-badge-smi { color: var(--color-primary); background: var(--color-primary-soft); border-color: #a8d9ca; }
 .inventory-badge-cmi { color: #854000; background: #fff1a8; border-color: #e88322; }
@@ -768,7 +768,7 @@ main { flex: 1; }
   .related-listing-copy .button { min-height: 34px; font-size: 12px; }
   .property-photo { height: 100%; aspect-ratio: auto; }
   .property-reference { font-size: 10px; }
-  .availability { max-width: 88px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .availability, .property-reference > .intent { max-width: 110px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .property-facts span { font-size: 10px; }
   .property-actions .button { font-size: 12px; }
   .icon-only-mobile span { display: none; }

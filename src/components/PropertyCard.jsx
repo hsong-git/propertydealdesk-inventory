@@ -37,11 +37,10 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
         {listing.photos[0]
           ? <PublicPropertyImage className={listing.adPage ? "is-ad-page" : ""} src={listing.photos[0]} alt={`${listing.title} in ${listing.location}`} loading="lazy" />
           : <span className="property-photo-placeholder"><Building2 size={30} /><small>Photo coming soon</small></span>}
-        {listing.adPage ? null : <span className={`intent intent-${displayedIntent.toLowerCase()}`}>{displayedIntent}<small>{intentLabels[displayedIntent]}</small></span>}
         {listing.featured ? <span className="featured-badge">Featured</span> : null}
       </Link>
       <div className="property-content">
-        <div className="property-reference"><span className="property-reference-main"><span className="property-code"><InventoryBadge listing={listing} />{listing.displayCode || listing.code}</span>{listingMediaLinks(listing, propertyHref).map((media) => <Link key={media.media} className={`property-media-pill property-media-pill-${media.media}`} to={media.href} aria-label={`View ${media.label.toLowerCase()} for ${listing.displayCode || listing.code}`}>{media.media === "layout" ? <LayoutTemplate size={12} aria-hidden="true" /> : <Video size={12} aria-hidden="true" />}{media.label}</Link>)}</span><span className={`availability availability-${listing.availability.toLowerCase().replaceAll(" ", "-")}`}>{listing.availability}</span></div>
+        <div className="property-reference"><span className="property-reference-main"><span className="property-code"><InventoryBadge listing={listing} />{listing.displayCode || listing.code}</span>{listingMediaLinks(listing, propertyHref).map((media) => <Link key={media.media} className={`property-media-pill property-media-pill-${media.media}`} to={media.href} aria-label={`View ${media.label.toLowerCase()} for ${listing.displayCode || listing.code}`}>{media.media === "layout" ? <LayoutTemplate size={12} aria-hidden="true" /> : <Video size={12} aria-hidden="true" />}{media.label}</Link>)}</span><span className={`intent intent-${displayedIntent.toLowerCase()}`}>{displayedIntent}<small>{intentLabels[displayedIntent]}</small></span></div>
         <h3><Link to={propertyHref}>{listing.title}</Link></h3>
         <p className="property-location"><MapPin size={15} /> {listing.location}</p>
         <div className="property-price-row">

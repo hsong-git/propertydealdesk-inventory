@@ -10,8 +10,8 @@ import { propertyPhotoWatermark } from "../src/config/watermark.js";
 import { renderCatalogueContent } from "./catalogue-html.mjs";
 
 const OG_DESCRIPTION_LIMIT = 210;
-const OG_IMAGE_RENDER_VERSION = "2";
-const OG_IMAGE_BACKGROUND = { r: 245, g: 247, b: 246 };
+const OG_IMAGE_RENDER_VERSION = "4";
+const OG_ADPAGE_STRETCHED_HEIGHT = 690;
 const CONTACT_LINE_PATTERN = /^(contact|whatsapp|phone|tel|mobile|email)\b/i;
 const PHONE_LIKE_PATTERN = /(?:\+?6?01[\d\s-]{7,})/i;
 
@@ -149,15 +149,18 @@ async function createPropertyOgImage(listing, publicRoot, distRoot, inventoryVer
   const relativePath = `/og/properties/${code}-${version}-v${OG_IMAGE_RENDER_VERSION}.jpg`;
   const destination = path.join(distRoot, relativePath.replace(/^\//, ""));
   fs.mkdirSync(path.dirname(destination), { recursive: true });
-  // AdPages contain text and feature panels near their edges. Facebook's
-  // 1.91:1 preview would cut those details off if we used a centre crop.
-  // Preserve the complete AdPage and add narrow neutral side margins instead.
-  const resize = listing.adPage
-    ? { width: 1200, height: 630, fit: "contain", background: OG_IMAGE_BACKGROUND }
-    : { width: 1200, height: 630, fit: "cover", position: "centre" };
-  await sharp(sourcePath)
-    .rotate()
-    .resize(resize)
+  // Stretch AdPages slightly taller than the final Facebook canvas, then take
+  // a shallow centred trim. This fills 1.91:1 without side borders while
+  // avoiding the overly wide look of a direct 1200x630 non-proportional fit.
+  const image = sharp(sourcePath).rotate();
+  if (listing.adPage) {
+    image
+      .resize({ width: 1200, height: OG_ADPAGE_STRETCHED_HEIGHT, fit: "fill" })
+      .extract({ left: 0, top: (OG_ADPAGE_STRETCHED_HEIGHT - 630) / 2, width: 1200, height: 630 });
+  } else {
+    image.resize({ width: 1200, height: 630, fit: "cover", position: "centre" });
+  }
+  await image
     .jpeg({ quality: 82, progressive: true, mozjpeg: true })
     .toFile(destination);
   return { url: `${SITE_ORIGIN}${relativePath}`, width: "1200", height: "630", type: "image/jpeg" };

@@ -34,7 +34,11 @@ test("photo and video switches sit below the main picture and above thumbnails",
 
 test("detail-page photos preserve their complete aspect ratio", () => {
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
-  assert.match(css, /\.gallery-open \.watermarked-image > img \{ object-fit: contain; object-position: center; \}/);
+  assert.match(css, /\.gallery-main \{ position: relative; border-radius:/);
+  assert.doesNotMatch(css, /\.gallery-main \{[^}]*aspect-ratio:/);
+  assert.match(css, /\.gallery-open \{[^}]*height: auto;/);
+  assert.match(css, /\.gallery-open \.watermarked-image \{ height: auto; \}/);
+  assert.match(css, /\.gallery-open \.watermarked-image > img \{ width: 100%; height: auto; object-fit: contain; object-position: center; \}/);
   assert.match(css, /\.gallery-open:hover \.watermarked-image > img \{ transform: none; \}/);
 });
 

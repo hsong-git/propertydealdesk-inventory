@@ -1,7 +1,7 @@
 import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
 
 const CONTRACT_SCHEMA = "propertydealdesk-public-inventory";
-const SUPPORTED_SCHEMA_VERSIONS = new Set(["1", "1.0", "1.1", "1.2"]);
+const SUPPORTED_SCHEMA_VERSIONS = new Set(["1", "1.0", "1.1", "1.2", "1.3"]);
 const SUPPLY_INTENTS = new Set(["WTS", "WTL"]);
 const MOCK_INTENTS = new Set(["WTS", "WTL"]);
 const PUBLIC_AVAILABILITY = new Set([
@@ -65,6 +65,8 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp, inv
   const createdAt = cleanText(firstValue(raw.createdAt, raw.created_at, updatedAt));
   const listedAt = cleanNullableText(firstValue(raw.listedAt, raw.listed_at));
   const slug = slugify(firstValue(raw.slug, `${code}-${title}-${location}`));
+  const adPage = cleanNullableText(firstValue(raw.adPage, raw.ad_page));
+  const safeAdPage = adPage === `/inventory/${code}/ad-page.webp` ? adPage : null;
 
   // This returned object is the complete browser-visible allowlist. Unknown
   // source keys—including internal notes, contacts and database IDs—are dropped.
@@ -97,6 +99,7 @@ export function normalizePublicListing(raw, { isMockData, fallbackTimestamp, inv
     updatedAt,
     inventoryVersion,
     photos: normalizePhotoPaths(raw, code, isMockData),
+    adPage: safeAdPage,
     layouts: [...new Set((Array.isArray(raw.layouts) ? raw.layouts : []).filter((p) =>
       typeof p === "string" && p.startsWith(`/inventory/${code}/`) && /^\/inventory\/(?:WTSL|WTS|WTL)\d+\/layout-[0-9]+\.webp$/.test(p)))],
     videos: [...new Set((Array.isArray(raw.videos) ? raw.videos : []).filter((video) =>

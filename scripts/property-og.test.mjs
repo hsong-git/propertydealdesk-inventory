@@ -150,6 +150,25 @@ test("renders crawler-visible property OG tags from public listing data", () => 
   }
 });
 
+test("uses AdPage for crawler OG image and visible main image", () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "pdd-adpage-og-"));
+  try {
+    fs.mkdirSync(path.join(directory, "inventory", "WTS1004"), { recursive: true });
+    fs.writeFileSync(path.join(directory, "inventory", "WTS1004", "ad-page.webp"), webp());
+    const adPage = "/inventory/WTS1004/ad-page.webp";
+    const { items } = normalizeInventoryFeed({
+      ...feed,
+      schema_version: "1.3",
+      listings: [{ ...feed.listings[0], cover_photo: adPage, photos: [adPage, ...feed.listings[0].photos], ad_page: adPage }],
+    });
+    const html = renderPropertyRouteHtml(shell, items[0], directory);
+    assert.match(html, /<meta property="og:image" content="https:\/\/property\.myeviv\.com\/inventory\/WTS1004\/ad-page\.webp" \/>/);
+    assert.match(html, /<img src="\/inventory\/WTS1004\/ad-page\.webp"/);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
 test("uses stable short URL format for share actions", () => {
   const { items } = normalizeInventoryFeed(feed);
   assert.equal(listingShortUrl(items[0]), "https://property.myeviv.com/i/WTS1004");

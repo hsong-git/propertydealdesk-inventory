@@ -16,7 +16,7 @@
   ],
   "properties": {
     "schema": { "const": "propertydealdesk-public-inventory" },
-    "schema_version": { "enum": ["1.0", "1.1", "1.2"] },
+    "schema_version": { "enum": ["1.0", "1.1", "1.2", "1.3"] },
     "inventoryVersion": { "type": "string", "minLength": 1 },
     "generated_at": { "type": "string", "format": "date-time" },
     "publishedAt": { "type": ["string", "null"], "format": "date-time" },
@@ -115,6 +115,10 @@
         "photos": {
           "type": "array",
           "items": { "$ref": "#/$defs/stablePhotoPath" }
+        },
+        "ad_page": {
+          "type": "string",
+          "pattern": "^/inventory/(WTSL|WTS|WTL)[0-9]+/ad-page\\.webp$"
         },
         "cmi_agent_name": { "type": ["string", "null"] },
         "accept_all_races": {

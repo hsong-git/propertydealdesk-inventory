@@ -61,7 +61,7 @@ export function propertyOgDescription(listing) {
 
 export function propertyOgImage(listing, publicRoot, imageOverride = null) {
   if (imageOverride) return imageOverride;
-  const relativeImage = listing.photos?.[0] || defaultSeo.image;
+  const relativeImage = listing.adPage || listing.photos?.[0] || defaultSeo.image;
   const absoluteImage = absoluteUrl(relativeImage);
   if (absoluteImage === defaultSeo.image) {
     return {
@@ -138,7 +138,7 @@ export function renderPropertyRouteHtml(indexHtml, listing, publicRoot, { canoni
 }
 
 async function createPropertyOgImage(listing, publicRoot, distRoot, inventoryVersion) {
-  const source = listing.cover_photo || listing.photos?.[0];
+  const source = listing.adPage || listing.cover_photo || listing.photos?.[0];
   if (!source) return null;
   const sourcePath = path.join(publicRoot, source.replace(/^\//, ""));
   if (!fs.existsSync(sourcePath)) return null;

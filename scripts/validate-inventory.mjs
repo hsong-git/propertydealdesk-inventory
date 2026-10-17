@@ -55,7 +55,7 @@ for (const listing of inventory.listings) {
   if (slugs.has(listing.slug)) throw new Error(`Duplicate slug: ${listing.slug}`);
   publicIds.add(publicId);
   slugs.add(listing.slug);
-  const photos = [listing.cover_photo, ...(listing.photos || []), ...(listing.layouts || [])].filter(Boolean);
+  const photos = [listing.cover_photo, listing.ad_page, ...(listing.photos || []), ...(listing.layouts || [])].filter(Boolean);
   for (const video of listing.videos || []) {
     if (!video.startsWith(`/inventory/${listing.code}/`)) throw new Error(`Video does not belong to ${listing.code}`);
     if (!referencedVideos.has(video)) inspectPublicVideo(path.join(projectRoot, "public", video.slice(1)));
@@ -100,11 +100,14 @@ if (!inventory.isMockData) {
       throw new Error(`Production export contains non-supply intent ${listing.intent} for ${listing.code}.`);
     }
     const expectedPrefix = `/inventory/${listing.code}/`;
-    const photos = [listing.cover_photo, ...(listing.photos || []), ...(listing.layouts || [])].filter(Boolean);
+    const photos = [listing.cover_photo, listing.ad_page, ...(listing.photos || []), ...(listing.layouts || [])].filter(Boolean);
     const invalidPath = photos.find((photo) => !photo.startsWith(expectedPrefix));
     if (invalidPath) throw new Error(`Photo path for ${listing.code} must start with ${expectedPrefix}: ${invalidPath}`);
     if (listing.cover_photo && listing.photos[0] !== listing.cover_photo) {
       throw new Error(`photos[0] must equal cover_photo for ${listing.code}.`);
+    }
+    if (listing.ad_page && (listing.cover_photo !== listing.ad_page || listing.photos[0] !== listing.ad_page)) {
+      throw new Error(`ad_page must be the cover and first visible photo for ${listing.code}.`);
     }
   }
 }

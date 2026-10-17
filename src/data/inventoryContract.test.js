@@ -65,6 +65,20 @@ test("catalogue accepts only same-listing layout image paths", () => {
   }
 });
 
+test("catalogue accepts a same-listing AdPage as the main photo", () => {
+  const schema = JSON.parse(fs.readFileSync(new URL("../../public/data/inventory.schema.json", import.meta.url), "utf8"));
+  const ajv = new Ajv2020();
+  addFormats(ajv);
+  const validate = ajv.compile(schema);
+  const adPage = "/inventory/WTS1004/ad-page.webp";
+  const listing = { ...stableListing, cover_photo: adPage, photos: [adPage, ...stableListing.photos], ad_page: adPage };
+  assert.equal(validate(productionFeed([listing])), true, JSON.stringify(validate.errors));
+  const normalized = normalizeInventoryFeed(productionFeed([listing])).allItems[0];
+  assert.equal(normalized.adPage, adPage);
+  assert.equal(normalized.photos[0], adPage);
+  assert.equal(normalizeInventoryFeed(productionFeed([{ ...stableListing, ad_page: "/inventory/WTL9999/ad-page.webp" }])).allItems[0].adPage, null);
+});
+
 test("catalogue accepts safe listing videos without treating them as photos", () => {
   const path = "/inventory/WTS1004/video-" + "a".repeat(20) + ".mp4";
   const schema = JSON.parse(fs.readFileSync(new URL("../../public/data/inventory.schema.json", import.meta.url), "utf8"));

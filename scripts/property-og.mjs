@@ -10,7 +10,7 @@ import { propertyPhotoWatermark } from "../src/config/watermark.js";
 import { renderCatalogueContent } from "./catalogue-html.mjs";
 
 const OG_DESCRIPTION_LIMIT = 210;
-const OG_IMAGE_RENDER_VERSION = "4";
+const OG_IMAGE_RENDER_VERSION = "5";
 const OG_ADPAGE_STRETCHED_HEIGHT = 690;
 const CONTACT_LINE_PATTERN = /^(contact|whatsapp|phone|tel|mobile|email)\b/i;
 const PHONE_LIKE_PATTERN = /(?:\+?6?01[\d\s-]{7,})/i;
@@ -161,7 +161,11 @@ async function createPropertyOgImage(listing, publicRoot, distRoot, inventoryVer
     image.resize({ width: 1200, height: 630, fit: "cover", position: "centre" });
   }
   await image
-    .jpeg({ quality: 82, progressive: true, mozjpeg: true })
+    // Preserve small AdPage text and icons through Facebook's own recompression.
+    // 4:4:4 avoids the colour-edge blur caused by JPEG's default 4:2:0
+    // chroma subsampling, while a restrained sharpen restores resize detail.
+    .sharpen({ sigma: 0.6 })
+    .jpeg({ quality: 95, chromaSubsampling: "4:4:4", progressive: true, mozjpeg: true })
     .toFile(destination);
   return { url: `${SITE_ORIGIN}${relativePath}`, width: "1200", height: "630", type: "image/jpeg" };
 }

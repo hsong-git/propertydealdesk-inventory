@@ -197,11 +197,12 @@ test("preserves the complete AdPage inside Facebook's 1200 by 630 preview", asyn
     const html = fs.readFileSync(path.join(distRoot, "i", "WTS1004", "index.html"), "utf8");
     const match = html.match(/<meta property="og:image" content="https:\/\/property\.myeviv\.com(\/og\/properties\/[^"]+)" \/>/);
     assert.ok(match);
-    assert.match(match[1], /-v4\.jpg$/);
+    assert.match(match[1], /-v5\.jpg$/);
     const socialImagePath = path.join(distRoot, match[1].replace(/^\//, ""));
     const metadata = await sharp(socialImagePath).metadata();
     assert.equal(metadata.width, 1200);
     assert.equal(metadata.height, 630);
+    assert.equal(metadata.chromaSubsampling, "4:4:4");
     const { data, info } = await sharp(socialImagePath).raw().toBuffer({ resolveWithObject: true });
     const pixel = (x, y) => Array.from(data.subarray((y * info.width + x) * info.channels, (y * info.width + x) * info.channels + 3));
     assert.ok(pixel(10, 315)[0] > 140 && pixel(10, 315)[1] < 70, "the AdPage should fill the left edge without a border");

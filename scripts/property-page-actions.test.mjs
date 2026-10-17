@@ -32,6 +32,12 @@ test("photo and video switches sit below the main picture and above thumbnails",
   assert.ok(controls.indexOf('>Layout</button>') < controls.indexOf('>Videos</button>'));
 });
 
+test("detail-page photos preserve their complete aspect ratio", () => {
+  const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
+  assert.match(css, /\.gallery-open \.watermarked-image > img \{ object-fit: contain; object-position: center; \}/);
+  assert.match(css, /\.gallery-open:hover \.watermarked-image > img \{ transform: none; \}/);
+});
+
 test("anonymous audit IDs are readable and distinguish browser activity", () => {
   assert.equal(anonymousBrowserLabel("a7".repeat(32)), "ANON-A7A7A7A7A7A7A7A7");
   assert.equal(anonymousBrowserLabel(null), "—");

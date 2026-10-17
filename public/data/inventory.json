@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
-  "schema_version": "1.2",
-  "inventoryVersion": "2026.10.17.1",
-  "generated_at": "2026-10-17T02:39:13Z",
-  "publishedAt": "2026-10-17T02:39:13Z",
+  "schema_version": "1.3",
+  "inventoryVersion": "2026.10.17.2",
+  "generated_at": "2026-10-17T03:02:50Z",
+  "publishedAt": "2026-10-17T03:02:50Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -34,8 +34,9 @@
       "listed_at": null,
       "posting_copy": "WTL\n\n4R2B Single Storey Terrace House @ Taman Sentosa Next to NSK\nRental Price: *RM1,400*\n\nProperty Details:\n* Property Type: Single-Storey Terrace House\n* Built-Up: 1,540 sqft\n* Bedrooms: 4\n* Bathrooms: 2\n* Furnishing: Partially Furnished\n\nKey Features:\n* Spacious 4-bedroom layout\n* Located next to NSK Hypermarket\n* Situated in the Sentosa area\n\n*Furnishing Included*\n- Lighting and Ceiling Fans\n- Table top and Cabinet\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0009*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0009",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0009/cover.webp",
+      "cover_photo": "/inventory/WTL0009/ad-page.webp",
       "photos": [
+        "/inventory/WTL0009/ad-page.webp",
         "/inventory/WTL0009/cover.webp",
         "/inventory/WTL0009/photo-02.webp",
         "/inventory/WTL0009/photo-03.webp",
@@ -53,6 +54,7 @@
       ],
       "amenities": [],
       "why_this_property": [],
+      "ad_page": "/inventory/WTL0009/ad-page.webp",
       "videos": [
         "/inventory/WTL0009/video-02d6cee116d36d84ddfc.mp4"
       ]
@@ -84,8 +86,9 @@
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTL*\n\n*3rd Floor Office Lot Sublet @ Bukit Tinggi, Klang (near Ambank)*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Office Lot\n- Property Unit Type: Intermediate\n- Location: Bukit Tinggi, Botanic, Bayu Perdana\n- Furnishing: Partial\n- Size Approx. 1000 sqft\n- Facing Direction: East\n\n*Feature Highlights*\n- Condition: Partition ready\n- Availability: Ready to move in\n- Key Features\n- Spacious office space suitable for various business operations\n- 2 units of air conditioners\n- Dedicated office entrance for privacy\n- Dedicated toilet within the unit\n- Partitioned layout ready for immediate use\n- Strategic location in Bukit Tinggi 1\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0010*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0010",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0010/cover.webp",
+      "cover_photo": "/inventory/WTL0010/ad-page.webp",
       "photos": [
+        "/inventory/WTL0010/ad-page.webp",
         "/inventory/WTL0010/cover.webp",
         "/inventory/WTL0010/photo-02.webp",
         "/inventory/WTL0010/photo-03.webp",
@@ -112,7 +115,8 @@
         "Strategic location in Bukit Tinggi 1"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0010/ad-page.webp"
     },
     {
       "public_id": "pub_a2f298bb763839c4fab538bc",
@@ -292,8 +296,9 @@
       "listed_at": "2026-07-20T09:09:54Z",
       "posting_copy": "*WTL*\n\n*4R4B Double Storey House @ Bandar Parklands*\nRental *RM2,400*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Parklands\n- Furnishing: Partial\n- Size 20 x 70\n- 4 Bedrooms | 4 Bathrooms\n- Facing Southeast\n- Almost fully furnished, except beds\n- Gated and Guarded community\n- Walking distance to shop lots\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Refrigerator\n- Water Heater\n- TV and TV Console: No TV\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0048*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0048",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0048/cover.webp",
+      "cover_photo": "/inventory/WTL0048/ad-page.webp",
       "photos": [
+        "/inventory/WTL0048/ad-page.webp",
         "/inventory/WTL0048/cover.webp",
         "/inventory/WTL0048/photo-02.webp",
         "/inventory/WTL0048/photo-03.webp",
@@ -307,7 +312,8 @@
         "Walking distance to shop lots"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0048/ad-page.webp"
     },
     {
       "public_id": "pub_f67f1a1373f0dbdecea597c0",
@@ -336,8 +342,9 @@
       "listed_at": "2026-07-24T14:06:09Z",
       "posting_copy": "*WTL*\n\n*2R2B Condo @ Princeton @ Edusentral, Corner Unit for Rent, Setia Alam*\nRental *RM1,800*\n\n*Property Details*\n* Property Type : Condominium/Apartment\n* Property Unit Type: Intermediate\n* Location: Princeton @ Edusentral, Setia Alam\n* Furnishing: Full\n* Size Approx. 630 sqft\n* 2 Bedrooms | 2 Bathrooms\n* Car Parks: 1\n* Fully furnishing (except Washing Machine)\n\n*All races and foreigner accepted, subject to profile review*\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0053*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0053",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0053/cover.webp",
+      "cover_photo": "/inventory/WTL0053/ad-page.webp",
       "photos": [
+        "/inventory/WTL0053/ad-page.webp",
         "/inventory/WTL0053/cover.webp",
         "/inventory/WTL0053/photo-02.webp",
         "/inventory/WTL0053/photo-03.webp",
@@ -358,7 +365,8 @@
         "Fully furnishing (except Washing Machine) All races and foreigner accepted, subject to profile review."
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0053/ad-page.webp"
     },
     {
       "public_id": "pub_c4c8cb717692e70fc52b1f48",
@@ -387,8 +395,9 @@
       "listed_at": "2026-07-24T14:50:40Z",
       "posting_copy": "*WTL*\n\n*2R2B Corner Unit @ Trefoil, Setia Alam*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Studio\n- Property Unit Type: Corner\n- Location: Trefoil, Setia Alam\n- Furnishing: Full\n- Size Approx. 791 sqft\n- 2 Bedrooms | 2 Bathrooms\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Washing Machine\n- Refrigerator\n- Water Heater\n- TV and TV Console\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*AVAILABLE NOW!!!*\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0054*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0054",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0054/cover.webp",
+      "cover_photo": "/inventory/WTL0054/ad-page.webp",
       "photos": [
+        "/inventory/WTL0054/ad-page.webp",
         "/inventory/WTL0054/cover.webp",
         "/inventory/WTL0054/photo-02.webp",
         "/inventory/WTL0054/photo-03.webp",
@@ -406,7 +415,8 @@
       ],
       "features": [],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0054/ad-page.webp"
     },
     {
       "public_id": "pub_5731ebc7bb58b9ced25f7a9f",
@@ -499,8 +509,9 @@
       "listed_at": "2026-08-04T15:55:59Z",
       "posting_copy": "*WTL*\n\n*4R2B Double Storey House @ Southern Park, Klang*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Southern Park, Klang\n- Furnishing: Partial\n- Unit Dimensions: 20 × 80\n- Size Approx. 2200 sqft\n- 4 Bedrooms | 2 Bathrooms\n- Facing Direction: North West\n\nFeatures\n- Newly renovated\n- New Water heater\n- new lighting & fans\n- Flood free area\n- Near LRT station & 兴华独中 & La Salle School\n\n*AVAILABLE NOW*\n*Furnishing can be discussed*\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0060*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0060",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0060/cover.webp",
+      "cover_photo": "/inventory/WTL0060/ad-page.webp",
       "photos": [
+        "/inventory/WTL0060/ad-page.webp",
         "/inventory/WTL0060/cover.webp",
         "/inventory/WTL0060/photo-02.webp",
         "/inventory/WTL0060/photo-03.webp",
@@ -519,7 +530,8 @@
         "99 Speedmart and more…, *AVAILABLE NOW* *Furnishing can be discussed*"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0060/ad-page.webp"
     },
     {
       "public_id": "pub_b40fa320f3c34ba4eec42581",
@@ -591,8 +603,9 @@
       "listed_at": "2026-08-06T14:29:28Z",
       "posting_copy": "*WTL*\n\n*3R2B Condo @ Asteria Klang Parkland*\nRental *RM1,500*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bandar Parklands\n- Furnishing: Full\n- Size Approx. 850 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Level 5\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Washing Machine\n- Refrigerator\n- Water Heater\n- TV and TV Console\n- Table top and Cabinet\n\n*AVAILABLE NOW!!!*\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0062*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0062",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0062/cover.webp",
+      "cover_photo": "/inventory/WTL0062/ad-page.webp",
       "photos": [
+        "/inventory/WTL0062/ad-page.webp",
         "/inventory/WTL0062/cover.webp",
         "/inventory/WTL0062/photo-02.webp",
         "/inventory/WTL0062/photo-03.webp",
@@ -606,7 +619,8 @@
         "4 air conds Fridge Washing Machine Dining Table Sofa TV Water Heaters"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0062/ad-page.webp"
     },
     {
       "public_id": "pub_1467fcbbbffc1f72088a28f4",
@@ -635,8 +649,9 @@
       "listed_at": "2026-08-27T12:32:49Z",
       "posting_copy": "*WTL*\n\n*3R2B Endlot Condo @ Trifolis Apartment, Klang*\nRental *RM1,700*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Trifolis Apartment, Bukit Tinggi Klang\n- Furnishing: Partial\n- Size Approx. 989 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Facing Direction: North\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Washing Machine\n- Refrigerator\n\n*Feature Highlights*\n- End lot unit\n- Near the guard house\n- Living hall window facing swimming pool\n- 2 covered car park at ground floor\n- Block 1 Level 15\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0070*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0070",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0070/cover.webp",
+      "cover_photo": "/inventory/WTL0070/ad-page.webp",
       "photos": [
+        "/inventory/WTL0070/ad-page.webp",
         "/inventory/WTL0070/cover.webp",
         "/inventory/WTL0070/photo-02.webp",
         "/inventory/WTL0070/photo-03.webp",
@@ -648,7 +663,8 @@
         "End lot unit Near the guard house Living hall window facing swimming pool 2 covered car park at ground floor Block 1 Level 15"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0070/ad-page.webp"
     },
     {
       "public_id": "pub_dee446999d6729098711bec2",
@@ -677,8 +693,9 @@
       "listed_at": "2026-09-07T10:47:00Z",
       "posting_copy": "*WTL*\n\n*3R2B Condo @ Gravit8 Adria Residences, Klang*\nRental *RM2,300*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Gravit8 Adria Residences, Klang\n- Furnishing: Full\n- Size Approx. 1100 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 3\n\n*Feature Highlights*\n- Block Adria @ Level 17\n- Big size unit with balcony\n- 3 carparks\n- *AVAILABLE NOW*\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0072*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0072",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0072/cover.webp",
+      "cover_photo": "/inventory/WTL0072/ad-page.webp",
       "photos": [
+        "/inventory/WTL0072/ad-page.webp",
         "/inventory/WTL0072/cover.webp",
         "/inventory/WTL0072/photo-02.webp",
         "/inventory/WTL0072/photo-03.webp",
@@ -698,7 +715,8 @@
         "Level 17 - Big size unit with balcony - 3 carparks - *AVAILABLE NOW*"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0072/ad-page.webp"
     },
     {
       "public_id": "pub_9f774192cb6497d2c9dbf1e0",
@@ -727,8 +745,9 @@
       "listed_at": "2026-09-11T10:47:36Z",
       "posting_copy": "*WTL*\n\n*3R3B Condo @ D'Sini Residences @ Setia Alam*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: D'Sini Residences @ Setia Alam\n- Furnishing: Partial\n- Size Approx. 990 sqft\n- 3 Bedrooms | 3 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- High Floor – Level 15\n- Car park level 3\n- Kitchen cabinets\n- 2 years tenancy preferred\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0073*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0073",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0073/cover.webp",
+      "cover_photo": "/inventory/WTL0073/ad-page.webp",
       "photos": [
+        "/inventory/WTL0073/ad-page.webp",
         "/inventory/WTL0073/cover.webp",
         "/inventory/WTL0073/photo-02.webp",
         "/inventory/WTL0073/photo-03.webp",
@@ -741,7 +760,8 @@
         "High Floor – Level 15 Car park level 3 Kitchen cabinets 2 years tenancy preferred"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0073/ad-page.webp"
     },
     {
       "public_id": "pub_7e6c6e28ef645b5f225bbc31",
@@ -770,8 +790,9 @@
       "listed_at": "2026-09-18T10:19:49Z",
       "posting_copy": "*WTL*\n\n*3R2B Apartment @ Orchis Apartment Bandar Parklands*\nSelling Price: *RM1,400*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bandar Parklands Klang\n- Furnishing: Partial\n- Size Approx. 844 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 1\n\n*Furnishing Included*\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Water Heater\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*Feature Highlights*\n- Block C Level 1\n- Car Park at Ground Floor\n\n*AVAILABLE NOW!!!*\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0078*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0078",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0078/cover.webp",
+      "cover_photo": "/inventory/WTL0078/ad-page.webp",
       "photos": [
+        "/inventory/WTL0078/ad-page.webp",
         "/inventory/WTL0078/cover.webp",
         "/inventory/WTL0078/photo-02.webp",
         "/inventory/WTL0078/photo-03.webp",
@@ -793,7 +814,8 @@
         "TV cabinet kitchen hood Block C Level 1 Car Park at Ground Floor *The property is currently tenanted and will be available for move-in from October.*"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0078/ad-page.webp"
     },
     {
       "public_id": "pub_ea1f9341c2c29e75aa5674a3",
@@ -822,8 +844,9 @@
       "listed_at": "2026-09-24T09:17:43Z",
       "posting_copy": "*WTL*\n\n*4R3B Double Storey House @ AKASIA Bandar Botanic*\nRental *RM2,800*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Intermediate\n- Location: AKASIA Bandar Botanic\n- Furnishing: Full\n- Unit Dimensions: 20 × 66\n- Size Approx. 1300 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: North\n\n*Feature Highlights*\n- Fully Renovated & Extended\n- Water Pump Installed\n- Auto Gate\n- Gated Guarded\n- Facing North\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0080*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0080",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0080/cover.webp",
+      "cover_photo": "/inventory/WTL0080/ad-page.webp",
       "photos": [
+        "/inventory/WTL0080/ad-page.webp",
         "/inventory/WTL0080/cover.webp",
         "/inventory/WTL0080/photo-02.webp",
         "/inventory/WTL0080/photo-03.webp",
@@ -834,7 +857,8 @@
         "Fully Renovated & Extended Water Pump Installed Auto Gate Gated Guarded Facing North"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0080/ad-page.webp"
     },
     {
       "public_id": "pub_a9feae0f8048554e52991502",
@@ -863,8 +887,9 @@
       "listed_at": "2026-09-29T12:02:32Z",
       "posting_copy": "*WTL*\n\n*Gravit8 Andaman, Bayuemas Klang*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Gravit8 Andaman, Bayuemas, Klang\n- Furnishing: Full\n- Size Approx. 1000 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- TV\n- Fridge\n- Washing Machine\n- Queen size beds in all rooms\n- Water Heater.\n- Unit at Level 12\n- Car Park in level 2.\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTL0081*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTL0081",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0081/cover.webp",
+      "cover_photo": "/inventory/WTL0081/ad-page.webp",
       "photos": [
+        "/inventory/WTL0081/ad-page.webp",
         "/inventory/WTL0081/cover.webp",
         "/inventory/WTL0081/photo-02.webp",
         "/inventory/WTL0081/photo-03.webp",
@@ -883,7 +908,8 @@
       ],
       "amenities": [],
       "why_this_property": [],
-      "cmi_agent_name": "Lauren Eng"
+      "cmi_agent_name": "Lauren Eng",
+      "ad_page": "/inventory/WTL0081/ad-page.webp"
     },
     {
       "public_id": "pub_6e15f1fc5eb80c55a4042833",
@@ -912,8 +938,9 @@
       "listed_at": "2026-09-29T12:42:40Z",
       "posting_copy": "*WTL*\n\n*2 Storey House for Rent in Bandar Botanic Jenaris*\nRental *RM2,550*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Botanic Jenaris\n- Furnishing: Partial\n- Unit Dimensions: 20 × 70\n- 4 Bedrooms | 3 Bathrooms\n- Extra Rooms: 0\n\n*Feature Highlights*\n- Extended kitchen\n- Almost fully furnished except for the fridge and washing machine\n- auto gate\n- beds\n- sofa\n- dining set\n- kitchen cabinet\n- All rooms and the living hall have air conditioning\n- and\n- All bathrooms have water heaters.\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTL0082*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTL0082",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0082/cover.webp",
+      "cover_photo": "/inventory/WTL0082/ad-page.webp",
       "photos": [
+        "/inventory/WTL0082/ad-page.webp",
         "/inventory/WTL0082/cover.webp",
         "/inventory/WTL0082/photo-02.webp",
         "/inventory/WTL0082/photo-03.webp",
@@ -936,7 +963,8 @@
       ],
       "amenities": [],
       "why_this_property": [],
-      "cmi_agent_name": "KS Tan"
+      "cmi_agent_name": "KS Tan",
+      "ad_page": "/inventory/WTL0082/ad-page.webp"
     },
     {
       "public_id": "pub_039018f4b38e260e22d0592c",
@@ -965,8 +993,9 @@
       "listed_at": "2026-09-29T12:59:12Z",
       "posting_copy": "*WTL*\n\n*Double Storey Terrace House @ Bandar Bukit Tinggi 1 Klang (near Hindu temple, Bukit Tinggi)*\nRental *RM1,700*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Bukit Tinggi 1 Klang (near Hindu temple, Bukit Tinggi)\n- Furnishing: Partial\n- Unit Dimensions: 18 × 65\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- kitchen featuring table top and cabinets.\n- faces an open area and offers additional parking space.\n- Walking distance to the Hindu temple in Bandar Bukit Tinggi 1.\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTL0083*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTL0083",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0083/cover.webp",
+      "cover_photo": "/inventory/WTL0083/ad-page.webp",
       "photos": [
+        "/inventory/WTL0083/ad-page.webp",
         "/inventory/WTL0083/cover.webp",
         "/inventory/WTL0083/photo-02.webp",
         "/inventory/WTL0083/photo-03.webp",
@@ -982,7 +1011,8 @@
       ],
       "amenities": [],
       "why_this_property": [],
-      "cmi_agent_name": "Ajevf Devan"
+      "cmi_agent_name": "Ajevf Devan",
+      "ad_page": "/inventory/WTL0083/ad-page.webp"
     },
     {
       "public_id": "pub_e9c9f6accd1a5a163da3c2fe",
@@ -1011,8 +1041,9 @@
       "listed_at": "2026-09-29T13:17:03Z",
       "posting_copy": "*WTL*\n\n*Fully furnished unit @ Gravit8 Andaman Bayuemas Klang*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Gravit8 Condo Bayuemas Klang\n- Furnishing: Full\n- Size Approx. 900 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 0\n\n*Feature Highlights*\n- TV\n- WiFi\n- fridge\n- washing machine\n- water heater.\n- Each bedroom is furnished with a queen size bed.\n- Available in October.\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTL0084*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTL0084",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0084/cover.webp",
+      "cover_photo": "/inventory/WTL0084/ad-page.webp",
       "photos": [
+        "/inventory/WTL0084/ad-page.webp",
         "/inventory/WTL0084/cover.webp",
         "/inventory/WTL0084/photo-02.webp",
         "/inventory/WTL0084/photo-03.webp",
@@ -1029,7 +1060,8 @@
       ],
       "amenities": [],
       "why_this_property": [],
-      "cmi_agent_name": "Lauren Eng"
+      "cmi_agent_name": "Lauren Eng",
+      "ad_page": "/inventory/WTL0084/ad-page.webp"
     },
     {
       "public_id": "pub_f3b66c1aef60162c62c29e6e",
@@ -1058,8 +1090,9 @@
       "listed_at": "2026-09-30T09:37:14Z",
       "posting_copy": "*WTL*\n\n*2-bedroom Fully Furnished @ Setia City Residences, Setia Alam*\nRental *RM2,300*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Setia City Residences, Setia Alam\n- Furnishing: Full\n- Size Approx. 858 sqft\n- 2 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Built-in kitchen cabinets and an island tabletop\n- Built-in hood and hob\n- Full curtains\n- Water heater\n- Full air conditioning\n- Sofa set\n- Fridge\n- Bedroom set\n- Wardrobe in the master room.\n- Connecting to Setia City Mall\n- *READY TO MOVE IN*\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTL0085*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTL0085",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0085/cover.webp",
+      "cover_photo": "/inventory/WTL0085/ad-page.webp",
       "photos": [
+        "/inventory/WTL0085/ad-page.webp",
         "/inventory/WTL0085/cover.webp",
         "/inventory/WTL0085/photo-02.webp",
         "/inventory/WTL0085/photo-03.webp",
@@ -1082,7 +1115,8 @@
       ],
       "amenities": [],
       "why_this_property": [],
-      "cmi_agent_name": "Stephanie"
+      "cmi_agent_name": "Stephanie",
+      "ad_page": "/inventory/WTL0085/ad-page.webp"
     },
     {
       "public_id": "pub_06bdcf35786e905b12e57ee0",
@@ -1111,8 +1145,9 @@
       "listed_at": "2026-09-30T10:33:21Z",
       "posting_copy": "*WTL*\n\n*2R3B Fully Furnishing @ Maple Residence Bandar Bestari, Klang*\nRental *RM1,600*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Maple Residence, Bandar Bestari, Klang\n- Furnishing: Full\n- Size Approx. 863 sqft\n- 2 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Extra Rooms: 1\n\n*Feature Highlights*\n- Sofa\n- Kitchen Cabinet\n- Induction cooker\n- Refrigerator\n- Washing Machine\n- Air conds\n- Beds\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTL0086*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTL0086",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0086/cover.webp",
+      "cover_photo": "/inventory/WTL0086/ad-page.webp",
       "photos": [
+        "/inventory/WTL0086/ad-page.webp",
         "/inventory/WTL0086/cover.webp",
         "/inventory/WTL0086/photo-02.webp",
         "/inventory/WTL0086/photo-03.webp",
@@ -1127,7 +1162,8 @@
       ],
       "amenities": [],
       "why_this_property": [],
-      "cmi_agent_name": "Eric Siah"
+      "cmi_agent_name": "Eric Siah",
+      "ad_page": "/inventory/WTL0086/ad-page.webp"
     },
     {
       "public_id": "pub_3362753785fabd8681a088b8",
@@ -1156,8 +1192,9 @@
       "listed_at": "2026-09-30T14:04:56Z",
       "posting_copy": "*WTL*\n\n*2R2B Fully Furnishing Nordica Unit @ Gravit8, Bayuemas*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Gravit8 Bayuemas\n- Furnishing: Full\n- Size Approx. 792 sqft\n- 2 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Swimming pool view\n- *MOVE IN READY*\n- *AVAILABLE NOW*\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTL0087*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTL0087",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0087/cover.webp",
+      "cover_photo": "/inventory/WTL0087/ad-page.webp",
       "photos": [
+        "/inventory/WTL0087/ad-page.webp",
         "/inventory/WTL0087/cover.webp",
         "/inventory/WTL0087/photo-02.webp",
         "/inventory/WTL0087/photo-03.webp",
@@ -1175,7 +1212,8 @@
       ],
       "amenities": [],
       "why_this_property": [],
-      "cmi_agent_name": "Bee Ang"
+      "cmi_agent_name": "Bee Ang",
+      "ad_page": "/inventory/WTL0087/ad-page.webp"
     },
     {
       "public_id": "pub_576303377e1907abfa293199",
@@ -1204,8 +1242,9 @@
       "listed_at": "2026-09-30T14:46:51Z",
       "posting_copy": "*WTL*\n\n*4R4B Well Maintained Double Storey Endlot House @ Nobat 2 Bandar Bukit Raja*\nRental *RM3,100*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Endlot\n- Location: Nobat 2 Bukit Raja\n- Furnishing: Full\n- Unit Dimensions: 20 × 70\n- Size Approx. 1800 sqft\n- 4 Bedrooms | 4 Bathrooms\n- Facing Direction: South East\n\n*Furnishing Included*\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Water Heater\n- TV and TV Console\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*Feature Highlights*\n- Indoor drying area with fan\n- Large car porch\n- Delux railless electric swing gate\n- Outdoor water feature\n- Side lawn with side access\n- TOP security doors at front & rear entrances\n- Prefer local tenant\n- Tenant to pay security fee separately with the committee - *RM80/month*\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0088*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0088",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0088/cover.webp",
+      "cover_photo": "/inventory/WTL0088/ad-page.webp",
       "photos": [
+        "/inventory/WTL0088/ad-page.webp",
         "/inventory/WTL0088/cover.webp",
         "/inventory/WTL0088/photo-02.webp",
         "/inventory/WTL0088/photo-03.webp",
@@ -1218,7 +1257,8 @@
         "- Well-maintained 2-storey end-lot home - Spacious layout with quality furnishings - Modern Alustil kitchen with island - Equipped with stove, range hood, built-in microwave & dishwasher - Air-conditioned living area with 60” TV & built-in TV console - All bathrooms fitted with DC pump water heaters - Indoor drying area with fan - Large car porch - Delux railless electric swing gate - Outdoor water feature - Side lawn with side access - TOP security doors at front & rear entrances - Safe, secure & family-friendly neighbourhood - NO washing machine, refrigerator and sofa"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0088/ad-page.webp"
     },
     {
       "public_id": "pub_d4a6032bbfa9bac54edcca41",
@@ -1247,8 +1287,9 @@
       "listed_at": "2026-10-01T13:34:18Z",
       "posting_copy": "*WTL*\n\n*3R2B GM Remia Residence*\nRental *RM2,300*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bandar Botanic\n- Furnishing: Partial\n- Size Approx. 815 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Washing Machine\n- Refrigerator\n- Water Heater\n- TV and TV Console: No TV\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*AVAILABLE NOW!!!*\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTL0089*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTL0089",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0089/cover.webp",
+      "cover_photo": "/inventory/WTL0089/ad-page.webp",
       "photos": [
+        "/inventory/WTL0089/ad-page.webp",
         "/inventory/WTL0089/cover.webp",
         "/inventory/WTL0089/photo-02.webp",
         "/inventory/WTL0089/photo-03.webp",
@@ -1262,7 +1303,8 @@
       "features": [],
       "amenities": [],
       "why_this_property": [],
-      "cmi_agent_name": "KS Tan"
+      "cmi_agent_name": "KS Tan",
+      "ad_page": "/inventory/WTL0089/ad-page.webp"
     },
     {
       "public_id": "pub_5e0cf2a8d10542097c09f14d",
@@ -1291,8 +1333,9 @@
       "listed_at": "2026-10-01T15:22:28Z",
       "posting_copy": "*WTL*\n\n*2R2B fully furnished unit @ Andaman Gravit8 Port Klang*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Andaman @Gravit8 Port Klang\n- Furnishing: Full\n- Size Approx. 729 sqft\n- 2 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Unit at 27th floor\n- Car Parks at 3rd floor\n- READY TO MOVE IN\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTL0090*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTL0090",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0090/cover.webp",
+      "cover_photo": "/inventory/WTL0090/ad-page.webp",
       "photos": [
+        "/inventory/WTL0090/ad-page.webp",
         "/inventory/WTL0090/cover.webp",
         "/inventory/WTL0090/photo-02.webp",
         "/inventory/WTL0090/photo-03.webp",
@@ -1310,7 +1353,8 @@
       ],
       "amenities": [],
       "why_this_property": [],
-      "cmi_agent_name": "Bee Ang"
+      "cmi_agent_name": "Bee Ang",
+      "ad_page": "/inventory/WTL0090/ad-page.webp"
     },
     {
       "public_id": "pub_80ff0c5d6c621030e50714b9",
@@ -1339,8 +1383,9 @@
       "listed_at": "2026-10-02T10:16:20Z",
       "posting_copy": "*WTL*\n\n*3R2B Condo @ Seri Baiduri, Setia Alam*\nRental *RM1,350*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Seri baiduri Apartments @ Setia Alam\n- Furnishing: Partial\n- Size Approx. 920 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0091*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0091",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0091/cover.webp",
+      "cover_photo": "/inventory/WTL0091/ad-page.webp",
       "photos": [
+        "/inventory/WTL0091/ad-page.webp",
         "/inventory/WTL0091/cover.webp",
         "/inventory/WTL0091/photo-02.webp",
         "/inventory/WTL0091/photo-03.webp",
@@ -1350,7 +1395,8 @@
       ],
       "features": [],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0091/ad-page.webp"
     },
     {
       "public_id": "pub_17fc30a73aeb0b3732c99863",
@@ -1379,8 +1425,9 @@
       "listed_at": "2026-10-02T10:49:10Z",
       "posting_copy": "*WTL*\n\n*4R3B New Unit Double Storey@ Kyra Bandar Bukit Raja Klang*\nRental *RM2,200*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Kyra Bandar Bukit Raja Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 75\n- Size Approx. 1771 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: North\n\n*Feature Highlights*\n- Grills installed\n- Furnishing can be discussed\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0092*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0092",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0092/cover.webp",
+      "cover_photo": "/inventory/WTL0092/ad-page.webp",
       "photos": [
+        "/inventory/WTL0092/ad-page.webp",
         "/inventory/WTL0092/cover.webp",
         "/inventory/WTL0092/photo-02.webp",
         "/inventory/WTL0092/photo-03.webp",
@@ -1403,7 +1450,8 @@
         "Grills installed Furnishing can be discussed"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0092/ad-page.webp"
     },
     {
       "public_id": "pub_31f2abf1b6422a8af95406e8",
@@ -1432,8 +1480,9 @@
       "listed_at": "2026-10-08T09:49:05Z",
       "posting_copy": "*WTL*\n\n*3R2B Condo @ Seri Mutiara Apartment, Setia Alam*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Seri Mutiara Apartment, Setia Alam\n- Furnishing: Full\n- Size Approx. 939 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Washing Machine\n- Refrigerator\n- Water Heater\n- TV and TV Console\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*Feature Highlights*\n- 2 Car parks at GF (near lift)\n- Near to swimming pool and lift\n- Unit at level 10 (Top floor)\n- Prefer tenant with family\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0095*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0095",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0095/cover.webp",
+      "cover_photo": "/inventory/WTL0095/ad-page.webp",
       "photos": [
+        "/inventory/WTL0095/ad-page.webp",
         "/inventory/WTL0095/cover.webp",
         "/inventory/WTL0095/photo-02.webp",
         "/inventory/WTL0095/photo-03.webp",
@@ -1450,7 +1499,8 @@
         "Near to swimming pool and lift Unit at level 10 (Top floor) Prefer tenant with family"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0095/ad-page.webp"
     },
     {
       "public_id": "pub_e053c84e6656d04a9e9988ed",
@@ -1479,8 +1529,9 @@
       "listed_at": "2026-10-09T10:29:19Z",
       "posting_copy": "*WTL*\n\n*2R2B Fully Furnishing Condo @ Maple Residence*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Maple Residence, Bandar Bestari Klang\n- Furnishing: Full\n- Size Approx. 890 sqft\n- 2 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Washing Machine\n- Refrigerator\n- Water Heater\n- TV and TV Console\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*Feature Highlights*\n- Unit at 9th floor\n- Car park at 4th floor\n- Good balcony view - facing swimming pool\n- Well maintained unit\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0096*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0096",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0096/cover.webp",
+      "cover_photo": "/inventory/WTL0096/ad-page.webp",
       "photos": [
+        "/inventory/WTL0096/ad-page.webp",
         "/inventory/WTL0096/cover.webp",
         "/inventory/WTL0096/photo-02.webp",
         "/inventory/WTL0096/photo-03.webp",
@@ -1497,7 +1548,8 @@
         "Unit at 9th floor Car park at 4th floor Good balcony view - facing swimming pool Well maintained unit"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0096/ad-page.webp"
     },
     {
       "public_id": "pub_443d5d9e404363e4a6f8ba28",
@@ -1526,8 +1578,9 @@
       "listed_at": "2026-10-12T09:54:57Z",
       "posting_copy": "*WTL*\n\n*3R2B Fully Furnishing Condo @ Maple Residence, Bandar Bestari, Klang*\nRental *RM2,300*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Maple Residence @ Bandar Bestari, Klang\n- Furnishing: Full\n- Size Approx. 1250 sqft\n- 3 Bedrooms | 2 Bathrooms\n\n*Feature Highlights*\n- Big unit with balcony\n- Move in condition\n- Unit at Level 7\n- 3 x car park at level 5\n- Accept professional staff accomodation tenancy with company\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0097*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0097",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0097/cover.webp",
+      "cover_photo": "/inventory/WTL0097/ad-page.webp",
       "photos": [
+        "/inventory/WTL0097/ad-page.webp",
         "/inventory/WTL0097/cover.webp",
         "/inventory/WTL0097/photo-02.webp",
         "/inventory/WTL0097/photo-03.webp",
@@ -1545,7 +1598,8 @@
         "Big unit with balcony Move in condition Unit at Level 7 3 x car park at level 5 Accept professional staff accomodation tenancy with company"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0097/ad-page.webp"
     },
     {
       "public_id": "pub_a01d6e85961722aa01000289",
@@ -1574,8 +1628,9 @@
       "listed_at": "2026-10-12T10:13:50Z",
       "posting_copy": "*WTL*\n\n*2R2B Fully Furnishing Condo @ Impiria Residence link to AEON Bukit Tinggi Klang*\nRental *RM2,100*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Impiria Residence link to AEON Bukit Tinggi Klang\n- Furnishing: Full\n- Size Approx. 866 sqft\n- 2 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Block B\n- Level 23\n- Side by side car park\n- Link bridge to AEON Bukit Tinggi\n- Accept foreigner/professional staff tenancy by company\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*WTL0098*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTL0098",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTL0098/cover.webp",
+      "cover_photo": "/inventory/WTL0098/ad-page.webp",
       "photos": [
+        "/inventory/WTL0098/ad-page.webp",
         "/inventory/WTL0098/cover.webp",
         "/inventory/WTL0098/photo-02.webp",
         "/inventory/WTL0098/photo-03.webp",
@@ -1596,7 +1651,8 @@
         "Level 23 Side by side car park Link bridge to AEON Bukit Tinggi Accept foreigner/professional staff tenancy by company"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0098/ad-page.webp"
     },
     {
       "public_id": "pub_8654ddeacfae592096356311",
@@ -1625,8 +1681,9 @@
       "listed_at": "2026-10-13T09:35:53Z",
       "posting_copy": "*WTL*\n\n*3R2B Brand New Partial Furnishing @ Tuai Timur, Setia Alam*\nRental *RM2,300*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Tuai Timur, Setia Alam\n- Furnishing: Partial\n- Size Approx. 1216 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Furnishing Included*\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Water Heater\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*Feature Highlights*\n- Brand New Unit\n- Newly furnishing\n- all items are new\n- Malay owner\n- Balcony facing ECO Ardence\n- AVAILABLE in NOV 2026\n\n*Tenant eligibility*: All suitable tenants are welcome.\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTL0099*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTL0099",
       "updated_at": "2026-10-17T01:53:53Z",
-      "cover_photo": "/inventory/WTL0099/cover.webp",
+      "cover_photo": "/inventory/WTL0099/ad-page.webp",
       "photos": [
+        "/inventory/WTL0099/ad-page.webp",
         "/inventory/WTL0099/cover.webp",
         "/inventory/WTL0099/photo-02.webp",
         "/inventory/WTL0099/photo-03.webp",
@@ -1650,6 +1707,7 @@
       "layouts": [
         "/inventory/WTL0099/layout-01.webp"
       ],
+      "ad_page": "/inventory/WTL0099/ad-page.webp",
       "videos": [
         "/inventory/WTL0099/video-b6f3843ffd0ab1496f74.mp4"
       ]
@@ -1681,8 +1739,9 @@
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Trefoil Studio @ Setia City, Setia Alam*\nSelling Price: *RM330,000*\n\n*Property Details*\n- Property Type : Studio\n- Property Unit Type: Intermediate\n- Location: Setia Alam, Shah Alam, Bandar Baru Klang\n- Furnishing: Full\n- Size Approx. 486 sqft\n- N/A Bedrooms | 1 Bathrooms\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Refrigerator\n- Water Heater\n- TV and TV Console\n- Table top and Cabinet\n\n*Feature Highlights*\n- Sell with tenancy RM1300/month\n- High Floor with Stunning Hill & City View\n- Comes with 1 Car Park\n- Freehold\n- Strata Title\n- Move-in ready\n- Direct bridge walking access to Setia City Mall\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0003*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0003",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS0003/cover.webp",
+      "cover_photo": "/inventory/WTS0003/ad-page.webp",
       "photos": [
+        "/inventory/WTS0003/ad-page.webp",
         "/inventory/WTS0003/cover.webp",
         "/inventory/WTS0003/photo-02.webp",
         "/inventory/WTS0003/photo-03.webp",
@@ -1730,7 +1789,8 @@
         "Direct bridge walking access to Setia City Mall"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS0003/ad-page.webp"
     },
     {
       "public_id": "pub_d1a43b2dc98d5ef92c0722fd",
@@ -1759,8 +1819,9 @@
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Double Storey Terrace @ Taman Lestari Putra, Seri Kembangan*\nSelling Price: *RM780,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Lestari Putra, Seri Kembangan, Serdang, Putrajaya\n- Furnishing: Full\n- Size Approx. 2000 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South East\n- Lot Type: Non Bumi Lot\n- Tenure: Leasehold\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Washing Machine\n- Refrigerator\n- Water Heater\n- TV and TV Console\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*Feature Highlights*\n- Land Size / Built-up: 20x70 ft\n- 2\n- 000 sq.ft\n- Intermediate Double Storey Terrace\n- Leasehold\n- 4 Bedrooms\n- 3 Bathrooms\n- 2 Car Parks\n- Fully renovated & move-in ready\n- All furniture & electrical appliances included (Lock\n- Stock & Barrel)\n- Guarded community with low management fee (RM40/month)\n- Located on high ground & flood-free area\n- Facing Southeast - bright & airy unit\n- Owner-occupied\n- well maintained\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0004*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0004",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS0004/cover.webp",
+      "cover_photo": "/inventory/WTS0004/ad-page.webp",
       "photos": [
+        "/inventory/WTS0004/ad-page.webp",
         "/inventory/WTS0004/cover.webp",
         "/inventory/WTS0004/photo-02.webp",
         "/inventory/WTS0004/photo-03.webp",
@@ -1801,7 +1862,8 @@
         "Owner-occupied, well maintained"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS0004/ad-page.webp"
     },
     {
       "public_id": "pub_14e1154d58eaf6c34d644ebe",
@@ -1830,8 +1892,9 @@
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*2.5 Storey Terrace House @ Penaga, Bandar Botanic, Klang*\nSelling Price: *RM850,000*\n\n*Property Details*\n- Property Type : Terrace House - 2.5 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Botanic, Bukit Tinggi\n- Furnishing: Partial\n- Unit Dimensions: 20 × 75\n- 4 Bedrooms | 4 Bathrooms\n- Facing Direction: North\n\n*Feature Highlights*\n- Extended & Renovated Balconies\n- Freehold\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0010*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0010",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS0010/cover.webp",
+      "cover_photo": "/inventory/WTS0010/ad-page.webp",
       "photos": [
+        "/inventory/WTS0010/ad-page.webp",
         "/inventory/WTS0010/cover.webp",
         "/inventory/WTS0010/photo-02.webp",
         "/inventory/WTS0010/photo-03.webp",
@@ -1845,7 +1908,8 @@
         "Extended & Renovated Balconies Freehold"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS0010/ad-page.webp"
     },
     {
       "public_id": "pub_a3aa6d3305cba202ab008e94",
@@ -1930,8 +1994,9 @@
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Single Storey Terrace House @ Taman Melawis, Klang*\nSelling Price: *RM505,000*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Melawis, Teluk Pulai, Taman Gembira\n- Furnishing: Basic\n- Unit Dimensions: 22 × 65\n- 4 Bedrooms | 2 Bathrooms\n- Facing Direction: West\n\n*Feature Highlights*\n- 🔥🔥Price Dropped🔥🔥\n- Newly renovated and well-maintained unit\n- Land Size: 22' x 60'\n- Land Title: Non-Bumi Lot\n- Facing Direction: West\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0017*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0017",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS0017/cover.webp",
+      "cover_photo": "/inventory/WTS0017/ad-page.webp",
       "photos": [
+        "/inventory/WTS0017/ad-page.webp",
         "/inventory/WTS0017/cover.webp",
         "/inventory/WTS0017/photo-02.webp",
         "/inventory/WTS0017/photo-03.webp",
@@ -1956,7 +2021,8 @@
         "Facing Direction: West"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS0017/ad-page.webp"
     },
     {
       "public_id": "pub_15dce34c70639de811c5f6d2",
@@ -2313,8 +2379,9 @@
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*2-Storey Extended Terrace House @ Bandar Botanic, Klang*\nSelling Price: *RM659,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Kiara, Bandar Botanic\n- Furnishing: Partial\n- Size Approx. 1400 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Land Size: 20' x 70'\n- Condition: Renovated and Extended (Backyard +20' x 10')\n- Gated and Guarded\n- Good house number (33 - very ong)\n- Facing North\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0029*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0029",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS0029/cover.webp",
+      "cover_photo": "/inventory/WTS0029/ad-page.webp",
       "photos": [
+        "/inventory/WTS0029/ad-page.webp",
         "/inventory/WTS0029/cover.webp",
         "/inventory/WTS0029/photo-02.webp",
         "/inventory/WTS0029/photo-03.webp",
@@ -2350,7 +2417,8 @@
         "Facing North"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS0029/ad-page.webp"
     },
     {
       "public_id": "pub_15e36d1eefe639d8e12badcd",
@@ -2703,8 +2771,9 @@
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*CW Tan WTS Double Storey Corner Lot @ Jenaris Bandar Botanic | Extra Land | 6-Car Parking | Facing South*\nSelling Price: *RM1,180,000* (negotiable)\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Corner\n- Location: Jenaris Bandar Botanic\n- Furnishing: Basic\n- Size Approx. 3100 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Land Size: 24' x 75' + 20' extra land\n- Security: Gated & Guarded\n- Can park up to 6 cars (3-in 3-out)\n- Facing South\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0037*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0037",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS0037/cover.webp",
+      "cover_photo": "/inventory/WTS0037/ad-page.webp",
       "photos": [
+        "/inventory/WTS0037/ad-page.webp",
         "/inventory/WTS0037/cover.webp",
         "/inventory/WTS0037/photo-02.webp",
         "/inventory/WTS0037/photo-03.webp",
@@ -2725,7 +2794,8 @@
         "Facing South"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS0037/ad-page.webp"
     },
     {
       "public_id": "pub_61fe37759fde8aefe56835fe",
@@ -2857,8 +2927,9 @@
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Sughan WTS 4R1B Single Storey Corner Lot @Bandar Sentosa Klang | Extended Room | Extra Side Land*\nSelling Price: *RM450,000*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Corner\n- Location: Taman Sentosa\n- Furnishing: Basic\n- Unit Dimensions: 45 × 63\n- Size Approx. 2434 sqft\n- 4 Bedrooms | 1 Bathrooms\n- Facing Direction: South East\n\n*Feature Highlights*\n- Land Size: 2\n- 434 sqft\n- Spacious corner lot with approx 10ft wide land size\n- Facing Southeast\n\nContact\n*HS ONG*\n*60163132865*\n*WTS0041*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS0041",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS0041/cover.webp",
+      "cover_photo": "/inventory/WTS0041/ad-page.webp",
       "photos": [
+        "/inventory/WTS0041/ad-page.webp",
         "/inventory/WTS0041/cover.webp",
         "/inventory/WTS0041/photo-02.webp",
         "/inventory/WTS0041/photo-03.webp",
@@ -2880,7 +2951,8 @@
         "Facing Southeast"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS0041/ad-page.webp"
     },
     {
       "public_id": "pub_74e8a1c9692cf595b0e5258d",
@@ -2965,8 +3037,9 @@
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Parkhill Residence, Bukit Jalil*\nSelling Price: *RM600,000*\n\n*Sell with tenancy worth RM3,000/month\"\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bukit Jalil, Puchong, Kinrara\n- Furnishing: Full\n- Size Approx. 1100 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Lot Type: Non Bumi Lot\n- Tenure: Leasehold\n\n*Feature Highlights*\n- Floor: High Floor (26th)\n- Carpark: 2 (Low Floor)\n- Occupancy: Currently Tenanted\n- Shuttle service to APU\n- Next to Astro & Asia Pacific University (APU)\n- 5 minutes covered walkway to STAR LRT\n- 5 minutes walking distance to Bukit Jalil Stadium\n- 10 minutes drive to Pavilion Bukit Jalil\n- Stunning stadium view from the balcony\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1001*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1001",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS1001/cover.webp",
+      "cover_photo": "/inventory/WTS1001/ad-page.webp",
       "photos": [
+        "/inventory/WTS1001/ad-page.webp",
         "/inventory/WTS1001/cover.webp",
         "/inventory/WTS1001/photo-02.webp",
         "/inventory/WTS1001/photo-03.webp",
@@ -3006,7 +3079,8 @@
       "why_this_property": [],
       "layouts": [
         "/inventory/WTS1001/layout-01.webp"
-      ]
+      ],
+      "ad_page": "/inventory/WTS1001/ad-page.webp"
     },
     {
       "public_id": "pub_eee5ce43f8f4e0016b38141a",
@@ -3477,8 +3551,9 @@
       "listed_at": "2026-07-21T12:53:04Z",
       "posting_copy": "*WTS*\n\n*3R3B 1.5 storeys Terrace House @ Laelia 1, Bayuemas, Klang*\nSelling Price: *RM660,000*\n\n*Property Details*\n- Property Type : Terrace House\n- Property Unit Type: Intermediate\n- Location: Laelia 1, Bayuemas, Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 70\n- Size Approx. 1568 sqft\n- 3 Bedrooms | 3 Bathrooms\n- Facing Direction: North\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Feature Highlights*\n- 1.5 storeys\n- Freehold\n- Non Bumi Lot\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1014*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1014",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS1014/cover.webp",
+      "cover_photo": "/inventory/WTS1014/ad-page.webp",
       "photos": [
+        "/inventory/WTS1014/ad-page.webp",
         "/inventory/WTS1014/cover.webp",
         "/inventory/WTS1014/photo-02.webp",
         "/inventory/WTS1014/photo-03.webp",
@@ -3508,6 +3583,7 @@
       "layouts": [
         "/inventory/WTS1014/layout-01.webp"
       ],
+      "ad_page": "/inventory/WTS1014/ad-page.webp",
       "videos": [
         "/inventory/WTS1014/video-e565b7bbb281539d0741.mp4"
       ]
@@ -3785,8 +3861,9 @@
       "listed_at": "2026-08-05T11:53:56Z",
       "posting_copy": "*WTS*\n\n*Double Storey House in Taman Gembira for Sale*\nSelling Price: *RM680,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Gembira\n- Furnishing: Basic\n- Unit Dimensions: 22 × 80\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South East\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Feature Highlights*\n- Freehold\n- Car Porch with extended awning\n- Completely refurbished and newly renovated\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1023*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1023",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS1023/cover.webp",
+      "cover_photo": "/inventory/WTS1023/ad-page.webp",
       "photos": [
+        "/inventory/WTS1023/ad-page.webp",
         "/inventory/WTS1023/cover.webp",
         "/inventory/WTS1023/photo-02.webp",
         "/inventory/WTS1023/photo-03.webp",
@@ -3800,7 +3877,8 @@
         "- Freehold - Completely refurbished and newly renovated"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS1023/ad-page.webp"
     },
     {
       "public_id": "pub_09b6ff2c26ce8e345e9bda40",
@@ -3829,8 +3907,9 @@
       "listed_at": "2026-08-05T11:59:59Z",
       "posting_copy": "*WTS*\n\n*2-Storey Freehold House for Sale in Bandar Puteri Klang*\nSelling Price: *RM508,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Puteri Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 75\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Feature Highlights*\n- *Faces no other house directly*\n- Gated and Guarded\n- Facing Open (No house in front)\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1024*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1024",
       "updated_at": "2026-10-17T02:33:46Z",
-      "cover_photo": "/inventory/WTS1024/cover.webp",
+      "cover_photo": "/inventory/WTS1024/ad-page.webp",
       "photos": [
+        "/inventory/WTS1024/ad-page.webp",
         "/inventory/WTS1024/cover.webp",
         "/inventory/WTS1024/photo-02.webp",
         "/inventory/WTS1024/photo-03.webp",
@@ -3846,7 +3925,8 @@
         "*Faces no other house directly* Gated and Guarded Facing Open (No house in front)"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS1024/ad-page.webp"
     },
     {
       "public_id": "pub_214b05e3cd32f131a5b80965",
@@ -4128,8 +4208,9 @@
       "listed_at": "2026-09-09T15:39:24Z",
       "posting_copy": "*WTS*\n\n*3R3B Double Storey House @ Kemuning Greenville Facing Open*\nSelling Price: *RM565,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Kemuning Greenville Facing Open\n- Furnishing: Partial\n- Unit Dimensions: 18 × 65\n- Size Approx. 1350 sqft\n- 3 Bedrooms | 3 Bathrooms\n- Facing Direction: South East\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Feature Highlights*\n- Kitchen fully extended\n- Freehold\n- Non-Bumi Lot\n- Facing open (no house facing)\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1031*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1031",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS1031/cover.webp",
+      "cover_photo": "/inventory/WTS1031/ad-page.webp",
       "photos": [
+        "/inventory/WTS1031/ad-page.webp",
         "/inventory/WTS1031/cover.webp",
         "/inventory/WTS1031/photo-02.webp",
         "/inventory/WTS1031/photo-03.webp",
@@ -4144,7 +4225,8 @@
         "Facing open (no house facing)"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS1031/ad-page.webp"
     },
     {
       "public_id": "pub_a52bae9d72f23f957bec911c",
@@ -4173,8 +4255,9 @@
       "listed_at": "2026-09-15T12:03:11Z",
       "posting_copy": "*WTS*\n\n*4R3B Double Storey House @ ALURA 2 Bandar Bukit Raja Klang*\n\nSelling Price: *RM650,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: ALURA 2 Bandar Bukit Raja Klang\n- Furnishing: Partial\n- Unit Dimensions: 20 × 75\n- Size Approx. 1540 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South East\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Furnishing Included*\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Table top and Cabinet\n- Cooking Hob and Hood\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1034*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1034",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS1034/cover.webp",
+      "cover_photo": "/inventory/WTS1034/ad-page.webp",
       "photos": [
+        "/inventory/WTS1034/ad-page.webp",
         "/inventory/WTS1034/cover.webp",
         "/inventory/WTS1034/photo-02.webp",
         "/inventory/WTS1034/photo-03.webp",
@@ -4195,7 +4278,8 @@
       "why_this_property": [],
       "layouts": [
         "/inventory/WTS1034/layout-01.webp"
-      ]
+      ],
+      "ad_page": "/inventory/WTS1034/ad-page.webp"
     },
     {
       "public_id": "pub_d9544595b9e4d0c305b9d133",
@@ -4224,8 +4308,9 @@
       "listed_at": "2026-10-05T13:48:24Z",
       "posting_copy": "*WTS*\n\n*2-Storey Newly Renovated House @ Dato Abdul Hamid, Taman Sentosa Klang*\nSelling Price: *RM550,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Dato Abdul Hamid, Taman Sentosa Klang\n- Furnishing: Basic\n- Unit Dimensions: 20 × 60\n- Size Approx. 2400 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: North West\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Feature Highlights*\n- Newly Renovated\n- Freeflood area\n- Kitchen fully extended\n\n*AVAILABLE NOW!!!*\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1035*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1035",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS1035/cover.webp",
+      "cover_photo": "/inventory/WTS1035/ad-page.webp",
       "photos": [
+        "/inventory/WTS1035/ad-page.webp",
         "/inventory/WTS1035/cover.webp",
         "/inventory/WTS1035/photo-02.webp",
         "/inventory/WTS1035/photo-03.webp",
@@ -4245,7 +4330,8 @@
         "Newly Renovated Freeflood area Kitchen fully extended"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS1035/ad-page.webp"
     },
     {
       "public_id": "pub_ab7fa268c61da454a11b4395",
@@ -4274,8 +4360,9 @@
       "listed_at": "2026-10-07T13:22:45Z",
       "posting_copy": "*WTS*\n\n*3R2B Condo @ Pangsapuri Seri Mutiara Setia Alam*\nSelling Price: *RM338,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Pangsapuri Seri Mutiara Setia Alam\n- Size Approx. 939 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n\n*Feature Highlights*\n- Corner Unit\n- Good Condition\n- Block 5 Level 8\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1036*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1036",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS1036/cover.webp",
+      "cover_photo": "/inventory/WTS1036/ad-page.webp",
       "photos": [
+        "/inventory/WTS1036/ad-page.webp",
         "/inventory/WTS1036/cover.webp",
         "/inventory/WTS1036/photo-02.webp",
         "/inventory/WTS1036/photo-03.webp",
@@ -4288,7 +4375,8 @@
         "Good Condition Block 5 Level 8"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS1036/ad-page.webp"
     },
     {
       "public_id": "pub_09b43a29110957d54c3c653a",
@@ -4317,8 +4405,9 @@
       "listed_at": "2026-10-12T10:43:16Z",
       "posting_copy": "*WTS*\n\n*2 Storey Newly Renovated Fully Extended House @ Amelia Bandar Bukit Tinggi 2*\nSelling Price: *RM780,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Amelia Bandar Bukit Tinggi 2\n- Furnishing: Basic\n- Unit Dimensions: 20 × 70\n- Size Approx. 2000 sqft\n- 4 Bedrooms | 4 Bathrooms\n- Facing Direction: South\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Feature Highlights*\n- Newly painted and in good condition.\n- Extended Car Porch with an awning\n- Extended Kitchen with new cabinets and a table top.\n- Gated and guarded community.\n\n*AVAILABLE NOW!!!*\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTS1037*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTS1037",
       "updated_at": "2026-10-17T01:54:52Z",
-      "cover_photo": "/inventory/WTS1037/cover.webp",
+      "cover_photo": "/inventory/WTS1037/ad-page.webp",
       "photos": [
+        "/inventory/WTS1037/ad-page.webp",
         "/inventory/WTS1037/cover.webp",
         "/inventory/WTS1037/photo-02.webp",
         "/inventory/WTS1037/photo-03.webp",
@@ -4339,7 +4428,8 @@
       ],
       "amenities": [],
       "why_this_property": [],
-      "cmi_agent_name": "Lucas Lim (WeiJian)"
+      "cmi_agent_name": "Lucas Lim (WeiJian)",
+      "ad_page": "/inventory/WTS1037/ad-page.webp"
     },
     {
       "public_id": "pub_20988d69d069032c7d4982d7",
@@ -4368,8 +4458,9 @@
       "listed_at": "2026-10-12T11:18:05Z",
       "posting_copy": "*WTS*\n\n*4R3B End lot with land 2 storey house @ Casira Bandar Bukit Raja Klang*\nSelling Price: *RM990,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Casira Bandar Bukit Raja Klang\n- Furnishing: Basic\n- Unit Dimensions: 30 × 75\n- Size Approx. 2311 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Feature Highlights*\n- Brand new untenanted house\n- End lot with ~8ft side land\n- Gated and Guarded Community\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1038*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTS1038",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS1038/cover.webp",
+      "cover_photo": "/inventory/WTS1038/ad-page.webp",
       "photos": [
+        "/inventory/WTS1038/ad-page.webp",
         "/inventory/WTS1038/cover.webp",
         "/inventory/WTS1038/photo-02.webp",
         "/inventory/WTS1038/photo-03.webp",
@@ -4388,7 +4479,8 @@
       "why_this_property": [],
       "layouts": [
         "/inventory/WTS1038/layout-01.webp"
-      ]
+      ],
+      "ad_page": "/inventory/WTS1038/ad-page.webp"
     },
     {
       "public_id": "pub_145e5a68a0b984e3f8c360b6",
@@ -4417,8 +4509,9 @@
       "listed_at": "2026-10-13T11:39:03Z",
       "posting_copy": "*WTS*\n\n*3R2B Open View Unit @ Huni Eco Ardence, Setia Alam*\nSelling Price: *RM470,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Huni Eco Ardence, Setia Alam\n- Furnishing: Partial\n- Size Approx. 1000 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Facing Direction: East\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Furnishing Included*\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Water Heater\n- Table top and Cabinet\n\n*Feature Highlights*\n- Block B Level 13\n- Car Park at Level 4\n- Big unit with good condition\n- Balcony with Open View\n- Parking lot near lift\n\nContact\n*HS ONG*\n*60163132865*\n*CMI-WTS1039*\n\n🏠 Listing details & photos:\nhttps://scmi.myeviv.com/i/WTS1039",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTS1039/cover.webp",
+      "cover_photo": "/inventory/WTS1039/ad-page.webp",
       "photos": [
+        "/inventory/WTS1039/ad-page.webp",
         "/inventory/WTS1039/cover.webp",
         "/inventory/WTS1039/photo-02.webp",
         "/inventory/WTS1039/photo-03.webp",
@@ -4435,7 +4528,8 @@
       "cmi_agent_name": "June Choong",
       "layouts": [
         "/inventory/WTS1039/layout-01.webp"
-      ]
+      ],
+      "ad_page": "/inventory/WTS1039/ad-page.webp"
     },
     {
       "public_id": "pub_350167e72f692941a86449e3",
@@ -4464,8 +4558,9 @@
       "listed_at": "2026-07-14T15:07:19Z",
       "posting_copy": "*WTL / WTS*\n\n*4R3B Double Storey House @ Bandar Bukit Tinggi*\nRental *RM2,200*\nSale *RM789,000* (final price)\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Bukit Tinggi\n- Furnishing: Partial\n- Unit Dimensions: 20 × 70\n- 4 Bedrooms | 3 Bathrooms\n\n*Feature Highlights*\n- Kitchen Cabinet\n- Air Conditioner (Master Bedroom)\n- Ceiling Fan in all rooms\n- 24 hrs security in gated guarded community\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\n*HS ONG*\n*60163132865*\n*WTSL0001*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTSL0001",
       "updated_at": "2026-10-17T00:50:15Z",
-      "cover_photo": "/inventory/WTSL0001/cover.webp",
+      "cover_photo": "/inventory/WTSL0001/ad-page.webp",
       "photos": [
+        "/inventory/WTSL0001/ad-page.webp",
         "/inventory/WTSL0001/cover.webp",
         "/inventory/WTSL0001/photo-02.webp",
         "/inventory/WTSL0001/photo-03.webp",
@@ -4479,7 +4574,8 @@
         "Kitchen Cabinet Air Conditioner (Master Bedroom) Ceiling Fan in all rooms 24 hrs security in gated guarded community"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTSL0001/ad-page.webp"
     },
     {
       "public_id": "pub_9b7e9e8b66c998d6f5e5d090",
@@ -4599,8 +4695,9 @@
       "listed_at": "2026-10-06T15:06:29Z",
       "posting_copy": "*WTL*\n\n*3R3B Fully Furnished Endlot unit @ Dynasty Condo Klang*\nRental *RM1,800*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Endlot\n- Location: Dynasty Condo Klang\n- Furnishing: Full\n- Size Approx. 1410 sqft\n- 3 Bedrooms | 3 Bathrooms\n- Car Parks: 2\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Washing Machine\n- Refrigerator\n- Water Heater\n- TV and TV Console: No TV\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*Feature Highlights*\n- Block C Level 6\n- Car Park at Ground Floor\n\n*AVAILABLE NOW!!!*\n\n*Tenant eligibility*: Prefer locals and selective tenant profile only.\n\nContact\n*HS ONG*\n*60163132865*\n*WTSL0005*\n\n🏠 Listing details & photos:\nhttps://property.myeviv.com/i/WTSL0005",
       "updated_at": "2026-10-17T01:56:19Z",
-      "cover_photo": "/inventory/WTSL0005/cover.webp",
+      "cover_photo": "/inventory/WTSL0005/ad-page.webp",
       "photos": [
+        "/inventory/WTSL0005/ad-page.webp",
         "/inventory/WTSL0005/cover.webp",
         "/inventory/WTSL0005/photo-02.webp",
         "/inventory/WTSL0005/photo-03.webp",
@@ -4611,7 +4708,8 @@
         "Block C Level 6 Car Park at Ground Floor"
       ],
       "amenities": [],
-      "why_this_property": []
+      "why_this_property": [],
+      "ad_page": "/inventory/WTSL0005/ad-page.webp"
     }
   ]
 }

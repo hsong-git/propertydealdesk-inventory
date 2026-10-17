@@ -9,9 +9,9 @@ function RelatedListingCard({ listing }) {
     <article className="related-listing-card">
       <Link className="related-listing-photo" to={`/property/${listing.slug}`} aria-label={`View ${listing.title}`}>
         {listing.photos[0]
-          ? <PublicPropertyImage src={listing.photos[0]} alt={`${listing.title} in ${listing.location}`} loading="lazy" />
+          ? <PublicPropertyImage className={listing.adPage ? "is-ad-page" : ""} src={listing.photos[0]} alt={`${listing.title} in ${listing.location}`} loading="lazy" />
           : <span className="property-photo-placeholder"><Building2 size={28} /><small>Photo coming soon</small></span>}
-        <span className={`intent intent-${listing.intent.toLowerCase()}`}>{listing.intent}</span>
+        {listing.adPage ? null : <span className={`intent intent-${listing.intent.toLowerCase()}`}>{listing.intent}</span>}
       </Link>
       <div className="related-listing-copy">
         <div className="property-reference"><span className="property-code"><InventoryBadge listing={listing} />{listing.displayCode || listing.code}</span></div>

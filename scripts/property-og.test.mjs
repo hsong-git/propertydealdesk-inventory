@@ -3,6 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
+import sharp from "sharp";
 import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { listingShortUrl } from "../src/utils/listing.js";
 import { propertyOgDescription, renderPropertyRouteHtml, summarizePostingCopy, prerenderPropertyOgRoutes } from "./property-og.mjs";
@@ -166,6 +167,48 @@ test("uses AdPage for crawler OG image and visible main image", () => {
     assert.match(html, /<img src="\/inventory\/WTS1004\/ad-page\.webp"/);
   } finally {
     fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("preserves the complete AdPage inside Facebook's 1200 by 630 preview", async () => {
+  sharp.cache(false);
+  const runtime = path.resolve(".runtime");
+  fs.mkdirSync(runtime, { recursive: true });
+  const root = fs.mkdtempSync(path.join(runtime, "adpage-social-preview-"));
+  try {
+    const publicRoot = path.join(root, "public");
+    const distRoot = path.join(root, "dist");
+    const adPage = "/inventory/WTS1004/ad-page.webp";
+    fs.mkdirSync(path.join(publicRoot, "data"), { recursive: true });
+    fs.mkdirSync(path.join(publicRoot, "inventory", "WTS1004"), { recursive: true });
+    fs.mkdirSync(path.join(distRoot, "data"), { recursive: true });
+    await sharp({ create: { width: 1080, height: 720, channels: 3, background: { r: 180, g: 30, b: 20 } } })
+      .webp()
+      .toFile(path.join(publicRoot, adPage.replace(/^\//, "")));
+    fs.writeFileSync(path.join(publicRoot, "data", "inventory.json"), JSON.stringify({
+      ...feed,
+      schema_version: "1.3",
+      listings: [{ ...feed.listings[0], ad_page: adPage, cover_photo: adPage, photos: [adPage] }],
+    }));
+    fs.writeFileSync(path.join(distRoot, "index.html"), shell);
+
+    await prerenderPropertyOgRoutes({ projectRoot: root, publicRoot, distRoot });
+
+    const html = fs.readFileSync(path.join(distRoot, "i", "WTS1004", "index.html"), "utf8");
+    const match = html.match(/<meta property="og:image" content="https:\/\/property\.myeviv\.com(\/og\/properties\/[^"]+)" \/>/);
+    assert.ok(match);
+    assert.match(match[1], /-v2\.jpg$/);
+    const socialImagePath = path.join(distRoot, match[1].replace(/^\//, ""));
+    const metadata = await sharp(socialImagePath).metadata();
+    assert.equal(metadata.width, 1200);
+    assert.equal(metadata.height, 630);
+    const { data, info } = await sharp(socialImagePath).raw().toBuffer({ resolveWithObject: true });
+    const pixel = (x, y) => Array.from(data.subarray((y * info.width + x) * info.channels, (y * info.width + x) * info.channels + 3));
+    assert.ok(pixel(10, 315).every((value) => value > 225), "left margin should use the neutral background");
+    assert.ok(pixel(600, 5)[0] > 140 && pixel(600, 5)[1] < 70, "the AdPage top edge should remain visible");
+    assert.ok(pixel(600, 624)[0] > 140 && pixel(600, 624)[1] < 70, "the AdPage bottom edge should remain visible");
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
   }
 });
 

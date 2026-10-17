@@ -10,6 +10,8 @@ import { propertyPhotoWatermark } from "../src/config/watermark.js";
 import { renderCatalogueContent } from "./catalogue-html.mjs";
 
 const OG_DESCRIPTION_LIMIT = 210;
+const OG_IMAGE_RENDER_VERSION = "2";
+const OG_IMAGE_BACKGROUND = { r: 245, g: 247, b: 246 };
 const CONTACT_LINE_PATTERN = /^(contact|whatsapp|phone|tel|mobile|email)\b/i;
 const PHONE_LIKE_PATTERN = /(?:\+?6?01[\d\s-]{7,})/i;
 
@@ -144,12 +146,18 @@ async function createPropertyOgImage(listing, publicRoot, distRoot, inventoryVer
   if (!fs.existsSync(sourcePath)) return null;
   const code = String(listing.code || "listing").toUpperCase().replace(/[^A-Z0-9_-]/g, "-");
   const version = String(inventoryVersion || "current").replace(/[^A-Za-z0-9._-]/g, "-");
-  const relativePath = `/og/properties/${code}-${version}.jpg`;
+  const relativePath = `/og/properties/${code}-${version}-v${OG_IMAGE_RENDER_VERSION}.jpg`;
   const destination = path.join(distRoot, relativePath.replace(/^\//, ""));
   fs.mkdirSync(path.dirname(destination), { recursive: true });
+  // AdPages contain text and feature panels near their edges. Facebook's
+  // 1.91:1 preview would cut those details off if we used a centre crop.
+  // Preserve the complete AdPage and add narrow neutral side margins instead.
+  const resize = listing.adPage
+    ? { width: 1200, height: 630, fit: "contain", background: OG_IMAGE_BACKGROUND }
+    : { width: 1200, height: 630, fit: "cover", position: "centre" };
   await sharp(sourcePath)
     .rotate()
-    .resize({ width: 1200, height: 630, fit: "cover", position: "centre" })
+    .resize(resize)
     .jpeg({ quality: 82, progressive: true, mozjpeg: true })
     .toFile(destination);
   return { url: `${SITE_ORIGIN}${relativePath}`, width: "1200", height: "630", type: "image/jpeg" };

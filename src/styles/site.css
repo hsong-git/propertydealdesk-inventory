@@ -142,6 +142,8 @@ main { flex: 1; }
 .property-photo-placeholder small { font-size: 10px; font-weight: 750; }
 .property-photo-placeholder.detail-placeholder { position: absolute; inset: 0; }
 .property-card:hover .property-photo img { transform: scale(1.025); }
+.property-photo .watermarked-image.is-ad-page > img { object-fit: contain; }
+.property-card:hover .property-photo .watermarked-image.is-ad-page > img { transform: none; }
 .intent { min-height: 24px; padding: 0 8px; border-radius: 7px; display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 900; }
 .intent small { font-size: 9px; font-weight: 750; opacity: .86; }
 .property-photo .intent, .gallery-main .intent { position: absolute; left: 11px; top: 11px; box-shadow: 0 4px 14px rgba(24,33,29,.16); }

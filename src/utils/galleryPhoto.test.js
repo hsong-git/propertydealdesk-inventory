@@ -11,7 +11,7 @@ test("gallery saves use versioned, embedded-watermark image files", () => {
   }
   const page = fs.readFileSync(new URL("../pages/PropertyPage.jsx", import.meta.url), "utf8");
   assert.equal((page.match(/<PublicPropertyImage /g) || []).length, 4);
-  assert.equal((page.match(/<PublicPropertyImage allowIndividualSave /g) || []).length, 4);
+  assert.equal((page.match(/<PublicPropertyImage[^>]*\ballowIndividualSave\b/g) || []).length, 4);
   const component = fs.readFileSync(new URL("../components/PublicPropertyImage.jsx", import.meta.url), "utf8");
   assert.match(component, /onContextMenu=\{allowIndividualSave \? undefined/);
   assert.match(component, /const showWatermark = !allowIndividualSave/);

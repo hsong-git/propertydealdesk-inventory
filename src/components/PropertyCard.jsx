@@ -35,9 +35,9 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
     <article className="property-card">
       <Link className="property-photo" to={propertyHref} aria-label={`View ${listing.title}`}>
         {listing.photos[0]
-          ? <PublicPropertyImage src={listing.photos[0]} alt={`${listing.title} in ${listing.location}`} loading="lazy" />
+          ? <PublicPropertyImage className={listing.adPage ? "is-ad-page" : ""} src={listing.photos[0]} alt={`${listing.title} in ${listing.location}`} loading="lazy" />
           : <span className="property-photo-placeholder"><Building2 size={30} /><small>Photo coming soon</small></span>}
-        <span className={`intent intent-${displayedIntent.toLowerCase()}`}>{displayedIntent}<small>{intentLabels[displayedIntent]}</small></span>
+        {listing.adPage ? null : <span className={`intent intent-${displayedIntent.toLowerCase()}`}>{displayedIntent}<small>{intentLabels[displayedIntent]}</small></span>}
         {listing.featured ? <span className="featured-badge">Featured</span> : null}
       </Link>
       <div className="property-content">

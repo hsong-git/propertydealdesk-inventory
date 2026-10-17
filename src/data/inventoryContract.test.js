@@ -156,7 +156,8 @@ test("SMI posting removes stale CMI prefixes and uses the property domain", () =
   const copy = postingText(items[0], {});
   assert.match(copy, /\*WTS1004\*/);
   assert.doesNotMatch(copy, /CMI-WTS1004|scmi\.myeviv/);
-  assert.match(copy, /https:\/\/property\.myeviv\.com\/i\/WTS1004/);
+  assert.doesNotMatch(copy, /preview=/);
+  assert.match(copy, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004$/);
 });
 
 test("treats listings array membership as authoritative and accepts an empty feed", () => {
@@ -181,7 +182,7 @@ test("drops photo paths outside the listing public inventory directory", () => {
   assert.deepEqual(items[0].photos, []);
 });
 
-test("uses Stable-provided posting copy and appends the standard short-link footnote", () => {
+test("uses Stable-provided posting copy with one clean short-link footer", () => {
   const { items } = normalizeInventoryFeed(productionFeed([{
     ...stableListing,
     posting_copy: "Stable SMI Copy\nLine 2 exactly as approved.",
@@ -191,14 +192,7 @@ test("uses Stable-provided posting copy and appends the standard short-link foot
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(text, [
-    "Stable SMI Copy",
-    "Line 2 exactly as approved.",
-    "",
-    "🤝 Co-broke welcome",
-    "🏠 Listing details & photos:",
-    "https://property.myeviv.com/i/WTS1004",
-  ].join("\n"));
+  assert.equal(text, ["Stable SMI Copy", "Line 2 exactly as approved.", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com/i/WTS1004"].join("\n"));
 });
 
 test("accepts Stable schema 1.1 posting copy snapshots", () => {
@@ -242,11 +236,12 @@ test("falls back to reconstructed posting details for old snapshots", () => {
   assert.match(text, /Price: RM 680,000/);
   assert.match(text, /Contact HS Ong/);
   assert.doesNotMatch(text, /REN 81340/);
+  assert.doesNotMatch(text, /preview=/);
   assert.match(text, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004$/);
   assert.doesNotMatch(text, /database_id|contact_no|raw_json/);
 });
 
-test("does not duplicate an existing standard short-link footnote", () => {
+test("normalizes duplicate posting footers to one clean short-link footer", () => {
   const footnote = [
     "🤝 Co-broke welcome",
     "🏠 Listing details & photos:",
@@ -261,19 +256,13 @@ test("does not duplicate an existing standard short-link footnote", () => {
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(text, ["Stable SMI Copy", "", footnote].join("\n"));
-  assert.equal(text.match(/https:\/\/property\.myeviv\.com\/i\/WTS1004/g).length, 1);
+  assert.equal(text, ["Stable SMI Copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com/i/WTS1004"].join("\n"));
+  assert.doesNotMatch(text, /preview=/);
+  assert.equal(text.match(/Co-broke welcome/g).length, 1);
+  assert.equal(text.match(/Listing details & photos:/g).length, 1);
 });
 
-test("uses short-link posting footers only for public supply intents", () => {
-  assert.equal(postingFootnoteUrl({ code: "wts1004", intent: "WTS" }), "https://property.myeviv.com/i/WTS1004");
-  assert.equal(postingFootnoteUrl({ code: "wtl1005", intent: "WTL" }), "https://property.myeviv.com/i/WTL1005");
-  assert.equal(postingFootnoteUrl({ code: "wtr1006", intent: "WTR" }), "https://agenttools.myeviv.com");
-  assert.equal(postingFootnoteUrl({ code: "wtb1007", intent: "WTB" }), "https://agenttools.myeviv.com");
-  assert.equal(postingFootnoteUrl({ code: "abc1008", intent: "REQUEST" }), "https://agenttools.myeviv.com");
-});
-
-test("normalizes incorrect request-side posting footers to Agent Tools", () => {
+test("normalizes request-side posting footers to the property homepage", () => {
   const baseListing = {
     code: "WTR1006",
     intent: "WTR",
@@ -295,14 +284,8 @@ test("normalizes incorrect request-side posting footers to Agent Tools", () => {
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(text, [
-    "Stable request copy",
-    "",
-    "🤝 Co-broke welcome",
-    "🏠 Listing details & photos:",
-    "https://agenttools.myeviv.com",
-  ].join("\n"));
-  assert.doesNotMatch(text, /property\.myeviv\.com|\/i\/WTR1006/);
+  assert.equal(text, ["Stable request copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com"].join("\n"));
+  assert.doesNotMatch(text, /\/i\/WTR1006/);
 
   const oldHomepageText = postingText({
     ...baseListing,
@@ -318,13 +301,12 @@ test("normalizes incorrect request-side posting footers to Agent Tools", () => {
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(oldHomepageText, [
-    "Stable request copy",
-    "",
-    "🤝 Co-broke welcome",
-    "🏠 Listing details & photos:",
-    "https://agenttools.myeviv.com",
-  ].join("\n"));
+  assert.equal(oldHomepageText, ["Stable request copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com"].join("\n"));
+});
+
+test("posting footer URLs omit social preview query parameters", () => {
+  assert.equal(postingFootnoteUrl({ code: "WTL0098", intent: "WTL", inventoryVersion: "2026.10.17.2", adPage: "/inventory/WTL0098/AdPage/poster.jpg" }), "https://property.myeviv.com/i/WTL0098");
+  assert.equal(postingFootnoteUrl({ code: "WTS1039", intent: "WTS", visibility: "unlisted", inventoryVersion: "2026.10.17.2" }), "https://scmi.myeviv.com/i/WTS1039");
 });
 
 test("builds a photo-download WhatsApp request from public listing details", () => {

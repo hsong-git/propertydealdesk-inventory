@@ -1,5 +1,3 @@
-const AGENT_TOOLS_ORIGIN = "https://agenttools.myeviv.com";
-
 export function tenantEligibilityDescription(listing) {
   const copy = String(listing.postingCopy || "");
   if (listing.acceptAllRaces === false || (listing.acceptAllRaces == null && /Tenant eligibility\*?:\s*(?:Selective tenant profile requirements\.|Prefer locals and selective tenant profile only\.)/i.test(copy))) return "Prefer locals and selective tenant profile only.";
@@ -94,7 +92,6 @@ export const whatsappUrl = (number, message) => `https://wa.me/${number}?text=${
 
 export const listingDetailUrl = (listing, origin = listingPublicOrigin(listing)) => `${origin}/property/${listing.slug}`;
 
-const supplyIntents = new Set(["WTS", "WTL"]);
 export const SOCIAL_PREVIEW_REVISION = "4";
 
 const shareVersion = (listing) => String(listing.inventoryVersion || listing.updatedAt || "").trim();
@@ -108,9 +105,13 @@ export const listingShortUrl = (listing, origin = listingPublicOrigin(listing)) 
   return `${baseUrl}?${query.toString()}`;
 };
 
+const supplyIntents = new Set(["WTS", "WTL"]);
+
 export const postingFootnoteUrl = (listing) => {
   const intent = String(listing.intent || "").toUpperCase();
-  return supplyIntents.has(intent) ? listingShortUrl(listing) : AGENT_TOOLS_ORIGIN;
+  return supplyIntents.has(intent)
+    ? listingShortUrl(listing).split("?")[0]
+    : "https://property.myeviv.com";
 };
 
 export const postingShortLinkFootnote = (listing) => [
@@ -120,13 +121,12 @@ export const postingShortLinkFootnote = (listing) => [
 ].join("\n");
 
 export const withPostingShortLinkFootnote = (text, listing) => {
-  const footnote = postingShortLinkFootnote(listing);
   const standardFootnotePattern = new RegExp(
-    String.raw`(?:\r?\n){0,3}🤝\s*Co-broke welcome\s*(?:\r?\n)🏠\s*Listing details & photos:\s*(?:\r?\n)\s*https:\/\/(?:property|scmi|agenttools)\.myeviv\.com(?:\/i\/[A-Z0-9_-]+)?\/?`,
+    String.raw`(?:\r?\n){0,3}(?:🤝\s*Co-broke welcome\s*(?:\r?\n))?🏠\s*Listing details & photos:\s*(?:\r?\n)\s*https:\/\/(?:property|scmi|agenttools)\.myeviv\.com(?:\/i\/[A-Z0-9_-]+)?\/?(?:\?[^\s]*)?`,
     "gi",
   );
   const cleaned = String(text || "").replace(standardFootnotePattern, "").trim();
-  return [cleaned, footnote].filter(Boolean).join("\n\n");
+  return [cleaned, postingShortLinkFootnote(listing)].filter(Boolean).join("\n\n");
 };
 
 export const postingText = (listing, profile) => {
@@ -163,7 +163,7 @@ export const postingText = (listing, profile) => {
     "",
     `Contact ${profile.displayName}`,
     `WhatsApp: ${profile.phoneDisplay}`,
-  ].join("\n"), listing);
+  ].join("\n").trim(), listing);
 };
 
 export async function shareListing(listing) {

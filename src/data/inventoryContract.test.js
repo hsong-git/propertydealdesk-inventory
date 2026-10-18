@@ -157,7 +157,7 @@ test("SMI posting removes stale CMI prefixes and uses the property domain", () =
   assert.match(copy, /\*WTS1004\*/);
   assert.doesNotMatch(copy, /CMI-WTS1004|scmi\.myeviv/);
   assert.doesNotMatch(copy, /preview=/);
-  assert.match(copy, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004$/);
+  assert.match(copy, /🤝 Co-broke welcome\n🏠 Download listing details & photos from:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004$/);
 });
 
 test("treats listings array membership as authoritative and accepts an empty feed", () => {
@@ -192,7 +192,7 @@ test("uses Stable-provided posting copy with one clean short-link footer", () =>
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(text, ["Stable SMI Copy", "Line 2 exactly as approved.", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com/i/WTS1004"].join("\n"));
+  assert.equal(text, ["Stable SMI Copy", "Line 2 exactly as approved.", "", "🤝 Co-broke welcome", "🏠 Download listing details & photos from:", "https://property.myeviv.com/i/WTS1004"].join("\n"));
 });
 
 test("accepts Stable schema 1.1 posting copy snapshots", () => {
@@ -237,7 +237,7 @@ test("falls back to reconstructed posting details for old snapshots", () => {
   assert.match(text, /Contact HS Ong/);
   assert.doesNotMatch(text, /REN 81340/);
   assert.doesNotMatch(text, /preview=/);
-  assert.match(text, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004$/);
+  assert.match(text, /🤝 Co-broke welcome\n🏠 Download listing details & photos from:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004$/);
   assert.doesNotMatch(text, /database_id|contact_no|raw_json/);
 });
 
@@ -256,10 +256,10 @@ test("normalizes duplicate posting footers to one clean short-link footer", () =
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(text, ["Stable SMI Copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com/i/WTS1004"].join("\n"));
+  assert.equal(text, ["Stable SMI Copy", "", "🤝 Co-broke welcome", "🏠 Download listing details & photos from:", "https://property.myeviv.com/i/WTS1004"].join("\n"));
   assert.doesNotMatch(text, /preview=/);
   assert.equal(text.match(/Co-broke welcome/g).length, 1);
-  assert.equal(text.match(/Listing details & photos:/g).length, 1);
+  assert.equal(text.match(/Download listing details & photos from:/g).length, 1);
 });
 
 test("normalizes request-side posting footers to the property homepage", () => {
@@ -284,7 +284,7 @@ test("normalizes request-side posting footers to the property homepage", () => {
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(text, ["Stable request copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com"].join("\n"));
+  assert.equal(text, ["Stable request copy", "", "🤝 Co-broke welcome", "🏠 Download listing details & photos from:", "https://property.myeviv.com"].join("\n"));
   assert.doesNotMatch(text, /\/i\/WTR1006/);
 
   const oldHomepageText = postingText({
@@ -301,7 +301,7 @@ test("normalizes request-side posting footers to the property homepage", () => {
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(oldHomepageText, ["Stable request copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com"].join("\n"));
+  assert.equal(oldHomepageText, ["Stable request copy", "", "🤝 Co-broke welcome", "🏠 Download listing details & photos from:", "https://property.myeviv.com"].join("\n"));
 });
 
 test("posting footer URLs omit social preview query parameters", () => {

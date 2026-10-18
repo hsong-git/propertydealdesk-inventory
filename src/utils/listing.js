@@ -92,7 +92,7 @@ export const whatsappUrl = (number, message) => `https://wa.me/${number}?text=${
 
 export const listingDetailUrl = (listing, origin = listingPublicOrigin(listing)) => `${origin}/property/${listing.slug}`;
 
-export const SOCIAL_PREVIEW_REVISION = "6";
+export const SOCIAL_PREVIEW_REVISION = "7";
 
 const shareVersion = (listing) => String(listing.inventoryVersion || listing.updatedAt || "").trim();
 
@@ -116,13 +116,13 @@ export const postingFootnoteUrl = (listing) => {
 
 export const postingShortLinkFootnote = (listing) => [
   "🤝 Co-broke welcome",
-  "🏠 Listing details & photos:",
+  "🏠 Download listing details & photos from:",
   postingFootnoteUrl(listing),
 ].join("\n");
 
 export const withPostingShortLinkFootnote = (text, listing) => {
   const standardFootnotePattern = new RegExp(
-    String.raw`(?:\r?\n){0,3}(?:🤝\s*Co-broke welcome\s*(?:\r?\n))?🏠\s*Listing details & photos:\s*(?:\r?\n)\s*https:\/\/(?:property|scmi|agenttools)\.myeviv\.com(?:\/i\/[A-Z0-9_-]+)?\/?(?:\?[^\s]*)?`,
+    String.raw`(?:\r?\n){0,3}(?:🤝\s*Co-broke welcome\s*(?:\r?\n))?🏠\s*(?:Download\s+)?Listing details & photos(?:\s+from)?:\s*(?:\r?\n)\s*https:\/\/(?:property|scmi|agenttools)\.myeviv\.com(?:\/i\/[A-Z0-9_-]+)?\/?(?:\?[^\s]*)?`,
     "gi",
   );
   const cleaned = String(text || "").replace(standardFootnotePattern, "").trim();

@@ -102,8 +102,11 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
     assert.match(fs.readFileSync(path.join(distRoot, "inquiries.html"), "utf8"), /Find a Property for Me/);
     assert.doesNotMatch(fs.readFileSync(path.join(distRoot, "index.html"), "utf8"), /CMI Direct Link Test/);
     assert.doesNotMatch(fs.readFileSync(path.join(distRoot, "catalogue", "page", "1", "index.html"), "utf8"), /CMI Direct Link Test/);
-    for (const route of [path.join("property", hidden.slug), path.join("i", hidden.code)]) {
-      const html = fs.readFileSync(path.join(distRoot, route, "index.html"), "utf8");
+    const propertyHtmlPath = path.join(distRoot, "property", `${hidden.slug}.html`);
+    assert.equal(fs.existsSync(propertyHtmlPath), true);
+    assert.equal(fs.existsSync(path.join(distRoot, "property", hidden.slug, "index.html")), false);
+    for (const route of [propertyHtmlPath, path.join(distRoot, "i", hidden.code, "index.html")]) {
+      const html = fs.readFileSync(route, "utf8");
       assert.match(html, /CMI Direct Link Test/);
       assert.match(html, /CMI-WTL0099/);
       assert.match(html, /href="\/cmi">Back to CMI Catalogue/);

@@ -177,11 +177,16 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
 
   for (const listing of allItems) {
     const imageOverride = await createPropertyOgImage(listing, publicRoot, distRoot, meta.inventoryVersion);
-    const propertyRouteDirectory = path.join(distRoot, "property", listing.slug);
-    fs.mkdirSync(propertyRouteDirectory, { recursive: true });
+    const propertyRouteRoot = path.join(distRoot, "property");
+    const legacyPropertyRouteDirectory = path.join(propertyRouteRoot, listing.slug);
+    fs.mkdirSync(propertyRouteRoot, { recursive: true });
+    // A slug/index.html output makes Pages add a trailing slash, while the
+    // production canonical redirect removes it. Emit slug.html so both forms
+    // resolve to one canonical URL instead of redirecting into a loop.
+    fs.rmSync(legacyPropertyRouteDirectory, { recursive: true, force: true });
     const listingHtml = renderPropertyRouteHtml(indexHtml, listing, publicRoot, { imageOverride });
     fs.writeFileSync(
-      path.join(propertyRouteDirectory, "index.html"),
+      path.join(propertyRouteRoot, `${listing.slug}.html`),
       listingHtml,
     );
 

@@ -97,6 +97,9 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
     fs.writeFileSync(path.join(publicRoot, "data", "inventory.json"), JSON.stringify({ ...feed, listings: [visible, hidden] }));
     fs.writeFileSync(path.join(distRoot, "index.html"), shell);
     await prerenderPropertyOgRoutes({ projectRoot: root, publicRoot, distRoot });
+    assert.equal(fs.existsSync(path.join(distRoot, "inquiries.html")), true);
+    assert.equal(fs.existsSync(path.join(distRoot, "inquiries", "index.html")), false);
+    assert.match(fs.readFileSync(path.join(distRoot, "inquiries.html"), "utf8"), /Find a Property for Me/);
     assert.doesNotMatch(fs.readFileSync(path.join(distRoot, "index.html"), "utf8"), /CMI Direct Link Test/);
     assert.doesNotMatch(fs.readFileSync(path.join(distRoot, "catalogue", "page", "1", "index.html"), "utf8"), /CMI Direct Link Test/);
     for (const route of [path.join("property", hidden.slug), path.join("i", hidden.code)]) {

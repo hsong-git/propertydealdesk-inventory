@@ -32,13 +32,12 @@ test("photo and video switches sit below the main picture and above thumbnails",
   assert.ok(controls.indexOf('>Layout</button>') < controls.indexOf('>Videos</button>'));
 });
 
-test("detail-page photos preserve their complete aspect ratio", () => {
+test("detail-page photos preserve their complete image while reserving stable gallery space", () => {
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
-  assert.match(css, /\.gallery-main \{ position: relative; border-radius:/);
-  assert.doesNotMatch(css, /\.gallery-main \{[^}]*aspect-ratio:/);
-  assert.match(css, /\.gallery-open \{[^}]*height: auto;/);
-  assert.match(css, /\.gallery-open \.watermarked-image \{ height: auto; \}/);
-  assert.match(css, /\.gallery-open \.watermarked-image > img \{ width: 100%; height: auto; object-fit: contain; object-position: center; \}/);
+  assert.match(css, /\.gallery-main \{[^}]*min-height: 280px;[^}]*aspect-ratio: 16\/10;/);
+  assert.match(css, /\.gallery-open \{[^}]*height: 100%;[^}]*position: absolute;/);
+  assert.match(css, /\.gallery-open \.watermarked-image \{ width: 100%; height: 100%; position: absolute; inset: 0; \}/);
+  assert.match(css, /\.gallery-open \.watermarked-image > img \{ width: 100%; height: 100%; object-fit: contain; object-position: center; \}/);
   assert.match(css, /\.gallery-open:hover \.watermarked-image > img \{ transform: none; \}/);
 });
 

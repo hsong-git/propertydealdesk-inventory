@@ -7,6 +7,7 @@ import { InventoryBadge } from "./InventoryBadge";
 import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing, whatsappUrl, tenantEligibilitySummary, tenantEligibilityDescription, tenantEligibilityTone } from "../utils/listing";
 import { formatRoomSummary } from "../data/requirementContract";
 import { listingMediaLinks } from "../utils/listingMedia";
+import { trackEvent } from "../utils/analytics";
 
 export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) {
   const [shared, setShared] = useState(false);
@@ -20,6 +21,7 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
   const share = async () => {
     try {
       const result = await shareListing(listing);
+      trackEvent("share_property", { listingCode: listing.code, intent: displayedIntent, properties: { placement: "card" } });
       if (result === "copied") {
         setShared(true);
         window.setTimeout(() => setShared(false), 1800);
@@ -28,12 +30,13 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
   };
   const copyPosting = async () => {
     await navigator.clipboard.writeText(postingText(listing, agentProfile));
+    trackEvent("copy_posting", { listingCode: listing.code, intent: displayedIntent, properties: { placement: "card" } });
     setPostingCopied(true);
     window.setTimeout(() => setPostingCopied(false), 1800);
   };
   return (
     <article className="property-card">
-      <Link className="property-photo" to={propertyHref} aria-label={`View ${listing.title}`}>
+      <Link className="property-photo" to={propertyHref} onClick={() => trackEvent("listing_open", { listingCode: listing.code, intent: displayedIntent, properties: { placement: "photo" } })} aria-label={`View ${listing.title}`}>
         {listing.photos[0]
           ? <PublicPropertyImage className={listing.adPage ? "is-ad-page" : ""} src={listing.photos[0]} alt={`${listing.title} in ${listing.location}`} loading="lazy" />
           : <span className="property-photo-placeholder"><Building2 size={30} /><small>Photo coming soon</small></span>}
@@ -41,7 +44,7 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
       </Link>
       <div className="property-content">
         <div className="property-reference"><span className="property-reference-main"><span className="property-code"><InventoryBadge listing={listing} />{listing.displayCode || listing.code}</span>{listingMediaLinks(listing, propertyHref).map((media) => <Link key={media.media} className={`property-media-pill property-media-pill-${media.media}`} to={media.href} aria-label={`View ${media.label.toLowerCase()} for ${listing.displayCode || listing.code}`}>{media.media === "layout" ? <LayoutTemplate size={12} aria-hidden="true" /> : <Video size={12} aria-hidden="true" />}{media.label}</Link>)}</span><span className={`intent intent-${displayedIntent.toLowerCase()}`}>{displayedIntent}<small>{intentLabels[displayedIntent]}</small></span></div>
-        <h3><Link to={propertyHref}>{listing.title}</Link></h3>
+        <h3><Link to={propertyHref} onClick={() => trackEvent("listing_open", { listingCode: listing.code, intent: displayedIntent, properties: { placement: "title" } })}>{listing.title}</Link></h3>
         <p className="property-location"><MapPin size={15} /> {listing.location}</p>
         <div className="property-price-row">
           <strong className="property-price">{formatPrice(displayedPrice, displayedIntent)}</strong>
@@ -62,8 +65,8 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
         {tenantEligibilitySummary(listing) ? <p className={`property-tenant-eligibility eligibility-${tenantEligibilityTone(listing)}`} title={tenantEligibilityDescription(listing)}><span>Tenant eligibility:</span>{" "}{tenantEligibilitySummary(listing)}</p> : null}
       </div>
       <div className={`property-actions ${viewOnly ? "view-only" : ""}`}>
-        <Link className="button secondary" to={propertyHref}>View Details</Link>
-        {viewOnly ? null : <a className="button primary icon-only-mobile" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer"><MessageCircle size={18} /><span>Enquire</span></a>}
+        <Link className="button secondary" to={propertyHref} onClick={() => trackEvent("listing_open", { listingCode: listing.code, intent: displayedIntent, properties: { placement: "view_details" } })}>View Details</Link>
+        {viewOnly ? null : <a className="button primary icon-only-mobile" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer" onClick={() => trackEvent("whatsapp_click", { listingCode: listing.code, intent: displayedIntent, properties: { placement: "card" } })}><MessageCircle size={18} /><span>Enquire</span></a>}
         {viewOnly ? null : <button className="button tertiary share-button" type="button" onClick={share} aria-label={`Share ${listing.displayCode || listing.code}`}><Share2 size={18} /><span>{shared ? "Copied" : "Share"}</span></button>}
       </div>
     </article>

@@ -1,10 +1,16 @@
-const appRoutes = new Set(["/", "/cmi", "/inquiries", "/admin", "/admin/inquiries", "/admin/inquiries/manage", "/admin/photo-downloads", "/admin/photo-downloads/audit", "/admin/requirements"]);
+const appRoutes = new Set(["/", "/cmi", "/inquiries", "/admin", "/admin/analytics", "/admin/inquiries", "/admin/inquiries/manage", "/admin/photo-downloads", "/admin/photo-downloads/audit", "/admin/requirements"]);
 
 const notFound = (method) => new Response(method === "HEAD" ? null : '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex, follow"><title>Property or page not found | HS Ong</title></head><body><main><h1>This page is no longer available</h1><p>The property may have been sold, rented, withdrawn or removed.</p><a href="/">Browse current properties</a></main></body></html>', { status: 404, headers: { "content-type": "text/html; charset=utf-8", "x-robots-tag": "noindex, follow" } });
 
 export async function onRequest(context) {
   const url = new URL(context.request.url);
   const pathname = url.pathname.replace(/\/+$/, "") || "/";
+  // Use one canonical URL for SPA routes so Cloudflare analytics and search
+  // engines do not split the same page between slash and non-slash paths.
+  if (["GET", "HEAD"].includes(context.request.method) && url.pathname !== "/" && url.pathname.endsWith("/") && !pathname.startsWith("/catalogue/")) {
+    url.pathname = pathname;
+    return Response.redirect(url, 308);
+  }
   const combined = url.hostname === "scmi.myeviv.com" || context.env.VITE_CATALOGUE_MODE === "scmi";
   if (combined && pathname === "/cmi") return Response.redirect(new URL("/", url), 302);
   // Keep administration on the existing Access-protected site.

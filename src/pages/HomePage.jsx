@@ -11,6 +11,7 @@ import { compareRecentlyUpdated, formatDateTime, matchesInventoryFilter, normali
 import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
 import { buildLocationOptions, matchesKeywordSearch, matchesLocationFilter } from "../utils/locationFilter";
 import { matchesSelection, normalizeMultiFilters, readFilterParams, selectedValues, writeFilterParams } from "../utils/multiSelect.js";
+import { analyticsSource, trackEvent } from "../utils/analytics.js";
 
 const defaultIntent = "WTL";
 const INITIAL_VISIBLE_COUNT = 12;
@@ -75,6 +76,7 @@ function readCatalogueState() {
 
 export function HomePage() {
   const { items, meta, locationDictionary, loading, error } = useInventory();
+  const trafficSource = useMemo(analyticsSource, []);
   const initialCatalogueState = useMemo(readCatalogueState, []);
   const [filters, setFilters] = useState(initialCatalogueState.filters);
   const [catalogueMode, setCatalogueMode] = useState(initialCatalogueState.catalogueMode);
@@ -83,6 +85,7 @@ export function HomePage() {
   const [agentToolsPreviewOpen, setAgentToolsPreviewOpen] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
   const loadMoreRef = useRef(null);
+  const analyticsReady = useRef(false);
   const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && key !== "intent" && (Array.isArray(value) ? value.length : value)).length
     + (filters.intent !== defaultIntent ? 1 : 0)
     + (catalogueMode === "featured" ? 1 : 0);
@@ -114,6 +117,13 @@ export function HomePage() {
     });
   }, [items, filters, catalogueMode, locationDictionary]);
   const reset = () => { setFilters(defaults); setCatalogueMode("all"); setVisible(INITIAL_VISIBLE_COUNT); };
+  const loadMore = (method) => {
+    setVisible((count) => {
+      const next = Math.min(count + LOAD_MORE_COUNT, results.length);
+      if (next > count) trackEvent("catalogue_more_loaded", { intent: filters.intent, properties: { method, visible_count: next, result_count: results.length } });
+      return next;
+    });
+  };
   const previousClassification = useRef(filters.classification);
   useEffect(() => {
     if (previousClassification.current !== filters.classification) {
@@ -136,9 +146,11 @@ export function HomePage() {
     try {
       if (typeof navigator.share === "function") {
         await navigator.share({ title: "Property search", url: shareUrl });
+        trackEvent("catalogue_search_shared", { intent: filters.intent, properties: { method: "native", result_count: results.length } });
         return;
       }
       await navigator.clipboard.writeText(shareUrl);
+      trackEvent("catalogue_search_shared", { intent: filters.intent, properties: { method: "clipboard", result_count: results.length } });
       setShareCopied(true);
       window.setTimeout(() => setShareCopied(false), 1800);
     } catch (error) {
@@ -149,6 +161,19 @@ export function HomePage() {
   useEffect(() => {
     try { window.sessionStorage.setItem(CATALOGUE_STATE_KEY, JSON.stringify({ filters, catalogueMode, visible })); } catch { /* storage may be unavailable */ }
   }, [filters, catalogueMode, visible]);
+  useEffect(() => {
+    if (loading || error) return;
+    trackEvent("catalogue_view", { intent: filters.intent, properties: { result_count: results.length, source: trafficSource } });
+  }, [loading, error]);
+  useEffect(() => {
+    if (loading || error) return undefined;
+    if (!analyticsReady.current) { analyticsReady.current = true; return undefined; }
+    const timer = window.setTimeout(() => {
+      const activeFilters = Object.entries(filters).filter(([key, value]) => key !== "sort" && (Array.isArray(value) ? value.length : value)).map(([key]) => key);
+      trackEvent("catalogue_filter_applied", { intent: filters.intent, properties: { active_filters: activeFilters, result_count: results.length, catalogue_mode: catalogueMode, sort: filters.sort } });
+    }, 600);
+    return () => window.clearTimeout(timer);
+  }, [filters, catalogueMode, results.length, loading, error]);
   useEffect(() => {
     if (typeof window === "undefined") return;
     const url = new URL(window.location.href);
@@ -174,7 +199,7 @@ export function HomePage() {
     const sentinel = loadMoreRef.current;
     if (!sentinel || loading || visible >= results.length || typeof IntersectionObserver === "undefined") return undefined;
     const observer = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) setVisible((count) => Math.min(count + LOAD_MORE_COUNT, results.length));
+      if (entries.some((entry) => entry.isIntersecting)) loadMore("automatic");
     }, { rootMargin: "320px 0px" });
     observer.observe(sentinel);
     return () => observer.disconnect();
@@ -213,7 +238,7 @@ export function HomePage() {
           {error ? <div className="state-card error"><strong>{error}</strong><span>Please refresh the page or contact HS Ong directly.</span></div> : null}
           {!loading && !error && results.length ? <div className="property-grid">{results.slice(0, visible).map((listing) => <PropertyCard key={listing.publicId} listing={listing} displayIntent={filters.intent} />)}</div> : null}
           {!loading && !error && !results.length ? <div className="state-card"><strong>{items.length ? "No properties match these filters." : "No published properties are currently available."}</strong><span>{items.length ? "Try clearing one or more filters to see other opportunities." : "Please check back after the next approved inventory publication."}</span>{items.length ? <button className="button secondary" type="button" onClick={reset}>Reset Filters</button> : null}</div> : null}
-          {visible < results.length ? <div className="load-more" ref={loadMoreRef}><button className="button secondary" type="button" onClick={() => setVisible((count) => Math.min(count + LOAD_MORE_COUNT, results.length))}>Load more properties</button></div> : null}
+          {visible < results.length ? <div className="load-more" ref={loadMoreRef}><button className="button secondary" type="button" onClick={() => loadMore("button")}>Load more properties</button></div> : null}
           <p className="load-more"><a className="button secondary" href="/catalogue/page/1/">Browse all properties by page</a></p>
         </section>
         <section className="co-broke-panel">

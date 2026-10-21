@@ -10,6 +10,7 @@ import { RequirementPage } from "./pages/RequirementPage";
 import { RequirementsAdminPage } from "./pages/RequirementsAdminPage";
 import { PhotoDownloadsAdminPage } from "./pages/PhotoDownloadsAdminPage";
 import { AdminLandingPage } from "./pages/AdminLandingPage";
+import { AnalyticsAdminPage } from "./pages/AnalyticsAdminPage";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="admin/photo-downloads" element={<AdminLandingPage />} />
           <Route path="admin/inquiries/manage" element={<RequirementsAdminPage />} />
           <Route path="admin/photo-downloads/audit" element={<PhotoDownloadsAdminPage />} />
+          <Route path="admin/analytics" element={<AnalyticsAdminPage />} />
           <Route path="admin/requirements" element={<Navigate to="/admin" replace />} />
           <Route path="i/:code" element={<ShortListingRedirect />} />
           <Route path="property/:slug" element={<PropertyPage />} />

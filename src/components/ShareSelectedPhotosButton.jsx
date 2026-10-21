@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { isMobileOrTabletDevice } from "../utils/whatsapp";
 import { createWatermarkedJpegFile, desktopWhatsAppUrl, downloadPreparedFiles, nativeShareErrorMessage, PHOTO_SELECTION_LIMIT } from "../utils/photoShare";
+import { trackEvent } from "../utils/analytics";
 
 const initialState = { open: false, stage: "options", openWhatsApp: false, busy: false, message: "", error: "" };
 
@@ -31,6 +32,7 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
   };
 
   const recordShare = async (client) => {
+    trackEvent("photo_share", { listingCode: listing.code, intent: listing.intent, properties: { client, photo_count: selectedPhotos.length } });
     try {
       await fetch("/api/photo-share/event", {
         method: "POST",

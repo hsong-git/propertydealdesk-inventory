@@ -20,6 +20,7 @@ import { PHOTO_SELECTION_LIMIT } from "../utils/photoShare";
 import { PortraitModal } from "../components/PortraitModal";
 import { PropertyVideo } from "../components/PropertyVideo";
 import { initialListingGallery } from "../utils/listingMedia";
+import { trackEvent } from "../utils/analytics";
 
 const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false";
 
@@ -68,6 +69,7 @@ export function PropertyPage() {
     if (!listing?.code) return;
     rememberListingView(listing.code);
     fetch("/api/listing-views", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ code: listing.code }) }).catch(() => {});
+    trackEvent("listing_view", { listingCode: listing.code, intent: displayIntent || listing.intent });
   }, [listing?.code]);
   useEffect(() => {
     if (!lightboxOpen) return undefined;
@@ -88,10 +90,11 @@ export function PropertyPage() {
     [Sofa, "Furnishing", listing.furnishing], [Compass, "Facing", listing.facing || "N/A"], [Building2, "Unit type", listing.unitType || "N/A"],
   ];
   const onShare = async () => {
-    try { if (await shareListing(listing) === "copied") { setCopied(true); window.setTimeout(() => setCopied(false), 1800); } } catch { /* cancelled */ }
+    try { if (await shareListing(listing) === "copied") { setCopied(true); window.setTimeout(() => setCopied(false), 1800); } trackEvent("share_property", { listingCode: listing.code, intent: displayIntent, properties: { placement: "detail" } }); } catch { /* cancelled */ }
   };
   const onCopyPosting = async () => {
     await navigator.clipboard.writeText(postingText(listing, agentProfile));
+    trackEvent("copy_posting", { listingCode: listing.code, intent: displayIntent, properties: { placement: "detail" } });
     setPostingCopied(true);
     window.setTimeout(() => setPostingCopied(false), 1800);
   };
@@ -129,11 +132,11 @@ export function PropertyPage() {
             {activeVideo && listing.videos?.includes(activeVideo) ? <PropertyVideo src={activeVideo} title={listing.title} poster={listing.photos[0]} /> : null}
             <div hidden={activeVideo !== null && listing.videos?.includes(activeVideo)}>
             <div className={`gallery-main${activeGallery === "layout" ? " is-layout" : ""}`}>{galleryPhotos[activePhoto]
-              ? <button className="gallery-open" type="button" onClick={() => setLightboxOpen(true)} aria-label={`Open ${activeGallery === "layout" ? "layout" : "photo"} ${activePhoto + 1} of ${galleryPhotos.length} fullscreen`}><PublicPropertyImage className={activeGallery === "photos" && galleryPhotos[activePhoto] === listing.adPage ? "is-ad-page" : ""} allowIndividualSave src={galleryPhotos[activePhoto]} alt={`${listing.title} ${activeGallery === "layout" ? "layout" : "photo"} ${activePhoto + 1}`} /><span className="gallery-open-label"><Maximize2 size={17} /> Full view</span></button>
+              ? <button className="gallery-open" type="button" onClick={() => { setLightboxOpen(true); trackEvent("photo_view", { listingCode: listing.code, intent: displayIntent, properties: { media: activeGallery, index: activePhoto + 1 } }); }} aria-label={`Open ${activeGallery === "layout" ? "layout" : "photo"} ${activePhoto + 1} of ${galleryPhotos.length} fullscreen`}><PublicPropertyImage className={activeGallery === "photos" && galleryPhotos[activePhoto] === listing.adPage ? "is-ad-page" : ""} allowIndividualSave src={galleryPhotos[activePhoto]} alt={`${listing.title} ${activeGallery === "layout" ? "layout" : "photo"} ${activePhoto + 1}`} /><span className="gallery-open-label"><Maximize2 size={17} /> Full view</span></button>
               : <span className="property-photo-placeholder detail-placeholder"><ImageOff size={38} /><small>No public photo supplied</small></span>}
               </div>
             </div>
-            {listing.layouts?.length || listing.videos?.length ? <div className="gallery-video-controls" aria-label="Property media"><button type="button" className={activeGallery === "photos" ? "active" : ""} aria-pressed={activeGallery === "photos"} onClick={() => { setActiveGallery("photos"); setActivePhoto(0); setActiveVideo(null); }}>Photos</button>{listing.layouts?.length ? <button type="button" className={activeGallery === "layout" ? "active" : ""} aria-pressed={activeGallery === "layout"} onClick={() => { setActiveGallery("layout"); setActivePhoto(0); setActiveVideo(null); }}>Layout</button> : null}{listing.videos?.length ? <button type="button" className={activeGallery === "videos" ? "active" : ""} aria-pressed={activeGallery === "videos"} onClick={() => { setActiveGallery("videos"); setActiveVideo(listing.videos[0]); }}>Videos</button> : null}</div> : null}
+            {listing.layouts?.length || listing.videos?.length ? <div className="gallery-video-controls" aria-label="Property media"><button type="button" className={activeGallery === "photos" ? "active" : ""} aria-pressed={activeGallery === "photos"} onClick={() => { setActiveGallery("photos"); setActivePhoto(0); setActiveVideo(null); trackEvent("media_open", { listingCode: listing.code, intent: displayIntent, properties: { media: "photos" } }); }}>Photos</button>{listing.layouts?.length ? <button type="button" className={activeGallery === "layout" ? "active" : ""} aria-pressed={activeGallery === "layout"} onClick={() => { setActiveGallery("layout"); setActivePhoto(0); setActiveVideo(null); trackEvent("media_open", { listingCode: listing.code, intent: displayIntent, properties: { media: "layout" } }); }}>Layout</button> : null}{listing.videos?.length ? <button type="button" className={activeGallery === "videos" ? "active" : ""} aria-pressed={activeGallery === "videos"} onClick={() => { setActiveGallery("videos"); setActiveVideo(listing.videos[0]); trackEvent("media_open", { listingCode: listing.code, intent: displayIntent, properties: { media: "videos" } }); }}>Videos</button> : null}</div> : null}
             {activeGallery === "videos" && listing.videos?.length > 1 ? <div className="gallery-video-controls" aria-label="Choose video">{listing.videos.map((src, index) => <button type="button" key={src} className={activeVideo === src ? "active" : ""} aria-pressed={activeVideo === src} onClick={() => setActiveVideo(src)}>▶ Video {index + 1}</button>)}</div> : null}
             <div hidden={activeVideo !== null && listing.videos?.includes(activeVideo)}>
             {activeGallery === "photos" && photoSharingEnabled && galleryPhotos.length > 0 ? <><div className="gallery-thumbnails">{galleryPhotos.map((photo, index) => { const selected = selectedPhotos.includes(photo); const blocked = selectedPhotos.length >= PHOTO_SELECTION_LIMIT && !selected; return <div className="gallery-thumbnail-choice" key={photo}><button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button><button type="button" disabled={blocked} className={`photo-select-toggle${selected ? " selected" : ""}${blocked ? " is-blocked" : ""}`} aria-label={`${selected ? "Deselect" : "Select"} photo ${index + 1}`} aria-pressed={selected} onClick={() => setSelectedPhotos((current) => selected ? current.filter((item) => item !== photo) : current.length < PHOTO_SELECTION_LIMIT ? [...current, photo] : current)}>{selected ? <Check size={14} /> : <span />}</button></div>; })}</div><button className="select-first-photos" type="button" onClick={selectFirstPhotos} disabled={!galleryPhotos.length} aria-pressed={firstPhotosSelected}>{firstPhotosSelected ? "Deselect first " : "Select first "}{Math.min(PHOTO_SELECTION_LIMIT, galleryPhotos.length)}</button><ShareSelectedPhotosButton listing={listing} selectedPhotos={selectedPhotos} /></> : galleryPhotos.length > 1 ? <div className="gallery-thumbnails">{galleryPhotos.map((photo, index) => <button type="button" className={index === activePhoto ? "active" : ""} onClick={() => setActivePhoto(index)} key={photo}><PublicPropertyImage allowIndividualSave src={photo} alt={`View photo ${index + 1}`} /></button>)}</div> : null}
@@ -151,7 +154,7 @@ export function PropertyPage() {
         </div>
         <aside className="agent-contact-card">
           <button className="agent-portrait-trigger" type="button" onClick={() => setAgentPortraitOpen(true)} aria-label="Enlarge agent portrait"><img src={agentProfile.portrait} alt={agentProfile.displayName} /></button><div><span className="eyebrow">Enquire directly</span><h2>{agentProfile.displayName}</h2><p>{agentProfile.title}</p><small>{agentProfile.agency}</small></div>
-          <button className="button primary" type="button" onClick={() => openWhatsApp({ phone: agentProfile.whatsapp, message: enquiryText(listing, agentProfile.displayName), onError: (error) => window.alert(error) })}><MessageCircle size={18} /> WhatsApp enquiry</button>
+          <button className="button primary" type="button" onClick={() => { trackEvent("whatsapp_click", { listingCode: listing.code, intent: displayIntent, properties: { placement: "detail" } }); openWhatsApp({ phone: agentProfile.whatsapp, message: enquiryText(listing, agentProfile.displayName), onError: (error) => window.alert(error) }); }}><MessageCircle size={18} /> WhatsApp enquiry</button>
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} /> Call {agentProfile.phoneDisplay}</a>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {copied ? "Link copied" : "Share property"}</button>
         </aside>

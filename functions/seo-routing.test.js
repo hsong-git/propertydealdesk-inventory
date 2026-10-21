@@ -8,11 +8,21 @@ const run = (path, contentType = "text/html") => onRequest({
   next: async () => new Response("page", { headers: { "content-type": contentType } }),
 });
 test("SEO routing preserves valid properties and rejects removed properties and unknown pages", async () => {
-  assert.equal((await run("/property/active-property/")).status, 200);
+  const canonical = await run("/property/active-property/");
+  assert.equal(canonical.status, 308);
+  assert.equal(canonical.headers.get("location"), "https://property.myeviv.com/property/active-property");
+  assert.equal((await run("/property/active-property")).status, 200);
   assert.equal((await run("/property/removed-property")).status, 404);
   assert.equal((await run("/unknown-page")).status, 404);
   assert.equal((await run("/catalogue/page/2/")).status, 200);
   assert.equal((await run("/catalogue/page/3/")).status, 404);
+});
+
+test("SPA routes remove trailing slashes while paginated catalogue pages retain them", async () => {
+  const inquiry = await run("/inquiries/?src=facebook");
+  assert.equal(inquiry.status, 308);
+  assert.equal(inquiry.headers.get("location"), "https://property.myeviv.com/inquiries?src=facebook");
+  assert.equal((await run("/catalogue/page/1/")).status, 200);
 });
 
 test("unlisted direct-link routes work with noindex without entering discoverable properties", async () => {

@@ -221,9 +221,13 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
     fs.mkdirSync(directory, { recursive: true });
     fs.writeFileSync(path.join(directory, "index.html"), html);
   }
-  const inquiryDirectory = path.join(distRoot, "inquiries");
-  fs.mkdirSync(inquiryDirectory, { recursive: true });
-  fs.writeFileSync(path.join(inquiryDirectory, "index.html"), indexHtml
+  // Cloudflare Pages treats a directory index and its clean URL differently:
+  // inquiries/index.html can redirect /inquiries to /inquiries/ while clean-URL
+  // normalization redirects it back. Emit one flat HTML file so /inquiries has
+  // a single canonical representation and cannot enter that redirect loop.
+  const legacyInquiryDirectory = path.join(distRoot, "inquiries");
+  fs.rmSync(legacyInquiryDirectory, { recursive: true, force: true });
+  fs.writeFileSync(path.join(distRoot, "inquiries.html"), indexHtml
     .replace(/<title>[\s\S]*?<\/title>/, "<title>Find a Property for Me | HS Ong</title>")
     .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${SITE_ORIGIN}/inquiries">`)
     .replace(/<meta name="description"[^>]*>/, '<meta name="description" content="Tell HS Ong your budget, preferred location and requirements to find a property to rent or buy in Klang Valley.">')

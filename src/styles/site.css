@@ -739,6 +739,13 @@ main { flex: 1; }
   .contact-hero .contact-actions { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
   .contact-hero .contact-actions .button { width: 100%; min-width: 0; padding-inline: 9px; }
   .detail-layout { margin-top: 12px; }
+  /* The desktop gallery reserves 280px of height. Combined with its 16:10
+     aspect ratio, that minimum would force a 448px-wide box on narrow phones
+     and make the entire detail page overflow horizontally. Let the aspect
+     ratio follow the available mobile width instead. */
+  .property-page, .detail-layout, .detail-main, .gallery, .gallery-main, .gallery-thumbnails { min-width: 0; max-width: 100%; }
+  .detail-layout, .detail-main, .gallery, .gallery-main, .gallery-thumbnails { width: 100%; }
+  .gallery-main { min-height: 0; }
   .related-listings { margin-top: 18px; }
   .detail-title-block, .detail-section { padding: 16px; }
   .detail-title-block h1 { font-size: 28px; }

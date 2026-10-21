@@ -35,6 +35,8 @@ test("photo and video switches sit below the main picture and above thumbnails",
 test("detail-page photos preserve their complete image while reserving stable gallery space", () => {
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
   assert.match(css, /\.gallery-main \{[^}]*min-height: 280px;[^}]*aspect-ratio: 16\/10;/);
+  assert.match(css, /@media \(max-width: 760px\)[\s\S]*\.gallery-main \{ min-height: 0; \}/);
+  assert.match(css, /@media \(max-width: 760px\)[\s\S]*\.detail-layout, \.detail-main, \.gallery, \.gallery-main, \.gallery-thumbnails \{ width: 100%; \}/);
   assert.match(css, /\.gallery-open \{[^}]*height: 100%;[^}]*position: absolute;/);
   assert.match(css, /\.gallery-open \.watermarked-image \{ width: 100%; height: 100%; position: absolute; inset: 0; \}/);
   assert.match(css, /\.gallery-open \.watermarked-image > img \{ width: 100%; height: 100%; object-fit: contain; object-position: center; \}/);

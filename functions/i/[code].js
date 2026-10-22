@@ -185,6 +185,19 @@ export async function onRequestGet({ env, params, request }) {
   });
 }
 
+export async function onRequestHead(context) {
+  const response = await onRequestGet(context);
+  const headers = new Headers(response.headers);
+  await response.body?.cancel();
+  return new Response(null, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 export const onRequest = (context) => context.request.method === "GET"
   ? onRequestGet(context)
-  : new Response("Method Not Allowed", { status: 405, headers: { allow: "GET" } });
+  : context.request.method === "HEAD"
+    ? onRequestHead(context)
+    : new Response("Method Not Allowed", { status: 405, headers: { allow: "GET, HEAD" } });

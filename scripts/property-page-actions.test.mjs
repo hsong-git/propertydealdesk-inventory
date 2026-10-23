@@ -58,6 +58,15 @@ test("property page does not render a separate Copy short link action", () => {
   assert.match(source, /Share property/);
 });
 
+test("analytics top listings explain metrics and preview the main photo", () => {
+  const page = fs.readFileSync(path.join(projectRoot, "src", "pages", "AnalyticsAdminPage.jsx"), "utf8");
+  const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
+  assert.match(page, /Views count every detail-page view\. Sessions count distinct browser-tab sessions\./);
+  assert.match(page, /const photo = listing\?\.photos\?\.\[0\]/);
+  assert.match(page, /className="analytics-listing-tooltip"/);
+  assert.match(css, /\.analytics-listing-preview:hover \.analytics-listing-tooltip, \.analytics-listing-preview:focus-within \.analytics-listing-tooltip/);
+});
+
 test("legacy ZIP photo downloads are no longer rendered", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
   assert.doesNotMatch(source, /PhotoDownloadButton/);

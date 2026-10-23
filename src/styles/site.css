@@ -567,10 +567,22 @@ main { flex: 1; }
 .analytics-card table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .analytics-card th, .analytics-card td { padding: 9px 8px; border-bottom: 1px solid var(--color-border); text-align: left; }
 .analytics-card th { color: var(--color-text-muted); font-size: 10px; text-transform: uppercase; }
+.analytics-card th abbr { text-decoration: underline dotted; text-underline-offset: 3px; cursor: help; }
+.analytics-table-note { margin: -5px 0 8px; color: var(--color-text-muted); font-size: 11px; line-height: 1.45; }
+.top-listings-card { overflow: visible; }
+.analytics-listing-preview { position: relative; display: inline-block; }
+.analytics-listing-preview > a { color: var(--color-primary); }
+.analytics-listing-tooltip { position: absolute; z-index: 80; left: calc(100% + 12px); top: 50%; width: 230px; padding: 8px; border: 1px solid var(--color-border); border-radius: var(--radius-small); visibility: hidden; opacity: 0; transform: translateY(-50%) scale(.98); transform-origin: left center; pointer-events: none; background: #fff; box-shadow: var(--shadow-elevated); transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease; }
+.analytics-listing-tooltip img { width: 100%; aspect-ratio: 16/10; border-radius: 7px; display: block; object-fit: cover; background: var(--color-surface-muted); }
+.analytics-listing-tooltip > span { margin-top: 7px; display: grid; gap: 2px; }
+.analytics-listing-tooltip small { overflow: hidden; color: var(--color-text-muted); font-size: 11px; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+.analytics-listing-preview:hover .analytics-listing-tooltip, .analytics-listing-preview:focus-within .analytics-listing-tooltip { visibility: visible; opacity: 1; transform: translateY(-50%) scale(1); }
 @media (max-width: 760px) {
   .analytics-controls label { margin-left: 0; }
   .analytics-kpis { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .analytics-grid { grid-template-columns: 1fr; }
+  .analytics-listing-tooltip { left: 0; top: calc(100% + 8px); width: min(230px, calc(100vw - 64px)); transform: scale(.98); transform-origin: left top; }
+  .analytics-listing-preview:hover .analytics-listing-tooltip, .analytics-listing-preview:focus-within .analytics-listing-tooltip { transform: scale(1); }
 }
 .photo-audit-table-wrap { overflow-x: auto; }
 .photo-audit-table { width: 100%; border-collapse: collapse; font-size: 11px; }

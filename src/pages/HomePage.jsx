@@ -1,4 +1,5 @@
 import { AlertTriangle, ExternalLink, Handshake, LoaderCircle, X } from "lucide-react";
+import { campaignUrl } from "../utils/trafficAttribution";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { agentProfile } from "../config/agentProfile";
 import { CatalogueFilters } from "../components/CatalogueFilters";
@@ -8,7 +9,7 @@ import { PropertyCard } from "../components/PropertyCard";
 import { Seo } from "../components/Seo";
 import { useInventory } from "../hooks";
 import { compareRecentlyUpdated, formatDateTime, matchesInventoryFilter, normalizeInventoryFilter } from "../utils/listing";
-import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
+import { COMBINED_CATALOGUE, CATALOGUE_ORIGIN } from "../config/catalogueSite.js";
 import { buildLocationOptions, matchesKeywordSearch, matchesLocationFilter } from "../utils/locationFilter";
 import { matchesSelection, normalizeMultiFilters, readFilterParams, selectedValues, writeFilterParams } from "../utils/multiSelect.js";
 import { analyticsSource, trackEvent } from "../utils/analytics.js";
@@ -137,9 +138,9 @@ export function HomePage() {
   };
   const shareUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
-    const url = new URL(window.location.href);
+    const url = new URL(window.location.pathname, CATALOGUE_ORIGIN);
     url.search = catalogueSearchParams(filters, catalogueMode).toString();
-    return url.toString();
+    return campaignUrl(url.toString(), { source: "catalogue_search", medium: "share", campaign: "shared_search" });
   }, [filters, catalogueMode]);
   const shareSearch = async () => {
     if (!shareUrl) return;

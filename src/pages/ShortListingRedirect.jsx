@@ -1,16 +1,18 @@
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useParams } from "react-router-dom";
 import { ListingUnavailableState } from "../components/ListingUnavailableState";
 import { Seo } from "../components/Seo";
 import { useInventory } from "../hooks";
 import { SITE_ORIGIN } from "../utils/seo";
+import { attributionSearch } from "../utils/trafficAttribution";
 
 export function ShortListingRedirect() {
   const { code = "" } = useParams();
+  const { search } = useLocation();
   const normalizedCode = code.toUpperCase();
   const { allItems, loading, error } = useInventory();
   const listing = allItems.find((item) => item.code === normalizedCode);
 
-  if (listing) return <Navigate to={`/property/${listing.slug}`} replace />;
+  if (listing) return <Navigate to={`/property/${listing.slug}${attributionSearch(search)}`} replace />;
 
   const canonical = `${SITE_ORIGIN}/i/${encodeURIComponent(normalizedCode || code)}`;
   if (loading) {

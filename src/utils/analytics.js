@@ -1,7 +1,8 @@
+import { sessionAttribution } from "./trafficAttribution.js";
+
 const ENDPOINT = "/api/analytics/event";
 const SESSION_KEY = "pdd-analytics-session";
-const SOURCE_KEY = "pdd-analytics-source";
-const SOURCE_PATTERN = /^[a-z0-9][a-z0-9_-]{0,63}$/i;
+let attribution;
 
 function randomId() {
   return globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -20,14 +21,17 @@ function safeSessionId() {
 }
 
 export function analyticsSource() {
-  if (typeof window === "undefined") return "";
-  try {
-    const requested = new URLSearchParams(window.location.search).get("src")?.trim() || "";
-    if (SOURCE_PATTERN.test(requested)) window.sessionStorage.setItem(SOURCE_KEY, requested.toLowerCase());
-    return window.sessionStorage.getItem(SOURCE_KEY) || "";
-  } catch {
-    return "";
+  return analyticsAttribution()?.source || "";
+}
+
+export function analyticsAttribution() {
+  if (typeof window === "undefined") return null;
+  if (!attribution) {
+    let storage;
+    try { storage = window.sessionStorage; } catch { /* Use in-memory attribution. */ }
+    attribution = sessionAttribution({ search: window.location.search, hostname: window.location.hostname, referrer: document.referrer }, storage);
   }
+  return attribution;
 }
 
 export function trackEvent(eventName, details = {}) {
@@ -36,6 +40,7 @@ export function trackEvent(eventName, details = {}) {
     eventName,
     sessionId: safeSessionId(),
     source: analyticsSource(),
+    attribution: analyticsAttribution(),
     pagePath: window.location.pathname,
     listingCode: details.listingCode || "",
     intent: details.intent || "",
@@ -50,4 +55,3 @@ export function trackEvent(eventName, details = {}) {
     fetch(ENDPOINT, { method: "POST", headers: { "content-type": "application/json" }, body, keepalive: true }).catch(() => {});
   } catch { /* Analytics must never interrupt the visitor experience. */ }
 }
-

@@ -33,3 +33,10 @@ test("rejects cross-origin, unapproved and identifying-shaped payloads", async (
   assert.equal(database.calls.length, 0);
 });
 
+test("records bounded campaign metadata and drops identifying-shaped attribution", async () => {
+  const database=db();
+  const response=await onRequest({request:request({eventName:"listing_view",sessionId:"12345678",pagePath:"/property/unit",source:"example.com",attribution:{medium:"referral",campaign:"rentals",content:"person@example.com",method:"referrer"},properties:{traffic_campaign:"spoofed"}}),env:{REQUIREMENTS_DB:database}});
+  assert.equal(response.status,204);
+  assert.deepEqual(JSON.parse(database.calls[0].values[9]),{traffic_medium:"referral",traffic_campaign:"rentals",traffic_method:"referrer"});
+});
+

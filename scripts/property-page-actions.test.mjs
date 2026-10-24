@@ -237,7 +237,10 @@ test("Share property falls back to copying the public short URL", async () => {
       location: "Klang",
     });
     assert.equal(result, "copied");
-    assert.deepEqual(writes, ["https://property.myeviv.com/i/WTS0029"]);
+    const copied = new URL(writes[0]);
+    assert.equal(copied.origin + copied.pathname, "https://property.myeviv.com/i/WTS0029");
+    assert.equal(copied.searchParams.get("utm_source"), "catalogue_share");
+    assert.equal(copied.searchParams.get("utm_campaign"), "listing_share");
   } finally {
     Object.defineProperty(globalThis, "navigator", {
       configurable: true,

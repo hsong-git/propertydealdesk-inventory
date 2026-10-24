@@ -8,7 +8,7 @@ const EVENT_NAMES = new Set([
 ]);
 const CODE_PATTERN = /^(WTS|WTL)[A-Z0-9-]+$/;
 const SESSION_PATTERN = /^[a-z0-9-]{8,80}$/i;
-const SOURCE_PATTERN = /^[a-z0-9][a-z0-9_-]{0,63}$/i;
+const SOURCE_PATTERN = /^[a-z0-9][a-z0-9_.-]{0,63}$/i;
 const INTENTS = new Set(["", "WTL", "WTS", "rent", "buy"]);
 
 function text(value, max) {
@@ -40,11 +40,17 @@ export async function onRequestPost(context) {
   const listingCode = text(payload?.listingCode, 32).toUpperCase();
   const intent = text(payload?.intent, 8);
   if (!EVENT_NAMES.has(eventName) || !SESSION_PATTERN.test(sessionId) || !pagePath.startsWith("/")
-    || (source && !SOURCE_PATTERN.test(source)) || (listingCode && !CODE_PATTERN.test(listingCode)) || !INTENTS.has(intent)) {
+    || (source && (!SOURCE_PATTERN.test(source) || /^\d{7,}$/.test(source) || /^\d{1,3}(?:\.\d{1,3}){3}$/.test(source))) || (listingCode && !CODE_PATTERN.test(listingCode)) || !INTENTS.has(intent)) {
     return json({ error: "Invalid analytics event." }, 400);
   }
   try {
     const url = new URL(context.request.url);
+    const properties = safeProperties(payload?.properties);
+    for (const key of Object.keys(properties)) if (key.startsWith("traffic_")) delete properties[key];
+    for (const key of ["medium", "campaign", "content", "method"]) {
+      const value = text(payload?.attribution?.[key], 64).toLowerCase();
+      if (SOURCE_PATTERN.test(value) && !/^\d{7,}$/.test(value)) properties[`traffic_${key}`] = value;
+    }
     await context.env.REQUIREMENTS_DB.prepare(`
       INSERT INTO analytics_events (
         id, event_name, occurred_at, site_host, page_path, session_id,
@@ -52,7 +58,7 @@ export async function onRequestPost(context) {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       crypto.randomUUID(), eventName, new Date().toISOString(), url.hostname, pagePath,
-      sessionId, source, listingCode, intent, JSON.stringify(safeProperties(payload?.properties)),
+      sessionId, source, listingCode, intent, JSON.stringify(properties),
     ).run();
     return new Response(null, { status: 204 });
   } catch {

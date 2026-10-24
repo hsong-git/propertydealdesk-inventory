@@ -5,6 +5,8 @@ import { Seo } from "../components/Seo";
 import { useInventory } from "../hooks";
 import { AnalyticsTrendChart } from "../components/AnalyticsTrendChart";
 import { analyticsTrend } from "../utils/analyticsTrend";
+import { TrafficSourcesReport } from "../components/TrafficSourcesReport";
+import { TrackingLinkBuilder } from "../components/TrackingLinkBuilder";
 
 const EVENT_LABELS = {
   catalogue_view: "Catalogue sessions", catalogue_filter_applied: "Filter uses", listing_open: "Listing opens",
@@ -48,7 +50,7 @@ export function AnalyticsAdminPage() {
   const filtered = useMemo(() => {
     const data = state.data || {};
     const byHost = (rows) => (rows || []).filter((row) => row.site_host === host);
-    return { summary: byHost(data.summary)[0] || {}, funnel: byHost(data.funnel), sources: byHost(data.sources), listings: byHost(data.listings), daily: byHost(data.daily) };
+    return { summary: byHost(data.summary)[0] || {}, funnel: byHost(data.funnel), sources: byHost(data.sources), campaigns: byHost(data.campaigns), listings: byHost(data.listings), daily: byHost(data.daily) };
   }, [state.data, host]);
   const trend = useMemo(() => analyticsTrend(filtered.daily, state.data?.period), [filtered.daily, state.data?.period]);
   const listingByCode = useMemo(() => {
@@ -82,7 +84,13 @@ export function AnalyticsAdminPage() {
       </div>
       <p className="analytics-table-note">Daily rate = inquiries ÷ that day's sessions. A session active on multiple days counts on each day; the period total counts it once. Zero means no recorded activity.</p>
     </section>
-    <div className="analytics-grid"><section className="analytics-card"><h2><BarChart3 size={19} /> Funnel activity</h2><table><thead><tr><th>Action</th><th>Events</th><th>Sessions</th></tr></thead><tbody>{filtered.funnel.map((row) => <tr key={row.event_name}><td>{EVENT_LABELS[row.event_name] || row.event_name}</td><td>{row.count}</td><td>{row.sessions}</td></tr>)}</tbody></table></section><section className="analytics-card"><h2>Traffic sources</h2><table><thead><tr><th>Source</th><th>Sessions</th></tr></thead><tbody>{filtered.sources.map((row) => <tr key={row.source}><td>{row.source}</td><td>{row.sessions}</td></tr>)}</tbody></table></section><section className="analytics-card top-listings-card"><h2>Top listings</h2><p className="analytics-table-note">Views count every detail-page view. Sessions count distinct browser-tab sessions.</p><table><thead><tr><th>Listing</th><th><abbr title="Total property detail-page views, including repeat views">Views</abbr></th><th><abbr title="Distinct browser-tab sessions that viewed the property">Sessions</abbr></th></tr></thead><tbody>{filtered.listings.map((row) => { const code = row.listing_code.toUpperCase(); const listing = listingByCode.get(code) || listingByCode.get(code.replace(/^CMI-/, "")); return <tr key={row.listing_code}><td><AnalyticsListingLink code={row.listing_code} listing={listing} /></td><td>{row.views}</td><td>{row.sessions}</td></tr>; })}</tbody></table></section><section className="analytics-card"><h2>Daily sessions</h2><table><thead><tr><th>Date</th><th>Sessions</th></tr></thead><tbody>{filtered.daily.map((row) => <tr key={row.day}><td>{row.day}</td><td>{row.sessions}</td></tr>)}</tbody></table></section></div>
+    <TrafficSourcesReport sources={filtered.sources} campaigns={filtered.campaigns} />
+    <TrackingLinkBuilder key={host} host={host} />
+    <div className="analytics-grid">
+      <section className="analytics-card"><h2><BarChart3 size={19} /> Funnel activity</h2><table><thead><tr><th>Action</th><th>Events</th><th>Sessions</th></tr></thead><tbody>{filtered.funnel.map((row) => <tr key={row.event_name}><td>{EVENT_LABELS[row.event_name] || row.event_name}</td><td>{row.count}</td><td>{row.sessions}</td></tr>)}</tbody></table></section>
+      <section className="analytics-card top-listings-card"><h2>Top listings</h2><p className="analytics-table-note">Views count every detail-page view. Sessions count distinct browser-tab sessions.</p><table><thead><tr><th>Listing</th><th><abbr title="Total property detail-page views, including repeat views">Views</abbr></th><th><abbr title="Distinct browser-tab sessions that viewed the property">Sessions</abbr></th></tr></thead><tbody>{filtered.listings.map((row) => { const code = row.listing_code.toUpperCase(); const listing = listingByCode.get(code) || listingByCode.get(code.replace(/^CMI-/, "")); return <tr key={row.listing_code}><td><AnalyticsListingLink code={row.listing_code} listing={listing} /></td><td>{row.views}</td><td>{row.sessions}</td></tr>; })}</tbody></table></section>
+      <section className="analytics-card"><h2>Daily sessions</h2><table><thead><tr><th>Date</th><th>Sessions</th></tr></thead><tbody>{filtered.daily.map((row) => <tr key={row.day}><td>{row.day}</td><td>{row.sessions}</td></tr>)}</tbody></table></section>
+    </div>
   </main>;
 }
 

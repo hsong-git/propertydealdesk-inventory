@@ -1,3 +1,5 @@
+import { campaignUrl } from "./trafficAttribution.js";
+
 export function tenantEligibilityDescription(listing) {
   const copy = String(listing.postingCopy || "");
   if (listing.acceptAllRaces === false || (listing.acceptAllRaces == null && /Tenant eligibility\*?:\s*(?:Selective tenant profile requirements\.|Prefer locals and selective tenant profile only\.)/i.test(copy))) return "Prefer locals and selective tenant profile only.";
@@ -167,7 +169,7 @@ export const postingText = (listing, profile) => {
 };
 
 export async function shareListing(listing) {
-  const url = listingShortUrl(listing);
+  const url = campaignUrl(listingShortUrl(listing), { source: "catalogue_share", medium: "share", campaign: "listing_share" });
   const data = { title: `${listing.displayCode || listing.code} · ${listing.title}`, text: `${listing.title} at ${listing.location}`, url };
   if (navigator.share) return navigator.share(data);
   await navigator.clipboard.writeText(url);

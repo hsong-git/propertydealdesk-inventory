@@ -1,41 +1,65 @@
-# Traffic source attribution
+# Automatic traffic source attribution
 
-New browser-tab sessions capture attribution before React routing or catalogue
-filters rewrite the entry URL. Priority: `utm_source`, then `src`, then external
-referrer hostname, then `direct_unknown`. Source, medium, campaign and content
-remain fixed for that tab session. No full referring URL, search term, click ID,
-IP address or contact detail is captured by this attribution feature.
+No tracking-link builder is required or displayed. New browser-tab sessions
+capture source before React routing/filter state changes the arrival URL.
+Priority: existing utm_source/src labels, browser web/app referrer, classified
+landing-request Referer fallback, then Direct / unknown. First touch remains
+fixed for the tab session and follows listing views, WhatsApp clicks and inquiries.
 
-Recognised referrers include Google, Bing, DuckDuckGo, Yahoo, Facebook,
-Instagram, TikTok, LinkedIn and X. Other external referring domains are shown
-as domains. Internal Property/SCMI links do not create external referral credit.
-WhatsApp and other applications may supply no referrer: use a tagged link.
+Recognised sources include Facebook, Google search, Bing, Instagram, WhatsApp
+Web, Telegram and supplied Android app referrers. Recognition does not make
+an app supply a referrer: ordinary WhatsApp clicks can still be unknown. No
+phone number, group identity, fingerprint, full referrer URL, query or click ID
+is recorded by this feature. Authentication returns (Cloudflare Access/Google
+sign-in) are labelled separately, not credited as search traffic.
 
-In Administration → Traffic analytics, use **Create a tracked link**. Select a
-source, enter a campaign label and optionally a group/post placement label.
-Use labels such as `october_rentals` / `klang_agents_group`, without personal
-names or contact details. The builder accepts public Property/SCMI homepage
-and listing URLs, preserving existing preview and filter parameters.
+The edge fallback injects only classified source/medium labels into public HTML,
+including short-link HTML. Such responses use private/no-store caching, and
+remove ETag/Content-Length, preventing cross-visitor attribution cache leaks.
+Blank/internal/HEAD/API/error responses are not transformed. This supplements
+browser evidence; it cannot recover a header that was never supplied.
 
-The Share property and Share search actions automatically generate generic
-shared-link attribution. They do not guess which app the native share sheet
-will use. Ordinary copied posting text keeps its existing clean listing link.
-Use the builder when platform/group-specific attribution is needed.
+The dashboard shows source evidence coverage (observed referrers versus link
+labels), source-specific views, WhatsApp clicks, inquiries and conversion rates.
+Existing generic shared-link/campaign labels remain supported, but are not
+presented as proof of which app was used. Historical blank sources are not guessed.
 
-The source report includes all recorded sessions, including listing-only
-arrivals, with detail views, WhatsApp clicks, inquiry submissions and the
-inquiry/session rate. Each session is grouped once under its first known source.
-For old sessions with blanks and a later source tag, that first known source
-is used. Campaigns are grouped by source, medium, campaign and content.
-The reporting change may increase source session totals because the old table
-counted only sessions with a `catalogue_view` event.
+## Existing Cloudflare data
 
-Historical blanks remain **Unattributed (historical)**. No source is inferred
-retroactively. New sessions without evidence use **Direct / unknown**. A tag
-describes a link's intended distribution, not a verified originating app:
-forwarding a link also forwards its campaign attribution.
+On 24 October 2026, authenticated Cloudflare Web Analytics showed, for the
+Property hostname only, Last 30 days (Malaysia time), Exclude bots = Yes:
 
-Metadata is stored under reserved `traffic_*` keys in existing event JSON;
-no database migration is needed. Run `npm run test:analytics` for parser,
-aggregation, period, campaign and conversion tests. Deploy using the guarded
-catalogue-specific commands documented in `SCMI-DEPLOYMENT.md`.
+| Referrer | Cloudflare visits (estimated) |
+| --- | ---: |
+| None (direct) | 580 |
+| m.facebook.com | 160 |
+| www.facebook.com | 130 |
+| l.facebook.com | 20 |
+| Total | 890 |
+
+The separately labelled dashboard snapshot groups Facebook as 310 (34.8%),
+and direct/unknown as 580 (65.2%). Cloudflare values may be sampled/estimated.
+Read-only API snapshots now cover both Property and SCMI for 7/30/90 calendar
+days, using the same Malaysia-day boundaries as the dashboard, through
+24 October 2026 at 16:46 MYT. They follow the site/period selector but stay
+clearly dated after that day. They can include administration traffic.
+Do not merge Cloudflare visits with tab sessions or assign aggregate
+referrals to historical leads. No WhatsApp referrer in this snapshot does not
+mean no WhatsApp visitors.
+
+An expired legacy CLI configuration initially failed, but the active CLI
+session successfully retrieved the API reports. No tokens or permissions were
+created or expanded. scripts/read-cloudflare-sources.mjs prints a read-only,
+credential-free export of all six reports for future snapshot updates.
+
+The authenticated /api/admin/cloudflare-sources endpoint supports a separately
+provisioned CF_ANALYTICS_READ_TOKEN binding for live reports, with an 8-second
+timeout per request and dated-snapshot fallback on error. The binding has not
+been configured: never copy a broad CLI OAuth credential into the deployment.
+Live synchronisation needs separately authorised account-scoped, read-only
+Analytics API access. Snapshot data stays in authenticated APIs, not public
+frontend assets. A hostname-filtered Cloudflare link also opens the live report.
+90-day reads use non-overlapping 30-day slices and sum visits, not pageviews.
+
+Run npm run test:analytics, npm test, npm run test:seo and both guarded builds.
+No database migration is required. Preserve SCMI build-mode deployment guards.

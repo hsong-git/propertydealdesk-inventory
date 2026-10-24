@@ -7,7 +7,7 @@ export function trafficLabel(value) {
 const sourceAliases = { fb: "facebook", ig: "instagram", wa: "whatsapp", tg: "telegram" };
 const normalizeSource = (source) => sourceAliases[source] || source;
 const hostMatches = (host, domain) => host === domain || host.endsWith(`.${domain}`);
-export function detectAttribution({ search = "", referrer = "", hostname = "" }) {
+export function detectAttribution({ search = "", referrer = "", hostname = "", serverSource = "", serverMedium = "" }) {
   const params = new URLSearchParams(search);
   const source = normalizeSource(trafficLabel(params.get("utm_source")) || trafficLabel(params.get("src")));
   if (source) return {
@@ -17,9 +17,21 @@ export function detectAttribution({ search = "", referrer = "", hostname = "" })
   try {
     const url = new URL(referrer);
     const host = url.hostname.toLowerCase().replace(/^www\./, "");
+    // Recognise apps only when an actual app referrer is supplied, not by device.
+    const apps = { "com.whatsapp": ["whatsapp", "messaging"], "com.whatsapp.w4b": ["whatsapp", "messaging"], "com.facebook.katana": ["facebook", "social"], "com.facebook.lite": ["facebook", "social"], "com.instagram.android": ["instagram", "social"], "org.telegram.messenger": ["telegram", "messaging"], "com.google.android.googlequicksearchbox": ["google", "organic_search"] };
+    if (url.protocol === "android-app:" && apps[host]) {
+      const [source, medium] = apps[host];
+      return { source, medium, campaign: "", content: "", method: "app_referrer" };
+    }
     if (["http:", "https:"].includes(url.protocol) && host !== hostname.replace(/^www\./, "") && !["property.myeviv.com", "scmi.myeviv.com"].includes(host)) {
       let source = host, medium = "referral";
-      if (["google.com", "google.com.my", "google.co.uk", "google.com.sg", "bing.com", "duckduckgo.com", "search.yahoo.com"].some((domain) => hostMatches(host, domain))) {
+      if (hostMatches(host, "cloudflareaccess.com") || ["accounts.google.com", "login.microsoftonline.com"].includes(host)) {
+        return { source: "authentication_return", medium: "authentication", campaign: "", content: "", method: "referrer" };
+      }
+      if (["whatsapp.com", "wa.me", "t.me", "telegram.org"].some((domain) => hostMatches(host, domain))) {
+        source = hostMatches(host, "whatsapp.com") || host === "wa.me" ? "whatsapp" : "telegram";
+        medium = "messaging";
+      } else if (["google.com", "google.com.my", "google.co.uk", "google.com.sg", "bing.com", "duckduckgo.com", "search.yahoo.com"].some((domain) => hostMatches(host, domain))) {
         source = host.includes("google.") ? "google" : host.includes("bing.") ? "bing" : host.includes("yahoo.") ? "yahoo" : "duckduckgo";
         medium = "organic_search";
       } else {
@@ -30,13 +42,14 @@ export function detectAttribution({ search = "", referrer = "", hostname = "" })
       if (trafficLabel(source)) return { source, medium, campaign: "", content: "", method: "referrer" };
     }
   } catch { /* An absent or invalid referrer carries no source evidence. */ }
+  if (trafficLabel(serverSource) && trafficLabel(serverMedium)) return { source: serverSource, medium: serverMedium, campaign: "", content: "", method: "server_referrer" };
   return { source: "direct_unknown", medium: "unknown", campaign: "", content: "", method: "none" };
 }
 
 export function sessionAttribution(input, storage) {
   try {
     const saved = JSON.parse(storage?.getItem(ATTRIBUTION_KEY) || "null");
-    if (saved && trafficLabel(saved.source)) return { source: trafficLabel(saved.source), medium: trafficLabel(saved.medium), campaign: trafficLabel(saved.campaign), content: trafficLabel(saved.content), method: ["tag", "referrer", "legacy", "none"].includes(saved.method) ? saved.method : "none" };
+    if (saved && trafficLabel(saved.source)) return { source: trafficLabel(saved.source), medium: trafficLabel(saved.medium), campaign: trafficLabel(saved.campaign), content: trafficLabel(saved.content), method: ["tag", "referrer", "app_referrer", "server_referrer", "legacy", "none"].includes(saved.method) ? saved.method : "none" };
   } catch { /* Storage can be unavailable or stale. */ }
   let result = detectAttribution(input);
   try {

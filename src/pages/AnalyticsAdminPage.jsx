@@ -6,7 +6,7 @@ import { useInventory } from "../hooks";
 import { AnalyticsTrendChart } from "../components/AnalyticsTrendChart";
 import { analyticsTrend } from "../utils/analyticsTrend";
 import { TrafficSourcesReport } from "../components/TrafficSourcesReport";
-import { TrackingLinkBuilder } from "../components/TrackingLinkBuilder";
+import { CloudflareReferrersReport } from "../components/CloudflareReferrersReport";
 
 const EVENT_LABELS = {
   catalogue_view: "Catalogue sessions", catalogue_filter_applied: "Filter uses", listing_open: "Listing opens",
@@ -85,7 +85,7 @@ export function AnalyticsAdminPage() {
       <p className="analytics-table-note">Daily rate = inquiries ÷ that day's sessions. A session active on multiple days counts on each day; the period total counts it once. Zero means no recorded activity.</p>
     </section>
     <TrafficSourcesReport sources={filtered.sources} campaigns={filtered.campaigns} />
-    <TrackingLinkBuilder key={host} host={host} />
+    <CloudflareReferrersReport key={`${host}-${days}`} host={host} days={days} snapshot={state.data?.cloudflareSnapshots?.find((item) => item.site_host === host && item.days === days)} />
     <div className="analytics-grid">
       <section className="analytics-card"><h2><BarChart3 size={19} /> Funnel activity</h2><table><thead><tr><th>Action</th><th>Events</th><th>Sessions</th></tr></thead><tbody>{filtered.funnel.map((row) => <tr key={row.event_name}><td>{EVENT_LABELS[row.event_name] || row.event_name}</td><td>{row.count}</td><td>{row.sessions}</td></tr>)}</tbody></table></section>
       <section className="analytics-card top-listings-card"><h2>Top listings</h2><p className="analytics-table-note">Views count every detail-page view. Sessions count distinct browser-tab sessions.</p><table><thead><tr><th>Listing</th><th><abbr title="Total property detail-page views, including repeat views">Views</abbr></th><th><abbr title="Distinct browser-tab sessions that viewed the property">Sessions</abbr></th></tr></thead><tbody>{filtered.listings.map((row) => { const code = row.listing_code.toUpperCase(); const listing = listingByCode.get(code) || listingByCode.get(code.replace(/^CMI-/, "")); return <tr key={row.listing_code}><td><AnalyticsListingLink code={row.listing_code} listing={listing} /></td><td>{row.views}</td><td>{row.sessions}</td></tr>; })}</tbody></table></section>

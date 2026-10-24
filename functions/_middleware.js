@@ -2,6 +2,8 @@ const appRoutes = new Set(["/", "/cmi", "/inquiries", "/admin", "/admin/analytic
 
 const notFound = (method) => new Response(method === "HEAD" ? null : '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex, follow"><title>Property or page not found | HS Ong</title></head><body><main><h1>This page is no longer available</h1><p>The property may have been sold, rented, withdrawn or removed.</p><a href="/">Browse current properties</a></main></body></html>', { status: 404, headers: { "content-type": "text/html; charset=utf-8", "x-robots-tag": "noindex, follow" } });
 
+import { withEntryAttribution } from "./_lib/entryAttribution.js";
+
 export async function onRequest(context) {
   const url = new URL(context.request.url);
   const pathname = url.pathname.replace(/\/+$/, "") || "/";
@@ -18,7 +20,8 @@ export async function onRequest(context) {
     return Response.redirect(new URL(`${pathname}${url.search}`, "https://property.myeviv.com"), 302);
   }
   let unlisted = false;
-  if (!["GET", "HEAD"].includes(context.request.method) || pathname.startsWith("/api/") || pathname.startsWith("/i/")) return context.next();
+  if (!["GET", "HEAD"].includes(context.request.method) || pathname.startsWith("/api/")) return context.next();
+  if (pathname.startsWith("/i/")) return withEntryAttribution(await context.next(), context.request);
   if (["/about", "/contact", "/requirements"].includes(pathname)) {
     return Response.redirect(new URL(pathname === "/requirements" ? "/inquiries" : "/", url), 301);
   }
@@ -40,5 +43,5 @@ export async function onRequest(context) {
     privateResponse.headers.set("X-Robots-Tag", "noindex, nofollow");
     return privateResponse;
   }
-  return response;
+  return withEntryAttribution(response, context.request);
 }

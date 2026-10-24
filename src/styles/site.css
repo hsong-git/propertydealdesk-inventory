@@ -583,13 +583,16 @@ main { flex: 1; }
 .analytics-source-table-wrap { max-width: 100%; overflow-x: auto; }
 .analytics-source-table-wrap table { min-width: 590px; }
 .analytics-source-content { display: block; margin-top: 3px; color: var(--color-text-muted); }
+.analytics-source-coverage { display: flex; flex-wrap: wrap; gap: 12px 24px; padding: 12px 0; font-size: 12px; color: var(--color-text-muted); }
+.analytics-source-coverage strong { color: var(--color-primary); }
+.analytics-referrer-bars { display: grid; gap: 16px; margin: 20px 0; }
+.analytics-referrer-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; font-size: 13px; }
+.analytics-referrer-track { grid-column: 1 / -1; height: 10px; background: var(--color-surface-muted, #edf3f1); border-radius: 8px; overflow: hidden; }
+.analytics-referrer-fill { height: 100%; background: #1976d2; border-radius: 8px; }
+.analytics-referrer-fill.unknown { background: #889994; }
+.analytics-referrer-row .analytics-source-content { grid-column: 1 / -1; overflow-wrap: anywhere; }
 .analytics-sources-card h3 { margin: 24px 0 10px; font-size: 15px; }
 .analytics-sources-card > .analytics-table-note:last-child { margin: 14px 0 0; }
-.tracking-link-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin-bottom: 12px; }
-.tracking-link-builder label { display: grid; gap: 5px; color: var(--color-text-muted); font-size: 12px; }
-.tracking-link-builder input, .tracking-link-builder select { width: 100%; min-width: 0; min-height: 40px; padding: 8px 10px; border: 1px solid var(--color-border); border-radius: var(--radius-small); color: var(--color-text); background: #fff; font-size: 14px; }
-.tracking-link-builder > .button { margin-top: 12px; }
-@media (max-width: 480px) { .tracking-link-fields { grid-template-columns: 1fr; } .tracking-link-builder input, .tracking-link-builder select { font-size: 16px; } }
 .analytics-card th abbr { text-decoration: underline dotted; text-underline-offset: 3px; cursor: help; }
 .analytics-table-note { margin: -5px 0 8px; color: var(--color-text-muted); font-size: 11px; line-height: 1.45; }
 .top-listings-card { overflow: visible; }

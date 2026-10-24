@@ -29,7 +29,10 @@ export function analyticsAttribution() {
   if (!attribution) {
     let storage;
     try { storage = window.sessionStorage; } catch { /* Use in-memory attribution. */ }
-    attribution = sessionAttribution({ search: window.location.search, hostname: window.location.hostname, referrer: document.referrer }, storage);
+    attribution = sessionAttribution({ search: window.location.search, hostname: window.location.hostname, referrer: document.referrer,
+      serverSource: document.querySelector('meta[name="pdd-entry-source"]')?.content || "",
+      serverMedium: document.querySelector('meta[name="pdd-entry-medium"]')?.content || "",
+    }, storage);
   }
   return attribution;
 }

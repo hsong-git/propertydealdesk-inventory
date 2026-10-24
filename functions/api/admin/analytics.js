@@ -1,6 +1,7 @@
 import { requireAdmin } from "../../_lib/auth.js";
 import { json, methodNotAllowed } from "../../_lib/http.js";
 import { analyticsPeriod } from "../../_lib/analyticsPeriod.js";
+import { cloudflareReferrerSnapshots } from "../../_data/cloudflareReferrers.js";
 
 const PERIODS = new Map([[7, "-7 days"], [30, "-30 days"], [90, "-90 days"]]);
 
@@ -15,7 +16,8 @@ const SOURCE_SESSIONS = `WITH scoped AS (
   SELECT site_host, session_id, CASE WHEN source = '' THEN 'unattributed' ELSE source END AS source,
     COALESCE(json_extract(properties_json, '$.traffic_medium'), '') AS medium,
     COALESCE(json_extract(properties_json, '$.traffic_campaign'), '') AS campaign,
-    COALESCE(json_extract(properties_json, '$.traffic_content'), '') AS content
+    COALESCE(json_extract(properties_json, '$.traffic_content'), '') AS content,
+    COALESCE(json_extract(properties_json, '$.traffic_method'), '') AS method
   FROM scoped WHERE attribution_rank = 1
 ), metrics AS (
   SELECT site_host, session_id,
@@ -25,7 +27,9 @@ const SOURCE_SESSIONS = `WITH scoped AS (
   FROM scoped GROUP BY site_host, session_id
 )`;
 const SOURCE_COUNTS = `COUNT(*) AS sessions, SUM(m.listing_views) AS listing_views,
-  SUM(m.whatsapp_clicks) AS whatsapp_clicks, SUM(m.inquiries) AS inquiries`;
+  SUM(m.whatsapp_clicks) AS whatsapp_clicks, SUM(m.inquiries) AS inquiries,
+  SUM(CASE WHEN a.method IN ('referrer', 'app_referrer', 'server_referrer') THEN 1 ELSE 0 END) AS referrer_sessions,
+  SUM(CASE WHEN a.method = 'tag' THEN 1 ELSE 0 END) AS tagged_sessions`;
 const SOURCE_JOIN = `FROM attributed a JOIN metrics m ON a.site_host = m.site_host AND a.session_id = m.session_id`;
 
 export async function onRequestGet(context) {
@@ -52,7 +56,7 @@ export async function onRequestGet(context) {
         ${SOURCE_COUNTS} ${SOURCE_JOIN} WHERE a.campaign != ''
         GROUP BY a.site_host, a.source, a.medium, a.campaign, a.content ORDER BY sessions DESC`).bind(period.start, period.end).all(),
     ]);
-    return json({ days, period, summary: summary.results || [], funnel: funnel.results || [], sources: sources.results || [], campaigns: campaigns.results || [], listings: listings.results || [], daily: daily.results || [] });
+    return json({ days, period, cloudflareSnapshots: cloudflareReferrerSnapshots, summary: summary.results || [], funnel: funnel.results || [], sources: sources.results || [], campaigns: campaigns.results || [], listings: listings.results || [], daily: daily.results || [] });
   } catch {
     return json({ error: "Analytics reporting is temporarily unavailable." }, 503);
   }

@@ -562,6 +562,19 @@ main { flex: 1; }
 .analytics-kpis span { color: var(--color-text-muted); font-size: 11px; font-weight: 750; }
 .analytics-kpis strong { color: var(--color-primary); font-size: 27px; }
 .analytics-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+.analytics-trend-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.analytics-trend-chart { min-width: 0; }
+.analytics-trend-chart h3 { margin: 12px 0 6px; font-size: 14px; }
+.analytics-trend-chart svg { display: block; max-width: 100%; touch-action: pan-y; }
+.analytics-trend-chart svg text { fill: var(--color-text-muted); font-size: 11px; font-family: inherit; }
+.analytics-chart-gridline { stroke: var(--color-border); stroke-width: 1; }
+.analytics-chart-line { fill: none; stroke: var(--color-primary); stroke-width: 2; stroke-linejoin: round; }
+.analytics-chart-dot { fill: var(--color-primary); }
+.analytics-chart-guide { stroke: var(--color-text-muted); stroke-dasharray: 3 3; }
+.analytics-chart-detail { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; }
+.analytics-chart-detail label { display: flex; align-items: center; gap: 6px; color: var(--color-text-muted); }
+.analytics-chart-detail select { min-height: 34px; max-width: 150px; border: 1px solid var(--color-border); border-radius: 7px; background: #fff; color: var(--color-text); padding: 4px 8px; }
+.analytics-trends > .analytics-table-note:last-child { margin: 20px 0 0; }
 .analytics-card { min-width: 0; padding: 18px; border: 1px solid var(--color-border); border-radius: var(--radius-medium); overflow: auto; background: #fff; box-shadow: var(--shadow-card); }
 .analytics-card h2 { margin: 0 0 12px; display: flex; align-items: center; gap: 7px; font-size: 17px; }
 .analytics-card table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -581,6 +594,7 @@ main { flex: 1; }
   .analytics-controls label { margin-left: 0; }
   .analytics-kpis { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .analytics-grid { grid-template-columns: 1fr; }
+  .analytics-trend-grid { grid-template-columns: 1fr; gap: 14px; }
   .analytics-listing-tooltip { left: 0; top: calc(100% + 8px); width: min(230px, calc(100vw - 64px)); transform: scale(.98); transform-origin: left top; }
   .analytics-listing-preview:hover .analytics-listing-tooltip, .analytics-listing-preview:focus-within .analytics-listing-tooltip { transform: scale(1); }
 }

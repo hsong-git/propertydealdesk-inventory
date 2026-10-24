@@ -29,3 +29,15 @@ export function normalizedTrafficSources(sources = [], cloudflare = null) {
     })).sort((a,b) => (a.source === "unknown") - (b.source === "unknown") || Math.max(b.sessionPercent || 0,b.visitPercent || 0)-Math.max(a.sessionPercent || 0,a.visitPercent || 0)),
   };
 }
+
+export function simpleTrafficSources(sources = [], cloudflare = null) {
+  const normalized = normalizedTrafficSources(sources, cloudflare);
+  const useCloudflare = Boolean(cloudflare) && (normalized.visitTotal > 0 || normalized.sessionTotal === 0);
+  return {
+    dataset: useCloudflare ? "cloudflare" : "website",
+    total: useCloudflare ? normalized.visitTotal : normalized.sessionTotal,
+    rows: normalized.rows.map(row => ({source:row.source,count:useCloudflare ? row.visits : row.sessions,percent:useCloudflare ? row.visitPercent : row.sessionPercent})).filter(row=>row.count>0),
+    whatsappClicks: normalized.rows.reduce((sum,row)=>sum+row.whatsappClicks,0),
+    inquiries: normalized.rows.reduce((sum,row)=>sum+row.inquiries,0),
+  };
+}

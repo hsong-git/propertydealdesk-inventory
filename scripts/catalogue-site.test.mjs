@@ -33,10 +33,10 @@ test("SCMI build combines only exported SMI/CMI and keeps links on its own origi
   assert.equal(result.smiDetail, "https://property.myeviv.com/property/smi-unit");
   assert.equal(result.cmiShare, "https://scmi.myeviv.com/i/WTL0002?v=2026-10-09T00%3A00%3A00Z&preview=7");
   assert.doesNotMatch(result.smiPosting, /preview=/);
-  assert.match(result.smiPosting, /🤝 Co-broke welcome\n🏠 Download listing details & photos from:\nhttps:\/\/property\.myeviv\.com\/i\/WTL0001$/);
+  assert.match(result.smiPosting, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTL0001$/);
   assert.match(result.posting, /CMI-WTL0002/);
   assert.doesNotMatch(result.posting, /preview=/);
-  assert.match(result.posting, /🤝 Co-broke welcome\n🏠 Download listing details & photos from:\nhttps:\/\/scmi\.myeviv\.com\/i\/WTL0002$/);
+  assert.match(result.posting, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/scmi\.myeviv\.com\/i\/WTL0002$/);
   assert.match(result.html, /href="\/">Back to Catalogue/);
   assert.match(result.html, /Agent: Bee Ang/);
   assert.match(result.html, /https:\/\/scmi\.myeviv\.com\/property\/cmi-unit/);

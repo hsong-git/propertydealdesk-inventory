@@ -118,13 +118,13 @@ export const postingFootnoteUrl = (listing) => {
 
 export const postingShortLinkFootnote = (listing) => [
   "🤝 Co-broke welcome",
-  "🏠 Download listing details & photos from:",
+  "🏠 Listing details & photos:",
   postingFootnoteUrl(listing),
 ].join("\n");
 
 export const withPostingShortLinkFootnote = (text, listing) => {
   const standardFootnotePattern = new RegExp(
-    String.raw`(?:\r?\n){0,3}(?:🤝\s*Co-broke welcome\s*(?:\r?\n))?🏠\s*(?:Download\s+)?Listing details & photos(?:\s+from)?:\s*(?:\r?\n)\s*https:\/\/(?:property|scmi|agenttools)\.myeviv\.com(?:\/i\/[A-Z0-9_-]+)?\/?(?:\?[^\s]*)?`,
+    String.raw`(?:\r?\n){0,3}(?:🤝\s*Co-broke welcome\s*(?:\r?\n))?🏠\s*(?:Download\s+)?Listing details & photos(?:\s+(?:from|in))?:\s*(?:\r?\n)\s*https:\/\/(?:property|scmi|agenttools)\.myeviv\.com(?:\/i\/[A-Z0-9_-]+)?\/?(?:\?[^\s]*)?`,
     "gi",
   );
   const cleaned = String(text || "").replace(standardFootnotePattern, "").trim();

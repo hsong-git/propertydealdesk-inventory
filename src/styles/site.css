@@ -585,26 +585,32 @@ main { flex: 1; }
 .analytics-source-content { display: block; margin-top: 3px; color: var(--color-text-muted); }
 .analytics-source-coverage { display: flex; flex-wrap: wrap; gap: 12px 24px; padding: 12px 0; font-size: 12px; color: var(--color-text-muted); }
 .analytics-source-coverage strong { color: var(--color-primary); }
-.analytics-referrer-bars { display: grid; gap: 16px; margin: 20px 0; }
-.analytics-referrer-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; font-size: 13px; }
 .analytics-referrer-track { grid-column: 1 / -1; height: 10px; background: var(--color-surface-muted, #edf3f1); border-radius: 8px; overflow: hidden; }
 .analytics-referrer-fill { height: 100%; background: #1976d2; border-radius: 8px; }
 .analytics-referrer-fill.unknown { background: #889994; }
-.analytics-referrer-row .analytics-source-content { grid-column: 1 / -1; overflow-wrap: anywhere; }
-.analytics-source-legend { display: flex; flex-wrap: wrap; gap: 10px 20px; margin: 16px 0; font-size: 12px; }
-.analytics-source-legend span { display: inline-flex; align-items: center; gap: 7px; }
-.analytics-source-legend i { width: 11px; height: 11px; border-radius: 3px; background: #1976d2; }
-.analytics-source-legend i.website, .analytics-referrer-fill.website { background: #0c8063; }
-.analytics-source-axis { display: flex; justify-content: space-between; margin: 0 54px 0 72px; color: var(--color-text-muted); font-size: 10px; }
-.analytics-normalized-source h3 { margin: 0 0 8px; font-size: 14px; overflow-wrap: anywhere; }
-.analytics-source-series { display: grid; grid-template-columns: 62px minmax(0, 1fr) 44px; align-items: center; gap: 10px; margin: 7px 0; font-size: 12px; }
-.analytics-source-series .analytics-referrer-track { grid-column: auto; }
-.analytics-source-series strong { text-align: right; font-size: 12px; }
-.analytics-normalized-source small { display: block; margin-top: 8px; color: var(--color-text-muted); }
+.analytics-simple-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.analytics-simple-heading h2 { margin: 0; }
+.analytics-simple-heading > span { color: var(--color-text-muted); font-size: 12px; white-space: nowrap; }
+.analytics-snapshot-label { display: inline-block; margin-left: 10px; color: var(--color-text-muted); font-size: 11px; }
+.analytics-simple-bars { display: grid; gap: 22px; margin: 24px 0; }
+.analytics-simple-source > div:first-child { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 12px; margin-bottom: 8px; font-size: 13px; }
+.analytics-simple-source > div > strong { overflow-wrap: anywhere; }
+.analytics-simple-source span { display: flex; align-items: center; gap: 12px; text-align: right; }
+.analytics-simple-source small { color: var(--color-text-muted); font-size: 11px; }
+.analytics-simple-leads { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); padding-top: 18px; border-top: 1px solid var(--color-border); gap: 16px; }
+.analytics-simple-leads > div { display: flex; align-items: center; gap: 8px; }
+.analytics-simple-leads strong { color: var(--color-primary); font-size: 23px; }
+.analytics-simple-leads span { font-size: 12px; color: var(--color-text-muted); }
+.analytics-simple-caption { font-size: 11px; color: var(--color-text-muted); margin: 8px 0 0; }
+@media (max-width: 480px) {
+  .analytics-snapshot-label { display: block; margin: 4px 0 0; }
+  .analytics-simple-source span { display: grid; gap: 2px; }
+}
 .analytics-source-details { margin: 18px 0; }
 .analytics-source-details summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--color-primary); }
 .analytics-source-details[open] summary { margin-bottom: 14px; }
 .analytics-source-details p { overflow-wrap: anywhere; }
+.analytics-simple-sources .analytics-source-details { margin-bottom: 0; }
 .analytics-sources-card h3 { margin: 24px 0 10px; font-size: 15px; }
 .analytics-sources-card > .analytics-table-note:last-child { margin: 14px 0 0; }
 .analytics-card th abbr { text-decoration: underline dotted; text-underline-offset: 3px; cursor: help; }

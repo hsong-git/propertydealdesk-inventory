@@ -26,12 +26,14 @@ presented as proof of which app was used. Historical blank sources are not guess
 
 ## Existing Cloudflare data
 
-The source report is now one normalized, paired-bar chart: green for website
-tab-session share and blue for Cloudflare visit share. Each series uses its own
-denominator; no raw counts are combined. Unknown/unrecorded groups legacy blanks
-with direct/unknown for visual comparison only. The expandable lead table retains
-the original source labels and website-only conversions. Missing datasets show
-an unavailable value, not a false 0%. Different collection coverage remains explicit.
+The simplified source card shows one dataset: Cloudflare visit shares when
+available, otherwise website tab-session shares. Each source has one bar, one
+percentage and its count. No raw counts are combined. A visible snapshot date
+distinguishes stored Cloudflare reports from live data. Website WhatsApp clicks
+and inquiries are separate summary figures, not attributed to Cloudflare sources.
+Technical notes, raw referrers and the original website conversion table stay
+under a closed-by-default More details disclosure. Unknown/unrecorded groups
+legacy blanks with direct/unknown in the website fallback, without guessing an app.
 
 On 24 October 2026, authenticated Cloudflare Web Analytics showed, for the
 Property hostname only, Last 30 days (Malaysia time), Exclude bots = Yes:

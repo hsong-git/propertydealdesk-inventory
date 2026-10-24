@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { normalizedTrafficSources } from "./normalizedTrafficSources.js";
+import { normalizedTrafficSources, simpleTrafficSources } from "./normalizedTrafficSources.js";
 
 test("normalizes each dataset independently and retains lead ownership",()=>{
   const data=normalizedTrafficSources([{source:"facebook",sessions:2,listing_views:5,whatsapp_clicks:1,inquiries:1},{source:"unattributed",sessions:6},{source:"direct_unknown",sessions:2}],{rows:[{source:"facebook",visits:310},{source:"direct_unknown",visits:580}]});
@@ -16,4 +16,14 @@ test("missing/zero datasets show unavailable instead of fabricated percentages",
   assert.equal(data.rows[0].sessionPercent,null);assert.equal(data.rows[0].visitPercent,100);assert.equal(data.rows[0].inquiries,0);
   assert.equal(normalizedTrafficSources([{source:"facebook",sessions:1}]).rows[0].visitPercent,null);
   assert.equal(normalizedTrafficSources([{source:"facebook",sessions:NaN}],{rows:[]}).rows[0].sessionPercent,null);
+});
+
+test("simple view uses one source dataset and keeps website actions separate",()=>{
+  const result=simpleTrafficSources([{source:"unattributed",sessions:262,whatsapp_clicks:3,inquiries:1}],{rows:[{source:"facebook",visits:310},{source:"direct_unknown",visits:580}]});
+  assert.equal(result.dataset,"cloudflare");assert.equal(result.total,890);assert.equal(result.rows.length,2);
+  assert.equal(result.rows.find(row=>row.source==="unknown").count,580);
+  assert.equal(result.whatsappClicks,3);assert.equal(result.inquiries,1);
+  assert.equal(simpleTrafficSources([{source:"facebook",sessions:4}]).dataset,"website");
+  assert.equal(simpleTrafficSources([{source:"facebook",sessions:4}],{rows:[]}).total,4);
+  assert.deepEqual(simpleTrafficSources([],null).rows,[]);
 });

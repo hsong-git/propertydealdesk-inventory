@@ -4,6 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build:property": "node scripts/build-catalogue.mjs property",
+    "build:scmi": "node scripts/build-catalogue.mjs scmi",
+    "deploy:property": "node scripts/deploy-catalogue.mjs property",
+    "deploy:scmi": "node scripts/deploy-catalogue.mjs scmi",
+    "test:deployment": "node --test scripts/catalogue-build-mode.test.mjs scripts/catalogue-site.test.mjs",
     "test:videos": "node --test scripts/video-policy.test.mjs functions/video-range.test.js",
     "predev": "node scripts/build-gallery-photos.mjs",
     "dev": "vite",

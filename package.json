@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test:analytics": "node --test src/utils/analyticsTrend.test.js src/utils/trafficAttribution.test.js functions/_lib/entryAttribution.test.js functions/_lib/cloudflareSources.test.js functions/api/admin/analytics.test.js functions/api/analytics/event.test.js",
+    "test:analytics": "node --test src/utils/analyticsTrend.test.js src/utils/trafficAttribution.test.js src/utils/normalizedTrafficSources.test.js functions/_lib/entryAttribution.test.js functions/_lib/cloudflareSources.test.js functions/api/admin/analytics.test.js functions/api/analytics/event.test.js",
     "build:property": "node scripts/build-catalogue.mjs property",
     "build:scmi": "node scripts/build-catalogue.mjs scmi",
     "deploy:property": "node scripts/deploy-catalogue.mjs property",

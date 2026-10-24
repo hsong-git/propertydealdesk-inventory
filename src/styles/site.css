@@ -591,6 +591,20 @@ main { flex: 1; }
 .analytics-referrer-fill { height: 100%; background: #1976d2; border-radius: 8px; }
 .analytics-referrer-fill.unknown { background: #889994; }
 .analytics-referrer-row .analytics-source-content { grid-column: 1 / -1; overflow-wrap: anywhere; }
+.analytics-source-legend { display: flex; flex-wrap: wrap; gap: 10px 20px; margin: 16px 0; font-size: 12px; }
+.analytics-source-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.analytics-source-legend i { width: 11px; height: 11px; border-radius: 3px; background: #1976d2; }
+.analytics-source-legend i.website, .analytics-referrer-fill.website { background: #0c8063; }
+.analytics-source-axis { display: flex; justify-content: space-between; margin: 0 54px 0 72px; color: var(--color-text-muted); font-size: 10px; }
+.analytics-normalized-source h3 { margin: 0 0 8px; font-size: 14px; overflow-wrap: anywhere; }
+.analytics-source-series { display: grid; grid-template-columns: 62px minmax(0, 1fr) 44px; align-items: center; gap: 10px; margin: 7px 0; font-size: 12px; }
+.analytics-source-series .analytics-referrer-track { grid-column: auto; }
+.analytics-source-series strong { text-align: right; font-size: 12px; }
+.analytics-normalized-source small { display: block; margin-top: 8px; color: var(--color-text-muted); }
+.analytics-source-details { margin: 18px 0; }
+.analytics-source-details summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--color-primary); }
+.analytics-source-details[open] summary { margin-bottom: 14px; }
+.analytics-source-details p { overflow-wrap: anywhere; }
 .analytics-sources-card h3 { margin: 24px 0 10px; font-size: 15px; }
 .analytics-sources-card > .analytics-table-note:last-child { margin: 14px 0 0; }
 .analytics-card th abbr { text-decoration: underline dotted; text-underline-offset: 3px; cursor: help; }

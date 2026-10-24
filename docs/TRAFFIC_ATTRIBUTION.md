@@ -26,6 +26,13 @@ presented as proof of which app was used. Historical blank sources are not guess
 
 ## Existing Cloudflare data
 
+The source report is now one normalized, paired-bar chart: green for website
+tab-session share and blue for Cloudflare visit share. Each series uses its own
+denominator; no raw counts are combined. Unknown/unrecorded groups legacy blanks
+with direct/unknown for visual comparison only. The expandable lead table retains
+the original source labels and website-only conversions. Missing datasets show
+an unavailable value, not a false 0%. Different collection coverage remains explicit.
+
 On 24 October 2026, authenticated Cloudflare Web Analytics showed, for the
 Property hostname only, Last 30 days (Malaysia time), Exclude bots = Yes:
 

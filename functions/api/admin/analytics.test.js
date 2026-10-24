@@ -50,7 +50,44 @@ test("source and campaign reports include listing-only sessions and attribute co
     assert.equal(data.campaigns.length,1);
     assert.equal(data.campaigns[0].campaign,"october_rentals");
     assert.equal(data.campaigns[0].whatsapp_clicks,1);
+    assert.deepEqual(data.listingSources.filter(row=>row.site_host==="property.myeviv.com").map(({source,views,sessions})=>({source,views,sessions})), [
+      {source:"facebook",views:2,sessions:1}, {source:"whatsapp",views:2,sessions:1},
+    ]);
     assert.equal(data.cloudflareSnapshots[0].site_host, "property.myeviv.com");
     assert.equal(data.cloudflareSnapshots[0].rows.reduce((sum, row) => sum + row.visits, 0), data.cloudflareSnapshots[0].totalVisits);
+  } finally {sqlite.close();}
+});
+
+test("listing sources reconcile with totals, reuse session attribution and isolate sites and periods", async () => {
+  const sqlite = new DatabaseSync(":memory:");
+  try {
+    sqlite.exec("CREATE TABLE analytics_events (id INTEGER PRIMARY KEY,site_host TEXT,event_name TEXT,occurred_at TEXT,session_id TEXT,source TEXT,listing_code TEXT,properties_json TEXT DEFAULT '{}')");
+    const insert = sqlite.prepare("INSERT INTO analytics_events(site_host,event_name,occurred_at,session_id,source,listing_code) VALUES (?,?,?,?,?,?)");
+    const now = new Date(Date.now()-1000).toISOString();
+    const add = (event, session, source, code, host="property.myeviv.com", at=now) => insert.run(host,event,at,session,source,code);
+    add("catalogue_view","a","facebook","");
+    add("listing_view","a","","WTL0070");
+    add("listing_view","a","","WTL0070");
+    add("listing_view","a","","WTL0079");
+    add("listing_view","b","","WTL0070");
+    add("listing_view","c","direct_unknown","WTL0070");
+    add("listing_view","a","google","WTL0070","scmi.myeviv.com");
+    add("listing_view","old","facebook","WTL0070","property.myeviv.com","2000-01-01T00:00:00.000Z");
+    const db = { prepare(sql) { return { bind(...params) { return { async all() { return {results:sqlite.prepare(sql).all(...params)}; } }; } }; } };
+    const data = await (await onRequestGet({request:new Request("http://localhost/api/admin/analytics?days=7"),env:{REQUIREMENTS_DB:db}})).json();
+    for (const listing of data.listings) {
+      const sources = data.listingSources.filter(row=>row.site_host===listing.site_host && row.listing_code===listing.listing_code);
+      assert.equal(sources.reduce((sum,row)=>sum+row.views,0),listing.views);
+      assert.equal(sources.reduce((sum,row)=>sum+row.sessions,0),listing.sessions);
+    }
+    assert.equal(data.listingSources.find(row=>row.listing_code==="WTL0079").source,"facebook");
+    const rows = data.listingSources.filter(row=>row.site_host==="property.myeviv.com" && row.listing_code==="WTL0070");
+    assert.deepEqual(rows.map(({source,views,sessions})=>({source,views,sessions})),[
+      {source:"facebook",views:2,sessions:1},
+      {source:"direct_unknown",views:1,sessions:1},
+      {source:"unattributed",views:1,sessions:1},
+    ]);
+    assert.equal(data.listingSources.find(row=>row.site_host==="scmi.myeviv.com").source,"google");
+    assert.ok(data.listingSources.every(row=>!Object.hasOwn(row,"session_id")));
   } finally {sqlite.close();}
 });

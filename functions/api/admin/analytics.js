@@ -40,11 +40,11 @@ export async function onRequestGet(context) {
   const period = analyticsPeriod(days);
   try {
     const db = context.env.REQUIREMENTS_DB;
-    const [summary, funnel, sources, listings, daily, campaigns] = await Promise.all([
+    const [summary, funnel, sources, listings, daily, campaigns, listingSources] = await Promise.all([
       db.prepare(`SELECT site_host, COUNT(*) AS events, COUNT(DISTINCT session_id) AS sessions FROM analytics_events WHERE occurred_at >= ? AND occurred_at <= ? GROUP BY site_host ORDER BY site_host`).bind(period.start, period.end).all(),
       db.prepare(`SELECT site_host, event_name, COUNT(*) AS count, COUNT(DISTINCT session_id) AS sessions FROM analytics_events WHERE occurred_at >= ? AND occurred_at <= ? GROUP BY site_host, event_name ORDER BY site_host, count DESC`).bind(period.start, period.end).all(),
       db.prepare(`${SOURCE_SESSIONS} SELECT a.site_host, a.source, ${SOURCE_COUNTS} ${SOURCE_JOIN} GROUP BY a.site_host, a.source ORDER BY sessions DESC`).bind(period.start, period.end).all(),
-      db.prepare(`SELECT site_host, listing_code, COUNT(*) AS views, COUNT(DISTINCT session_id) AS sessions FROM analytics_events WHERE event_name = 'listing_view' AND listing_code != '' AND occurred_at >= ? AND occurred_at <= ? GROUP BY site_host, listing_code ORDER BY views DESC LIMIT 30`).bind(period.start, period.end).all(),
+      db.prepare(`SELECT site_host, listing_code, COUNT(*) AS views, COUNT(DISTINCT session_id) AS sessions FROM analytics_events WHERE event_name = 'listing_view' AND listing_code != '' AND occurred_at >= ? AND occurred_at <= ? GROUP BY site_host, listing_code ORDER BY views DESC, site_host, listing_code LIMIT 30`).bind(period.start, period.end).all(),
       db.prepare(`SELECT date(occurred_at, '+8 hours') AS day, site_host,
         COUNT(DISTINCT session_id) AS sessions,
         SUM(CASE WHEN event_name = 'listing_view' THEN 1 ELSE 0 END) AS listing_views,
@@ -55,8 +55,19 @@ export async function onRequestGet(context) {
       db.prepare(`${SOURCE_SESSIONS} SELECT a.site_host, a.source, a.medium, a.campaign, a.content,
         ${SOURCE_COUNTS} ${SOURCE_JOIN} WHERE a.campaign != ''
         GROUP BY a.site_host, a.source, a.medium, a.campaign, a.content ORDER BY sessions DESC`).bind(period.start, period.end).all(),
+      db.prepare(`${SOURCE_SESSIONS}, top_listings AS (
+        SELECT site_host, listing_code FROM scoped
+        WHERE event_name = 'listing_view' AND listing_code != ''
+        GROUP BY site_host, listing_code ORDER BY COUNT(*) DESC, site_host, listing_code LIMIT 30
+      ) SELECT e.site_host, e.listing_code, a.source, COUNT(*) AS views,
+        COUNT(DISTINCT e.session_id) AS sessions FROM scoped e
+        JOIN attributed a ON e.site_host = a.site_host AND e.session_id = a.session_id
+        JOIN top_listings t ON e.site_host = t.site_host AND e.listing_code = t.listing_code
+        WHERE e.event_name = 'listing_view'
+        GROUP BY e.site_host, e.listing_code, a.source
+        ORDER BY views DESC, e.site_host, e.listing_code, a.source`).bind(period.start, period.end).all(),
     ]);
-    return json({ days, period, cloudflareSnapshots: cloudflareReferrerSnapshots, summary: summary.results || [], funnel: funnel.results || [], sources: sources.results || [], campaigns: campaigns.results || [], listings: listings.results || [], daily: daily.results || [] });
+    return json({ days, period, cloudflareSnapshots: cloudflareReferrerSnapshots, summary: summary.results || [], funnel: funnel.results || [], sources: sources.results || [], campaigns: campaigns.results || [], listings: listings.results || [], listingSources: listingSources.results || [], daily: daily.results || [] });
   } catch {
     return json({ error: "Analytics reporting is temporarily unavailable." }, 503);
   }

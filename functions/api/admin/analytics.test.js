@@ -3,6 +3,37 @@ import assert from "node:assert/strict";
 import { DatabaseSync } from "node:sqlite";
 import { onRequestGet } from "./analytics.js";
 
+test("listing interest counts actions without join inflation and keeps inquiries as later session journeys", async () => {
+  const sqlite = new DatabaseSync(":memory:");
+  try {
+    sqlite.exec("CREATE TABLE analytics_events (id INTEGER PRIMARY KEY,site_host TEXT,event_name TEXT,occurred_at TEXT,session_id TEXT,source TEXT,listing_code TEXT,properties_json TEXT DEFAULT '{}')");
+    const insert = sqlite.prepare("INSERT INTO analytics_events(site_host,event_name,occurred_at,session_id,source,listing_code,properties_json) VALUES (?,?,?,?,'',?,?)");
+    const base = Date.now() - 60000;
+    const add = (event, session, seconds, code="WTL0070", props={}, host="property.myeviv.com") => insert.run(host,event,new Date(base+seconds*1000).toISOString(),session,code,JSON.stringify(props));
+    add("listing_view","a",1); add("listing_view","a",2);
+    add("whatsapp_click","a",3); add("whatsapp_click","a",4);
+    add("photo_view","a",5); add("media_open","a",6,"WTL0070",{media:"layout"});
+    add("media_open","a",7,"WTL0070",{media:"videos"});
+    add("photo_share","a",8); add("copy_posting","a",9); add("share_property","a",10);
+    add("inquiry_submitted","a",11,""); add("inquiry_submitted","a",12,"");
+    add("listing_view","b",1);
+    add("inquiry_submitted","c",1,""); add("listing_view","c",3);
+    add("whatsapp_click","c",4,"WTL0079"); // Another listing is not engagement with WTL0070.
+    add("whatsapp_click","card-only",4); // Clicks from catalogue cards need not have a detail view.
+    add("listing_view","a",1,"WTL0070",{},"scmi.myeviv.com");
+    add("listing_view","old",-86400*100); add("whatsapp_click","old",-86400*100);
+    add("listing_view","future",86400);
+    const db = {prepare(sql) { return {bind(...params) { return {async all() {return {results:sqlite.prepare(sql).all(...params)};}};}};}};
+    const data = await (await onRequestGet({request:new Request("http://localhost/api/admin/analytics?days=7"),env:{REQUIREMENTS_DB:db}})).json();
+    const row = data.listingInterest.find(row=>row.site_host==="property.myeviv.com");
+    assert.deepEqual(row,{site_host:"property.myeviv.com",listing_code:"WTL0070",whatsapp_clicks:3,photo_opens:1,layout_opens:1,video_opens:1,photo_shares:1,posting_copies:1,property_shares:1,viewing_sessions:3,repeat_view_sessions:1,contact_sessions:1,inquiry_sessions:1,engaged_sessions:1,no_action_sessions:2});
+    const scmi = data.listingInterest.find(row=>row.site_host==="scmi.myeviv.com");
+    assert.equal(scmi.whatsapp_clicks,0); assert.equal(scmi.inquiry_sessions,0); assert.equal(scmi.no_action_sessions,1);
+    assert.equal(data.listingInterest.length,2); // No detail view for WTL0079.
+    assert.ok(data.listingInterest.every(row=>!Object.hasOwn(row,"session_id")));
+  } finally {sqlite.close();}
+});
+
 test("daily reporting counts events and distinct sessions per Malaysia day and site", async () => {
   const sqlite = new DatabaseSync(":memory:");
   try {

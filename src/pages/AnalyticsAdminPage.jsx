@@ -7,6 +7,7 @@ import { AnalyticsTrendChart } from "../components/AnalyticsTrendChart";
 import { analyticsTrend } from "../utils/analyticsTrend";
 import { CloudflareReferrersReport } from "../components/CloudflareReferrersReport";
 import { trafficSourceLabel } from "../components/TrafficSourcesReport";
+import { combinedListingSources, listingInterestSummary } from "../utils/listingInterest";
 
 const EVENT_LABELS = {
   catalogue_view: "Catalogue sessions", catalogue_filter_applied: "Filter uses", listing_open: "Listing opens",
@@ -30,14 +31,32 @@ function AnalyticsListingLink({ code, listing }) {
   </span>;
 }
 
-function TopListingRows({ row, listing, sources }) {
+function TopListingRows({ row, listing, sources, interest }) {
   const [open, setOpen] = useState(false);
-  const id = `listing-sources-${row.listing_code.replace(/[^a-z0-9-]/gi, "-")}`;
+  const id = `listing-interest-${row.listing_code.replace(/[^a-z0-9-]/gi, "-")}`;
+  const groupedSources = combinedListingSources(sources);
+  const actions = [
+    ["WhatsApp clicks", interest?.whatsapp_clicks], ["Full photo/layout opens", interest?.photo_opens],
+    ["Layout opens", interest?.layout_opens], ["Video opens", interest?.video_opens],
+    ["Photo shares / downloads", interest?.photo_shares], ["Posting copies", interest?.posting_copies],
+    ["Property shares", interest?.property_shares],
+  ];
   return <Fragment>
-    <tr><td><AnalyticsListingLink code={row.listing_code} listing={listing} /><button className="analytics-listing-sources-toggle" type="button" aria-label={`Sources for ${row.listing_code}`} aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>{open ? "▾" : "▸"} Sources</button></td><td>{row.views}</td><td>{row.sessions}</td></tr>
+    <tr><td><AnalyticsListingLink code={row.listing_code} listing={listing} /><button className="analytics-listing-sources-toggle" type="button" aria-label={`Interest and leads for ${row.listing_code}`} aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>{open ? "▾" : "▸"} Interest &amp; leads</button></td><td>{row.views}</td><td>{row.sessions}</td></tr>
     {open ? <tr className="analytics-listing-sources-row"><td colSpan={3}><div id={id}>
-      {sources.length ? <table aria-label={`Traffic sources for ${row.listing_code}`}><thead><tr><th>Source</th><th>Views</th><th>Sessions</th></tr></thead><tbody>{sources.map(source => <tr key={source.source}><td>{source.source === "unattributed" ? "Unknown (not recorded)" : trafficSourceLabel(source.source)}</td><td>{source.views}</td><td>{source.sessions}</td></tr>)}</tbody></table> : <p className="analytics-table-note">No source breakdown recorded.</p>}
-      <p className="analytics-table-note">Recorded website traffic only. Missing sources remain unknown.</p>
+      <p className="analytics-interest-summary">{listingInterestSummary(interest)}</p>
+      {interest ? <>
+        <dl className="analytics-interest-metrics">{actions.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{Number(value || 0)}</dd></div>)}</dl>
+        <div className="analytics-interest-journeys">
+          <p><strong>{interest.repeat_view_sessions}</strong> {Number(interest.repeat_view_sessions) === 1 ? "session" : "sessions"} viewed this listing more than once.</p>
+          <p><strong>{interest.no_action_sessions}</strong> viewing {Number(interest.no_action_sessions) === 1 ? "session" : "sessions"} had no further tracked action.</p>
+          <p><strong>{interest.inquiry_sessions}</strong> viewing {Number(interest.inquiry_sessions) === 1 ? "session" : "sessions"} later submitted an inquiry.</p>
+        </div>
+        <p className="analytics-table-note">Clicks and sharing are activity, not confirmed leads. Later inquiries may concern another property.</p>
+      </> : null}
+      <details className="analytics-interest-sources"><summary>Traffic sources</summary>
+        {groupedSources.length ? <table aria-label={`Traffic sources for ${row.listing_code}`}><thead><tr><th>Source</th><th>Views</th><th>Sessions</th></tr></thead><tbody>{groupedSources.map(source => <tr key={source.source}><td>{source.source === "unknown" ? "Source unavailable" : trafficSourceLabel(source.source)}</td><td>{source.views}</td><td>{source.sessions}</td></tr>)}</tbody></table> : <p className="analytics-table-note">No source information recorded.</p>}
+      </details>
     </div></td></tr> : null}
   </Fragment>;
 }
@@ -62,7 +81,7 @@ export function AnalyticsAdminPage() {
   const filtered = useMemo(() => {
     const data = state.data || {};
     const byHost = (rows) => (rows || []).filter((row) => row.site_host === host);
-    return { summary: byHost(data.summary)[0] || {}, funnel: byHost(data.funnel), sources: byHost(data.sources), campaigns: byHost(data.campaigns), listings: byHost(data.listings), listingSources: byHost(data.listingSources), daily: byHost(data.daily) };
+    return { summary: byHost(data.summary)[0] || {}, funnel: byHost(data.funnel), sources: byHost(data.sources), campaigns: byHost(data.campaigns), listings: byHost(data.listings), listingSources: byHost(data.listingSources), listingInterest: byHost(data.listingInterest), daily: byHost(data.daily) };
   }, [state.data, host]);
   const trend = useMemo(() => analyticsTrend(filtered.daily, state.data?.period), [filtered.daily, state.data?.period]);
   const listingByCode = useMemo(() => {
@@ -99,7 +118,7 @@ export function AnalyticsAdminPage() {
     <CloudflareReferrersReport key={`${host}-${days}`} host={host} days={days} sources={filtered.sources} campaigns={filtered.campaigns} snapshot={state.data?.cloudflareSnapshots?.find((item) => item.site_host === host && item.days === days)} />
     <div className="analytics-grid">
       <section className="analytics-card"><h2><BarChart3 size={19} /> Funnel activity</h2><table><thead><tr><th>Action</th><th>Events</th><th>Sessions</th></tr></thead><tbody>{filtered.funnel.map((row) => <tr key={row.event_name}><td>{EVENT_LABELS[row.event_name] || row.event_name}</td><td>{row.count}</td><td>{row.sessions}</td></tr>)}</tbody></table></section>
-      <section className="analytics-card top-listings-card"><h2>Top listings</h2><p className="analytics-table-note">Views count every detail-page view. Sessions count distinct browser-tab sessions. Expand Sources for the breakdown.</p><table><thead><tr><th>Listing</th><th><abbr title="Total property detail-page views, including repeat views">Views</abbr></th><th><abbr title="Distinct browser-tab sessions that viewed the property">Sessions</abbr></th></tr></thead><tbody>{filtered.listings.map((row) => { const code = row.listing_code.toUpperCase(); const listing = listingByCode.get(code) || listingByCode.get(code.replace(/^CMI-/, "")); return <TopListingRows key={`${host}-${days}-${row.listing_code}`} row={row} listing={listing} sources={filtered.listingSources.filter(source => source.listing_code === row.listing_code)} />; })}</tbody></table></section>
+      <section className="analytics-card top-listings-card"><h2>Top listings</h2><p className="analytics-table-note">Views count every detail-page view. Sessions count distinct browser-tab sessions. Expand Interest &amp; leads to see further action.</p><table><thead><tr><th>Listing</th><th><abbr title="Total property detail-page views, including repeat views">Views</abbr></th><th><abbr title="Distinct browser-tab sessions that viewed the property">Sessions</abbr></th></tr></thead><tbody>{filtered.listings.map((row) => { const code = row.listing_code.toUpperCase(); const listing = listingByCode.get(code) || listingByCode.get(code.replace(/^CMI-/, "")); return <TopListingRows key={`${host}-${days}-${row.listing_code}`} row={row} listing={listing} sources={filtered.listingSources.filter(source => source.listing_code === row.listing_code)} interest={filtered.listingInterest.find(item => item.listing_code === row.listing_code)} />; })}</tbody></table></section>
       <section className="analytics-card"><h2>Daily sessions</h2><table><thead><tr><th>Date</th><th>Sessions</th></tr></thead><tbody>{filtered.daily.map((row) => <tr key={row.day}><td>{row.day}</td><td>{row.sessions}</td></tr>)}</tbody></table></section>
     </div>
   </main>;

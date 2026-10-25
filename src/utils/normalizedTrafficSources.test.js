@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { normalizedTrafficSources, simpleTrafficSources } from "./normalizedTrafficSources.js";
+import { normalizedTrafficSources, simpleTrafficSources, trafficSourceSummary } from "./normalizedTrafficSources.js";
 
 test("normalizes each dataset independently and retains lead ownership",()=>{
   const data=normalizedTrafficSources([{source:"facebook",sessions:2,listing_views:5,whatsapp_clicks:1,inquiries:1},{source:"unattributed",sessions:6},{source:"direct_unknown",sessions:2}],{rows:[{source:"facebook",visits:310},{source:"direct_unknown",visits:580}]});
@@ -10,6 +10,25 @@ test("normalizes each dataset independently and retains lead ownership",()=>{
   const unknown=data.rows.find(row=>row.source==="unknown");assert.equal(unknown.sessions,8);assert.equal(unknown.visits,580);
   assert.equal(data.rows.reduce((sum,row)=>sum+row.sessionPercent,0),100);
   assert.ok(Math.abs(data.rows.reduce((sum,row)=>sum+row.visitPercent,0)-100)<0.0001);
+});
+
+test("plain-language summary uses the displayed sources without guessing unknown origins", () => {
+  const chart = simpleTrafficSources([{source:"unattributed",sessions:282,whatsapp_clicks:3,inquiries:4}], {rows:[{source:"facebook",visits:310},{source:"direct_unknown",visits:580}]});
+  const summary = trafficSourceSummary(chart);
+  assert.equal(summary[0].source,"facebook");
+  assert.match(summary[0].text,/largest identified source \(35%\)/);
+  assert.equal(summary[1].text,"The source of 65.2% of visits is unknown.");
+  assert.doesNotMatch(JSON.stringify(summary),/whatsapp|inquiries/i);
+  assert.equal(chart.inquiries,4);
+});
+
+test("plain-language summary handles no data, unknown-only and known-only sources", () => {
+  assert.deepEqual(trafficSourceSummary(simpleTrafficSources([])),[]);
+  assert.deepEqual(trafficSourceSummary(simpleTrafficSources([{source:"direct_unknown",sessions:2}])),[{text:"The source of 100% of browsing sessions is unknown."}]);
+  const summary = trafficSourceSummary(simpleTrafficSources([{source:"google",sessions:1},{source:"facebook",sessions:3}]));
+  assert.equal(summary.length,1);
+  assert.equal(summary[0].source,"facebook");
+  assert.match(summary[0].text,/75%/);
 });
 test("missing/zero datasets show unavailable instead of fabricated percentages",()=>{
   const data=normalizedTrafficSources([],{rows:[{source:"facebook",visits:10}]});

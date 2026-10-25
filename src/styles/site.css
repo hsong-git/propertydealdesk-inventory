@@ -593,6 +593,7 @@ main { flex: 1; }
 .analytics-simple-heading > span { color: var(--color-text-muted); font-size: 12px; white-space: nowrap; }
 .analytics-snapshot-label { display: inline-block; margin-left: 10px; color: var(--color-text-muted); font-size: 11px; }
 .analytics-simple-bars { display: grid; gap: 22px; margin: 24px 0; }
+.analytics-source-summary { margin: 16px 0; font-size: 14px; line-height: 1.6; color: var(--color-text); }
 .analytics-simple-source > div:first-child { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 12px; margin-bottom: 8px; font-size: 13px; }
 .analytics-simple-source > div > strong { overflow-wrap: anywhere; }
 .analytics-simple-source span { display: flex; align-items: center; gap: 12px; text-align: right; }

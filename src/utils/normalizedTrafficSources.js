@@ -41,3 +41,16 @@ export function simpleTrafficSources(sources = [], cloudflare = null) {
     inquiries: normalized.rows.reduce((sum,row)=>sum+row.inquiries,0),
   };
 }
+
+// Keep the interpretation factual; unknown visits are never assigned to an app.
+export function trafficSourceSummary(chart) {
+  if (!chart.total || !chart.rows.length) return [];
+  const unknown = chart.rows.find(row => row.source === "unknown");
+  const known = chart.rows.filter(row => row.source !== "unknown" && row.source !== "authentication_return")
+    .sort((a, b) => b.count - a.count);
+  const summary = [];
+  if (known.length) summary.push({source: known[0].source, text: ` is the largest identified source (${Math.round(known[0].percent)}%). `});
+  if (unknown) summary.push({text: `The source of ${unknown.percent.toFixed(1).replace(/\.0$/, "")}% of ${chart.dataset === "cloudflare" ? "visits" : "browsing sessions"} is unknown.`});
+  if (!summary.length) summary.push({text: "No incoming traffic source has been identified yet."});
+  return summary;
+}

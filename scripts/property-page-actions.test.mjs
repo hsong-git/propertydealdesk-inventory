@@ -9,6 +9,17 @@ import { listingMediaLinks, initialListingGallery } from "../src/utils/listingMe
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
+test("all three admin detail pages have a direct return to administration", () => {
+  const component = fs.readFileSync(path.join(projectRoot,"src/components/AdminBackLink.jsx"),"utf8");
+  assert.match(component,/to="\/admin"/);
+  assert.match(component,/Back to Administration/);
+  assert.doesNotMatch(component,/navigate\(-1\)|history\.back/);
+  for (const page of ["AnalyticsAdminPage", "RequirementsAdminPage", "PhotoDownloadsAdminPage"]) {
+    const source = fs.readFileSync(path.join(projectRoot,`src/pages/${page}.jsx`),"utf8");
+    assert.match(source,/<AdminBackLink \/>/);
+  }
+});
+
 test("SMI and CMI cards only link to existing media and preserve intent", () => {
   for (const inventoryKind of ["SMI", "CMI"]) {
     const listing = { inventoryKind, layouts: ["layout.webp"], videos: ["video.mp4"] };

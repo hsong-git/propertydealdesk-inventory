@@ -1,6 +1,7 @@
 import { Archive, ArchiveRestore, Check, Copy, Eye, LoaderCircle, MailOpen, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Seo } from "../components/Seo";
+import { AdminBackLink } from "../components/AdminBackLink";
 import { formatRoomSummary, requirementStoreysLabel } from "../data/requirementContract";
 import { formatDateTime, formatPrice } from "../utils/listing";
 import { inquiryPostingText } from "../utils/requirementPosting";
@@ -171,6 +172,7 @@ export function RequirementsAdminPage() {
       <Seo title="Property Inquiries Admin" />
       <div className="page-width admin-requirements-shell">
         <header>
+          <AdminBackLink />
           <span className="eyebrow">Protected administration</span>
           <h1>Property Inquiries</h1>
           <p>Manage tenant and buyer enquiries. Archive inquiries that are no longer relevant and restore them anytime. Archiving preserves their details and reference numbers.</p>

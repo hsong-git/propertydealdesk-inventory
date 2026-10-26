@@ -2,6 +2,7 @@ import { RefreshCw, ShieldCheck, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Seo } from "../components/Seo";
+import { AdminBackLink } from "../components/AdminBackLink";
 import { anonymousBrowserLabel } from "../utils/anonymousBrowser";
 
 function browserLabel(userAgent) {
@@ -33,7 +34,7 @@ export function PhotoDownloadsAdminPage() {
   const events = browserFilter ? state.events.filter((event) => event.anonymous_browser_id === browserFilter) : state.events;
   return <main className="page-width admin-downloads-page">
     <Seo title="Photo sharing audit | HS Ong Property Inventory" />
-    <header className="admin-page-heading"><span className="eyebrow"><ShieldCheck size={15} /> Private administration</span><h1>Photo sharing audit</h1><p>Downloads and WhatsApp share attempts are recorded with SMI code and timestamp. Click an anonymous browser ID to see its repeat activity. IDs identify browsers, not people; clearing cookies or changing devices creates a new ID.</p></header>
+    <header className="admin-page-heading"><AdminBackLink /><span className="eyebrow"><ShieldCheck size={15} /> Private administration</span><h1>Photo sharing audit</h1><p>Downloads and WhatsApp share attempts are recorded with SMI code and timestamp. Click an anonymous browser ID to see its repeat activity. IDs identify browsers, not people; clearing cookies or changing devices creates a new ID.</p></header>
     <section className="admin-photo-audit-card">
       <div className="admin-table-summary"><strong>{events.length}</strong><span>{browserFilter ? "matching events in the latest 500" : "photo sharing events"}</span><button type="button" onClick={() => load()}><RefreshCw size={15} /> Refresh</button>{testEntryCount ? <button className="button danger" type="button" onClick={removeTestEntries}><Trash2 size={15} /> Remove my test entries ({testEntryCount})</button> : null}</div>
       {browserFilter ? <p className="anonymous-browser-filter" role="status">Showing {anonymousBrowserLabel(browserFilter)} <button className="button tertiary" type="button" onClick={() => setBrowserFilter("")}>Show all browsers</button></p> : null}

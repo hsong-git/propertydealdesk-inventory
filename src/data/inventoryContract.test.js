@@ -157,7 +157,7 @@ test("SMI posting removes stale CMI prefixes and uses the property domain", () =
   assert.match(copy, /\*WTS1004\*/);
   assert.doesNotMatch(copy, /CMI-WTS1004|scmi\.myeviv/);
   assert.doesNotMatch(copy, /preview=/);
-  assert.match(copy, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004$/);
+  assert.match(copy, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004\?src=c1$/);
 });
 
 test("treats listings array membership as authoritative and accepts an empty feed", () => {
@@ -192,7 +192,7 @@ test("uses Stable-provided posting copy with one clean short-link footer", () =>
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(text, ["Stable SMI Copy", "Line 2 exactly as approved.", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com/i/WTS1004"].join("\n"));
+  assert.equal(text, ["Stable SMI Copy", "Line 2 exactly as approved.", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com/i/WTS1004?src=c1"].join("\n"));
 });
 
 test("accepts Stable schema 1.1 posting copy snapshots", () => {
@@ -237,7 +237,7 @@ test("falls back to reconstructed posting details for old snapshots", () => {
   assert.match(text, /Contact HS Ong/);
   assert.doesNotMatch(text, /REN 81340/);
   assert.doesNotMatch(text, /preview=/);
-  assert.match(text, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004$/);
+  assert.match(text, /🤝 Co-broke welcome\n🏠 Listing details & photos:\nhttps:\/\/property\.myeviv\.com\/i\/WTS1004\?src=c1$/);
   assert.doesNotMatch(text, /database_id|contact_no|raw_json/);
 });
 
@@ -256,7 +256,7 @@ test("normalizes duplicate posting footers to one clean short-link footer", () =
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(text, ["Stable SMI Copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com/i/WTS1004"].join("\n"));
+  assert.equal(text, ["Stable SMI Copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com/i/WTS1004?src=c1"].join("\n"));
   assert.doesNotMatch(text, /preview=/);
   assert.equal(text.match(/Co-broke welcome/g).length, 1);
   assert.equal(text.match(/Listing details & photos:/g).length, 1);
@@ -310,7 +310,7 @@ test("normalizes request-side posting footers to the property homepage", () => {
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(text, ["Stable request copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com"].join("\n"));
+  assert.equal(text, ["Stable request copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com/?src=c1"].join("\n"));
   assert.doesNotMatch(text, /\/i\/WTR1006/);
 
   const oldHomepageText = postingText({
@@ -327,12 +327,12 @@ test("normalizes request-side posting footers to the property homepage", () => {
     renNumber: "REN 81340",
     phoneDisplay: "016-313 2865",
   });
-  assert.equal(oldHomepageText, ["Stable request copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com"].join("\n"));
+  assert.equal(oldHomepageText, ["Stable request copy", "", "🤝 Co-broke welcome", "🏠 Listing details & photos:", "https://property.myeviv.com/?src=c1"].join("\n"));
 });
 
-test("posting footer URLs omit social preview query parameters", () => {
-  assert.equal(postingFootnoteUrl({ code: "WTL0098", intent: "WTL", inventoryVersion: "2026.10.17.2", adPage: "/inventory/WTL0098/AdPage/poster.jpg" }), "https://property.myeviv.com/i/WTL0098");
-  assert.equal(postingFootnoteUrl({ code: "WTS1039", intent: "WTS", visibility: "unlisted", inventoryVersion: "2026.10.17.2" }), "https://scmi.myeviv.com/i/WTS1039");
+test("posting footer URLs omit social preview parameters and always track WhatsApp", () => {
+  assert.equal(postingFootnoteUrl({ code: "WTL0098", intent: "WTL", inventoryVersion: "2026.10.17.2", adPage: "/inventory/WTL0098/AdPage/poster.jpg" }), "https://property.myeviv.com/i/WTL0098?src=c1");
+  assert.equal(postingFootnoteUrl({ code: "WTS1039", intent: "WTS", visibility: "unlisted", inventoryVersion: "2026.10.17.2" }), "https://scmi.myeviv.com/i/WTS1039?src=c1");
 });
 
 test("builds a photo-download WhatsApp request from public listing details", () => {

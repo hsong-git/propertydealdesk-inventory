@@ -78,6 +78,9 @@ test("source and campaign reports include listing-only sessions and attribute co
     assert.equal(rows.find(row=>row.source==="whatsapp").tagged_sessions,1);
     assert.equal(rows.find(row=>row.source==="whatsapp").referrer_sessions,0);
     assert.equal(rows.find(row=>row.source==="facebook").sessions,1);
+    assert.deepEqual(data.postingTracking.map(({site_host,source,sessions,listing_views,whatsapp_clicks,inquiries})=>({site_host,source,sessions,listing_views,whatsapp_clicks,inquiries})), [
+      {site_host:"property.myeviv.com",source:"whatsapp",sessions:1,listing_views:2,whatsapp_clicks:1,inquiries:1},
+    ]);
     assert.equal(data.campaigns.length,1);
     assert.equal(data.campaigns[0].campaign,"october_rentals");
     assert.equal(data.campaigns[0].whatsapp_clicks,1);

@@ -111,9 +111,12 @@ const supplyIntents = new Set(["WTS", "WTL"]);
 
 export const postingFootnoteUrl = (listing) => {
   const intent = String(listing.intent || "").toUpperCase();
-  return supplyIntents.has(intent)
+  const destination = supplyIntents.has(intent)
     ? listingShortUrl(listing).split("?")[0]
     : "https://property.myeviv.com";
+  const url = new URL(destination);
+  url.searchParams.set("src", "c1");
+  return url.toString();
 };
 
 export const postingShortLinkFootnote = (listing) => [

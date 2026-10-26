@@ -1,4 +1,4 @@
-import { BarChart3, RefreshCw, ShieldCheck } from "lucide-react";
+import { BarChart3, Link2, RefreshCw, ShieldCheck } from "lucide-react";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Seo } from "../components/Seo";
@@ -81,7 +81,7 @@ export function AnalyticsAdminPage() {
   const filtered = useMemo(() => {
     const data = state.data || {};
     const byHost = (rows) => (rows || []).filter((row) => row.site_host === host);
-    return { summary: byHost(data.summary)[0] || {}, funnel: byHost(data.funnel), sources: byHost(data.sources), campaigns: byHost(data.campaigns), listings: byHost(data.listings), listingSources: byHost(data.listingSources), listingInterest: byHost(data.listingInterest), daily: byHost(data.daily) };
+    return { summary: byHost(data.summary)[0] || {}, funnel: byHost(data.funnel), sources: byHost(data.sources), postingTracking: byHost(data.postingTracking), campaigns: byHost(data.campaigns), listings: byHost(data.listings), listingSources: byHost(data.listingSources), listingInterest: byHost(data.listingInterest), daily: byHost(data.daily) };
   }, [state.data, host]);
   const trend = useMemo(() => analyticsTrend(filtered.daily, state.data?.period), [filtered.daily, state.data?.period]);
   const listingByCode = useMemo(() => {
@@ -97,12 +97,21 @@ export function AnalyticsAdminPage() {
   const eventCount = (name) => Number(filtered.funnel.find((item) => item.event_name === name)?.count || 0);
   const sessionCount = Number(filtered.summary.sessions || 0);
   const inquiryRate = sessionCount ? ((eventCount("inquiry_submitted") / sessionCount) * 100).toFixed(1) : "0.0";
+  const trackedPostingRows = ["whatsapp", "facebook"].map((source) => {
+    const row = filtered.postingTracking.find((item) => item.source === source) || {};
+    return { source, sessions: Number(row.sessions || 0), listingViews: Number(row.listing_views || 0), whatsappClicks: Number(row.whatsapp_clicks || 0), inquiries: Number(row.inquiries || 0) };
+  });
   return <main className="page-width admin-analytics-page">
     <Seo title="Traffic analytics | HS Ong Property Inventory" />
     <header className="admin-page-heading"><span className="eyebrow"><ShieldCheck size={15} /> Private administration</span><h1>Traffic and lead analytics</h1><p>First-party, privacy-conscious funnel activity separated by website. A session lasts for the visitor&apos;s current browser tab and does not identify a person.</p></header>
     <section className="analytics-controls"><div className="catalogue-mode-toggle">{["property.myeviv.com", "scmi.myeviv.com"].map((item) => <button key={item} className={host === item ? "active" : ""} type="button" onClick={() => setHost(item)}>{hostLabel(item)}</button>)}</div><label>Period<select value={days} onChange={(event) => setDays(Number(event.target.value))}><option value="7">7 days</option><option value="30">30 days</option><option value="90">90 days</option></select></label><button className="button secondary" type="button" onClick={load}><RefreshCw size={16} /> Refresh</button></section>
     {state.error ? <p className="requirement-alert error">{state.error}</p> : null}
     <section className="analytics-kpis" aria-label={`${hostLabel(host)} performance`}><article><span>Sessions</span><strong>{sessionCount}</strong></article><article><span>Listing views</span><strong>{eventCount("listing_view")}</strong></article><article><span>WhatsApp clicks</span><strong>{eventCount("whatsapp_click")}</strong></article><article><span>Inquiries</span><strong>{eventCount("inquiry_submitted")}</strong></article><article><span>Inquiry/session</span><strong>{inquiryRate}%</strong></article></section>
+    <section className="analytics-card analytics-tracked-posting" aria-label="Tracked posting links">
+      <h2><Link2 size={19} /> Tracked posting links</h2>
+      <p className="analytics-table-note">Visits attributed through the discreet links copied for WhatsApp and Facebook postings. Natural app referrals without the tracking token are excluded.</p>
+      <table><thead><tr><th>Posting source</th><th>Sessions</th><th>Listing views</th><th>WhatsApp clicks</th><th>Inquiries</th></tr></thead><tbody>{trackedPostingRows.map((row) => <tr key={row.source}><td><strong>{trafficSourceLabel(row.source)}</strong></td><td>{row.sessions}</td><td>{row.listingViews}</td><td>{row.whatsappClicks}</td><td>{row.inquiries}</td></tr>)}</tbody></table>
+    </section>
     <section className="analytics-card analytics-trends" aria-label="Daily performance graphs" aria-busy={state.loading}>
       <h2>Daily performance · {hostLabel(host)}</h2>
       <p className="analytics-table-note">{state.loading ? "Updating selected period…" : `${state.data?.days || days} days · ${state.data?.period?.startDay || ""} to ${state.data?.period?.endDay || ""}`} · Malaysia time. Today is partial. Hover, tap or choose a date for details.</p>

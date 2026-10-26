@@ -6,6 +6,10 @@ test("explicit campaign tags take priority and are sanitized", () => {
   const a=detectAttribution({search:"?utm_source=WhatsApp&utm_campaign=October+Rentals&utm_content=agents_group",referrer:"https://google.com"});
   assert.deepEqual(a,{source:"whatsapp",medium:"messaging",campaign:"october_rentals",content:"agents_group",method:"tag"});
   assert.equal(detectAttribution({search:"?src=fb"}).source,"facebook");
+  assert.deepEqual(detectAttribution({search:"?src=c1"}),{source:"whatsapp",medium:"messaging",campaign:"",content:"",method:"tag"});
+  assert.equal(detectAttribution({search:"?src=c2"}).source,"facebook");
+  assert.equal(detectAttribution({search:"?src=c3"}).source,"iproperty");
+  assert.equal(detectAttribution({search:"?src=c4"}).source,"mudah");
   assert.equal(detectAttribution({search:"?src=person@example.com"}).source,"direct_unknown");
 });
 

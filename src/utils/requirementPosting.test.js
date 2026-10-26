@@ -2,6 +2,17 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { inquiryPostingText } from "./requirementPosting.js";
 
+test("posting labels use levels for apartments, offices and shoplots", () => {
+  for (const propertyType of ["Condominium/Apartment", "Office Lot", "Shoplot"]) {
+    const text = inquiryPostingText({intent:"rent",requirements:{propertyType,storeys:2}});
+    assert.match(text,/\*Levels:\* 2/);
+    assert.doesNotMatch(text,/\*Storeys:\*/);
+  }
+  const room = inquiryPostingText({intent:"rent",requirements:{propertyType:"Room",storeys:1}});
+  assert.match(room,/\*Property type:\* Room/);
+  assert.match(room,/\*Storeys:\* 1/);
+});
+
 test("formats inquiry posting content without mobile number", () => {
   const text = inquiryPostingText({
     reference: "WTR000001",

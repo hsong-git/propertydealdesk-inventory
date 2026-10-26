@@ -1,11 +1,35 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { COUNTRY_OPTIONS, emptyRequirement, formatRequirementDate, formatRequirementReference, formatRoomSummary, isValidBudgetAmount, isValidMobileNumber, normalizeBudgetAmount, normalizeMobileNumber, parseRequirementDate, validateRequirementPayload } from "./requirementContract.js";
+import { COUNTRY_OPTIONS, emptyRequirement, formatRequirementDate, formatRequirementReference, formatRoomSummary, isValidBudgetAmount, isValidMobileNumber, normalizeBudgetAmount, normalizeMobileNumber, parseRequirementDate, validateRequirementPayload, INQUIRY_PROPERTY_TYPE_OPTIONS, requirementStoreysLabel } from "./requirementContract.js";
 
 const validBase = (intent) => ({
   ...emptyRequirement(), intent, consent: true, idempotencyKey: "12345678-1234-1234-1234-123456789012",
   profile: { name: "Test User", mobile: "012-345 6789", race: "Chinese", raceOther: "", country: "Malaysia", occupation: "Manager", companyName: "Example Sdn Bhd" },
   requirements: { ...emptyRequirement().requirements, propertyType: "Condominium", area: "Klang", budget: "2500", bedrooms: "3", bathrooms: "2", relationship: "Family", otherNeeds: "Near school" },
+});
+
+test("inquiry property choices replace Factory with Room and preserve saved type values", () => {
+  assert.ok(INQUIRY_PROPERTY_TYPE_OPTIONS.includes("Room"));
+  assert.ok(!INQUIRY_PROPERTY_TYPE_OPTIONS.includes("Factory"));
+  for (const propertyType of ["Room", "Factory"]) {
+    const payload = validBase("buy");
+    Object.assign(payload.requirements, {propertyType, storeys: 2, purchaseTimeline:"Within 3 months", purpose:"Own Stay", loan:"Cash Purchase"});
+    const result = validateRequirementPayload(payload);
+    assert.equal(result.valid,true);
+    assert.equal(result.value.requirements.propertyType,propertyType);
+    assert.equal(result.value.requirements.storeys,2);
+  }
+});
+
+test("count label changes only for the three specified property types", () => {
+  for (const type of ["Condominium/Apartment", "Office Lot", "Shoplot", " office lot "]) {
+    assert.equal(requirementStoreysLabel(type),"Number of Levels");
+    assert.equal(requirementStoreysLabel(type,true),"Levels");
+  }
+  for (const type of ["Terrace House", "Room", "Semi-Detached House", "Bungalow", "Factory", "Other", ""]) {
+    assert.equal(requirementStoreysLabel(type),"Number of Storeys");
+    assert.equal(requirementStoreysLabel(type,true),"Storeys");
+  }
 });
 
 test("validates the exact required Rent fields", () => {

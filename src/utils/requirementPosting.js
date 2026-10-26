@@ -1,4 +1,4 @@
-import { formatRequirementDate, formatRoomSummary } from "../data/requirementContract.js";
+import { formatRequirementDate, formatRoomSummary, requirementStoreysLabel } from "../data/requirementContract.js";
 import { formatPrice } from "./listing.js";
 
 const clean = (value) => String(value ?? "").trim();
@@ -40,7 +40,7 @@ export function inquiryPostingText(submission) {
     ...(highlightedLines.length ? ["", ...highlightedLines] : []),
     "",
     detailLine("Property type", requirements.propertyType),
-    detailLine("Storeys", requirements.storeys),
+    detailLine(requirementStoreysLabel(requirements.propertyType, true), requirements.storeys),
     detailLine("Area / Location", requirements.area || submission?.area),
     detailLine("Rooms", roomSummary),
     detailLine("Usage", requirements.propertyUsage),

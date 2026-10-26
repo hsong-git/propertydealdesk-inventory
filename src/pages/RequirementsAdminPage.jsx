@@ -1,7 +1,7 @@
 import { Archive, ArchiveRestore, Check, Copy, Eye, LoaderCircle, MailOpen, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Seo } from "../components/Seo";
-import { formatRoomSummary } from "../data/requirementContract";
+import { formatRoomSummary, requirementStoreysLabel } from "../data/requirementContract";
 import { formatDateTime, formatPrice } from "../utils/listing";
 import { inquiryPostingText } from "../utils/requirementPosting";
 
@@ -259,7 +259,7 @@ export function RequirementsAdminPage() {
               {selected.archivedAt ? <div><dt>Archived</dt><dd>{formatDateTime(selected.archivedAt)}</dd></div> : null}
               <div><dt>Rent / Buy</dt><dd>{selected.intent === "rent" ? "Rent" : "Buy"}</dd></div>
               {Object.entries(selected.profile || {}).filter(([, value]) => value).map(([key, value]) => <div key={key}><dt>{profileLabels[key] || key}</dt><dd>{value}</dd></div>)}
-              {Object.entries(selected.requirements || {}).filter(([, value]) => value !== "" && value !== null).map(([key, value]) => <div key={key}><dt>{detailLabels[key] || key}</dt><dd>{key === "budget" ? formatPrice(value, selected.intent === "rent" ? "WTL" : "WTS") : value}</dd></div>)}
+              {Object.entries(selected.requirements || {}).filter(([, value]) => value !== "" && value !== null).map(([key, value]) => <div key={key}><dt>{key === "storeys" ? requirementStoreysLabel(selected.requirements?.propertyType) : detailLabels[key] || key}</dt><dd>{key === "budget" ? formatPrice(value, selected.intent === "rent" ? "WTL" : "WTS") : value}</dd></div>)}
               <div><dt>Room Summary</dt><dd>{formatRoomSummary(selected.requirements?.bedrooms, selected.requirements?.bathrooms)}</dd></div>
               <div><dt>Consent recorded</dt><dd>{formatDateTime(selected.consentedAt)}</dd></div>
             </dl>

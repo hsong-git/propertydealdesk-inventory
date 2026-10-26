@@ -8,7 +8,7 @@ import {
   COUNTRY_OPTIONS, DEPOSIT_OPTIONS, emptyRequirement, formatRequirementDate, formatRoomSummary, FURNISHING_OPTIONS, isValidBudgetAmount, LOAN_OPTIONS, normalizeBudgetAmount, parseRequirementDate,
   PROPERTY_USAGE_OPTIONS,
   PURPOSE_OPTIONS, RACE_OPTIONS, TENANCY_OPTIONS, validateRequirementPayload,
-  isValidMobileNumber, normalizeMobileNumber,
+  isValidMobileNumber, normalizeMobileNumber, INQUIRY_PROPERTY_TYPE_OPTIONS, requirementStoreysLabel,
 } from "../data/requirementContract";
 import { useInventory } from "../hooks";
 import { buildLocationOptions } from "../utils/locationFilter";
@@ -39,7 +39,7 @@ function requirementWhatsAppMessage(submission, reference) {
   ];
   const detailLines = [
     `*Property type:* ${requirements.propertyType}`,
-    `*Storeys:* ${requirements.storeys}`,
+    `*${requirementStoreysLabel(requirements.propertyType, true)}:* ${requirements.storeys}`,
     `*Area / Location:* ${requirements.area}`,
     `*Rooms:* ${formatRoomSummary(requirements.bedrooms, requirements.bathrooms)}`,
     ...(submission.intent === "rent" ? [
@@ -173,12 +173,12 @@ function WizardActions({ onBack, label, onSubmit }) {
 
 function PropertyBasicsStep({ form, propertyTypes, locations, errors, updateRequirement, onBack, onSubmit }) {
   const [customType, setCustomType] = useState(false);
-  const typeOptions = ["Condominium/Apartment", "Factory", "Terrace House", "Office Lot", "Semi-Detached House", "Shoplot", "Bungalow"];
+  const typeOptions = INQUIRY_PROPERTY_TYPE_OPTIONS;
   const quickLocations = [...locations.filter((option) => option !== "Klang"), "Setia Alam"].filter((option, index, options) => options.indexOf(option) === index).slice(0, 6);
   const selectType = (option) => { setCustomType(false); updateRequirement("propertyType", option); };
   return <form onSubmit={onSubmit} className="requirement-step-panel"><StepIntro eyebrow="Property Basics" title="Start with the big picture" description="Where should we look, and what kind of place feels right?" /><div className="requirement-grid">
     <fieldset className={`requirement-choice-field tile-choice-field property-type-picker ${errors["requirements.propertyType"] ? "has-error" : ""}`} style={{ "--choice-columns": 2 }}><legend>Property Type</legend><div className="requirement-tiles">{typeOptions.slice(0, 7).map((option) => <button className={form.requirements.propertyType === option ? "active" : ""} type="button" key={option} onClick={() => selectType(option)}>{option}</button>)}<button className={customType ? "active" : ""} type="button" onClick={() => { setCustomType(true); updateRequirement("propertyType", ""); }}>Other</button></div>{customType ? <input className="choice-custom-input" required aria-label="Other property type" placeholder="Type a property type" value={form.requirements.propertyType} onChange={(e) => updateRequirement("propertyType", e.target.value)} /> : null}{errors["requirements.propertyType"] ? <em>{errors["requirements.propertyType"]}</em> : null}</fieldset>
-    <StepperField label="Number of Storeys" min={1} value={form.requirements.storeys} onChange={(value) => updateRequirement("storeys", value)} error={errors["requirements.storeys"]} />
+    <StepperField label={requirementStoreysLabel(form.requirements.propertyType)} min={1} value={form.requirements.storeys} onChange={(value) => updateRequirement("storeys", value)} error={errors["requirements.storeys"]} />
     <fieldset className="requirement-choice-field location-picker"><legend>Area / Location</legend><div className="location-chips">{quickLocations.map((option) => <button className={form.requirements.area === option ? "active" : ""} type="button" key={option} onClick={() => updateRequirement("area", option)}>{option}</button>)}</div><input required list="requirement-locations" aria-label="Area / Location" placeholder="Or search an area" value={form.requirements.area} onChange={(e) => updateRequirement("area", e.target.value)} /><datalist id="requirement-locations">{locations.map((item) => <option key={item} value={item} />)}</datalist>{errors["requirements.area"] ? <em>{errors["requirements.area"]}</em> : null}</fieldset>
     <BudgetPicker intent={form.intent} value={form.requirements.budget} onChange={(value) => updateRequirement("budget", value)} error={errors["requirements.budget"]} />
   </div><WizardActions onBack={onBack} label="Next: Home Fit" /></form>;
@@ -254,7 +254,7 @@ function ReviewSection({ title, values, labels, onEdit, intent }) {
     <section className="review-section">
       <div className="review-heading"><h3>{title}</h3><button type="button" onClick={onEdit}><Pencil size={15} /> Edit</button></div>
       <dl>{entries.map(([key, value]) => (
-        <div key={key}><dt>{labels[key] || key}</dt><dd className={key === "otherNeeds" ? "review-multiline" : undefined}>{displayValue(key, value, intent)}</dd></div>
+        <div key={key}><dt>{key === "storeys" ? requirementStoreysLabel(values.propertyType) : labels[key] || key}</dt><dd className={key === "otherNeeds" ? "review-multiline" : undefined}>{displayValue(key, value, intent)}</dd></div>
       ))}</dl>
     </section>
   );

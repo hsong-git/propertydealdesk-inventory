@@ -5,6 +5,11 @@ export const PROPERTY_USAGE_OPTIONS = ["Residential", "Commercial"];
 export const DEPOSIT_OPTIONS = ["Yes", "Need to Discuss"];
 export const PURPOSE_OPTIONS = ["Own Stay", "Investment", "Both", "Others"];
 export const LOAN_OPTIONS = ["Loan Required", "Cash Purchase", "Not Sure"];
+export const INQUIRY_PROPERTY_TYPE_OPTIONS = ["Condominium/Apartment", "Room", "Terrace House", "Office Lot", "Semi-Detached House", "Shoplot", "Bungalow"];
+export function requirementStoreysLabel(propertyType, short = false) {
+  const levels = ["condominium/apartment", "office lot", "shoplot"].includes(String(propertyType || "").trim().toLowerCase());
+  return short ? (levels ? "Levels" : "Storeys") : (levels ? "Number of Levels" : "Number of Storeys");
+}
 export const COUNTRY_OPTIONS = [
   ["Malaysia", "+60"], ["Singapore", "+65"], ["Indonesia", "+62"], ["Thailand", "+66"], ["Philippines", "+63"],
   ["Vietnam", "+84"], ["Brunei", "+673"], ["China", "+86"], ["Hong Kong", "+852"], ["Taiwan", "+886"],

@@ -107,6 +107,19 @@ export const listingShortUrl = (listing, origin = listingPublicOrigin(listing)) 
   return `${baseUrl}?${query.toString()}`;
 };
 
+// Social crawlers key their cached attachment to og:url. Give every published
+// inventory snapshot a fresh object URL even when the user-facing short link
+// stays clean (or only carries the opaque attribution token). This prevents a
+// previously failed/missing scrape from being reused when Facebook publishes a
+// post after showing the newly scraped preview in the composer.
+export const listingPreviewObjectUrl = (listing, origin = listingPublicOrigin(listing)) => {
+  const baseUrl = `${origin}/i/${String(listing.code || "").toUpperCase()}`;
+  const version = shareVersion(listing);
+  if (!version) return baseUrl;
+  const query = new URLSearchParams({ v: version, preview: SOCIAL_PREVIEW_REVISION });
+  return `${baseUrl}?${query.toString()}`;
+};
+
 const supplyIntents = new Set(["WTS", "WTL"]);
 
 export const postingFootnoteUrl = (listing) => {

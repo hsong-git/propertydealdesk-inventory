@@ -46,7 +46,7 @@ export async function onRequestGet(context) {
       db.prepare(`SELECT site_host, event_name, COUNT(*) AS count, COUNT(DISTINCT session_id) AS sessions FROM analytics_events WHERE occurred_at >= ? AND occurred_at <= ? GROUP BY site_host, event_name ORDER BY site_host, count DESC`).bind(period.start, period.end).all(),
       db.prepare(`${SOURCE_SESSIONS} SELECT a.site_host, a.source, ${SOURCE_COUNTS} ${SOURCE_JOIN} GROUP BY a.site_host, a.source ORDER BY sessions DESC`).bind(period.start, period.end).all(),
       db.prepare(`${SOURCE_SESSIONS} SELECT a.site_host, a.source, ${SOURCE_COUNTS} ${SOURCE_JOIN}
-        WHERE a.method = 'tag' AND a.source IN ('whatsapp', 'facebook')
+        WHERE a.method = 'tag' AND a.source IN ('whatsapp', 'facebook', 'iproperty', 'mudah')
         GROUP BY a.site_host, a.source ORDER BY a.source`).bind(period.start, period.end).all(),
       db.prepare(`SELECT site_host, listing_code, COUNT(*) AS views, COUNT(DISTINCT session_id) AS sessions FROM analytics_events WHERE event_name = 'listing_view' AND listing_code != '' AND occurred_at >= ? AND occurred_at <= ? GROUP BY site_host, listing_code ORDER BY views DESC, site_host, listing_code LIMIT 30`).bind(period.start, period.end).all(),
       db.prepare(`SELECT date(occurred_at, '+8 hours') AS day, site_host,

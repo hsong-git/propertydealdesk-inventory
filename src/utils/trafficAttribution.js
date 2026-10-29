@@ -4,7 +4,7 @@ export function trafficLabel(value) {
   const label = String(value || "").trim().toLowerCase().replace(/\s+/g, "_");
   return /^[a-z0-9][a-z0-9_.-]{0,63}$/.test(label) && !/^\d{7,}$/.test(label) && !/^\d{1,3}(?:\.\d{1,3}){3}$/.test(label) ? label : "";
 }
-// c1-c3 are intentionally neutral public tokens. Keep their channel meaning
+// c1-c4 are intentionally neutral public tokens. Keep their channel meaning
 // internal so shared listing URLs do not advertise the attribution mechanism.
 const sourceAliases = { fb: "facebook", ig: "instagram", wa: "whatsapp", tg: "telegram", c1: "whatsapp", c2: "facebook", c3: "iproperty", c4: "mudah" };
 const normalizeSource = (source) => sourceAliases[source] || source;

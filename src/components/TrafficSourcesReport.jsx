@@ -1,4 +1,4 @@
-const LABELS = { direct_unknown: "Direct / unknown", unattributed: "Unattributed (historical)", Unattributed: "Unattributed (historical)", catalogue_share: "Shared listing link", catalogue_search: "Shared search link", google: "Google", bing: "Bing", facebook: "Facebook", instagram: "Instagram", whatsapp: "WhatsApp", telegram: "Telegram", email: "Email", duckduckgo: "DuckDuckGo", yahoo: "Yahoo", linkedin: "LinkedIn", tiktok: "TikTok", x: "X" };
+const LABELS = { direct_unknown: "Direct / unknown", unattributed: "Unattributed (historical)", Unattributed: "Unattributed (historical)", catalogue_share: "Shared listing link", catalogue_search: "Shared search link", google: "Google", bing: "Bing", facebook: "Facebook", instagram: "Instagram", whatsapp: "WhatsApp", telegram: "Telegram", email: "Email", duckduckgo: "DuckDuckGo", yahoo: "Yahoo", linkedin: "LinkedIn", tiktok: "TikTok", x: "X", iproperty: "iProperty", mudah: "Mudah" };
 export const trafficSourceLabel = (value) => value === "authentication_return" ? "Sign-in return (not acquisition)" : LABELS[value] || value;
 
 export function TrafficSourcesReport({ sources, campaigns, embedded = false }) {

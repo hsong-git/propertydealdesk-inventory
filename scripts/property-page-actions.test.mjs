@@ -78,10 +78,10 @@ test("analytics top listings explain metrics and preview the main photo", () => 
   assert.match(css, /\.analytics-listing-preview:hover \.analytics-listing-tooltip, \.analytics-listing-preview:focus-within \.analytics-listing-tooltip/);
 });
 
-test("analytics reports WhatsApp and Facebook discreet posting links", () => {
+test("analytics reports all four discreet posting sources", () => {
   const page = fs.readFileSync(path.join(projectRoot, "src", "pages", "AnalyticsAdminPage.jsx"), "utf8");
   assert.match(page, /Tracked posting links/);
-  assert.match(page, /\["whatsapp", "facebook"\]/);
+  assert.match(page, /\["whatsapp", "facebook", "iproperty", "mudah"\]/);
   assert.match(page, /filtered\.postingTracking/);
 });
 

@@ -98,7 +98,7 @@ export function AnalyticsAdminPage() {
   const eventCount = (name) => Number(filtered.funnel.find((item) => item.event_name === name)?.count || 0);
   const sessionCount = Number(filtered.summary.sessions || 0);
   const inquiryRate = sessionCount ? ((eventCount("inquiry_submitted") / sessionCount) * 100).toFixed(1) : "0.0";
-  const trackedPostingRows = ["whatsapp", "facebook"].map((source) => {
+  const trackedPostingRows = ["whatsapp", "facebook", "iproperty", "mudah"].map((source) => {
     const row = filtered.postingTracking.find((item) => item.source === source) || {};
     return { source, sessions: Number(row.sessions || 0), listingViews: Number(row.listing_views || 0), whatsappClicks: Number(row.whatsapp_clicks || 0), inquiries: Number(row.inquiries || 0) };
   });
@@ -110,7 +110,7 @@ export function AnalyticsAdminPage() {
     <section className="analytics-kpis" aria-label={`${hostLabel(host)} performance`}><article><span>Sessions</span><strong>{sessionCount}</strong></article><article><span>Listing views</span><strong>{eventCount("listing_view")}</strong></article><article><span>WhatsApp clicks</span><strong>{eventCount("whatsapp_click")}</strong></article><article><span>Inquiries</span><strong>{eventCount("inquiry_submitted")}</strong></article><article><span>Inquiry/session</span><strong>{inquiryRate}%</strong></article></section>
     <section className="analytics-card analytics-tracked-posting" aria-label="Tracked posting links">
       <h2><Link2 size={19} /> Tracked posting links</h2>
-      <p className="analytics-table-note">Visits attributed through the discreet links copied for WhatsApp and Facebook postings. Natural app referrals without the tracking token are excluded.</p>
+      <p className="analytics-table-note">Activity from links labelled for WhatsApp, Facebook, iProperty and Mudah. Forwarded links keep their original label.</p>
       <table><thead><tr><th>Posting source</th><th>Sessions</th><th>Listing views</th><th>WhatsApp clicks</th><th>Inquiries</th></tr></thead><tbody>{trackedPostingRows.map((row) => <tr key={row.source}><td><strong>{trafficSourceLabel(row.source)}</strong></td><td>{row.sessions}</td><td>{row.listingViews}</td><td>{row.whatsappClicks}</td><td>{row.inquiries}</td></tr>)}</tbody></table>
     </section>
     <section className="analytics-card analytics-trends" aria-label="Daily performance graphs" aria-busy={state.loading}>

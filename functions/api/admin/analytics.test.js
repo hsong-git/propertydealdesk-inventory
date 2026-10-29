@@ -2,6 +2,42 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { DatabaseSync } from "node:sqlite";
 import { onRequestGet } from "./analytics.js";
+import { detectAttribution } from "../../../src/utils/trafficAttribution.js";
+
+test("posting report includes c1-c4 tagged journeys on each site but excludes natural referrals and old events", async () => {
+  const sqlite = new DatabaseSync(":memory:");
+  try {
+    sqlite.exec("CREATE TABLE analytics_events (id INTEGER PRIMARY KEY,site_host TEXT,event_name TEXT,occurred_at TEXT,session_id TEXT,source TEXT,listing_code TEXT,properties_json TEXT DEFAULT '{}')");
+    const insert = sqlite.prepare("INSERT INTO analytics_events(site_host,event_name,occurred_at,session_id,source,listing_code,properties_json) VALUES (?,?,?,?,?,'WTL0070',?)");
+    const now = new Date(Date.now()-1000).toISOString();
+    const mapping = {c1:"whatsapp",c2:"facebook",c3:"iproperty",c4:"mudah"};
+    for (const host of ["property.myeviv.com","scmi.myeviv.com"]) {
+      for (const [token,source] of Object.entries(mapping)) {
+        const attribution = detectAttribution({search:`?src=${token}`});
+        assert.equal(attribution.source,source);
+        const props = JSON.stringify({traffic_method:attribution.method});
+        insert.run(host,"listing_view",now,token,"","{}");
+        for (const event of ["listing_view","whatsapp_click","inquiry_submitted"]) insert.run(host,event,now,token,source,props);
+        insert.run(host,"listing_view",now,`natural-${token}`,source,JSON.stringify({traffic_method:"referrer"}));
+        insert.run(host,"listing_view","2000-01-01T00:00:00.000Z",`old-${token}`,source,props);
+      }
+    }
+    const db = {prepare(sql) {return {bind(...params) {return {async all() {return {results:sqlite.prepare(sql).all(...params)};}};}};}};
+    for (const days of [7,30,90]) {
+      const response = await onRequestGet({request:new Request(`http://localhost/api/admin/analytics?days=${days}`),env:{REQUIREMENTS_DB:db}});
+      assert.equal(response.status,200);
+      const data = await response.json();
+      assert.equal(data.postingTracking.length,8);
+      for (const host of ["property.myeviv.com","scmi.myeviv.com"]) for (const source of Object.values(mapping)) {
+        const row = data.postingTracking.find(row=>row.site_host===host && row.source===source);
+        assert.equal(row.sessions,1); assert.equal(row.listing_views,2);
+        assert.equal(row.whatsapp_clicks,1); assert.equal(row.inquiries,1);
+        assert.equal(row.tagged_sessions,1); assert.equal(row.referrer_sessions,0);
+        assert.equal(data.sources.find(row=>row.site_host===host && row.source===source).sessions,2);
+      }
+    }
+  } finally {sqlite.close();}
+});
 
 test("listing interest counts actions without join inflation and keeps inquiries as later session journeys", async () => {
   const sqlite = new DatabaseSync(":memory:");

@@ -88,6 +88,9 @@ test("analytics reports all four discreet posting sources", () => {
   assert.doesNotMatch(page, /CloudflareReferrersReport/);
   assert.match(page, /listingSourceBreakdown\(sources\)/);
   assert.match(page, /source\.postingCode/);
+  assert.match(page, /aria-label=\{`Traffic sources for \$\{row\.listing_code\}`\}/);
+  assert.match(page, /<details className="analytics-interest-sources"><summary>Interest &amp; leads<\/summary>/);
+  assert.ok(page.indexOf('<table aria-label={`Traffic sources for') < page.indexOf('<details className="analytics-interest-sources">'));
 });
 
 test("legacy ZIP photo downloads are no longer rendered", () => {

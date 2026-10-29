@@ -43,8 +43,11 @@ function TopListingRows({ row, listing, sources, interest }) {
     ["Property shares", interest?.property_shares],
   ];
   return <Fragment>
-    <tr><td><AnalyticsListingLink code={row.listing_code} listing={listing} /><button className="analytics-listing-sources-toggle" type="button" aria-label={`Interest and leads for ${row.listing_code}`} aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>{open ? "▾" : "▸"} Interest &amp; leads</button></td><td>{row.views}</td><td>{row.sessions}</td></tr>
+    <tr><td><AnalyticsListingLink code={row.listing_code} listing={listing} /><button className="analytics-listing-sources-toggle" type="button" aria-label={`Traffic sources for ${row.listing_code}`} aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>{open ? "▾" : "▸"} Traffic sources</button></td><td>{row.views}</td><td>{row.sessions}</td></tr>
     {open ? <tr className="analytics-listing-sources-row"><td colSpan={3}><div id={id}>
+      <table aria-label={`Traffic sources for ${row.listing_code}`}><thead><tr><th>Source</th><th>Views</th><th>Sessions</th></tr></thead><tbody>{groupedSources.map(source => <tr key={`${source.source}-${source.postingCode || "untagged"}`}><td>{source.source === "unknown" ? "Source unavailable" : <>{trafficSourceLabel(source.source)}{source.postingCode ? ` · ${source.postingCode}` : LISTING_POSTING_CODES[source.source] ? " · untagged" : ""}</>}</td><td>{source.views}</td><td>{source.sessions}</td></tr>)}</tbody></table>
+      <p className="analytics-table-note">Tagged links are separate from other visits. Missing source details stay unavailable.</p>
+      <details className="analytics-interest-sources"><summary>Interest &amp; leads</summary>
       <p className="analytics-interest-summary">{listingInterestSummary(interest)}</p>
       {interest ? <>
         <dl className="analytics-interest-metrics">{actions.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{Number(value || 0)}</dd></div>)}</dl>
@@ -55,9 +58,6 @@ function TopListingRows({ row, listing, sources, interest }) {
         </div>
         <p className="analytics-table-note">Clicks and sharing are activity, not confirmed leads. Later inquiries may concern another property.</p>
       </> : null}
-      <details className="analytics-interest-sources"><summary>Traffic sources</summary>
-        <table aria-label={`Traffic sources for ${row.listing_code}`}><thead><tr><th>Source</th><th>Views</th><th>Sessions</th></tr></thead><tbody>{groupedSources.map(source => <tr key={`${source.source}-${source.postingCode || "untagged"}`}><td>{source.source === "unknown" ? "Source unavailable" : <>{trafficSourceLabel(source.source)}{source.postingCode ? ` · ${source.postingCode}` : LISTING_POSTING_CODES[source.source] ? " · untagged" : ""}</>}</td><td>{source.views}</td><td>{source.sessions}</td></tr>)}</tbody></table>
-        <p className="analytics-table-note">Tagged links are separate from other visits. Missing source details stay unavailable.</p>
       </details>
     </div></td></tr> : null}
   </Fragment>;
@@ -132,7 +132,7 @@ export function AnalyticsAdminPage() {
     </section>
     <div className="analytics-grid">
       <section className="analytics-card"><h2><BarChart3 size={19} /> Funnel activity</h2><table><thead><tr><th>Action</th><th>Events</th><th>Sessions</th></tr></thead><tbody>{filtered.funnel.map((row) => <tr key={row.event_name}><td>{EVENT_LABELS[row.event_name] || row.event_name}</td><td>{row.count}</td><td>{row.sessions}</td></tr>)}</tbody></table></section>
-      <section className="analytics-card top-listings-card"><h2>Top listings</h2><p className="analytics-table-note">Views count every detail-page view. Sessions count distinct browser-tab sessions. Expand Interest &amp; leads to see further action.</p><table><thead><tr><th>Listing</th><th><abbr title="Total property detail-page views, including repeat views">Views</abbr></th><th><abbr title="Distinct browser-tab sessions that viewed the property">Sessions</abbr></th></tr></thead><tbody>{filtered.listings.map((row) => { const code = row.listing_code.toUpperCase(); const listing = listingByCode.get(code) || listingByCode.get(code.replace(/^CMI-/, "")); return <TopListingRows key={`${host}-${days}-${row.listing_code}`} row={row} listing={listing} sources={filtered.listingSources.filter(source => source.listing_code === row.listing_code)} interest={filtered.listingInterest.find(item => item.listing_code === row.listing_code)} />; })}</tbody></table></section>
+      <section className="analytics-card top-listings-card"><h2>Top listings</h2><p className="analytics-table-note">Views count every detail-page view. Sessions count distinct browser-tab sessions. Expand Traffic sources for the breakdown.</p><table><thead><tr><th>Listing</th><th><abbr title="Total property detail-page views, including repeat views">Views</abbr></th><th><abbr title="Distinct browser-tab sessions that viewed the property">Sessions</abbr></th></tr></thead><tbody>{filtered.listings.map((row) => { const code = row.listing_code.toUpperCase(); const listing = listingByCode.get(code) || listingByCode.get(code.replace(/^CMI-/, "")); return <TopListingRows key={`${host}-${days}-${row.listing_code}`} row={row} listing={listing} sources={filtered.listingSources.filter(source => source.listing_code === row.listing_code)} interest={filtered.listingInterest.find(item => item.listing_code === row.listing_code)} />; })}</tbody></table></section>
       <section className="analytics-card"><h2>Daily sessions</h2><table><thead><tr><th>Date</th><th>Sessions</th></tr></thead><tbody>{filtered.daily.map((row) => <tr key={row.day}><td>{row.day}</td><td>{row.sessions}</td></tr>)}</tbody></table></section>
     </div>
   </main>;

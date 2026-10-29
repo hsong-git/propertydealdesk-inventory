@@ -41,7 +41,7 @@ export async function onRequestGet(context) {
   const period = analyticsPeriod(days);
   try {
     const db = context.env.REQUIREMENTS_DB;
-    const [summary, funnel, sources, postingTracking, listings, daily, campaigns, listingSources, listingInterest] = await Promise.all([
+    const [summary, funnel, sources, postingTracking, listings, daily, campaigns, listingSources, listingInterest, postingDaily] = await Promise.all([
       db.prepare(`SELECT site_host, COUNT(*) AS events, COUNT(DISTINCT session_id) AS sessions FROM analytics_events WHERE occurred_at >= ? AND occurred_at <= ? GROUP BY site_host ORDER BY site_host`).bind(period.start, period.end).all(),
       db.prepare(`SELECT site_host, event_name, COUNT(*) AS count, COUNT(DISTINCT session_id) AS sessions FROM analytics_events WHERE occurred_at >= ? AND occurred_at <= ? GROUP BY site_host, event_name ORDER BY site_host, count DESC`).bind(period.start, period.end).all(),
       db.prepare(`${SOURCE_SESSIONS} SELECT a.site_host, a.source, ${SOURCE_COUNTS} ${SOURCE_JOIN} GROUP BY a.site_host, a.source ORDER BY sessions DESC`).bind(period.start, period.end).all(),
@@ -71,8 +71,16 @@ export async function onRequestGet(context) {
         GROUP BY e.site_host, e.listing_code, a.source
         ORDER BY views DESC, e.site_host, e.listing_code, a.source`).bind(period.start, period.end).all(),
       db.prepare(LISTING_INTEREST_SQL).bind(period.start, period.end).all(),
+      db.prepare(`${SOURCE_SESSIONS} SELECT e.site_host, a.source, date(e.occurred_at, '+8 hours') AS day,
+        COUNT(DISTINCT e.session_id) AS sessions,
+        SUM(CASE WHEN e.event_name = 'listing_view' THEN 1 ELSE 0 END) AS listing_views,
+        SUM(CASE WHEN e.event_name = 'whatsapp_click' THEN 1 ELSE 0 END) AS whatsapp_clicks,
+        SUM(CASE WHEN e.event_name = 'inquiry_submitted' THEN 1 ELSE 0 END) AS inquiries
+        FROM scoped e JOIN attributed a ON e.site_host = a.site_host AND e.session_id = a.session_id
+        WHERE a.method = 'tag' AND a.source IN ('whatsapp', 'facebook', 'iproperty', 'mudah')
+        GROUP BY e.site_host, a.source, day ORDER BY day, e.site_host, a.source`).bind(period.start, period.end).all(),
     ]);
-    return json({ days, period, cloudflareSnapshots: cloudflareReferrerSnapshots, summary: summary.results || [], funnel: funnel.results || [], sources: sources.results || [], postingTracking: postingTracking.results || [], campaigns: campaigns.results || [], listings: listings.results || [], listingSources: listingSources.results || [], listingInterest: listingInterest.results || [], daily: daily.results || [] });
+    return json({ days, period, cloudflareSnapshots: cloudflareReferrerSnapshots, summary: summary.results || [], funnel: funnel.results || [], sources: sources.results || [], postingTracking: postingTracking.results || [], postingDaily: postingDaily.results || [], campaigns: campaigns.results || [], listings: listings.results || [], listingSources: listingSources.results || [], listingInterest: listingInterest.results || [], daily: daily.results || [] });
   } catch {
     return json({ error: "Analytics reporting is temporarily unavailable." }, 503);
   }

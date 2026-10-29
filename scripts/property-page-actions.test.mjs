@@ -83,6 +83,9 @@ test("analytics reports all four discreet posting sources", () => {
   assert.match(page, /Tracked posting links/);
   assert.match(page, /\["whatsapp", "facebook", "iproperty", "mudah"\]/);
   assert.match(page, /filtered\.postingTracking/);
+  assert.match(page, /PostingSourceChart/);
+  assert.match(page, /filtered\.postingDaily/);
+  assert.doesNotMatch(page, /CloudflareReferrersReport/);
 });
 
 test("legacy ZIP photo downloads are no longer rendered", () => {

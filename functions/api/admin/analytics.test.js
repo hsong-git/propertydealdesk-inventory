@@ -33,8 +33,47 @@ test("posting report includes c1-c4 tagged journeys on each site but excludes na
         assert.equal(row.sessions,1); assert.equal(row.listing_views,2);
         assert.equal(row.whatsapp_clicks,1); assert.equal(row.inquiries,1);
         assert.equal(row.tagged_sessions,1); assert.equal(row.referrer_sessions,0);
+        const daily = data.postingDaily.filter(row=>row.site_host===host && row.source===source);
+        assert.equal(daily.length,1);
+        for (const metric of ["sessions","listing_views","whatsapp_clicks","inquiries"]) assert.equal(daily[0][metric],row[metric]);
         assert.equal(data.sources.find(row=>row.site_host===host && row.source===source).sessions,2);
       }
+    }
+  } finally {sqlite.close();}
+});
+
+test("posting daily trends use Malaysia days, distinct daily sessions and the same period attribution", async () => {
+  const sqlite = new DatabaseSync(":memory:");
+  try {
+    sqlite.exec("CREATE TABLE analytics_events (id INTEGER PRIMARY KEY,site_host TEXT,event_name TEXT,occurred_at TEXT,session_id TEXT,source TEXT,listing_code TEXT,properties_json TEXT DEFAULT '{}')");
+    const insert = sqlite.prepare("INSERT INTO analytics_events(site_host,event_name,occurred_at,session_id,source,listing_code,properties_json) VALUES (?,?,?,?,?,'WTL0070',?)");
+    const today = new Date(Date.now()+8*3600000).toISOString().slice(0,10);
+    const boundary = Date.parse(`${today}T00:00:00+08:00`)-86400000;
+    const add = (host,event,session,source,offset,method="tag") => insert.run(host,event,new Date(boundary+offset).toISOString(),session,source,JSON.stringify({traffic_method:method}));
+    for (const host of ["property.myeviv.com","scmi.myeviv.com"]) for (const source of ["whatsapp","facebook","iproperty","mudah"]) {
+      add(host,"listing_view",source,"",-1000,"");
+      add(host,"listing_view",source,source,1000);
+      add(host,"whatsapp_click",source,source,2000);
+      add(host,"inquiry_submitted",source,source,3000);
+      add(host,"listing_view",`${source}-second`,source,4000);
+      add(host,"listing_view",`${source}-natural`,source,4000,"referrer");
+      add(host,"listing_view",`${source}-old`,source,-100*86400000);
+      add(host,"listing_view",`${source}-future`,source,100*86400000);
+    }
+    const db = {prepare(sql) {return {bind(...params) {return {async all() {return {results:sqlite.prepare(sql).all(...params)};}};}};}};
+    for (const days of [7,30,90]) {
+      const data = await (await onRequestGet({request:new Request(`http://localhost/api/admin/analytics?days=${days}`),env:{REQUIREMENTS_DB:db}})).json();
+      assert.equal(data.postingDaily.length,16);
+      for (const total of data.postingTracking) {
+        const rows = data.postingDaily.filter(r=>r.site_host===total.site_host && r.source===total.source);
+        assert.deepEqual(rows.map(r=>[r.day,r.sessions,r.listing_views,r.whatsapp_clicks,r.inquiries]),[
+          [new Date(boundary-1000+8*3600000).toISOString().slice(0,10),1,1,0,0],
+          [new Date(boundary+8*3600000).toISOString().slice(0,10),2,2,1,1],
+        ]);
+        assert.equal(total.sessions,2);
+        for (const metric of ["listing_views","whatsapp_clicks","inquiries"]) assert.equal(rows.reduce((sum,r)=>sum+r[metric],0),total[metric]);
+      }
+      assert.ok(data.postingDaily.every(r=>!Object.hasOwn(r,"session_id")));
     }
   } finally {sqlite.close();}
 });

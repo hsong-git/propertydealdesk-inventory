@@ -6,7 +6,7 @@ import { AdminBackLink } from "../components/AdminBackLink";
 import { useInventory } from "../hooks";
 import { AnalyticsTrendChart } from "../components/AnalyticsTrendChart";
 import { analyticsTrend } from "../utils/analyticsTrend";
-import { CloudflareReferrersReport } from "../components/CloudflareReferrersReport";
+import { PostingSourceChart } from "../components/PostingSourceChart";
 import { trafficSourceLabel } from "../components/TrafficSourcesReport";
 import { combinedListingSources, listingInterestSummary } from "../utils/listingInterest";
 
@@ -82,9 +82,10 @@ export function AnalyticsAdminPage() {
   const filtered = useMemo(() => {
     const data = state.data || {};
     const byHost = (rows) => (rows || []).filter((row) => row.site_host === host);
-    return { summary: byHost(data.summary)[0] || {}, funnel: byHost(data.funnel), sources: byHost(data.sources), postingTracking: byHost(data.postingTracking), campaigns: byHost(data.campaigns), listings: byHost(data.listings), listingSources: byHost(data.listingSources), listingInterest: byHost(data.listingInterest), daily: byHost(data.daily) };
+    return { summary: byHost(data.summary)[0] || {}, funnel: byHost(data.funnel), sources: byHost(data.sources), postingTracking: byHost(data.postingTracking), postingDaily: byHost(data.postingDaily), campaigns: byHost(data.campaigns), listings: byHost(data.listings), listingSources: byHost(data.listingSources), listingInterest: byHost(data.listingInterest), daily: byHost(data.daily) };
   }, [state.data, host]);
   const trend = useMemo(() => analyticsTrend(filtered.daily, state.data?.period), [filtered.daily, state.data?.period]);
+  const postingTrends = useMemo(() => Object.fromEntries(["whatsapp", "facebook", "iproperty", "mudah"].map(source => [source, analyticsTrend(filtered.postingDaily.filter(row => row.source === source), state.data?.period)])), [filtered.postingDaily, state.data?.period]);
   const listingByCode = useMemo(() => {
     const result = new Map();
     for (const listing of inventory.allItems) {
@@ -111,7 +112,10 @@ export function AnalyticsAdminPage() {
     <section className="analytics-card analytics-tracked-posting" aria-label="Tracked posting links">
       <h2><Link2 size={19} /> Tracked posting links</h2>
       <p className="analytics-table-note">Activity from links labelled for WhatsApp, Facebook, iProperty and Mudah. Forwarded links keep their original label.</p>
-      <table><thead><tr><th>Posting source</th><th>Sessions</th><th>Listing views</th><th>WhatsApp clicks</th><th>Inquiries</th></tr></thead><tbody>{trackedPostingRows.map((row) => <tr key={row.source}><td><strong>{trafficSourceLabel(row.source)}</strong></td><td>{row.sessions}</td><td>{row.listingViews}</td><td>{row.whatsappClicks}</td><td>{row.inquiries}</td></tr>)}</tbody></table>
+      <div className="analytics-posting-table"><table><thead><tr><th>Posting source</th><th>Sessions</th><th>Listing views</th><th>WhatsApp clicks</th><th>Inquiries</th></tr></thead><tbody>{trackedPostingRows.map((row) => <tr key={row.source}><td><strong>{trafficSourceLabel(row.source)}</strong></td><td>{row.sessions}</td><td>{row.listingViews}</td><td>{row.whatsappClicks}</td><td>{row.inquiries}</td></tr>)}</tbody></table></div>
+      <p className="analytics-table-note">Daily progress · Malaysia time. Hover, tap or choose a date. Today is partial.</p>
+      <div className="analytics-trend-grid" aria-busy={state.loading}>{trackedPostingRows.map(row => <PostingSourceChart key={`${host}-${row.source}`} title={trafficSourceLabel(row.source)} points={postingTrends[row.source]} />)}</div>
+      <p className="analytics-table-note">Sessions active on several days count on each day, but only once in the period total.</p>
     </section>
     <section className="analytics-card analytics-trends" aria-label="Daily performance graphs" aria-busy={state.loading}>
       <h2>Daily performance · {hostLabel(host)}</h2>
@@ -125,7 +129,6 @@ export function AnalyticsAdminPage() {
       </div>
       <p className="analytics-table-note">Daily rate = inquiries ÷ that day's sessions. A session active on multiple days counts on each day; the period total counts it once. Zero means no recorded activity.</p>
     </section>
-    <CloudflareReferrersReport key={`${host}-${days}`} host={host} days={days} sources={filtered.sources} campaigns={filtered.campaigns} snapshot={state.data?.cloudflareSnapshots?.find((item) => item.site_host === host && item.days === days)} />
     <div className="analytics-grid">
       <section className="analytics-card"><h2><BarChart3 size={19} /> Funnel activity</h2><table><thead><tr><th>Action</th><th>Events</th><th>Sessions</th></tr></thead><tbody>{filtered.funnel.map((row) => <tr key={row.event_name}><td>{EVENT_LABELS[row.event_name] || row.event_name}</td><td>{row.count}</td><td>{row.sessions}</td></tr>)}</tbody></table></section>
       <section className="analytics-card top-listings-card"><h2>Top listings</h2><p className="analytics-table-note">Views count every detail-page view. Sessions count distinct browser-tab sessions. Expand Interest &amp; leads to see further action.</p><table><thead><tr><th>Listing</th><th><abbr title="Total property detail-page views, including repeat views">Views</abbr></th><th><abbr title="Distinct browser-tab sessions that viewed the property">Sessions</abbr></th></tr></thead><tbody>{filtered.listings.map((row) => { const code = row.listing_code.toUpperCase(); const listing = listingByCode.get(code) || listingByCode.get(code.replace(/^CMI-/, "")); return <TopListingRows key={`${host}-${days}-${row.listing_code}`} row={row} listing={listing} sources={filtered.listingSources.filter(source => source.listing_code === row.listing_code)} interest={filtered.listingInterest.find(item => item.listing_code === row.listing_code)} />; })}</tbody></table></section>

@@ -565,6 +565,16 @@ main { flex: 1; }
 .analytics-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
 .analytics-trend-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
 .analytics-trend-chart { min-width: 0; }
+.analytics-posting-chart { padding-top: 8px; }
+.analytics-posting-table { max-width: 100%; overflow-x: auto; }
+.analytics-posting-table table { min-width: 500px; }
+.analytics-posting-date { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.analytics-posting-date select { width: auto; padding: 7px; border: 1px solid var(--color-border); border-radius: 7px; background: white; }
+.analytics-posting-legend { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px 16px; margin: 12px 0; font-size: 12px; }
+.analytics-posting-legend div { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
+.analytics-posting-legend dt { display: flex; align-items: center; gap: 6px; }
+.analytics-posting-legend dt svg { flex: 0 0 22px; }
+.analytics-posting-legend dd { margin: 0; font-weight: 700; }
 .analytics-trend-chart h3 { margin: 12px 0 6px; font-size: 14px; }
 .analytics-trend-chart svg { display: block; max-width: 100%; touch-action: pan-y; }
 .analytics-trend-chart svg text { fill: var(--color-text-muted); font-size: 11px; font-family: inherit; }

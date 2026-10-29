@@ -8,7 +8,7 @@ import { AnalyticsTrendChart } from "../components/AnalyticsTrendChart";
 import { analyticsTrend } from "../utils/analyticsTrend";
 import { PostingSourceChart } from "../components/PostingSourceChart";
 import { trafficSourceLabel } from "../components/TrafficSourcesReport";
-import { combinedListingSources, listingInterestSummary } from "../utils/listingInterest";
+import { LISTING_POSTING_CODES, listingSourceBreakdown, listingInterestSummary } from "../utils/listingInterest";
 
 const EVENT_LABELS = {
   catalogue_view: "Catalogue sessions", catalogue_filter_applied: "Filter uses", listing_open: "Listing opens",
@@ -35,7 +35,7 @@ function AnalyticsListingLink({ code, listing }) {
 function TopListingRows({ row, listing, sources, interest }) {
   const [open, setOpen] = useState(false);
   const id = `listing-interest-${row.listing_code.replace(/[^a-z0-9-]/gi, "-")}`;
-  const groupedSources = combinedListingSources(sources);
+  const groupedSources = listingSourceBreakdown(sources);
   const actions = [
     ["WhatsApp clicks", interest?.whatsapp_clicks], ["Full photo/layout opens", interest?.photo_opens],
     ["Layout opens", interest?.layout_opens], ["Video opens", interest?.video_opens],
@@ -56,7 +56,8 @@ function TopListingRows({ row, listing, sources, interest }) {
         <p className="analytics-table-note">Clicks and sharing are activity, not confirmed leads. Later inquiries may concern another property.</p>
       </> : null}
       <details className="analytics-interest-sources"><summary>Traffic sources</summary>
-        {groupedSources.length ? <table aria-label={`Traffic sources for ${row.listing_code}`}><thead><tr><th>Source</th><th>Views</th><th>Sessions</th></tr></thead><tbody>{groupedSources.map(source => <tr key={source.source}><td>{source.source === "unknown" ? "Source unavailable" : trafficSourceLabel(source.source)}</td><td>{source.views}</td><td>{source.sessions}</td></tr>)}</tbody></table> : <p className="analytics-table-note">No source information recorded.</p>}
+        <table aria-label={`Traffic sources for ${row.listing_code}`}><thead><tr><th>Source</th><th>Views</th><th>Sessions</th></tr></thead><tbody>{groupedSources.map(source => <tr key={`${source.source}-${source.postingCode || "untagged"}`}><td>{source.source === "unknown" ? "Source unavailable" : <>{trafficSourceLabel(source.source)}{source.postingCode ? ` · ${source.postingCode}` : LISTING_POSTING_CODES[source.source] ? " · untagged" : ""}</>}</td><td>{source.views}</td><td>{source.sessions}</td></tr>)}</tbody></table>
+        <p className="analytics-table-note">Tagged links are separate from other visits. Missing source details stay unavailable.</p>
       </details>
     </div></td></tr> : null}
   </Fragment>;

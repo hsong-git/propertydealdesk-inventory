@@ -37,6 +37,16 @@ test("posting report includes c1-c4 tagged journeys on each site but excludes na
         assert.equal(daily.length,1);
         for (const metric of ["sessions","listing_views","whatsapp_clicks","inquiries"]) assert.equal(daily[0][metric],row[metric]);
         assert.equal(data.sources.find(row=>row.site_host===host && row.source===source).sessions,2);
+        const listingRows = data.listingSources.filter(row=>row.site_host===host && row.source===source);
+        assert.deepEqual(listingRows.map(({attribution_method,views,sessions})=>({attribution_method,views,sessions})),[
+          {attribution_method:"tag",views:2,sessions:1},
+          {attribution_method:"referrer",views:1,sessions:1},
+        ]);
+      }
+      for (const listing of data.listings) {
+        const rows = data.listingSources.filter(row=>row.site_host===listing.site_host && row.listing_code===listing.listing_code);
+        assert.equal(rows.reduce((sum,r)=>sum+r.views,0),listing.views);
+        assert.equal(rows.reduce((sum,r)=>sum+r.sessions,0),listing.sessions);
       }
     }
   } finally {sqlite.close();}

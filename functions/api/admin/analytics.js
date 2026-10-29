@@ -63,13 +63,13 @@ export async function onRequestGet(context) {
         SELECT site_host, listing_code FROM scoped
         WHERE event_name = 'listing_view' AND listing_code != ''
         GROUP BY site_host, listing_code ORDER BY COUNT(*) DESC, site_host, listing_code LIMIT 30
-      ) SELECT e.site_host, e.listing_code, a.source, COUNT(*) AS views,
+      ) SELECT e.site_host, e.listing_code, a.source, a.method AS attribution_method, COUNT(*) AS views,
         COUNT(DISTINCT e.session_id) AS sessions FROM scoped e
         JOIN attributed a ON e.site_host = a.site_host AND e.session_id = a.session_id
         JOIN top_listings t ON e.site_host = t.site_host AND e.listing_code = t.listing_code
         WHERE e.event_name = 'listing_view'
-        GROUP BY e.site_host, e.listing_code, a.source
-        ORDER BY views DESC, e.site_host, e.listing_code, a.source`).bind(period.start, period.end).all(),
+        GROUP BY e.site_host, e.listing_code, a.source, a.method
+        ORDER BY views DESC, e.site_host, e.listing_code, a.source, a.method`).bind(period.start, period.end).all(),
       db.prepare(LISTING_INTEREST_SQL).bind(period.start, period.end).all(),
       db.prepare(`${SOURCE_SESSIONS} SELECT e.site_host, a.source, date(e.occurred_at, '+8 hours') AS day,
         COUNT(DISTINCT e.session_id) AS sessions,

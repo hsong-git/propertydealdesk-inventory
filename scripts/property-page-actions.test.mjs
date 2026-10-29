@@ -86,6 +86,8 @@ test("analytics reports all four discreet posting sources", () => {
   assert.match(page, /PostingSourceChart/);
   assert.match(page, /filtered\.postingDaily/);
   assert.doesNotMatch(page, /CloudflareReferrersReport/);
+  assert.match(page, /listingSourceBreakdown\(sources\)/);
+  assert.match(page, /source\.postingCode/);
 });
 
 test("legacy ZIP photo downloads are no longer rendered", () => {

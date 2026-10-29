@@ -9,6 +9,23 @@ export function combinedListingSources(rows = []) {
   return [...groups.values()].sort((a,b) => (a.source === "unknown") - (b.source === "unknown") || b.sessions - a.sessions);
 }
 
+// These channel labels are the stored equivalents of c1-c4. Only a recorded
+// tag method qualifies; a natural referrer or missing method is never a tag.
+export const LISTING_POSTING_CODES = {whatsapp: "c1", facebook: "c2", iproperty: "c3", mudah: "c4"};
+
+export function listingSourceBreakdown(rows = []) {
+  const tagged = Object.entries(LISTING_POSTING_CODES).map(([source, postingCode]) => ({source, postingCode, views: 0, sessions: 0}));
+  const other = [];
+  for (const row of rows) {
+    const group = row.attribution_method === "tag" && tagged.find(item => item.source === row.source);
+    if (group) {
+      group.views += Number(row.views || 0);
+      group.sessions += Number(row.sessions || 0);
+    } else other.push(row);
+  }
+  return [...tagged, ...combinedListingSources(other)];
+}
+
 export function listingInterestSummary(interest) {
   if (!interest) return "Interest details are unavailable. Refresh to try again.";
   const sessions = Number(interest.viewing_sessions || 0);

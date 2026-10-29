@@ -99,6 +99,21 @@ test("legacy ZIP photo downloads are no longer rendered", () => {
   assert.doesNotMatch(source, /photoDownloadsEnabled/);
 });
 
+test("posting chart lines use distinct contrasting colors and matching legend patterns", () => {
+  const source = fs.readFileSync(path.join(projectRoot, "src/components/PostingSourceChart.jsx"), "utf8");
+  const colors = [...source.matchAll(/color: "(#[0-9A-F]{6})"/g)].map(match => match[1]);
+  assert.deepEqual(colors, ["#0057B8", "#C84B00", "#007A3D", "#8A2BE2"]);
+  assert.equal(new Set(colors).size,4);
+  for (const color of colors) {
+    const channels = color.slice(1).match(/../g).map(hex => parseInt(hex,16)/255).map(c => c<=0.04045?c/12.92:((c+0.055)/1.055)**2.4);
+    const luminance = channels[0]*0.2126+channels[1]*0.7152+channels[2]*0.0722;
+    assert.ok(1.05/(luminance+0.05)>=3,`${color} should contrast with the white chart background`);
+  }
+  assert.equal((source.match(/stroke=\{s.color\}/g)||[]).length,2);
+  assert.equal((source.match(/strokeDasharray=\{s.dash\}/g)||[]).length,2);
+  assert.match(source,/dash: "8 6"/);
+});
+
 test("photo sharing audit links SMI codes and shortens browser details", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PhotoDownloadsAdminPage.jsx"), "utf8");
   assert.match(source, /href=\{`\/i\/\$\{encodeURIComponent\(String\(event\.listing_code/);

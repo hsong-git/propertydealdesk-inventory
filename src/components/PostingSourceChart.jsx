@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 
 const SERIES = [
-  { key: "sessions", label: "Sessions", color: "#087f66" },
-  { key: "listing_views", label: "Listing views", color: "#1672cf", dash: "7 3" },
-  { key: "whatsapp_clicks", label: "WhatsApp clicks", color: "#a55508", dash: "2 3" },
-  { key: "inquiries", label: "Inquiries", color: "#8742bd", dash: "9 3 2 3" },
+  { key: "sessions", label: "Sessions", color: "#0057B8" },
+  { key: "listing_views", label: "Listing views", color: "#C84B00", dash: "8 6" },
+  { key: "whatsapp_clicks", label: "WhatsApp clicks", color: "#007A3D", dash: "2 4" },
+  { key: "inquiries", label: "Inquiries", color: "#8A2BE2", dash: "9 3 2 3" },
 ];
 const shortDate = day => new Date(`${day}T00:00:00Z`).toLocaleDateString("en-GB", {day:"numeric",month:"short",timeZone:"UTC"});
 

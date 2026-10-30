@@ -64,7 +64,7 @@ export function PropertyPage() {
     setActiveGallery(gallery);
     setSelectedPhotos([]);
     setLightboxSlide("");
-  }, [slug, listing?.code, requestedMedia, hasLayouts, firstVideo]);
+  }, [slug, listing?.code, listing?.inventoryVersion, requestedMedia, hasLayouts, firstVideo]);
   useEffect(() => {
     if (!listing?.code) return;
     rememberListingView(listing.code);

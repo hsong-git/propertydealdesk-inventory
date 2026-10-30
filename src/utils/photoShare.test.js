@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { desktopWhatsAppUrl, nativeShareErrorMessage, PHOTO_SELECTION_LIMIT, PHOTO_SHARE_JPEG_QUALITY, photoShareFileName, photoShareMessage } from "./photoShare.js";
+import { desktopWhatsAppUrl, nativeShareErrorMessage, PHOTO_SELECTION_LIMIT, PHOTO_SHARE_JPEG_QUALITY, photoShareFileName, photoShareMessage, photoShareSourceUrl } from "./photoShare.js";
 
 test("prepares standard JPG filenames and listing share copy", () => {
   assert.equal(photoShareFileName("wtl0063", 0), "WTL0063-photo-01.jpg");
@@ -16,6 +16,13 @@ test("prepares standard JPG filenames and listing share copy", () => {
 test("provides explicit WhatsApp App and Web destinations", () => {
   assert.match(desktopWhatsAppUrl("app", "Listing photos"), /^whatsapp:\/\/send\?text=/);
   assert.match(desktopWhatsAppUrl("web", "Listing photos"), /^https:\/\/web\.whatsapp\.com\/send\?text=/);
+});
+
+test("versions shared-photo requests with the current inventory publication", () => {
+  assert.equal(
+    photoShareSourceUrl("/inventory/WTS1005/cover.webp", "2026.10.30.1", "https://property.myeviv.com"),
+    "https://property.myeviv.com/inventory/WTS1005/cover.webp?published=2026.10.30.1",
+  );
 });
 
 test("does not show a false cancellation after a mobile share target closes", () => {

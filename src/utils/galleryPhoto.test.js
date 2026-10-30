@@ -12,7 +12,13 @@ test("gallery saves use versioned, embedded-watermark image files", () => {
   const page = fs.readFileSync(new URL("../pages/PropertyPage.jsx", import.meta.url), "utf8");
   assert.equal((page.match(/<PublicPropertyImage /g) || []).length, 4);
   assert.equal((page.match(/<PublicPropertyImage[^>]*\ballowIndividualSave\b/g) || []).length, 4);
+  assert.match(page, /listing\?\.inventoryVersion/);
   const component = fs.readFileSync(new URL("../components/PublicPropertyImage.jsx", import.meta.url), "utf8");
   assert.match(component, /onContextMenu=\{allowIndividualSave \? undefined/);
   assert.match(component, /const showWatermark = !allowIndividualSave/);
+  const sharing = fs.readFileSync(new URL("../components/ShareSelectedPhotosButton.jsx", import.meta.url), "utf8");
+  assert.match(sharing, /publishedPhotos\.has\(photo\)/);
+  assert.match(sharing, /inventoryVersion: listing\.inventoryVersion/);
+  const sharingUtils = fs.readFileSync(new URL("./photoShare.js", import.meta.url), "utf8");
+  assert.match(sharingUtils, /fetcher\(sourceUrl, \{ cache: "no-cache" \}\)/);
 });

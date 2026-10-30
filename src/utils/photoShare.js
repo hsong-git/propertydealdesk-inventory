@@ -15,6 +15,12 @@ export function photoShareFileName(code, index) {
   return `${cleanCode(code)}-photo-${String(index + 1).padStart(2, "0")}.jpg`;
 }
 
+export function photoShareSourceUrl(photoUrl, inventoryVersion, origin = SITE_ORIGIN) {
+  const url = new URL(photoUrl, origin);
+  if (inventoryVersion) url.searchParams.set("published", String(inventoryVersion));
+  return url.toString();
+}
+
 export function photoShareMessage(listing, profile) {
   if (profile) return postingText(listing, profile);
   return `${listing.displayCode || listing.code} — ${listing.title}\n${SITE_ORIGIN}/i/${String(listing.code || "").toUpperCase()}`;
@@ -50,8 +56,12 @@ async function loadWatermarkLogo(fetcher) {
 }
 
 // Embed the same approved logo in downloaded/shared image pixels.
-export async function createWatermarkedJpegFile(photoUrl, { code, index, fetcher = fetch } = {}) {
-  const response = await fetcher(new URL(photoUrl, window.location.origin), { cache: "force-cache" });
+export async function createWatermarkedJpegFile(photoUrl, { code, index, inventoryVersion, fetcher = fetch } = {}) {
+  const sourceUrl = photoShareSourceUrl(photoUrl, inventoryVersion, window.location.origin);
+  // A published photo may keep its positional filename after the source image
+  // changes. Revalidate the publication-versioned URL so mobile sharing cannot
+  // reuse bytes from a photo that has since been archived or replaced.
+  const response = await fetcher(sourceUrl, { cache: "no-cache" });
   if (!response.ok) throw new Error("Photo unavailable.");
   const source = await decodeImage(await response.blob());
   const width = source.width || source.naturalWidth;

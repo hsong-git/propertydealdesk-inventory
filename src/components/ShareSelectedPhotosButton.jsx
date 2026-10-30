@@ -21,11 +21,19 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos }) {
   }, [selectedPhotos.length]);
 
   const prepareFiles = async () => {
-    const photos = selectedPhotos.slice(0, PHOTO_SELECTION_LIMIT);
+    const publishedPhotos = new Set(listing.photos || []);
+    const photos = selectedPhotos
+      .filter((photo) => publishedPhotos.has(photo))
+      .slice(0, PHOTO_SELECTION_LIMIT);
+    if (!photos.length) throw new Error("The selected photos are no longer published.");
     patchState({ busy: true, message: "Preparing JPG photos…", error: "" });
     const files = [];
     for (let index = 0; index < photos.length; index += 1) {
-      files.push(await createWatermarkedJpegFile(photos[index], { code: listing.code, index }));
+      files.push(await createWatermarkedJpegFile(photos[index], {
+        code: listing.code,
+        index,
+        inventoryVersion: listing.inventoryVersion,
+      }));
       patchState({ message: `Preparing photo ${index + 1} of ${photos.length}…` });
     }
     return files;

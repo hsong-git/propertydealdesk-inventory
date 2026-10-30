@@ -788,9 +788,14 @@ main { flex: 1; }
   .filter-footer { margin-top: 14px; justify-content: space-between; gap: 10px; }
   .apply-filter-button { display: inline-flex; }
   .filter-backdrop { position: fixed; inset: 0; z-index: 55; border: 0; display: block; background: rgba(15,31,26,.55); }
-  .property-grid { grid-template-columns: 1fr; }
-  .property-card { display: grid; grid-template-columns: 154px minmax(0,1fr); align-items: stretch; }
-  .property-photo { height: 100%; min-height: 0; aspect-ratio: auto; align-self: stretch; }
+  /* Keep catalogue cards photo-first on phones and foldables. A foldable's
+     CSS viewport remains below this breakpoint in both postures, so the old
+     horizontal list layout produced narrow photos and large empty side areas.
+     Two tiles fit the unfolded posture; the 480px rule below collapses folded
+     phones to one large tile. */
+  .property-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+  .property-card { display: flex; flex-direction: column; align-items: stretch; }
+  .property-photo { width: 100%; height: auto; min-height: 0; aspect-ratio: 16/10; align-self: auto; }
   .property-photo .intent { left: 7px; top: 7px; }
   .intent small, .featured-badge { display: none; }
   .property-content { padding: 11px; gap: 5px; }
@@ -799,7 +804,7 @@ main { flex: 1; }
   .property-facts { padding-block: 6px; gap: 5px 8px; }
   .property-facts span:first-child, .property-facts span:nth-child(4), .property-meta span:first-child { display: none; }
   .property-meta { justify-content: flex-start; }
-  .property-actions { grid-column: 1 / -1; padding: 9px; grid-template-columns: 1fr 1fr auto; border-top: 1px solid var(--color-border); }
+  .property-actions { grid-column: auto; padding: 0 11px 11px; grid-template-columns: 1fr 1fr auto; border-top: 0; }
   .co-broke-panel { grid-template-columns: 1fr; justify-items: center; gap: 12px; text-align: center; }
   .co-broke-panel > div { max-width: 390px; }
   .co-broke-panel .contact-actions { width: 100%; justify-content: center; }
@@ -873,7 +878,8 @@ main { flex: 1; }
   .mobile-filter-button { min-width: 45px; padding-inline: 9px; font-size: 0; }
   .mobile-filter-button svg { width: 19px; }
   .filter-grid { grid-template-columns: 1fr; }
-  .property-card { grid-template-columns: clamp(132px,38vw,154px) minmax(0,1fr); }
+  .property-grid { grid-template-columns: 1fr; }
+  .property-card { display: flex; flex-direction: column; }
   .related-listing-grid { grid-template-columns: 1fr; }
   .related-listing-card { grid-template-columns: clamp(126px,36vw,150px) minmax(0,1fr); }
   .related-listing-photo { height: 100%; aspect-ratio: auto; }
@@ -881,13 +887,13 @@ main { flex: 1; }
   .related-listing-copy h3 { font-size: 13px; }
   .related-listing-copy .property-reference { font-size: 10px; }
   .related-listing-copy .button { min-height: 34px; font-size: 12px; }
-  .property-photo { height: 100%; aspect-ratio: auto; }
+  .property-photo { width: 100%; height: auto; aspect-ratio: 16/10; }
   .property-reference { font-size: 10px; }
   .availability, .property-reference > .intent { max-width: 110px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   .property-facts span { font-size: 10px; }
   .property-actions .button { font-size: 12px; }
-  .icon-only-mobile span { display: none; }
-  .icon-only-mobile { max-width: 46px; }
+  .icon-only-mobile span { display: inline; }
+  .icon-only-mobile { max-width: none; }
   .detail-facts { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .gallery-thumbnails { grid-template-columns: repeat(3,minmax(0,1fr)); }
 }

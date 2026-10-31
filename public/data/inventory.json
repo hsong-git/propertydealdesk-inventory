@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.3",
-  "inventoryVersion": "2026.10.31.2",
-  "generated_at": "2026-10-31T02:54:18Z",
-  "publishedAt": "2026-10-31T02:54:18Z",
+  "inventoryVersion": "2026.10.31.3",
+  "generated_at": "2026-10-31T04:09:04Z",
+  "publishedAt": "2026-10-31T04:09:04Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -4393,8 +4393,8 @@
       "featured": false,
       "created_at": "2026-10-30T05:08:40Z",
       "listed_at": "2026-10-30T13:08:40Z",
-      "posting_copy": "*WTS*\n\n*5R2B Spacious Single storey Bungalow @  Taman Sri Andalas, Klang*\nSelling Price: *RM1,250,000*\n\n*Property Details*\n- Property Type : Bungalow\n- Property Unit Type: Intermediate\n- Location: Taman Sri Andalas\n- Size Approx. 5843 sqft\n- 5 Bedrooms | 2 Bathrooms\n- Facing Direction: South\n\n*Feature Highlights*\n- Leasehold - 16/10/2086\n- High visibility\n- Spacious land\n- Ample of parking\n- Currently tenanted by kindergarten\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1044*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos in:\nhttps://property.myeviv.com/i/WTS1044?src=c1",
-      "updated_at": "2026-10-31T01:18:01Z",
+      "posting_copy": "*WTS*\n\n*5R2B Spacious Single storey Bungalow @  Taman Sri Andalas, Klang*\nSelling Price: *RM1,250,000*\n\n*Property Details*\n- Property Type : Bungalow\n- Property Unit Type: Intermediate\n- Location: Taman Sri Andalas, Klang\n- Size Approx. 5843 sqft\n- 5 Bedrooms | 2 Bathrooms\n- Facing Direction: South\n- Lot Type: Non Bumi Lot\n- Tenure: Leasehold\n- Lease Expiry: 2086 (60 years remaining)\n\n*Feature Highlights*\n- High visibility\n- Spacious land\n- Ample of parking\n- Currently tenanted by kindergarten\n- Suitable for residential\n- or running kindergarten and old-folks home\n\nContact\n*HS ONG*\n*60163132865*\n*WTS1044*\n\n🤝 Co-broke welcome\n🏠 Listing details & photos in:\nhttps://property.myeviv.com/i/WTS1044?src=c1",
+      "updated_at": "2026-10-31T03:46:54Z",
       "cover_photo": "/inventory/WTS1044/ad-page.webp",
       "photos": [
         "/inventory/WTS1044/ad-page.webp",
@@ -4410,7 +4410,7 @@
         "/inventory/WTS1044/photo-10.webp"
       ],
       "features": [
-        "Leasehold - 16/10/2086 High visibility Spacious land Ample of parking Currently tenanted by kindergarten"
+        "High visibility Spacious land Ample of parking Currently tenanted by kindergarten Suitable for residential, or running kindergarten and old-folks home"
       ],
       "amenities": [],
       "why_this_property": [],

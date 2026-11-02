@@ -9,6 +9,15 @@ import { listingMediaLinks, initialListingGallery } from "../src/utils/listingMe
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
+test("Room enquiry UI skips storeys in the picker, next-step guard, review and messages", () => {
+  const page = fs.readFileSync(path.join(projectRoot,"src/pages/RequirementPage.jsx"),"utf8");
+  assert.match(page,/requirementHasStoreys\(form.requirements.propertyType\) \? <StepperField/);
+  assert.match(page,/step === 1 && requirementHasStoreys\(form.requirements.propertyType\) && !form.requirements.storeys/);
+  assert.match(page,/key !== "storeys" \|\| requirementHasStoreys\(values.propertyType\)/);
+  assert.match(page,/requirements.storeys = requirements.hasStoreys \? \(current.requirements.storeys \|\| 1\) : null/);
+  assert.match(page,/requirementHasStoreys\(requirements.propertyType\) \? \[`\*/);
+});
+
 test("enquiry messages include the catalogue listing URL and selected offer intent", () => {
   for (const origin of ["https://property.myeviv.com", "https://scmi.myeviv.com"]) {
     for (const visibility of ["public", "unlisted"]) {

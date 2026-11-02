@@ -8,7 +8,7 @@ import {
   COUNTRY_OPTIONS, DEPOSIT_OPTIONS, emptyRequirement, formatRequirementDate, formatRoomSummary, FURNISHING_OPTIONS, isValidBudgetAmount, LOAN_OPTIONS, normalizeBudgetAmount, parseRequirementDate,
   PROPERTY_USAGE_OPTIONS,
   PURPOSE_OPTIONS, RACE_OPTIONS, TENANCY_OPTIONS, validateRequirementPayload,
-  isValidMobileNumber, normalizeMobileNumber, INQUIRY_PROPERTY_TYPE_OPTIONS, requirementStoreysLabel,
+  isValidMobileNumber, normalizeMobileNumber, INQUIRY_PROPERTY_TYPE_OPTIONS, requirementStoreysLabel, requirementHasStoreys,
 } from "../data/requirementContract";
 import { useInventory } from "../hooks";
 import { buildLocationOptions } from "../utils/locationFilter";
@@ -39,7 +39,7 @@ function requirementWhatsAppMessage(submission, reference) {
   ];
   const detailLines = [
     `*Property type:* ${requirements.propertyType}`,
-    `*${requirementStoreysLabel(requirements.propertyType, true)}:* ${requirements.storeys}`,
+    ...(requirementHasStoreys(requirements.propertyType) ? [`*${requirementStoreysLabel(requirements.propertyType, true)}:* ${requirements.storeys}`] : []),
     `*Area / Location:* ${requirements.area}`,
     `*Rooms:* ${formatRoomSummary(requirements.bedrooms, requirements.bathrooms)}`,
     ...(submission.intent === "rent" ? [
@@ -178,7 +178,7 @@ function PropertyBasicsStep({ form, propertyTypes, locations, errors, updateRequ
   const selectType = (option) => { setCustomType(false); updateRequirement("propertyType", option); };
   return <form onSubmit={onSubmit} className="requirement-step-panel"><StepIntro eyebrow="Property Basics" title="Start with the big picture" description="Where should we look, and what kind of place feels right?" /><div className="requirement-grid">
     <fieldset className={`requirement-choice-field tile-choice-field property-type-picker ${errors["requirements.propertyType"] ? "has-error" : ""}`} style={{ "--choice-columns": 2 }}><legend>Property Type</legend><div className="requirement-tiles">{typeOptions.slice(0, 7).map((option) => <button className={form.requirements.propertyType === option ? "active" : ""} type="button" key={option} onClick={() => selectType(option)}>{option}</button>)}<button className={customType ? "active" : ""} type="button" onClick={() => { setCustomType(true); updateRequirement("propertyType", ""); }}>Other</button></div>{customType ? <input className="choice-custom-input" required aria-label="Other property type" placeholder="Type a property type" value={form.requirements.propertyType} onChange={(e) => updateRequirement("propertyType", e.target.value)} /> : null}{errors["requirements.propertyType"] ? <em>{errors["requirements.propertyType"]}</em> : null}</fieldset>
-    <StepperField label={requirementStoreysLabel(form.requirements.propertyType)} min={1} value={form.requirements.storeys} onChange={(value) => updateRequirement("storeys", value)} error={errors["requirements.storeys"]} />
+    {requirementHasStoreys(form.requirements.propertyType) ? <StepperField label={requirementStoreysLabel(form.requirements.propertyType)} min={1} value={form.requirements.storeys} onChange={(value) => updateRequirement("storeys", value)} error={errors["requirements.storeys"]} /> : null}
     <fieldset className="requirement-choice-field location-picker"><legend>Area / Location</legend><div className="location-chips">{quickLocations.map((option) => <button className={form.requirements.area === option ? "active" : ""} type="button" key={option} onClick={() => updateRequirement("area", option)}>{option}</button>)}</div><input required list="requirement-locations" aria-label="Area / Location" placeholder="Or search an area" value={form.requirements.area} onChange={(e) => updateRequirement("area", e.target.value)} /><datalist id="requirement-locations">{locations.map((item) => <option key={item} value={item} />)}</datalist>{errors["requirements.area"] ? <em>{errors["requirements.area"]}</em> : null}</fieldset>
     <BudgetPicker intent={form.intent} value={form.requirements.budget} onChange={(value) => updateRequirement("budget", value)} error={errors["requirements.budget"]} />
   </div><WizardActions onBack={onBack} label="Next: Home Fit" /></form>;
@@ -243,7 +243,7 @@ const validationLabels = {
 const validationSummary = (errors) => Object.entries(errors).map(([key, message]) => `${validationLabels[key] || key}: ${message}`).join(" ");
 
 function ReviewSection({ title, values, labels, onEdit, intent }) {
-  const entries = Object.entries(values).filter(([, value]) => value !== "" && value !== null && value !== undefined);
+  const entries = Object.entries(values).filter(([key, value]) => (key !== "storeys" || requirementHasStoreys(values.propertyType)) && value !== "" && value !== null && value !== undefined);
   if (entries.some(([key]) => key === "bedrooms" || key === "bathrooms")) {
     const combined = entries.filter(([key]) => key !== "bedrooms" && key !== "bathrooms");
     const budgetIndex = combined.findIndex(([key]) => key === "budget");
@@ -313,13 +313,23 @@ export function RequirementPage() {
       return next;
     });
   };
-  const updateRequirement = (key, value) => setForm((current) => ({ ...current, requirements: { ...current.requirements, [key]: value } }));
+  const updateRequirement = (key, value) => {
+    setForm((current) => {
+      const requirements = { ...current.requirements, [key]: value };
+      if (key === "propertyType") {
+        requirements.hasStoreys = requirementHasStoreys(value);
+        requirements.storeys = requirements.hasStoreys ? (current.requirements.storeys || 1) : null;
+      }
+      return { ...current, requirements };
+    });
+    if (key === "propertyType") setErrors((current) => { const next = { ...current }; delete next["requirements.storeys"]; return next; });
+  };
   const startInquiry = (intent) => {
     setForm(emptyRequirement(intent));
     setStep(1);
     trackEvent("inquiry_started", { intent, properties: { entry_path: window.location.pathname } });
   };
-  const next = (event) => { event?.preventDefault(); if (step === profileStep && !form.profile.race) { setErrors({ "profile.race": "Choose Malay, Chinese, Indian, or Others." }); window.setTimeout(() => document.getElementById("requirement-race-choice")?.focus(), 0); return; } if (step === 1 && !form.requirements.propertyType) { setErrors({ "requirements.propertyType": "Choose a property type." }); return; } if (step === 1 && !isValidBudgetAmount(form.requirements.budget)) { setErrors({ "requirements.budget": "Enter one positive budget amount." }); return; } if (step === 1 && !form.requirements.storeys) { setErrors({ "requirements.storeys": "Choose the number of storeys." }); return; } if (step === 2 && form.intent === "rent" && !parseRequirementDate(form.requirements.moveInDate)) { setErrors({ "requirements.moveInDate": "Enter a valid date as dd/mm/yyyy." }); window.setTimeout(() => document.getElementById("requirement-move-in-date")?.focus(), 0); return; } if (step === 3 && form.intent === "rent" && form.requirements.propertyUsage === "Commercial" && !String(form.requirements.commercialActivity || "").trim()) { setErrors({ "requirements.commercialActivity": "Please state the commercial activity." }); return; } if (step === 4 && form.intent === "rent" && !DEPOSIT_OPTIONS.includes(form.requirements.depositAgreement)) { setErrors({ "requirements.depositAgreement": "Choose Yes or Need to Discuss before reviewing your answers." }); return; } setErrors({}); trackEvent("inquiry_step_completed", { intent: form.intent, properties: { step, step_name: steps[step] } }); if (reviewEditStep !== null) { setReviewEditStep(null); setStep(finalStep); } else setStep((current) => Math.min(finalStep, current + 1)); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const next = (event) => { event?.preventDefault(); if (step === profileStep && !form.profile.race) { setErrors({ "profile.race": "Choose Malay, Chinese, Indian, or Others." }); window.setTimeout(() => document.getElementById("requirement-race-choice")?.focus(), 0); return; } if (step === 1 && !form.requirements.propertyType) { setErrors({ "requirements.propertyType": "Choose a property type." }); return; } if (step === 1 && !isValidBudgetAmount(form.requirements.budget)) { setErrors({ "requirements.budget": "Enter one positive budget amount." }); return; } if (step === 1 && requirementHasStoreys(form.requirements.propertyType) && !form.requirements.storeys) { setErrors({ "requirements.storeys": "Choose the number of storeys." }); return; } if (step === 2 && form.intent === "rent" && !parseRequirementDate(form.requirements.moveInDate)) { setErrors({ "requirements.moveInDate": "Enter a valid date as dd/mm/yyyy." }); window.setTimeout(() => document.getElementById("requirement-move-in-date")?.focus(), 0); return; } if (step === 3 && form.intent === "rent" && form.requirements.propertyUsage === "Commercial" && !String(form.requirements.commercialActivity || "").trim()) { setErrors({ "requirements.commercialActivity": "Please state the commercial activity." }); return; } if (step === 4 && form.intent === "rent" && !DEPOSIT_OPTIONS.includes(form.requirements.depositAgreement)) { setErrors({ "requirements.depositAgreement": "Choose Yes or Need to Discuss before reviewing your answers." }); return; } setErrors({}); trackEvent("inquiry_step_completed", { intent: form.intent, properties: { step, step_name: steps[step] } }); if (reviewEditStep !== null) { setReviewEditStep(null); setStep(finalStep); } else setStep((current) => Math.min(finalStep, current + 1)); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const back = () => { setErrors({}); if (reviewEditStep !== null) { setReviewEditStep(null); setStep(finalStep); } else setStep((current) => Math.max(0, current - 1)); };
   const editReviewSection = (targetStep) => {
     const stepMap = form.intent === "rent" ? { 1: profileStep, 2: 1, 3: 2, 4: 3, 5: 4 } : { 1: profileStep, 2: 1, 3: 2, 4: 3 };

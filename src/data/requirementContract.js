@@ -6,6 +6,7 @@ export const DEPOSIT_OPTIONS = ["Yes", "Need to Discuss"];
 export const PURPOSE_OPTIONS = ["Own Stay", "Investment", "Both", "Others"];
 export const LOAN_OPTIONS = ["Loan Required", "Cash Purchase", "Not Sure"];
 export const INQUIRY_PROPERTY_TYPE_OPTIONS = ["Condominium/Apartment", "Room", "Terrace House", "Office Lot", "Semi-Detached House", "Shoplot", "Bungalow"];
+export const requirementHasStoreys = (propertyType) => String(propertyType || "").trim().toLowerCase() !== "room";
 export function requirementStoreysLabel(propertyType, short = false) {
   const levels = ["condominium/apartment", "office lot", "shoplot"].includes(String(propertyType || "").trim().toLowerCase());
   return short ? (levels ? "Levels" : "Storeys") : (levels ? "Number of Levels" : "Number of Storeys");
@@ -128,8 +129,8 @@ export function normalizeRequirementPayload(raw) {
     },
     requirements: {
       propertyType: cleanText(requirements.propertyType, 120),
-      hasStoreys: true,
-      storeys: cleanNumber(requirements.storeys, { min: 1, max: 20, integer: true }),
+      hasStoreys: requirementHasStoreys(requirements.propertyType),
+      storeys: requirementHasStoreys(requirements.propertyType) ? cleanNumber(requirements.storeys, { min: 1, max: 20, integer: true }) : null,
       area: cleanText(requirements.area, 160),
       budget: cleanNumber(normalizeBudgetAmount(intent, requirements.budget), { min: 1, max: 1_000_000_000 }),
       bedrooms: cleanNumber(requirements.bedrooms, { min: 0, max: 100, integer: true }),
@@ -171,7 +172,7 @@ export function validateRequirementPayload(raw) {
   required("profile.occupation", value.profile.occupation);
   required("profile.companyName", value.profile.companyName);
   required("requirements.propertyType", value.requirements.propertyType);
-  required("requirements.storeys", value.requirements.storeys);
+  if (value.requirements.hasStoreys) required("requirements.storeys", value.requirements.storeys);
   if (value.requirements.storeys !== null && !Number.isInteger(value.requirements.storeys)) errors["requirements.storeys"] = "Choose a valid number of storeys.";
   required("requirements.area", value.requirements.area);
   required("requirements.budget", value.requirements.budget);

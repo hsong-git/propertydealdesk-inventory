@@ -10,7 +10,7 @@ test("posting labels use levels for apartments, offices and shoplots", () => {
   }
   const room = inquiryPostingText({intent:"rent",requirements:{propertyType:"Room",storeys:1}});
   assert.match(room,/\*Property type:\* Room/);
-  assert.match(room,/\*Storeys:\* 1/);
+  assert.doesNotMatch(room,/\*(?:Storeys|Levels):\*/);
 });
 
 test("formats inquiry posting content without mobile number", () => {

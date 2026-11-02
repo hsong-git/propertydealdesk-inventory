@@ -33,6 +33,18 @@ function fakeDatabase() {
   };
 }
 
+test("Room enquiries save without a storeys value even when an older client supplies one", async () => {
+  const database = fakeDatabase();
+  const payload = validRent();
+  payload.requirements.propertyType = "Room";
+  payload.requirements.storeys = 4;
+  const result = await createRequirement({REQUIREMENTS_DB:database},payload);
+  assert.equal(result.reference,"WTR000001");
+  const saved = JSON.parse(database.state.lastInsert[8]);
+  assert.equal(saved.storeys,null);
+  assert.equal(saved.hasStoreys,false);
+});
+
 test("allocates a unique reference once and returns the saved reference for duplicate submits", async () => {
   const database = fakeDatabase();
   const env = { REQUIREMENTS_DB: database };

@@ -17,7 +17,7 @@ test("inquiry property choices replace Factory with Room and preserve saved type
     const result = validateRequirementPayload(payload);
     assert.equal(result.valid,true);
     assert.equal(result.value.requirements.propertyType,propertyType);
-    assert.equal(result.value.requirements.storeys,2);
+    assert.equal(result.value.requirements.storeys,propertyType === "Room" ? null : 2);
   }
 });
 
@@ -174,7 +174,7 @@ test("accepts bounded positive custom budgets and rejects invalid amounts", () =
   assert.equal(Boolean(result.errors["requirements.budget"]), true);
 });
 
-test("requires storeys for every property request", () => {
+test("requires storeys for non-Room property requests", () => {
   const payload = validBase("buy");
   Object.assign(payload.requirements, { propertyType: "Terrace House", storeys: "", purchaseTimeline: "Within 6 months", purpose: "Own Stay", loan: "Loan Required" });
   let result = validateRequirementPayload(payload);
@@ -184,6 +184,22 @@ test("requires storeys for every property request", () => {
   result = validateRequirementPayload(payload);
   assert.equal(result.valid, true);
   assert.equal(result.value.requirements.storeys, 2);
+});
+
+test("Room enquiries do not require storeys and discard stale or supplied storeys", () => {
+  for (const intent of ["rent", "buy"]) for (const propertyType of ["Room", " room ", "ROOM"]) for (const storeys of [undefined, "", null, 4, "bad"]) {
+    const payload = validBase(intent);
+    Object.assign(payload.requirements, { propertyType, storeys, moveInDate:"2026-12-01", peopleStaying:1, pet:"No", furnishing:"Basic", tenancy:"Individual", tenancyPeriod:"1 year", depositAgreement:"Yes", purchaseTimeline:"Within 3 months",purpose:"Own Stay",loan:"Cash Purchase" });
+    const result = validateRequirementPayload(payload);
+    assert.equal(result.valid,true,JSON.stringify(result.errors));
+    assert.equal(result.value.requirements.hasStoreys,false);
+    assert.equal(result.value.requirements.storeys,null);
+  }
+  for (const propertyType of ["Condominium/Apartment", "Office Lot", "Shoplot", "Terrace House"]) {
+    const payload = validBase("buy");
+    Object.assign(payload.requirements,{propertyType,storeys:"",purchaseTimeline:"Within 3 months",purpose:"Own Stay",loan:"Cash Purchase"});
+    assert.equal(validateRequirementPayload(payload).errors["requirements.storeys"],"This field is required.");
+  }
 });
 
 test("normalizes the Rent RM35000 typo to an unambiguous RM3500 amount", () => {

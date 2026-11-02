@@ -1,4 +1,5 @@
 import { campaignUrl } from "./trafficAttribution.js";
+import { CATALOGUE_ORIGIN } from "../config/catalogueSite.js";
 
 export function tenantEligibilityDescription(listing) {
   const copy = String(listing.postingCopy || "");
@@ -76,9 +77,12 @@ export const intentLabels = {
   WTL: "Want to Let",
 };
 
-export const enquiryText = (listing, displayName) => {
-  const action = listing.intent === "WTL" ? "renting" : "this property";
-  return `Hi ${displayName}, I am interested in listing ${listing.displayCode || listing.code}, ${listing.title} at ${listing.location}. Could you share the latest availability and details for ${action}?`;
+export const enquiryText = (listing, displayName, { origin = CATALOGUE_ORIGIN, intent = listing.intent } = {}) => {
+  const selectedIntent = [listing.intent, listing.alternateIntent].includes(intent) ? intent : listing.intent;
+  const action = selectedIntent === "WTL" ? "renting" : "this property";
+  const url = new URL(listingDetailUrl(listing, origin));
+  if (["WTL", "WTS"].includes(selectedIntent)) url.searchParams.set("intent", selectedIntent);
+  return `Hi ${displayName}, I am interested in listing ${listing.displayCode || listing.code}, ${listing.title} at ${listing.location}. Could you share the latest availability and details for ${action}?\n\nListing details:\n${url.toString()}`;
 };
 
 export const photoDownloadRequestText = (listing, displayName) => [

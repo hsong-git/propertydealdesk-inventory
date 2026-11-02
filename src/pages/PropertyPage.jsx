@@ -154,7 +154,7 @@ export function PropertyPage() {
         </div>
         <aside className="agent-contact-card">
           <button className="agent-portrait-trigger" type="button" onClick={() => setAgentPortraitOpen(true)} aria-label="Enlarge agent portrait"><img src={agentProfile.portrait} alt={agentProfile.displayName} /></button><div><span className="eyebrow">Enquire directly</span><h2>{agentProfile.displayName}</h2><p>{agentProfile.title}</p><small>{agentProfile.agency}</small></div>
-          <button className="button primary" type="button" onClick={() => { trackEvent("whatsapp_click", { listingCode: listing.code, intent: displayIntent, properties: { placement: "detail" } }); openWhatsApp({ phone: agentProfile.whatsapp, message: enquiryText(listing, agentProfile.displayName), onError: (error) => window.alert(error) }); }}><MessageCircle size={18} /> WhatsApp enquiry</button>
+          <button className="button primary" type="button" onClick={() => { trackEvent("whatsapp_click", { listingCode: listing.code, intent: displayIntent, properties: { placement: "detail" } }); openWhatsApp({ phone: agentProfile.whatsapp, message: enquiryText(listing, agentProfile.displayName, { intent: displayIntent }), onError: (error) => window.alert(error) }); }}><MessageCircle size={18} /> WhatsApp enquiry</button>
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} /> Call {agentProfile.phoneDisplay}</a>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {copied ? "Link copied" : "Share property"}</button>
         </aside>

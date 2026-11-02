@@ -3,11 +3,34 @@ import fs from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { shareListing } from "../src/utils/listing.js";
+import { enquiryText, shareListing, whatsappUrl } from "../src/utils/listing.js";
 import { anonymousBrowserLabel } from "../src/utils/anonymousBrowser.js";
 import { listingMediaLinks, initialListingGallery } from "../src/utils/listingMedia.js";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+test("enquiry messages include the catalogue listing URL and selected offer intent", () => {
+  for (const origin of ["https://property.myeviv.com", "https://scmi.myeviv.com"]) {
+    for (const visibility of ["public", "unlisted"]) {
+      const listing = {code:"WTSL0008",displayCode:visibility === "unlisted" ? "CMI-WTSL0008" : "WTSL0008",slug:"sample-house",title:"House & garden",location:"Bandar Botanic",intent:"WTL",alternateIntent:"WTS",visibility};
+      for (const intent of ["WTL", "WTS"]) {
+        const message = enquiryText(listing,"HS Ong",{origin,intent});
+        const url = new URL(message.split("\n").at(-1));
+        assert.equal(url.origin,origin);
+        assert.equal(url.pathname,"/property/sample-house");
+        assert.equal(url.searchParams.get("intent"),intent);
+        assert.ok(message.includes(listing.displayCode));
+        assert.equal(new URL(whatsappUrl("60163132865",message)).searchParams.get("text"),message);
+      }
+      assert.match(enquiryText(listing,"HS Ong"),/https:\/\/property\.myeviv\.com\/property\/sample-house\?intent=WTL$/);
+      assert.match(enquiryText(listing,"HS Ong",{origin,intent:"invalid"}),/\?intent=WTL$/);
+    }
+  }
+  const card = fs.readFileSync(path.join(projectRoot,"src/components/PropertyCard.jsx"),"utf8");
+  const detail = fs.readFileSync(path.join(projectRoot,"src/pages/PropertyPage.jsx"),"utf8");
+  assert.match(card,/enquiryText\(listing, agentProfile.displayName, \{ intent: displayedIntent \}\)/);
+  assert.match(detail,/enquiryText\(listing, agentProfile.displayName, \{ intent: displayIntent \}\)/);
+});
 
 test("all three admin detail pages have a direct return to administration", () => {
   const component = fs.readFileSync(path.join(projectRoot,"src/components/AdminBackLink.jsx"),"utf8");

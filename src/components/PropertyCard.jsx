@@ -66,7 +66,7 @@ export function PropertyCard({ listing, viewOnly = false, displayIntent = "" }) 
       </div>
       <div className={`property-actions ${viewOnly ? "view-only" : ""}`}>
         <Link className="button secondary" to={propertyHref} onClick={() => trackEvent("listing_open", { listingCode: listing.code, intent: displayedIntent, properties: { placement: "view_details" } })}>View Details</Link>
-        {viewOnly ? null : <a className="button primary icon-only-mobile" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName))} target="_blank" rel="noreferrer" onClick={() => trackEvent("whatsapp_click", { listingCode: listing.code, intent: displayedIntent, properties: { placement: "card" } })}><MessageCircle size={18} /><span>Enquire</span></a>}
+        {viewOnly ? null : <a className="button primary icon-only-mobile" href={whatsappUrl(agentProfile.whatsapp, enquiryText(listing, agentProfile.displayName, { intent: displayedIntent }))} target="_blank" rel="noreferrer" onClick={() => trackEvent("whatsapp_click", { listingCode: listing.code, intent: displayedIntent, properties: { placement: "card" } })}><MessageCircle size={18} /><span>Enquire</span></a>}
         {viewOnly ? null : <button className="button tertiary share-button" type="button" onClick={share} aria-label={`Share ${listing.displayCode || listing.code}`}><Share2 size={18} /><span>{shared ? "Copied" : "Share"}</span></button>}
       </div>
     </article>

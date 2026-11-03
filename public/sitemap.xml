@@ -200,7 +200,7 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0003-trefoil-studio-setia-city-setia-alam-setia-alam-shah-alam-bandar-baru-klang</loc>
-    <lastmod>2026-11-02</lastmod>
+    <lastmod>2026-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -320,13 +320,13 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0041-sughan-wts-4r1b-single-storey-corner-lot-bandar-sentosa-klang-extended-room-extra-side-land-taman-sentosa</loc>
-    <lastmod>2026-11-02</lastmod>
+    <lastmod>2026-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts0045-mann-wts-4r3b-2-storey-semi-d-aman-perdana-klang-aman-perdana-klang</loc>
-    <lastmod>2026-11-02</lastmod>
+    <lastmod>2026-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -350,7 +350,7 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts1005-serunai-apartment-bandar-bukit-raja-selangor-serunai-bandar-bukit-raja</loc>
-    <lastmod>2026-11-02</lastmod>
+    <lastmod>2026-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -512,6 +512,18 @@
   </url>
   <url>
     <loc>https://property.myeviv.com/property/wts1045-4r2b-double-storey-house-taman-desawan-klang-jaya-taman-desawan-klang-jaya</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://property.myeviv.com/property/wts1046-4r4b-double-storey-house-ayra-1-bandar-bukit-raja-ayra-1-bandar-bukit-raja</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://property.myeviv.com/property/wts1047-4r3b-end-unit-condo-idaman-taman-mewah-jaya-sentosa-klang-condo-idaman-taman-mewah-jaya-sentosa-klang</loc>
     <lastmod>2026-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

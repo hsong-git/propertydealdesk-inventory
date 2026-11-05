@@ -322,16 +322,18 @@ test("Share property falls back to copying the public short URL", async () => {
   }
 });
 
-test("enquiry location shortcuts include Bukit Tinggi without dropping the existing six", () => {
+test("enquiry shortcuts keep the requested locations regardless of inventory order", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "RequirementPage.jsx"), "utf8");
   const start = source.indexOf("  const quickLocations = ");
   const end = source.indexOf("  const selectType", start);
   const expression = source.slice(start, end).trim().replace(/^const quickLocations = /, "").replace(/;$/, "");
   const getShortcuts = new Function("locations", `return (${expression});`);
   const locations = ["Bandar Botanic", "Bandar Bukit Raja", "Bandar Parklands", "Bandar Puteri Klang", "Banting", "Bayu Perdana", "Bukit Tinggi", "Klang"];
-  assert.deepEqual(getShortcuts(locations), [...locations.slice(0, 6), "Bukit Tinggi"]);
-  assert.deepEqual(getShortcuts(["Bukit Tinggi", "Klang"]), ["Bukit Tinggi", "Setia Alam"]);
-  assert.deepEqual(getShortcuts([]), ["Setia Alam", "Bukit Tinggi"]);
+  const expected = [...locations.slice(0, 4), "Taman Sentosa", "Setia Alam", "Bukit Tinggi"];
+  assert.deepEqual(getShortcuts(locations), expected);
+  assert.deepEqual(getShortcuts([...locations].reverse()), expected);
+  assert.deepEqual(getShortcuts([]), expected);
+  assert.match(source, /locations\.map\(\(item\) => <option key=\{item\} value=\{item\}/);
 });
 
 test("requirement WhatsApp message omits applicant mobile number", () => {

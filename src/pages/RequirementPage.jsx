@@ -174,7 +174,10 @@ function WizardActions({ onBack, label, onSubmit }) {
 function PropertyBasicsStep({ form, propertyTypes, locations, errors, updateRequirement, onBack, onSubmit }) {
   const [customType, setCustomType] = useState(false);
   const typeOptions = INQUIRY_PROPERTY_TYPE_OPTIONS;
-  const quickLocations = [...locations.filter((option) => option !== "Klang"), "Setia Alam"].filter((option, index, options) => options.indexOf(option) === index).slice(0, 6);
+  const quickLocations = [...new Set([
+    ...[...locations.filter((option) => option !== "Klang"), "Setia Alam"].filter((option, index, options) => options.indexOf(option) === index).slice(0, 6),
+    "Bukit Tinggi",
+  ])];
   const selectType = (option) => { setCustomType(false); updateRequirement("propertyType", option); };
   return <form onSubmit={onSubmit} className="requirement-step-panel"><StepIntro eyebrow="Property Basics" title="Start with the big picture" description="Where should we look, and what kind of place feels right?" /><div className="requirement-grid">
     <fieldset className={`requirement-choice-field tile-choice-field property-type-picker ${errors["requirements.propertyType"] ? "has-error" : ""}`} style={{ "--choice-columns": 2 }}><legend>Property Type</legend><div className="requirement-tiles">{typeOptions.slice(0, 7).map((option) => <button className={form.requirements.propertyType === option ? "active" : ""} type="button" key={option} onClick={() => selectType(option)}>{option}</button>)}<button className={customType ? "active" : ""} type="button" onClick={() => { setCustomType(true); updateRequirement("propertyType", ""); }}>Other</button></div>{customType ? <input className="choice-custom-input" required aria-label="Other property type" placeholder="Type a property type" value={form.requirements.propertyType} onChange={(e) => updateRequirement("propertyType", e.target.value)} /> : null}{errors["requirements.propertyType"] ? <em>{errors["requirements.propertyType"]}</em> : null}</fieldset>

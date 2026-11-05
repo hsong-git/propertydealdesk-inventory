@@ -41,6 +41,24 @@ test("validates the exact required Rent fields", () => {
   assert.equal(result.value.requirements.propertyUsage, "Residential");
 });
 
+test("Other relationship requires bounded details and discards them for other choices", () => {
+  const payload = validBase("rent");
+  Object.assign(payload.requirements, { moveInDate: "2026-12-01", peopleStaying: 2, pet: "No", furnishing: "Basic", tenancy: "Individual", tenancyPeriod: "1 year", depositAgreement: "Yes", relationship: "Other" });
+  for (const detail of [undefined, "", "   "]) {
+    payload.requirements.relationshipOther = detail;
+    assert.equal(validateRequirementPayload(payload).errors["requirements.relationshipOther"], "This field is required.");
+  }
+  payload.requirements.relationshipOther = "  Colleagues   sharing  ";
+  const valid = validateRequirementPayload(payload);
+  assert.equal(valid.valid, true);
+  assert.equal(valid.value.requirements.relationshipOther, "Colleagues sharing");
+  payload.requirements.relationshipOther = "x".repeat(200);
+  assert.equal(validateRequirementPayload(payload).value.requirements.relationshipOther.length, 160);
+  payload.requirements.relationship = "Family";
+  assert.equal(validateRequirementPayload(payload).value.requirements.relationshipOther, "");
+  assert.equal(validateRequirementPayload(payload).valid, true);
+});
+
 test("requires commercial activity when commercial property usage is selected", () => {
   const payload = validBase("rent");
   Object.assign(payload.requirements, { moveInDate: "2026-09-01", peopleStaying: "4", pet: "No", furnishing: "Partial", tenancy: "Individual", tenancyPeriod: "2 years", depositAgreement: "Yes", propertyUsage: "Commercial", commercialActivity: "" });

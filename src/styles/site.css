@@ -961,6 +961,7 @@ main { flex: 1; }
 .requirement-choice-field em, .requirement-stepper-field em { display: block; margin-top: 2px; }
 .requirement-choice-field.has-error legend, .requirement-stepper-field.has-error legend { color: var(--color-danger); }
 .room-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.relationship-picker { display: grid; gap: 12px; min-width: 0; }
 .room-picker .room-order-note { grid-column: 1 / -1; margin: 0; }
 .requirement-stepper-field { min-width: 0; margin: 0; padding: 0; border: 0; }
 .requirement-stepper-field legend { padding: 0; }

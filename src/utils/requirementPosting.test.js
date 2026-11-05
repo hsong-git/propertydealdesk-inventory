@@ -2,6 +2,14 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { inquiryPostingText } from "./requirementPosting.js";
 
+test("posting includes Other relationship details and ignores stale details for Family", () => {
+  const submission = { intent: "rent", requirements: { relationship: "Other", relationshipOther: "Colleagues" } };
+  assert.match(inquiryPostingText(submission), /\*Relationship:\* Other \(Colleagues\)/);
+  submission.requirements.relationship = "Family";
+  assert.match(inquiryPostingText(submission), /\*Relationship:\* Family/);
+  assert.doesNotMatch(inquiryPostingText(submission), /Colleagues/);
+});
+
 test("posting labels use levels for apartments, offices and shoplots", () => {
   for (const propertyType of ["Condominium/Apartment", "Office Lot", "Shoplot"]) {
     const text = inquiryPostingText({intent:"rent",requirements:{propertyType,storeys:2}});

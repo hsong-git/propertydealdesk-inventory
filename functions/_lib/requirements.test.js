@@ -45,6 +45,18 @@ test("Room enquiries save without a storeys value even when an older client supp
   assert.equal(saved.hasStoreys,false);
 });
 
+test("Other relationship details are validated before database writes and persisted in JSON", async () => {
+  const database = fakeDatabase();
+  const payload = validRent();
+  payload.requirements.relationship = "Other";
+  const invalid = await createRequirement({ REQUIREMENTS_DB: database }, payload);
+  assert.equal(invalid.validationErrors["requirements.relationshipOther"], "This field is required.");
+  assert.equal(database.state.lastInsert, null);
+  payload.requirements.relationshipOther = "  Colleagues  ";
+  await createRequirement({ REQUIREMENTS_DB: database }, payload);
+  assert.equal(JSON.parse(database.state.lastInsert[8]).relationshipOther, "Colleagues");
+});
+
 test("allocates a unique reference once and returns the saved reference for duplicate submits", async () => {
   const database = fakeDatabase();
   const env = { REQUIREMENTS_DB: database };

@@ -7,6 +7,12 @@ export const PURPOSE_OPTIONS = ["Own Stay", "Investment", "Both", "Others"];
 export const LOAN_OPTIONS = ["Loan Required", "Cash Purchase", "Not Sure"];
 export const INQUIRY_PROPERTY_TYPE_OPTIONS = ["Condominium/Apartment", "Room", "Terrace House", "Office Lot", "Semi-Detached House", "Shoplot", "Bungalow"];
 export const requirementHasStoreys = (propertyType) => String(propertyType || "").trim().toLowerCase() !== "room";
+export const requirementHasOtherRelationship = (relationship) => ["other", "others"].includes(String(relationship || "").trim().toLowerCase());
+export function formatRequirementRelationship(requirements = {}) {
+  const relationship = String(requirements.relationship || "").trim();
+  const detail = String(requirements.relationshipOther || "").trim();
+  return requirementHasOtherRelationship(relationship) && detail ? `${relationship} (${detail})` : relationship;
+}
 export function requirementStoreysLabel(propertyType, short = false) {
   const levels = ["condominium/apartment", "office lot", "shoplot"].includes(String(propertyType || "").trim().toLowerCase());
   return short ? (levels ? "Levels" : "Storeys") : (levels ? "Number of Levels" : "Number of Storeys");
@@ -104,7 +110,7 @@ export const emptyRequirement = (intent = "") => ({
   intent,
   profile: { name: "", mobile: "", race: "", raceOther: "", country: "Malaysia", countryOther: "", occupation: "", companyName: "" },
   requirements: {
-    propertyType: "Terrace House", hasStoreys: true, storeys: 1, area: "", budget: "", bedrooms: 1, bathrooms: 1, relationship: intent === "rent" ? "Family" : "", propertyUsage: intent === "rent" ? "Residential" : "", commercialActivity: "", otherNeeds: "",
+    propertyType: "Terrace House", hasStoreys: true, storeys: 1, area: "", budget: "", bedrooms: 1, bathrooms: 1, relationship: intent === "rent" ? "Family" : "", relationshipOther: "", propertyUsage: intent === "rent" ? "Residential" : "", commercialActivity: "", otherNeeds: "",
     moveInDate: "", peopleStaying: intent === "rent" ? 1 : "", pet: intent === "rent" ? "No" : "", furnishing: intent === "rent" ? "Basic" : "", tenancy: intent === "rent" ? "Individual" : "", tenancyPeriod: intent === "rent" ? "1 year" : "", depositAgreement: "",
     purchaseTimeline: "", purpose: intent === "buy" ? "Own Stay" : "", loan: intent === "buy" ? "Loan Required" : "", occupants: intent === "buy" ? 1 : "",
   },
@@ -136,6 +142,7 @@ export function normalizeRequirementPayload(raw) {
       bedrooms: cleanNumber(requirements.bedrooms, { min: 0, max: 100, integer: true }),
       bathrooms: cleanNumber(requirements.bathrooms, { min: 0, max: 100, integer: true }),
       relationship: cleanText(requirements.relationship, 120),
+      relationshipOther: requirementHasOtherRelationship(requirements.relationship) ? cleanText(requirements.relationshipOther, 160) : "",
       propertyUsage: intent === "rent" ? cleanText(requirements.propertyUsage || "Residential", 20) : cleanText(requirements.propertyUsage, 20),
       commercialActivity: cleanText(requirements.commercialActivity, 160),
       otherNeeds: cleanMultiline(requirements.otherNeeds),
@@ -186,6 +193,7 @@ export function validateRequirementPayload(raw) {
     if (!parseRequirementDate(value.requirements.moveInDate)) errors["requirements.moveInDate"] = "Enter a valid date as dd/mm/yyyy.";
     required("requirements.peopleStaying", value.requirements.peopleStaying);
     required("requirements.relationship", value.requirements.relationship);
+    if (requirementHasOtherRelationship(value.requirements.relationship)) required("requirements.relationshipOther", value.requirements.relationshipOther);
     if (!new Set(["Yes", "No"]).has(value.requirements.pet)) errors["requirements.pet"] = "Choose Yes or No.";
     if (!FURNISHING.has(value.requirements.furnishing)) errors["requirements.furnishing"] = "Choose a furnishing preference.";
     if (!TENANCIES.has(value.requirements.tenancy)) errors["requirements.tenancy"] = "Choose a tenancy type.";

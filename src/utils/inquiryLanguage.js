@@ -65,6 +65,8 @@ export const INQUIRY_TRANSLATIONS = {
   "Choose rooms": ["Pilih bilangan bilik", "请选择房间数量"],
   "Number of People Staying": ["Bilangan Penghuni", "居住人数"],
   "Relationship": ["Hubungan", "关系"],
+  "Relationship details": ["Butiran hubungan", "关系详情"],
+  "Please describe the relationship": ["Sila nyatakan hubungan", "请注明关系详情"],
   "Single": ["Bujang", "单身"],
   "Couple": ["Pasangan", "情侣 / 夫妻"],
   "Family": ["Keluarga", "家庭"],

@@ -1,4 +1,4 @@
-import { formatRequirementDate, formatRoomSummary, requirementStoreysLabel, requirementHasStoreys } from "../data/requirementContract.js";
+import { formatRequirementDate, formatRoomSummary, requirementStoreysLabel, requirementHasStoreys, formatRequirementRelationship } from "../data/requirementContract.js";
 import { formatPrice } from "./listing.js";
 
 const clean = (value) => String(value ?? "").trim();
@@ -50,7 +50,7 @@ export function inquiryPostingText(submission) {
   if (clean(submission?.intent).toLowerCase() === "rent") {
     lines.push(
       detailLine("People Staying", requirements.peopleStaying),
-      detailLine("Relationship", requirements.relationship),
+      detailLine("Relationship", formatRequirementRelationship(requirements)),
       detailLine("Pet", requirements.pet),
       detailLine("Tenancy", requirements.tenancy),
       detailLine("Deposits and Fees", requirements.depositAgreement),

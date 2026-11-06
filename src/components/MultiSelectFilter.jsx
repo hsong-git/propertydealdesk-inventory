@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { selectedValues } from "../utils/multiSelect.js";
+import { selectedValues, filterMultiSelectOptions } from "../utils/multiSelect.js";
 
 export function MultiSelectFilter({ label, placeholder, options, value, onChange, counts }) {
   const selected = selectedValues(value);
@@ -8,7 +8,7 @@ export function MultiSelectFilter({ label, placeholder, options, value, onChange
   const root = useRef(null);
   const id = useId();
   const choices = [...new Set([...options, ...selected])].filter(Boolean);
-  const filtered = choices.filter((item) => item.toLowerCase().includes(search.trim().toLowerCase()));
+  const filtered = filterMultiSelectOptions(choices, search, counts);
   useEffect(() => {
     const closeOutside = (event) => { if (root.current && !root.current.contains(event.target)) root.current.open = false; };
     const closeEscape = (event) => {

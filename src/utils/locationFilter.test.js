@@ -1,8 +1,19 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { matchesSelection, normalizeMultiFilters, readFilterParams, selectedValues, writeFilterParams } from "./multiSelect.js";
+import { matchesSelection, normalizeMultiFilters, readFilterParams, selectedValues, writeFilterParams, filterMultiSelectOptions } from "./multiSelect.js";
 import { buildLocationOptions, buildLocationCounts, canonicalLocationsForListing, matchesKeywordSearch, matchesLocationFilter, normalizeLocationDictionary } from "./locationFilter.js";
 import { matchesCatalogueFilters } from "./catalogueFilter.js";
+
+test("counted dropdowns hide zero and missing counts without affecting uncounted filters", () => {
+  const options = ["Botanic", "Bukit Tinggi", "Klang", "Selected old location"];
+  const counts = new Map([["Botanic", 2], ["Bukit Tinggi", 0], ["Klang", 5]]);
+  assert.deepEqual(filterMultiSelectOptions(options, "", counts), ["Botanic", "Klang"]);
+  assert.deepEqual(filterMultiSelectOptions(options, " BOTA ", counts), ["Botanic"]);
+  assert.deepEqual(filterMultiSelectOptions(options, "tinggi", counts), []);
+  assert.deepEqual(filterMultiSelectOptions(options, "", new Map()), []);
+  assert.deepEqual(filterMultiSelectOptions(options), options);
+  assert.deepEqual(filterMultiSelectOptions(options, "tinggi"), ["Bukit Tinggi"]);
+});
 
 test("location counts use aliases, count each listing once per area and support empty feeds", () => {
   const dictionary = [{ label: "Botanic", aliases: ["botanic", "jenaris"] }, { label: "Klang", aliases: ["klang"], broad: true }];

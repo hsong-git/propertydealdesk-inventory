@@ -10,6 +10,11 @@ export function matchesSelection(value, selection) {
   return !values.length || values.includes(value);
 }
 
+export function filterMultiSelectOptions(options, search = "", counts) {
+  const term = search.trim().toLowerCase();
+  return options.filter(item => (!counts || (counts.get(item) || 0) > 0) && item.toLowerCase().includes(term));
+}
+
 export function normalizeMultiFilters(filters) {
   return { ...filters, ...Object.fromEntries([...multiSelectKeys].map((key) => [key, selectedValues(filters[key])])) };
 }

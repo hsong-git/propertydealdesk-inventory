@@ -1,7 +1,55 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { matchesSelection, normalizeMultiFilters, readFilterParams, selectedValues, writeFilterParams } from "./multiSelect.js";
-import { buildLocationOptions, canonicalLocationsForListing, matchesKeywordSearch, matchesLocationFilter, normalizeLocationDictionary } from "./locationFilter.js";
+import { buildLocationOptions, buildLocationCounts, canonicalLocationsForListing, matchesKeywordSearch, matchesLocationFilter, normalizeLocationDictionary } from "./locationFilter.js";
+import { matchesCatalogueFilters } from "./catalogueFilter.js";
+
+test("location counts use aliases, count each listing once per area and support empty feeds", () => {
+  const dictionary = [{ label: "Botanic", aliases: ["botanic", "jenaris"] }, { label: "Klang", aliases: ["klang"], broad: true }];
+  const items = [{ location: "Botanic Jenaris Klang" }, { location: "Jenaris Klang" }, { location: "Unknown Place" }];
+  const counts = buildLocationCounts(items, dictionary);
+  assert.equal(counts.get("Botanic"), 2);
+  assert.equal(counts.get("Klang"), 2);
+  assert.equal(counts.get("Unknown Place"), 1);
+  assert.equal(buildLocationCounts([], dictionary).size, 0);
+  assert.equal(buildLocationCounts(undefined).size, 0);
+});
+
+test("location facets respect every other filter, alternate prices and inventory classification", () => {
+  const items = [
+    { code: "WTL1", intent: "WTL", price: 1600, propertyType: "Terrace", furnishing: "Full", bedrooms: 3, location: "Botanic Klang", featured: true },
+    { code: "CMI2", intent: "WTS", price: 600000, alternateIntent: "WTL", alternatePrice: 1800, propertyType: "Terrace", furnishing: "Partial", bedrooms: 4, location: "Jenaris Klang", visibility: "unlisted" },
+    { code: "WTS3", intent: "WTS", price: 500000, propertyType: "Condo", furnishing: "Full", bedrooms: 2, location: "Bukit Tinggi", featured: true },
+    { code: "WTL4", intent: "WTL", price: 800, propertyType: "Room", furnishing: "Basic", bedrooms: 1, location: "Melawis Klang" },
+  ];
+  const dictionary = [{ label: "Botanic", aliases: ["botanic", "jenaris"] }, { label: "Klang", aliases: ["klang"], broad: true }];
+  const defaults = { intent: "WTL", propertyType: [], furnishing: [], location: [], keyword: "", classification: "", bedrooms: "", minPrice: "", maxPrice: "" };
+  const cases = [
+    [{}, "all", ["WTL1", "CMI2", "WTL4"]],
+    [{ intent: "WTS" }, "all", ["CMI2", "WTS3"]],
+    [{ classification: "cmi" }, "all", ["CMI2"]],
+    [{ classification: "smi" }, "all", ["WTL1", "WTL4"]],
+    [{ minPrice: "1700", maxPrice: "2000" }, "all", ["CMI2"]],
+    [{ maxPrice: "1700" }, "all", ["WTL1", "WTL4"]],
+    [{ bedrooms: "4" }, "all", ["CMI2"]],
+    [{ furnishing: ["Full"] }, "all", ["WTL1"]],
+    [{ propertyType: ["Room"] }, "all", ["WTL4"]],
+    [{ keyword: "Jenaris" }, "all", ["CMI2"]],
+    [{}, "featured", ["WTL1"]],
+    [{ keyword: "no matches" }, "all", []],
+  ];
+  for (const [overrides, mode, expected] of cases) {
+    const filters = { ...defaults, ...overrides, location: ["Bukit Tinggi"] };
+    const candidates = items.filter(item => matchesCatalogueFilters(item, filters, mode, dictionary, { ignoreLocation: true }));
+    assert.deepEqual(candidates.map(item => item.code), expected, JSON.stringify(overrides));
+    const counts = buildLocationCounts(candidates, dictionary);
+    for (const location of buildLocationOptions(items, dictionary)) {
+      const matching = items.filter(item => matchesCatalogueFilters(item, { ...filters, location: [location] }, mode, dictionary));
+      assert.equal(counts.get(location) || 0, matching.length, `${JSON.stringify(overrides)} ${location}`);
+    }
+  }
+  assert.equal(items.filter(item => matchesCatalogueFilters(item, { ...defaults, location: ["Botanic", "Klang"] }, "all", dictionary)).length, 3);
+});
 
 test("location options normalize duplicated raw Klang variants into one canonical option", () => {
   const options = buildLocationOptions([

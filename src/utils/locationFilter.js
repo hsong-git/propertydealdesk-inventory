@@ -107,6 +107,17 @@ export function matchesLocationFilter(listing, selectedLocation, dictionary = FA
   return canonicalLocationsForListing(listing, dictionary).includes(selectedLocation);
 }
 
+export function buildLocationCounts(listings, dictionary = FALLBACK_AREAS) {
+  const counts = new Map();
+  for (const listing of listings || []) {
+    // Count each listing once per area, including canonical aliases and broad areas.
+    for (const location of new Set(canonicalLocationsForListing(listing, dictionary))) {
+      counts.set(location, (counts.get(location) || 0) + 1);
+    }
+  }
+  return counts;
+}
+
 export function isBroadLocationLabel(label, dictionary = FALLBACK_AREAS) {
   const area = normalizeLocationDictionary(dictionary).find((item) => item.label === label);
   return area?.broad === true;

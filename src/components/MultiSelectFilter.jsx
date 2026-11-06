@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { selectedValues } from "../utils/multiSelect.js";
 
-export function MultiSelectFilter({ label, placeholder, options, value, onChange }) {
+export function MultiSelectFilter({ label, placeholder, options, value, onChange, counts }) {
   const selected = selectedValues(value);
   const [search, setSearch] = useState("");
   const root = useRef(null);
@@ -34,8 +34,9 @@ export function MultiSelectFilter({ label, placeholder, options, value, onChange
       <div className="multi-select-menu">
         <input type="search" aria-label={`Search ${label.toLowerCase()} options`} placeholder="Search options" value={search} onChange={(event) => setSearch(event.target.value)} />
         <div className="multi-select-actions"><span>{selected.length} selected</span><button type="button" onClick={() => onChange([])} disabled={!selected.length}>Clear</button></div>
+        {counts ? <p className="multi-select-count-note">Counts match your other active filters.</p> : null}
         <fieldset className="multi-select-options"><legend className="sr-only">{label}</legend>
-          {filtered.map((option) => <label key={option}><input type="checkbox" checked={selected.includes(option)} onChange={(event) => onChange(event.target.checked ? [...selected, option] : selected.filter((item) => item !== option))} /><span>{option}</span></label>)}
+          {filtered.map((option) => <label key={option}><input type="checkbox" checked={selected.includes(option)} onChange={(event) => onChange(event.target.checked ? [...selected, option] : selected.filter((item) => item !== option))} /><span>{option}</span>{counts ? <span className="multi-select-count">({counts.get(option) || 0})</span> : null}</label>)}
           {!filtered.length ? <p>No matching options</p> : null}
         </fieldset>
       </div>

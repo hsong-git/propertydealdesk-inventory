@@ -50,7 +50,7 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
         <div className="filter-drawer-heading"><strong>Filter properties</strong><button className="icon-button" type="button" onClick={() => setMobileOpen(false)} aria-label="Close filters"><X size={20} /></button></div>
         <div className="filter-grid">
           <MultiSelectFilter label="Property type" placeholder="All types" options={options.propertyTypes} value={filters.propertyType} onChange={(value) => update("propertyType", value)} />
-          <MultiSelectFilter label="Location" placeholder="All locations" options={options.locations} value={filters.location} onChange={(value) => update("location", value)} />
+          <MultiSelectFilter label="Location" placeholder="All locations" options={options.locations} counts={options.locationCounts} value={filters.location} onChange={(value) => update("location", value)} />
           <label>Minimum price<input type="number" min="0" step="100" value={filters.minPrice} onChange={(event) => update("minPrice", event.target.value)} placeholder="No minimum" /></label>
           <label>Maximum price<input type="number" min="0" step="100" value={filters.maxPrice} onChange={(event) => update("maxPrice", event.target.value)} placeholder="No maximum" /></label>
           <label>Bedrooms<select value={filters.bedrooms} onChange={(event) => update("bedrooms", event.target.value)}><option value="">Any bedrooms</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></label>

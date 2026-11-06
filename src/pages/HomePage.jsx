@@ -8,10 +8,11 @@ import { ProfilePanel } from "../components/ProfilePanel";
 import { PropertyCard } from "../components/PropertyCard";
 import { Seo } from "../components/Seo";
 import { useInventory } from "../hooks";
-import { compareRecentlyUpdated, formatDateTime, matchesInventoryFilter, normalizeInventoryFilter } from "../utils/listing";
+import { compareRecentlyUpdated, formatDateTime, normalizeInventoryFilter } from "../utils/listing";
 import { COMBINED_CATALOGUE, CATALOGUE_ORIGIN } from "../config/catalogueSite.js";
-import { buildLocationOptions, matchesKeywordSearch, matchesLocationFilter } from "../utils/locationFilter";
-import { matchesSelection, normalizeMultiFilters, readFilterParams, selectedValues, writeFilterParams } from "../utils/multiSelect.js";
+import { buildLocationOptions, buildLocationCounts } from "../utils/locationFilter";
+import { normalizeMultiFilters, readFilterParams, writeFilterParams } from "../utils/multiSelect.js";
+import { matchesCatalogueFilters, offerForIntent } from "../utils/catalogueFilter.js";
 import { analyticsSource, trackEvent } from "../utils/analytics.js";
 
 const defaultIntent = "WTL";
@@ -53,14 +54,6 @@ function catalogueSearchParams(filters, catalogueMode) {
   return params;
 }
 
-const offerForIntent = (listing, intent) => (
-  listing.intent === intent
-    ? { intent: listing.intent, price: listing.price }
-    : listing.alternateIntent === intent
-      ? { intent: listing.alternateIntent, price: listing.alternatePrice }
-      : null
-);
-
 function readCatalogueState() {
   if (typeof window === "undefined") return { filters: defaults, catalogueMode: "all", visible: INITIAL_VISIBLE_COUNT };
   const shared = readSharedCatalogueState();
@@ -93,22 +86,11 @@ export function HomePage() {
   const options = useMemo(() => ({
     propertyTypes: [...new Set(items.map((item) => item.propertyType))].sort(),
     locations: buildLocationOptions(items, locationDictionary),
+    locationCounts: buildLocationCounts(items.filter(item => matchesCatalogueFilters(item, filters, catalogueMode, locationDictionary, { ignoreLocation: true })), locationDictionary),
     furnishing: [...new Set(items.map((item) => item.furnishing))].sort(),
-  }), [items, locationDictionary]);
+  }), [items, locationDictionary, filters, catalogueMode]);
   const results = useMemo(() => {
-    const filtered = items.filter((item) => {
-      const selectedOffer = filters.intent ? offerForIntent(item, filters.intent) : { price: item.price };
-      return (catalogueMode !== "featured" || item.featured)
-        && matchesInventoryFilter(item, filters.classification)
-        && matchesKeywordSearch(item, filters.keyword)
-        && Boolean(selectedOffer)
-        && matchesSelection(item.propertyType, filters.propertyType)
-        && (!selectedValues(filters.location).length || selectedValues(filters.location).some((location) => matchesLocationFilter(item, location, locationDictionary)))
-        && (!filters.minPrice || selectedOffer.price >= Number(filters.minPrice))
-        && (!filters.maxPrice || selectedOffer.price <= Number(filters.maxPrice))
-        && (!filters.bedrooms || Number(item.bedrooms || 0) >= Number(filters.bedrooms))
-        && matchesSelection(item.furnishing, filters.furnishing);
-    });
+    const filtered = items.filter(item => matchesCatalogueFilters(item, filters, catalogueMode, locationDictionary));
     return [...filtered].sort((a, b) => {
       if (filters.sort === "newest") return new Date(b.createdAt) - new Date(a.createdAt);
       if (filters.sort === "price-asc") return offerForIntent(a, filters.intent).price - offerForIntent(b, filters.intent).price;

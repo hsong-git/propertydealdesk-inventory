@@ -5,9 +5,12 @@ import { COMBINED_CATALOGUE, PUBLIC_ADMIN_ORIGIN } from "../config/catalogueSite
 import { useAppVersionReload } from "../hooks/useAppVersionReload";
 import { RecentViewingPill } from "./RecentViewingPill";
 import { ScrollToTopButton } from "./ScrollToTopButton";
+import { useEffect } from "react";
+import { startAnalyticsEngagement } from "../utils/analytics";
 
 export function Layout() {
   useAppVersionReload();
+  useEffect(() => startAnalyticsEngagement(), []);
 
   return (
     <div className="site-shell">

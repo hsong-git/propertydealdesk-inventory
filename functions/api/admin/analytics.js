@@ -3,6 +3,7 @@ import { json, methodNotAllowed } from "../../_lib/http.js";
 import { analyticsPeriod } from "../../_lib/analyticsPeriod.js";
 import { cloudflareReferrerSnapshots } from "../../_data/cloudflareReferrers.js";
 import { LISTING_INTEREST_SQL } from "../../_lib/listingInterest.js";
+import { QUALITY_SESSION_METRICS, QUALITY_SOURCE_COUNTS, QUALITY_SUMMARY } from "../../_lib/trafficQualityReport.js";
 
 const PERIODS = new Map([[7, "-7 days"], [30, "-30 days"], [90, "-90 days"]]);
 
@@ -24,13 +25,14 @@ const SOURCE_SESSIONS = `WITH scoped AS (
   SELECT site_host, session_id,
     SUM(CASE WHEN event_name = 'listing_view' THEN 1 ELSE 0 END) AS listing_views,
     SUM(CASE WHEN event_name = 'whatsapp_click' THEN 1 ELSE 0 END) AS whatsapp_clicks,
-    SUM(CASE WHEN event_name = 'inquiry_submitted' THEN 1 ELSE 0 END) AS inquiries
+    SUM(CASE WHEN event_name = 'inquiry_submitted' THEN 1 ELSE 0 END) AS inquiries,
+    ${QUALITY_SESSION_METRICS}
   FROM scoped GROUP BY site_host, session_id
 )`;
 const SOURCE_COUNTS = `COUNT(*) AS sessions, SUM(m.listing_views) AS listing_views,
   SUM(m.whatsapp_clicks) AS whatsapp_clicks, SUM(m.inquiries) AS inquiries,
   SUM(CASE WHEN a.method IN ('referrer', 'app_referrer', 'server_referrer') THEN 1 ELSE 0 END) AS referrer_sessions,
-  SUM(CASE WHEN a.method = 'tag' THEN 1 ELSE 0 END) AS tagged_sessions`;
+  SUM(CASE WHEN a.method = 'tag' THEN 1 ELSE 0 END) AS tagged_sessions, ${QUALITY_SOURCE_COUNTS}`;
 const SOURCE_JOIN = `FROM attributed a JOIN metrics m ON a.site_host = m.site_host AND a.session_id = m.session_id`;
 
 export async function onRequestGet(context) {
@@ -41,7 +43,7 @@ export async function onRequestGet(context) {
   const period = analyticsPeriod(days);
   try {
     const db = context.env.REQUIREMENTS_DB;
-    const [summary, funnel, sources, postingTracking, listings, daily, campaigns, listingSources, listingInterest, postingDaily] = await Promise.all([
+    const [summary, funnel, sources, postingTracking, listings, daily, campaigns, listingSources, listingInterest, postingDaily, trafficQuality] = await Promise.all([
       db.prepare(`SELECT site_host, COUNT(*) AS events, COUNT(DISTINCT session_id) AS sessions FROM analytics_events WHERE occurred_at >= ? AND occurred_at <= ? GROUP BY site_host ORDER BY site_host`).bind(period.start, period.end).all(),
       db.prepare(`SELECT site_host, event_name, COUNT(*) AS count, COUNT(DISTINCT session_id) AS sessions FROM analytics_events WHERE occurred_at >= ? AND occurred_at <= ? GROUP BY site_host, event_name ORDER BY site_host, count DESC`).bind(period.start, period.end).all(),
       db.prepare(`${SOURCE_SESSIONS} SELECT a.site_host, a.source, ${SOURCE_COUNTS} ${SOURCE_JOIN} GROUP BY a.site_host, a.source ORDER BY sessions DESC`).bind(period.start, period.end).all(),
@@ -79,8 +81,9 @@ export async function onRequestGet(context) {
         FROM scoped e JOIN attributed a ON e.site_host = a.site_host AND e.session_id = a.session_id
         WHERE a.method = 'tag' AND a.source IN ('whatsapp', 'facebook', 'iproperty', 'mudah')
         GROUP BY e.site_host, a.source, day ORDER BY day, e.site_host, a.source`).bind(period.start, period.end).all(),
+      db.prepare(`${SOURCE_SESSIONS} ${QUALITY_SUMMARY}`).bind(period.start, period.end).all(),
     ]);
-    return json({ days, period, cloudflareSnapshots: cloudflareReferrerSnapshots, summary: summary.results || [], funnel: funnel.results || [], sources: sources.results || [], postingTracking: postingTracking.results || [], postingDaily: postingDaily.results || [], campaigns: campaigns.results || [], listings: listings.results || [], listingSources: listingSources.results || [], listingInterest: listingInterest.results || [], daily: daily.results || [] });
+    return json({ days, period, cloudflareSnapshots: cloudflareReferrerSnapshots, summary: summary.results || [], funnel: funnel.results || [], sources: sources.results || [], postingTracking: postingTracking.results || [], postingDaily: postingDaily.results || [], campaigns: campaigns.results || [], listings: listings.results || [], listingSources: listingSources.results || [], listingInterest: listingInterest.results || [], daily: daily.results || [], trafficQuality: trafficQuality.results || [] });
   } catch {
     return json({ error: "Analytics reporting is temporarily unavailable." }, 503);
   }

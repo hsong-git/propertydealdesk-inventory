@@ -16,6 +16,7 @@ const EVENT_LABELS = {
   copy_posting: "Posting copies", photo_share: "Photo shares", inquiry_started: "Inquiry starts",
   inquiry_step_completed: "Inquiry steps", inquiry_submitted: "Inquiry submissions", inquiry_whatsapp_click: "Inquiry WhatsApp clicks",
   media_open: "Media opens", photo_view: "Full photo views", catalogue_search_shared: "Shared searches", catalogue_more_loaded: "More results loaded",
+  session_engaged: "Engaged visits",
 };
 
 const hostLabel = (host) => host === "property.myeviv.com" ? "Property" : host === "scmi.myeviv.com" ? "SCMI" : host;
@@ -83,7 +84,7 @@ export function AnalyticsAdminPage() {
   const filtered = useMemo(() => {
     const data = state.data || {};
     const byHost = (rows) => (rows || []).filter((row) => row.site_host === host);
-    return { summary: byHost(data.summary)[0] || {}, funnel: byHost(data.funnel), sources: byHost(data.sources), postingTracking: byHost(data.postingTracking), postingDaily: byHost(data.postingDaily), campaigns: byHost(data.campaigns), listings: byHost(data.listings), listingSources: byHost(data.listingSources), listingInterest: byHost(data.listingInterest), daily: byHost(data.daily) };
+    return { summary: byHost(data.summary)[0] || {}, quality: byHost(data.trafficQuality)[0] || {}, funnel: byHost(data.funnel), sources: byHost(data.sources), postingTracking: byHost(data.postingTracking), postingDaily: byHost(data.postingDaily), campaigns: byHost(data.campaigns), listings: byHost(data.listings), listingSources: byHost(data.listingSources), listingInterest: byHost(data.listingInterest), daily: byHost(data.daily) };
   }, [state.data, host]);
   const trend = useMemo(() => analyticsTrend(filtered.daily, state.data?.period), [filtered.daily, state.data?.period]);
   const postingTrends = useMemo(() => Object.fromEntries(["whatsapp", "facebook", "iproperty", "mudah"].map(source => [source, analyticsTrend(filtered.postingDaily.filter(row => row.source === source), state.data?.period)])), [filtered.postingDaily, state.data?.period]);
@@ -102,7 +103,7 @@ export function AnalyticsAdminPage() {
   const inquiryRate = sessionCount ? ((eventCount("inquiry_submitted") / sessionCount) * 100).toFixed(1) : "0.0";
   const trackedPostingRows = ["whatsapp", "facebook", "iproperty", "mudah"].map((source) => {
     const row = filtered.postingTracking.find((item) => item.source === source) || {};
-    return { source, sessions: Number(row.sessions || 0), listingViews: Number(row.listing_views || 0), whatsappClicks: Number(row.whatsapp_clicks || 0), inquiries: Number(row.inquiries || 0) };
+    return { source, sessions: Number(row.sessions || 0), listingViews: Number(row.listing_views || 0), whatsappClicks: Number(row.whatsapp_clicks || 0), inquiries: Number(row.inquiries || 0), engaged: Number(row.engaged_sessions || 0), flagged: Number(row.flagged_sessions || 0), assessed: Number(row.sessions || 0) - Number(row.unassessed_sessions ?? row.sessions ?? 0) };
   });
   return <main className="page-width admin-analytics-page">
     <Seo title="Traffic analytics | HS Ong Property Inventory" />
@@ -110,10 +111,22 @@ export function AnalyticsAdminPage() {
     <section className="analytics-controls"><div className="catalogue-mode-toggle">{["property.myeviv.com", "scmi.myeviv.com"].map((item) => <button key={item} className={host === item ? "active" : ""} type="button" onClick={() => setHost(item)}>{hostLabel(item)}</button>)}</div><label>Period<select value={days} onChange={(event) => setDays(Number(event.target.value))}><option value="7">7 days</option><option value="30">30 days</option><option value="90">90 days</option></select></label><button className="button secondary" type="button" onClick={load}><RefreshCw size={16} /> Refresh</button></section>
     {state.error ? <p className="requirement-alert error">{state.error}</p> : null}
     <section className="analytics-kpis" aria-label={`${hostLabel(host)} performance`}><article><span>Sessions</span><strong>{sessionCount}</strong></article><article><span>Listing views</span><strong>{eventCount("listing_view")}</strong></article><article><span>WhatsApp clicks</span><strong>{eventCount("whatsapp_click")}</strong></article><article><span>Inquiries</span><strong>{eventCount("inquiry_submitted")}</strong></article><article><span>Inquiry/session</span><strong>{inquiryRate}%</strong></article></section>
+    <section className="analytics-card analytics-traffic-quality" aria-label="Traffic quality">
+      <h2>Traffic quality</h2>
+      <dl className="analytics-quality-metrics">
+        <div><dt>Engaged visits</dt><dd>{filtered.quality.assessed_sessions ? Number(filtered.quality.engaged_sessions || 0) : "—"}</dd></div>
+        <div><dt>Bot / automation flags</dt><dd>{filtered.quality.assessed_sessions ? Number(filtered.quality.flagged_sessions || 0) : "—"}</dd></div>
+        <div><dt>No engagement yet</dt><dd>{filtered.quality.assessed_sessions ? Number(filtered.quality.passive_sessions || 0) : "—"}</dd></div>
+        <div><dt>Earlier, not assessed</dt><dd>{Number(filtered.quality.unassessed_sessions ?? sessionCount)}</dd></div>
+      </dl>
+      <p className="analytics-table-note">Engaged = 10 seconds of active viewing plus a click, tap, scroll or key press. Flagged visits are excluded from engagement, not from the original totals.</p>
+      <details><summary>About these checks</summary><p className="analytics-table-note">Checks apply from this update onward. Earlier visits cannot be verified retrospectively. Bot flags use known crawler signatures, browser automation signals and Cloudflare signals when available. Unflagged or engaged does not prove a real person. Link previews remain allowed.</p></details>
+    </section>
     <section className="analytics-card analytics-tracked-posting" aria-label="Tracked posting links">
       <h2><Link2 size={19} /> Tracked posting links</h2>
       <p className="analytics-table-note">Activity from links labelled for WhatsApp, Facebook, iProperty and Mudah. Forwarded links keep their original label.</p>
-      <div className="analytics-posting-table"><table><thead><tr><th>Posting source</th><th>Sessions</th><th>Listing views</th><th>WhatsApp clicks</th><th>Inquiries</th></tr></thead><tbody>{trackedPostingRows.map((row) => <tr key={row.source}><td><strong>{trafficSourceLabel(row.source)}</strong></td><td>{row.sessions}</td><td>{row.listingViews}</td><td>{row.whatsappClicks}</td><td>{row.inquiries}</td></tr>)}</tbody></table></div>
+      <div className="analytics-posting-table"><table><thead><tr><th>Posting source</th><th>Visits</th><th><abbr title="Active viewing and interaction; excludes flagged sessions">Engaged</abbr></th><th><abbr title="Bot or automation signals; not a verified identity">Flagged</abbr></th><th>Listing views</th><th>WhatsApp clicks</th><th>Inquiries</th></tr></thead><tbody>{trackedPostingRows.map((row) => <tr key={row.source}><td><strong>{trafficSourceLabel(row.source)}</strong></td><td>{row.sessions}</td><td title={`Checks available for ${row.assessed} of ${row.sessions} visits`}>{row.assessed ? row.engaged : "—"}</td><td>{row.assessed ? row.flagged : "—"}</td><td>{row.listingViews}</td><td>{row.whatsappClicks}</td><td>{row.inquiries}</td></tr>)}</tbody></table></div>
+      <p className="analytics-table-note">Visits are browser-tab sessions, not unique people. — means no quality checks were available for those visits.</p>
       <p className="analytics-table-note">Daily progress · Malaysia time. Hover, tap or choose a date. Today is partial.</p>
       <div className="analytics-trend-grid" aria-busy={state.loading}>{trackedPostingRows.map(row => <PostingSourceChart key={`${host}-${row.source}`} title={trafficSourceLabel(row.source)} points={postingTrends[row.source]} />)}</div>
       <p className="analytics-table-note">Sessions active on several days count on each day, but only once in the period total.</p>

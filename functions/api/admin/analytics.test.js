@@ -4,6 +4,44 @@ import { DatabaseSync } from "node:sqlite";
 import { onRequestGet } from "./analytics.js";
 import { detectAttribution } from "../../../src/utils/trafficAttribution.js";
 
+test("quality separates engagement, flagged automation and historical visits without rewriting totals", async () => {
+  const sqlite = new DatabaseSync(":memory:");
+  try {
+    sqlite.exec("CREATE TABLE analytics_events (id INTEGER PRIMARY KEY,site_host TEXT,event_name TEXT,occurred_at TEXT,session_id TEXT,source TEXT,listing_code TEXT,properties_json TEXT DEFAULT '{}')");
+    const insert = sqlite.prepare("INSERT INTO analytics_events(site_host,event_name,occurred_at,session_id,source,listing_code,properties_json) VALUES (?,?,?,?,'facebook','WTL0070',?)");
+    const now=new Date(Date.now()-1000).toISOString();
+    const add=(session,event,props={},host="property.myeviv.com",at=now)=>insert.run(host,event,at,session,JSON.stringify({traffic_method:"tag",...props}));
+    add("old","listing_view",{quality_bot:1,quality_engaged:1}); // No assessment version: do not reinterpret history.
+    add("passive","listing_view",{quality_version:1,quality_bot:0});
+    add("engaged","listing_view",{quality_version:1,quality_bot:0});
+    add("engaged","session_engaged",{quality_version:1,quality_engaged:1});
+    add("engaged","session_engaged",{quality_version:1,quality_engaged:1});
+    add("bot","listing_view",{quality_version:1,quality_bot:1});
+    add("bot","session_engaged",{quality_version:1,quality_engaged:1});
+    add("bot","whatsapp_click",{quality_version:1,quality_bot:1});
+    add("natural","listing_view",{quality_version:1,quality_bot:0,traffic_method:"referrer"});
+    add("natural","session_engaged",{quality_version:1,quality_engaged:1,traffic_method:"referrer"});
+    add("bot","listing_view",{quality_version:1,quality_bot:0},"scmi.myeviv.com");
+    add("bot","session_engaged",{quality_version:1,quality_engaged:1},"scmi.myeviv.com");
+    add("expired","listing_view",{quality_version:1,quality_bot:1},"property.myeviv.com","2000-01-01T00:00:00Z");
+    const db={prepare(sql){return{bind(...params){return{async all(){return{results:sqlite.prepare(sql).all(...params)};}};}};}};
+    for(const days of [7,30,90]) {
+      const response=await onRequestGet({request:new Request(`http://localhost/api/admin/analytics?days=${days}`),env:{REQUIREMENTS_DB:db}});
+      assert.equal(response.status,200);
+      const data=await response.json();
+      const q=data.trafficQuality.find(row=>row.site_host==="property.myeviv.com");
+      assert.deepEqual(q,{site_host:"property.myeviv.com",visits:5,assessed_sessions:4,engaged_sessions:2,flagged_sessions:1,unassessed_sessions:1,passive_sessions:1});
+      assert.equal(q.engaged_sessions+q.flagged_sessions+q.unassessed_sessions+q.passive_sessions,q.visits);
+      assert.equal(data.summary.find(row=>row.site_host==="property.myeviv.com").sessions,5);
+      const posting=data.postingTracking.find(row=>row.site_host==="property.myeviv.com");
+      assert.equal(posting.sessions,4); assert.equal(posting.engaged_sessions,1); assert.equal(posting.flagged_sessions,1); assert.equal(posting.unassessed_sessions,1);
+      assert.equal(posting.whatsapp_clicks,1,"Raw historic metrics are not silently filtered");
+      const scmi=data.trafficQuality.find(row=>row.site_host==="scmi.myeviv.com");
+      assert.equal(scmi.visits,1); assert.equal(scmi.engaged_sessions,1); assert.equal(scmi.flagged_sessions,0);
+    }
+  } finally {sqlite.close();}
+});
+
 test("posting report includes c1-c4 tagged journeys on each site but excludes natural referrals and old events", async () => {
   const sqlite = new DatabaseSync(":memory:");
   try {

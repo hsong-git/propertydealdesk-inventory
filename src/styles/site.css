@@ -570,6 +570,12 @@ main { flex: 1; }
 .analytics-posting-chart { padding-top: 8px; }
 .analytics-posting-table { max-width: 100%; overflow-x: auto; }
 .analytics-posting-table table { min-width: 500px; }
+.analytics-quality-metrics { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; margin: 16px 0; }
+.analytics-quality-metrics > div { padding: 12px; border-radius: 10px; background: var(--color-surface); }
+.analytics-quality-metrics dt { font-size: 12px; color: var(--color-text-muted); }
+.analytics-quality-metrics dd { margin: 7px 0 0; font-size: 26px; font-weight: 800; color: var(--color-primary); }
+.analytics-traffic-quality summary { color: var(--color-primary); font-size: 12px; cursor: pointer; }
+@media (max-width: 720px) { .analytics-quality-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 .analytics-posting-date { display: flex; align-items: center; gap: 8px; font-size: 12px; }
 .analytics-posting-date select { width: auto; padding: 7px; border: 1px solid var(--color-border); border-radius: 7px; background: white; }
 .analytics-posting-legend { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px 16px; margin: 12px 0; font-size: 12px; }

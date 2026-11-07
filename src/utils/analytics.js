@@ -1,8 +1,10 @@
 import { sessionAttribution } from "./trafficAttribution.js";
+import { startEngagementTracking } from "./engagement.js";
 
 const ENDPOINT = "/api/analytics/event";
 const SESSION_KEY = "pdd-analytics-session";
 let attribution;
+let memorySessionId;
 
 function randomId() {
   return globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -16,7 +18,7 @@ function safeSessionId() {
     window.sessionStorage.setItem(SESSION_KEY, id);
     return id;
   } catch {
-    return randomId();
+    return memorySessionId ||= randomId();
   }
 }
 
@@ -48,6 +50,7 @@ export function trackEvent(eventName, details = {}) {
     listingCode: details.listingCode || "",
     intent: details.intent || "",
     properties: details.properties || {},
+    clientContext: { automation: navigator.webdriver === true },
   };
   const body = JSON.stringify(payload);
   try {
@@ -57,4 +60,9 @@ export function trackEvent(eventName, details = {}) {
     }
     fetch(ENDPOINT, { method: "POST", headers: { "content-type": "application/json" }, body, keepalive: true }).catch(() => {});
   } catch { /* Analytics must never interrupt the visitor experience. */ }
+}
+
+export function startAnalyticsEngagement() {
+  if (typeof window === "undefined") return () => {};
+  return startEngagementTracking({ sessionId: safeSessionId(), send: properties => trackEvent("session_engaged", { properties }) });
 }

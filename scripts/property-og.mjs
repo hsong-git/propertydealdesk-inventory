@@ -192,6 +192,7 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
 
     const shortRouteDirectory = path.join(distRoot, "i", listing.code);
     fs.mkdirSync(shortRouteDirectory, { recursive: true });
+    const previewObjectUrl = listingPreviewObjectUrl(listing);
     fs.writeFileSync(
       path.join(shortRouteDirectory, "index.html"),
       renderPropertyRouteHtml(indexHtml, listing, publicRoot, {
@@ -200,9 +201,11 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
         // display-only prefix, so publishing it in og:url creates a URL that
         // the Pages shortcut function cannot resolve.
         // Version every social-preview object so Facebook does not retain a
-        // failed or outdated scrape after a new catalogue publication. The
-        // canonical property URL and user-facing posting link remain stable.
-        ogUrlOverride: listingPreviewObjectUrl(listing),
+        // failed or outdated scrape after a new catalogue publication. Keep
+        // canonical and og:url identical: crawlers may otherwise merge the
+        // short-link preview with the long property route after publication.
+        canonicalOverride: previewObjectUrl,
+        ogUrlOverride: previewObjectUrl,
       }),
     );
   }

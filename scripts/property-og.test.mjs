@@ -114,9 +114,11 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
       assert.match(html, /noindex, nofollow/);
     }
     const shortcutHtml = fs.readFileSync(path.join(distRoot, "i", hidden.code, "index.html"), "utf8");
+    assert.match(shortcutHtml, /<link rel="canonical" href="https:\/\/scmi\.myeviv\.com\/i\/WTL0099\?v=2026\.07\.29\.1&amp;preview=7" \/>/);
     assert.match(shortcutHtml, /<meta property="og:url" content="https:\/\/scmi\.myeviv\.com\/i\/WTL0099\?v=2026\.07\.29\.1&amp;preview=7" \/>/);
     assert.doesNotMatch(shortcutHtml, /property\.myeviv\.com\/i\/CMI-WTL0099/);
     const visibleShortcutHtml = fs.readFileSync(path.join(distRoot, "i", visible.code, "index.html"), "utf8");
+    assert.match(visibleShortcutHtml, /<link rel="canonical" href="https:\/\/property\.myeviv\.com\/i\/WTS1004\?v=2026\.07\.29\.1&amp;preview=7" \/>/);
     assert.match(visibleShortcutHtml, /<meta property="og:url" content="https:\/\/property\.myeviv\.com\/i\/WTS1004\?v=2026\.07\.29\.1&amp;preview=7" \/>/);
     const manifest = JSON.parse(fs.readFileSync(path.join(distRoot, "data", "seo-routes.json"), "utf8"));
     assert.deepEqual(manifest.properties, [visible.slug]);
@@ -140,6 +142,7 @@ test("renders crawler-visible property OG tags from public listing data", () => 
     const { items } = normalizeInventoryFeed(feed);
     const html = renderPropertyRouteHtml(shell, items[0], directory);
     const shortHtml = renderPropertyRouteHtml(shell, items[0], directory, {
+      canonicalOverride: "https://property.myeviv.com/i/WTS1004",
       ogUrlOverride: "https://property.myeviv.com/i/WTS1004",
     });
     assert.match(html, /<title>WTS1004 Family Home in Bukit Tinggi \| HS Ong Property Inventory<\/title>/);
@@ -152,7 +155,7 @@ test("renders crawler-visible property OG tags from public listing data", () => 
     assert.match(html, /<meta property="og:image:secure_url" content="https:\/\/property\.myeviv\.com\/inventory\/WTS1004\/cover\.webp" \/>/);
     assert.match(html, /<meta property="og:image:alt" content="WTS1004 Family Home in Bukit Tinggi property photo" \/>/);
     assert.doesNotMatch(html, /database_id|raw_json|internal_note|60163132865/);
-    assert.match(shortHtml, /<link rel="canonical" href="https:\/\/property\.myeviv\.com\/property\/wts1004-family-home-bukit-tinggi" \/>/);
+    assert.match(shortHtml, /<link rel="canonical" href="https:\/\/property\.myeviv\.com\/i\/WTS1004" \/>/);
     assert.match(shortHtml, /<meta property="og:url" content="https:\/\/property\.myeviv\.com\/i\/WTS1004" \/>/);
   } finally {
     fs.rmSync(directory, { recursive: true, force: true });

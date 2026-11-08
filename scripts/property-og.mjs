@@ -10,7 +10,7 @@ import { propertyPhotoWatermark } from "../src/config/watermark.js";
 import { renderCatalogueContent } from "./catalogue-html.mjs";
 
 const OG_DESCRIPTION_LIMIT = 210;
-const OG_IMAGE_RENDER_VERSION = "7";
+const OG_IMAGE_RENDER_VERSION = "8";
 const OG_ADPAGE_STRETCHED_HEIGHT = 690;
 const CONTACT_LINE_PATTERN = /^(contact|whatsapp|phone|tel|mobile|email)\b/i;
 const PHONE_LIKE_PATTERN = /(?:\+?6?01[\d\s-]{7,})/i;

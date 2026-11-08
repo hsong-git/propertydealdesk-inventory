@@ -114,12 +114,12 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
       assert.match(html, /noindex, nofollow/);
     }
     const shortcutHtml = fs.readFileSync(path.join(distRoot, "i", hidden.code, "index.html"), "utf8");
-    assert.match(shortcutHtml, /<link rel="canonical" href="https:\/\/scmi\.myeviv\.com\/i\/WTL0099\?v=2026\.07\.29\.1&amp;preview=7" \/>/);
-    assert.match(shortcutHtml, /<meta property="og:url" content="https:\/\/scmi\.myeviv\.com\/i\/WTL0099\?v=2026\.07\.29\.1&amp;preview=7" \/>/);
+    assert.match(shortcutHtml, /<link rel="canonical" href="https:\/\/scmi\.myeviv\.com\/i\/WTL0099\?v=2026\.07\.29\.1&amp;preview=8" \/>/);
+    assert.match(shortcutHtml, /<meta property="og:url" content="https:\/\/scmi\.myeviv\.com\/i\/WTL0099\?v=2026\.07\.29\.1&amp;preview=8" \/>/);
     assert.doesNotMatch(shortcutHtml, /property\.myeviv\.com\/i\/CMI-WTL0099/);
     const visibleShortcutHtml = fs.readFileSync(path.join(distRoot, "i", visible.code, "index.html"), "utf8");
-    assert.match(visibleShortcutHtml, /<link rel="canonical" href="https:\/\/property\.myeviv\.com\/i\/WTS1004\?v=2026\.07\.29\.1&amp;preview=7" \/>/);
-    assert.match(visibleShortcutHtml, /<meta property="og:url" content="https:\/\/property\.myeviv\.com\/i\/WTS1004\?v=2026\.07\.29\.1&amp;preview=7" \/>/);
+    assert.match(visibleShortcutHtml, /<link rel="canonical" href="https:\/\/property\.myeviv\.com\/i\/WTS1004\?v=2026\.07\.29\.1&amp;preview=8" \/>/);
+    assert.match(visibleShortcutHtml, /<meta property="og:url" content="https:\/\/property\.myeviv\.com\/i\/WTS1004\?v=2026\.07\.29\.1&amp;preview=8" \/>/);
     const manifest = JSON.parse(fs.readFileSync(path.join(distRoot, "data", "seo-routes.json"), "utf8"));
     assert.deepEqual(manifest.properties, [visible.slug]);
     assert.deepEqual(manifest.unlistedProperties, [hidden.slug]);
@@ -208,7 +208,7 @@ test("preserves the complete AdPage inside Facebook's 1200 by 630 preview", asyn
     const html = fs.readFileSync(path.join(distRoot, "i", "WTS1004", "index.html"), "utf8");
     const match = html.match(/<meta property="og:image" content="https:\/\/property\.myeviv\.com(\/og\/properties\/[^"]+)" \/>/);
     assert.ok(match);
-    assert.match(match[1], /-v7\.jpg$/);
+    assert.match(match[1], /-v8\.jpg$/);
     const socialImagePath = path.join(distRoot, match[1].replace(/^\//, ""));
     const metadata = await sharp(socialImagePath).metadata();
     assert.equal(metadata.width, 1200);
@@ -231,7 +231,7 @@ test("uses stable short URL format for share actions", () => {
   assert.equal(listingShortUrl(items[0]), "https://property.myeviv.com/i/WTS1004");
   assert.equal(
     listingShortUrl({ ...items[0], adPage: "/inventory/WTS1004/AdPage/poster.jpg" }),
-    "https://property.myeviv.com/i/WTS1004?v=2026.07.29.1&preview=7",
+    "https://property.myeviv.com/i/WTS1004?v=2026.07.29.1&preview=8",
   );
   assert.match(propertyOgDescription(items[0]), /Family Home/);
 });
@@ -243,7 +243,7 @@ test("versions CMI short URLs so social crawlers fetch a fresh preview", () => {
   }, { includeCmi: true });
   assert.equal(
     listingShortUrl(allItems[0]),
-    "https://scmi.myeviv.com/i/WTS1004?v=2026.07.29.1&preview=7",
+    "https://scmi.myeviv.com/i/WTS1004?v=2026.07.29.1&preview=8",
   );
 });
 

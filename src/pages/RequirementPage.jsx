@@ -13,7 +13,7 @@ import {
 import { useInventory } from "../hooks";
 import { buildLocationOptions } from "../utils/locationFilter";
 import { formatPrice } from "../utils/listing";
-import { SITE_ORIGIN } from "../utils/seo";
+import { inquiryShareSeo, SITE_ORIGIN } from "../utils/seo";
 import { matchRequirements } from "../utils/requirementMatching";
 import { buildWhatsAppUrl, isMobileOrTabletDevice } from "../utils/whatsapp";
 import { trackEvent } from "../utils/analytics";
@@ -456,7 +456,7 @@ function RequirementWorkflow() {
   }
 
   return (
-    <main className="requirement-page" lang={INQUIRY_LANGUAGES.find(item => item.value === language).locale}><Seo title="Find a Property for Me | HS Ong" canonical={`${SITE_ORIGIN}/inquiries`} description="Tell HS Ong your budget, preferred location and requirements to find a property to rent or buy in Klang Valley." />
+    <main className="requirement-page" lang={INQUIRY_LANGUAGES.find(item => item.value === language).locale}><Seo {...inquiryShareSeo} />
       <div className="page-width requirement-shell">
         <InquiryLanguagePicker />
         <header className="requirement-intro"><span className="eyebrow"><Search size={14} />{" "}<InquiryText text={"Property requirement"} /></span><h1><InquiryText text={"Find a Property for Me"} /></h1><p><InquiryText text={"Let's find a place that feels right. A few quick choices, then we'll do the searching for you."} /></p></header>

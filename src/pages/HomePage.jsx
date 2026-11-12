@@ -7,6 +7,7 @@ import { ContactActions } from "../components/ContactActions";
 import { ProfilePanel } from "../components/ProfilePanel";
 import { PropertyCard } from "../components/PropertyCard";
 import { Seo } from "../components/Seo";
+import { homeShareSeo } from "../utils/seo.js";
 import { useInventory } from "../hooks";
 import { compareRecentlyUpdated, formatDateTime, normalizeInventoryFilter } from "../utils/listing";
 import { COMBINED_CATALOGUE, CATALOGUE_ORIGIN } from "../config/catalogueSite.js";
@@ -202,7 +203,7 @@ export function HomePage() {
 
   return (
     <main>
-      <Seo />
+      <Seo {...homeShareSeo} />
       <div className="page-width home-stack">
         <ProfilePanel />
         {meta?.isMockData ? (

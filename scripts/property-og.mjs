@@ -4,7 +4,8 @@ import sharp from "sharp";
 import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { COMBINED_CATALOGUE } from "../src/config/catalogueSite.js";
 import { formatPrice, listingPreviewObjectUrl } from "../src/utils/listing.js";
-import { absoluteUrl, defaultSeo, propertyBreadcrumbs, propertyJsonLd, propertySeoDescription, SITE_ORIGIN } from "../src/utils/seo.js";
+import { absoluteUrl, defaultSeo, homeShareSeo, inquiryShareSeo, propertyBreadcrumbs, propertyJsonLd, propertySeoDescription, SITE_ORIGIN } from "../src/utils/seo.js";
+import { agentProfile } from "../src/config/agentProfile.js";
 import { inspectPublicImage } from "./image-policy.mjs";
 import { propertyPhotoWatermark } from "../src/config/watermark.js";
 import { renderCatalogueContent } from "./catalogue-html.mjs";
@@ -90,6 +91,42 @@ function replaceTag(html, selectorPattern, replacement) {
     : html.replace("</head>", `    ${replacement}\n  </head>`);
 }
 
+function renderPublicShareHtml(html, seo) {
+  const description = seo.ogDescription ?? seo.description;
+  const tags = [
+    ["property", "og:url", seo.canonical],
+    ["property", "og:title", seo.ogTitle],
+    ["property", "og:description", description],
+    ["property", "og:image", seo.image],
+    ["property", "og:image:secure_url", seo.image],
+    ["property", "og:image:width", seo.imageWidth],
+    ["property", "og:image:height", seo.imageHeight],
+    ["property", "og:image:type", seo.imageType],
+    ["property", "og:image:alt", seo.imageAlt],
+    ["name", "twitter:title", seo.ogTitle],
+    ["name", "twitter:description", description],
+    ["name", "twitter:image", seo.image],
+    ["name", "twitter:image:alt", seo.imageAlt],
+  ];
+  for (const [attribute, key, value] of tags) {
+    html = replaceTag(html, new RegExp(`<meta ${attribute}="${key}"[^>]*>`, "i"), `<meta ${attribute}="${key}" content="${htmlEscape(value)}" />`);
+  }
+  return html;
+}
+
+async function createNameCardOgImage(publicRoot, distRoot) {
+  const source = path.join(publicRoot, agentProfile.nameCard.slice(1));
+  const output = path.join(distRoot, new URL(homeShareSeo.image).pathname.slice(1));
+  fs.mkdirSync(path.dirname(output), { recursive: true });
+  // The source has two stacked faces. Use the full personal face, without
+  // the surrounding mockup or padding, as approved for homepage sharing.
+  await sharp(fs.readFileSync(source))
+    .extract({ left: 62, top: 734, width: 980, height: 589 })
+    .resize({ width: Number(homeShareSeo.imageWidth) })
+    .jpeg({ quality: 93, chromaSubsampling: "4:4:4", mozjpeg: true })
+    .toFile(output);
+}
+
 export function propertyOgMeta(listing, publicRoot) {
   const title = `${listing.displayCode || listing.code} ${listing.title} | HS Ong Property Inventory`;
   const canonical = `${SITE_ORIGIN}/property/${listing.slug}`;
@@ -173,6 +210,7 @@ async function createPropertyOgImage(listing, publicRoot, distRoot, inventoryVer
 export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distRoot }) {
   const inventory = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "inventory.json"), "utf8"));
   const { items, allItems, meta } = normalizeInventoryFeed(inventory);
+  await createNameCardOgImage(publicRoot, distRoot);
   const indexHtml = fs.readFileSync(path.join(distRoot, "index.html"), "utf8").replace(/<!--seo-content-start-->[\s\S]*?<!--seo-content-end-->/g, "").replaceAll("https://property.myeviv.com", SITE_ORIGIN);
 
   for (const listing of allItems) {
@@ -217,7 +255,7 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
   const cards = (listings) => listings.map((listing) => `<article class="property-card"><a class="property-photo" href="/property/${htmlEscape(listing.slug)}">${listing.photos[0] ? staticPhoto(listing.photos[0], listing.title, true) : ""}</a><div class="property-content"><h2><a href="/property/${htmlEscape(listing.slug)}">${htmlEscape(listing.title)}</a></h2><p>${htmlEscape(listing.location)}</p><strong>${htmlEscape(formatPrice(listing.price, listing.intent))}</strong><p>${htmlEscape(listing.propertyType)} · ${htmlEscape(listing.furnishing)}</p></div></article>`).join("");
   const pages = Array.from({ length: pageCount }, (_, index) => `<a href="/catalogue/page/${index + 1}/">Page ${index + 1}</a>`).join(" · ");
   const catalogueContent = (listings, heading) => `<main class="page-width home-stack"><header><a href="/">Properties</a> · <a href="/inquiries">Find a Property</a><h1>${heading}</h1><p>Properties for sale and rent in Klang Valley, listed by HS Ong, Real Estate Negotiator at The Roof Realty Sdn Bhd.</p></header><div class="property-grid">${cards(listings)}</div><nav aria-label="Catalogue pages">${pages}</nav></main>`;
-  fs.writeFileSync(path.join(distRoot, "index.html"), indexHtml.replace('<div id="root"></div>', `<div id="root"><!--seo-content-start-->${catalogueContent(items.filter((item) => item.intent === "WTL" || item.alternateIntent === "WTL").slice(0, 12), "HS Ong Property Inventory — Klang Valley")}<!--seo-content-end--></div>`));
+  fs.writeFileSync(path.join(distRoot, "index.html"), renderPublicShareHtml(indexHtml, homeShareSeo).replace('<div id="root"></div>', `<div id="root"><!--seo-content-start-->${catalogueContent(items.filter((item) => item.intent === "WTL" || item.alternateIntent === "WTL").slice(0, 12), "HS Ong Property Inventory — Klang Valley")}<!--seo-content-end--></div>`));
   for (let page = 1; page <= pageCount; page++) {
     const canonical = `${SITE_ORIGIN}/catalogue/page/${page}/`;
     let html = indexHtml.replace(/<script[^>]*type="module"[^>]*>[\s\S]*?<\/script>/g, "");
@@ -235,7 +273,7 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
   // a single canonical representation and cannot enter that redirect loop.
   const legacyInquiryDirectory = path.join(distRoot, "inquiries");
   fs.rmSync(legacyInquiryDirectory, { recursive: true, force: true });
-  fs.writeFileSync(path.join(distRoot, "inquiries.html"), indexHtml
+  fs.writeFileSync(path.join(distRoot, "inquiries.html"), renderPublicShareHtml(indexHtml, inquiryShareSeo)
     .replace(/<title>[\s\S]*?<\/title>/, "<title>Find a Property for Me | HS Ong</title>")
     .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${SITE_ORIGIN}/inquiries">`)
     .replace(/<meta name="description"[^>]*>/, '<meta name="description" content="Tell HS Ong your budget, preferred location and requirements to find a property to rent or buy in Klang Valley.">')

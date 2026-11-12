@@ -9,6 +9,12 @@ import { listingShortUrl } from "../src/utils/listing.js";
 import { propertyOgDescription, renderPropertyRouteHtml, summarizePostingCopy, prerenderPropertyOgRoutes } from "./property-og.mjs";
 import { renderCatalogueContent } from "./catalogue-html.mjs";
 
+function copyNameCard(publicRoot) {
+  const relative = "profile/hs-ong-name-card.webp";
+  fs.mkdirSync(path.join(publicRoot, "profile"), { recursive: true });
+  fs.copyFileSync(path.join("public", relative), path.join(publicRoot, relative));
+}
+
 const chunk = (type, data) => {
   const header = Buffer.alloc(8);
   header.write(type, 0, "ascii");
@@ -96,10 +102,25 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
     const visible = { ...feed.listings[0], photos: [], cover_photo: null };
     fs.writeFileSync(path.join(publicRoot, "data", "inventory.json"), JSON.stringify({ ...feed, listings: [visible, hidden] }));
     fs.writeFileSync(path.join(distRoot, "index.html"), shell);
+    copyNameCard(publicRoot);
     await prerenderPropertyOgRoutes({ projectRoot: root, publicRoot, distRoot });
     assert.equal(fs.existsSync(path.join(distRoot, "inquiries.html")), true);
     assert.equal(fs.existsSync(path.join(distRoot, "inquiries", "index.html")), false);
     assert.match(fs.readFileSync(path.join(distRoot, "inquiries.html"), "utf8"), /Find a Property for Me/);
+    const nameCardUrl = "https://property.myeviv.com/og/hs-ong-name-card-v1.jpg";
+    for (const [file, route, title] of [
+      ["index.html", "/", "HS Ong Property Inventory"],
+      ["inquiries.html", "/inquiries", "Find a Property for Me | HS Ong"],
+    ]) {
+      const html = fs.readFileSync(path.join(distRoot, file), "utf8");
+      assert.ok(html.includes(`<meta property="og:url" content="https://property.myeviv.com${route}"`));
+      assert.ok(html.includes(`<meta property="og:title" content="${title}"`));
+      assert.ok(html.includes(`<meta property="og:image" content="${nameCardUrl}"`));
+      assert.ok(html.includes(`<meta name="twitter:image" content="${nameCardUrl}"`));
+      assert.ok(html.includes('<meta property="og:image:height" content="721"'));
+    }
+    const image = await sharp(fs.readFileSync(path.join(distRoot, "og", "hs-ong-name-card-v1.jpg"))).metadata();
+    assert.deepEqual([image.width, image.height, image.format], [1200, 721, "jpeg"]);
     assert.doesNotMatch(fs.readFileSync(path.join(distRoot, "index.html"), "utf8"), /CMI Direct Link Test/);
     assert.doesNotMatch(fs.readFileSync(path.join(distRoot, "catalogue", "page", "1", "index.html"), "utf8"), /CMI Direct Link Test/);
     const propertyHtmlPath = path.join(distRoot, "property", `${hidden.slug}.html`);
@@ -107,6 +128,7 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
     assert.equal(fs.existsSync(path.join(distRoot, "property", hidden.slug, "index.html")), false);
     for (const route of [propertyHtmlPath, path.join(distRoot, "i", hidden.code, "index.html")]) {
       const html = fs.readFileSync(route, "utf8");
+      assert.ok(!html.includes(nameCardUrl), "listing previews keep their existing image");
       assert.match(html, /CMI Direct Link Test/);
       assert.match(html, /CMI-WTL0099/);
       assert.match(html, /href="\/cmi">Back to CMI Catalogue/);
@@ -203,6 +225,7 @@ test("preserves the complete AdPage inside Facebook's 1200 by 630 preview", asyn
     }));
     fs.writeFileSync(path.join(distRoot, "index.html"), shell);
 
+    copyNameCard(publicRoot);
     await prerenderPropertyOgRoutes({ projectRoot: root, publicRoot, distRoot });
 
     const html = fs.readFileSync(path.join(distRoot, "i", "WTS1004", "index.html"), "utf8");

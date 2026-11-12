@@ -15,6 +15,23 @@ export const defaultSeo = {
   imageType: "image/png",
 };
 
+const nameCardShareSeo = {
+  image: SITE_ORIGIN + "/og/hs-ong-name-card-v1.jpg",
+  imageWidth: "1200",
+  imageHeight: "721",
+  imageType: "image/jpeg",
+  imageAlt: "HS Ong professional name card",
+};
+
+export const homeShareSeo = { ...defaultSeo, ...nameCardShareSeo };
+export const inquiryShareSeo = {
+  ...nameCardShareSeo,
+  title: "Find a Property for Me | HS Ong",
+  ogTitle: "Find a Property for Me | HS Ong",
+  description: "Tell HS Ong your budget, preferred location and requirements to find a property to rent or buy in Klang Valley.",
+  canonical: SITE_ORIGIN + "/inquiries",
+};
+
 const upsertMeta = (selector, createAttributes, value) => {
   if (!value) {
     document.head.querySelector(selector)?.remove();
@@ -58,6 +75,7 @@ export function applySeo({
   imageWidth,
   imageHeight,
   imageType,
+  imageAlt,
   type = "website",
   robots = "index, follow",
 } = {}) {
@@ -76,11 +94,14 @@ export function applySeo({
   upsertMeta('meta[property="og:image:width"]', { property: "og:image:width" }, imageWidth || (isDefaultImage ? defaultSeo.imageWidth : ""));
   upsertMeta('meta[property="og:image:height"]', { property: "og:image:height" }, imageHeight || (isDefaultImage ? defaultSeo.imageHeight : ""));
   upsertMeta('meta[property="og:image:type"]', { property: "og:image:type" }, resolvedImageType);
+  upsertMeta('meta[property="og:image:secure_url"]', { property: "og:image:secure_url" }, absoluteImage);
+  upsertMeta('meta[property="og:image:alt"]', { property: "og:image:alt" }, imageAlt || (isDefaultImage ? defaultSeo.ogTitle : ogTitle));
   upsertMeta('meta[property="og:site_name"]', { property: "og:site_name" }, "HS Ong Property Inventory");
   upsertMeta('meta[name="twitter:card"]', { name: "twitter:card" }, "summary_large_image");
   upsertMeta('meta[name="twitter:title"]', { name: "twitter:title" }, ogTitle);
   upsertMeta('meta[name="twitter:description"]', { name: "twitter:description" }, ogDescription);
   upsertMeta('meta[name="twitter:image"]', { name: "twitter:image" }, absoluteImage);
+  upsertMeta('meta[name="twitter:image:alt"]', { name: "twitter:image:alt" }, imageAlt || (isDefaultImage ? defaultSeo.ogTitle : ogTitle));
 }
 
 export function applyJsonLd(id, payload) {

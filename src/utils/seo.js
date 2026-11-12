@@ -16,10 +16,10 @@ export const defaultSeo = {
 };
 
 const nameCardShareSeo = {
-  image: SITE_ORIGIN + "/og/hs-ong-name-card-v1.jpg",
+  image: SITE_ORIGIN + "/og/hs-ong-name-card-v2.png",
   imageWidth: "1200",
-  imageHeight: "721",
-  imageType: "image/jpeg",
+  imageHeight: "630",
+  imageType: "image/png",
   imageAlt: "HS Ong professional name card",
 };
 

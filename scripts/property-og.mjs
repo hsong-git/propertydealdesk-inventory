@@ -5,7 +5,6 @@ import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { COMBINED_CATALOGUE } from "../src/config/catalogueSite.js";
 import { formatPrice, listingPreviewObjectUrl } from "../src/utils/listing.js";
 import { absoluteUrl, defaultSeo, homeShareSeo, inquiryShareSeo, propertyBreadcrumbs, propertyJsonLd, propertySeoDescription, SITE_ORIGIN } from "../src/utils/seo.js";
-import { agentProfile } from "../src/config/agentProfile.js";
 import { inspectPublicImage } from "./image-policy.mjs";
 import { propertyPhotoWatermark } from "../src/config/watermark.js";
 import { renderCatalogueContent } from "./catalogue-html.mjs";
@@ -114,19 +113,6 @@ function renderPublicShareHtml(html, seo) {
   return html;
 }
 
-async function createNameCardOgImage(publicRoot, distRoot) {
-  const source = path.join(publicRoot, agentProfile.nameCard.slice(1));
-  const output = path.join(distRoot, new URL(homeShareSeo.image).pathname.slice(1));
-  fs.mkdirSync(path.dirname(output), { recursive: true });
-  // The source has two stacked faces. Use the full personal face, without
-  // the surrounding mockup or padding, as approved for homepage sharing.
-  await sharp(fs.readFileSync(source))
-    .extract({ left: 62, top: 734, width: 980, height: 589 })
-    .resize({ width: Number(homeShareSeo.imageWidth) })
-    .jpeg({ quality: 93, chromaSubsampling: "4:4:4", mozjpeg: true })
-    .toFile(output);
-}
-
 export function propertyOgMeta(listing, publicRoot) {
   const title = `${listing.displayCode || listing.code} ${listing.title} | HS Ong Property Inventory`;
   const canonical = `${SITE_ORIGIN}/property/${listing.slug}`;
@@ -210,7 +196,6 @@ async function createPropertyOgImage(listing, publicRoot, distRoot, inventoryVer
 export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distRoot }) {
   const inventory = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "inventory.json"), "utf8"));
   const { items, allItems, meta } = normalizeInventoryFeed(inventory);
-  await createNameCardOgImage(publicRoot, distRoot);
   const indexHtml = fs.readFileSync(path.join(distRoot, "index.html"), "utf8").replace(/<!--seo-content-start-->[\s\S]*?<!--seo-content-end-->/g, "").replaceAll("https://property.myeviv.com", SITE_ORIGIN);
 
   for (const listing of allItems) {

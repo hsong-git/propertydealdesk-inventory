@@ -129,8 +129,8 @@ const supplyIntents = new Set(["WTS", "WTL"]);
 export const postingFootnoteUrl = (listing) => {
   const intent = String(listing.intent || "").toUpperCase();
   const destination = supplyIntents.has(intent)
-    ? listingShortUrl(listing).split("?")[0]
-    : "https://property.myeviv.com";
+    ? `https://www.myeviv.com/i/${String(listing.code || "").toUpperCase()}`
+    : "https://www.myeviv.com";
   const url = new URL(destination);
   url.searchParams.set("src", "c1");
   return url.toString();
@@ -144,7 +144,7 @@ export const postingShortLinkFootnote = (listing) => [
 
 export const withPostingShortLinkFootnote = (text, listing) => {
   const standardFootnotePattern = new RegExp(
-    String.raw`(?:\r?\n){0,3}(?:🤝\s*Co-broke welcome\s*(?:\r?\n))?🏠\s*(?:Download\s+)?Listing details & photos(?:\s+(?:from|in))?:\s*(?:\r?\n)\s*https:\/\/(?:property|scmi|agenttools)\.myeviv\.com(?:\/i\/[A-Z0-9_-]+)?\/?(?:\?[^\s]*)?`,
+    String.raw`(?:\r?\n){0,3}(?:🤝\s*Co-broke welcome\s*(?:\r?\n))?🏠\s*(?:Download\s+)?Listing details & photos(?:\s+(?:from|in))?:\s*(?:\r?\n)\s*https:\/\/(?:property|scmi|www|agenttools)\.myeviv\.com(?:\/i\/[A-Z0-9_-]+)?\/?(?:\?[^\s]*)?`,
     "gi",
   );
   const cleaned = String(text || "").replace(standardFootnotePattern, "").trim();

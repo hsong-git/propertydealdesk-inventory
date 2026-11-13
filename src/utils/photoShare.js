@@ -23,7 +23,7 @@ export function photoShareSourceUrl(photoUrl, inventoryVersion, origin = SITE_OR
 
 export function photoShareMessage(listing, profile) {
   if (profile) return postingText(listing, profile);
-  return `${listing.displayCode || listing.code} — ${listing.title}\n${SITE_ORIGIN}/i/${String(listing.code || "").toUpperCase()}`;
+  return `${listing.displayCode || listing.code} — ${listing.title}\nhttps://www.myeviv.com/i/${String(listing.code || "").toUpperCase()}`;
 }
 
 export function desktopWhatsAppUrl(client, message) {

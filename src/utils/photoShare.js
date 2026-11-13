@@ -11,8 +11,8 @@ export const nativeShareErrorMessage = (error) => error?.name === "AbortError"
 
 const cleanCode = (code) => String(code || "listing").trim().toUpperCase().replace(/[^A-Z0-9-]/g, "-");
 
-export function photoShareFileName(code, index) {
-  return `${cleanCode(code)}-photo-${String(index + 1).padStart(2, "0")}.jpg`;
+export function photoShareFileName(code, index, media = "photo") {
+  return `${cleanCode(code)}-${media === "layout" ? "layout" : "photo"}-${String(index + 1).padStart(2, "0")}.jpg`;
 }
 
 export function photoShareSourceUrl(photoUrl, inventoryVersion, origin = SITE_ORIGIN) {
@@ -56,7 +56,7 @@ async function loadWatermarkLogo(fetcher) {
 }
 
 // Embed the same approved logo in downloaded/shared image pixels.
-export async function createWatermarkedJpegFile(photoUrl, { code, index, inventoryVersion, fetcher = fetch } = {}) {
+export async function createWatermarkedJpegFile(photoUrl, { code, index, inventoryVersion, media, fetcher = fetch } = {}) {
   const sourceUrl = photoShareSourceUrl(photoUrl, inventoryVersion, window.location.origin);
   // A published photo may keep its positional filename after the source image
   // changes. Revalidate the publication-versioned URL so mobile sharing cannot
@@ -91,7 +91,7 @@ export async function createWatermarkedJpegFile(photoUrl, { code, index, invento
 
   source.close?.();
 
-  return new File([await canvasBlob(canvas)], photoShareFileName(code, index), { type: "image/jpeg", lastModified: Date.now() });
+  return new File([await canvasBlob(canvas)], photoShareFileName(code, index, media), { type: "image/jpeg", lastModified: Date.now() });
 }
 
 export function downloadPreparedFiles(files) {

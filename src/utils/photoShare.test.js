@@ -5,6 +5,7 @@ import { desktopWhatsAppUrl, nativeShareErrorMessage, PHOTO_SELECTION_LIMIT, PHO
 test("prepares standard JPG filenames and listing share copy", () => {
   assert.equal(photoShareFileName("wtl0063", 0), "WTL0063-photo-01.jpg");
   assert.equal(photoShareFileName("wtl0063", 11), "WTL0063-photo-12.jpg");
+  assert.equal(photoShareFileName("wts1014", 1, "layout"), "WTS1014-layout-02.jpg");
   assert.equal(PHOTO_SHARE_JPEG_QUALITY, 0.9);
   assert.equal(PHOTO_SELECTION_LIMIT, 10);
   assert.equal(photoShareMessage({ code: "WTL0063", intent: "WTL", title: "Setia City Residence" }), "WTL0063 — Setia City Residence\nhttps://property.myeviv.com/i/WTL0063");

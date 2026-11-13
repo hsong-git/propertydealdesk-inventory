@@ -126,11 +126,18 @@ export const listingPreviewObjectUrl = (listing, origin = listingPublicOrigin(li
 
 const supplyIntents = new Set(["WTS", "WTL"]);
 
-export const postingFootnoteUrl = (listing) => {
+const postingHosts = new Set(["property.myeviv.com", "scmi.myeviv.com", "www.myeviv.com"]);
+
+export const postingFootnoteOrigin = (locationRef = globalThis.location) => {
+  const hostname = String(locationRef?.hostname || "").trim().toLowerCase();
+  return postingHosts.has(hostname) ? `https://${hostname}` : CATALOGUE_ORIGIN;
+};
+
+export const postingFootnoteUrl = (listing, origin = postingFootnoteOrigin()) => {
   const intent = String(listing.intent || "").toUpperCase();
   const destination = supplyIntents.has(intent)
-    ? `https://www.myeviv.com/i/${String(listing.code || "").toUpperCase()}`
-    : "https://www.myeviv.com";
+    ? `${origin}/i/${String(listing.code || "").toUpperCase()}`
+    : origin;
   const url = new URL(destination);
   url.searchParams.set("src", "c1");
   return url.toString();

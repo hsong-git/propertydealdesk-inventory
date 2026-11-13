@@ -1,5 +1,5 @@
 import { SITE_ORIGIN } from "./seo.js";
-import { postingText } from "./listing.js";
+import { postingFootnoteUrl, postingText } from "./listing.js";
 import { propertyPhotoWatermark } from "../config/watermark.js";
 
 export const PHOTO_SHARE_JPEG_QUALITY = 0.9;
@@ -23,7 +23,7 @@ export function photoShareSourceUrl(photoUrl, inventoryVersion, origin = SITE_OR
 
 export function photoShareMessage(listing, profile) {
   if (profile) return postingText(listing, profile);
-  return `${listing.displayCode || listing.code} — ${listing.title}\nhttps://www.myeviv.com/i/${String(listing.code || "").toUpperCase()}`;
+  return `${listing.displayCode || listing.code} — ${listing.title}\n${postingFootnoteUrl(listing).replace(/\?src=c1$/, "")}`;
 }
 
 export function desktopWhatsAppUrl(client, message) {

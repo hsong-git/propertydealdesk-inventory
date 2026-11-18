@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.3",
-  "inventoryVersion": "2026.11.18.2",
-  "generated_at": "2026-11-18T04:33:18Z",
-  "publishedAt": "2026-11-18T04:33:18Z",
+  "inventoryVersion": "2026.11.18.3",
+  "generated_at": "2026-11-18T08:28:31Z",
+  "publishedAt": "2026-11-18T08:28:31Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -1500,7 +1500,10 @@
         "/inventory/WTL0110/photo-05.webp",
         "/inventory/WTL0110/photo-06.webp",
         "/inventory/WTL0110/photo-07.webp",
-        "/inventory/WTL0110/photo-08.webp"
+        "/inventory/WTL0110/photo-08.webp",
+        "/inventory/WTL0110/photo-09.webp",
+        "/inventory/WTL0110/photo-10.webp",
+        "/inventory/WTL0110/photo-11.webp"
       ],
       "features": [
         "Newly painted Endlot with land"
@@ -1610,7 +1613,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Double Storey Terrace @ Taman Lestari Putra, Seri Kembangan*\nSelling Price: *RM780,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Lestari Putra, Seri Kembangan, Serdang, Putrajaya\n- Furnishing: Full\n- Size Approx. 2000 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: South East\n- Lot Type: Non Bumi Lot\n- Tenure: Leasehold\n\n*Furnishing Included*\n- Sofa\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Beds\n- Washing Machine\n- Refrigerator\n- Water Heater\n- TV and TV Console\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*Feature Highlights*\n- Land Size / Built-up: 20x70 ft\n- 2,000 sq.ft, Intermediate Double Storey Terrace\n- Leasehold, 4 Bedrooms\n- 3 Bathrooms\n- 2 Car Parks, Fully renovated & move-in ready, All furniture & electrical appliances included (Lock, Stock & Barrel), Guarded community with low management fee (RM40/month), Located on high ground & flood-free area, Facing Southeast - bright & airy unit, Owner-occupied, well maintained\n\nContact\nHS ONG\n60163132865\nWTS0004\n\n🤝 Co-broke welcome\n🏠 Listing details & photos in:\nhttps://property.myeviv.com/i/WTS0004?src=c1",
-      "updated_at": "2026-11-18T00:03:36Z",
+      "updated_at": "2026-11-18T04:39:32Z",
       "cover_photo": "/inventory/WTS0004/ad-page.webp",
       "photos": [
         "/inventory/WTS0004/ad-page.webp",
@@ -1674,7 +1677,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*2.5 Storey Terrace House @ Penaga, Bandar Botanic, Klang*\nSelling Price: *RM850,000*\n\n*Property Details*\n- Property Type : Terrace House - 2.5 Storey\n- Property Unit Type: Intermediate\n- Location: Bandar Botanic, Bukit Tinggi\n- Furnishing: Partial\n- Unit Dimensions: 20 × 75\n- 4 Bedrooms | 4 Bathrooms\n- Facing Direction: North\n\n*Feature Highlights*\n- Extended & Renovated Balconies\n- Freehold\n\nContact\nHS ONG\n60163132865\nWTS0010\n\n🤝 Co-broke welcome\n🏠 Listing details & photos in:\nhttps://property.myeviv.com/i/WTS0010?src=c1",
-      "updated_at": "2026-11-18T00:03:36Z",
+      "updated_at": "2026-11-18T04:39:07Z",
       "cover_photo": "/inventory/WTS0010/ad-page.webp",
       "photos": [
         "/inventory/WTS0010/ad-page.webp",
@@ -1720,7 +1723,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Single Storey Terrace House @ Taman Melawis, Klang*\nSelling Price: *RM505,000*\n\n*Property Details*\n- Property Type : Terrace House - 1 Storey\n- Property Unit Type: Intermediate\n- Location: Taman Melawis, Teluk Pulai, Taman Gembira\n- Furnishing: Basic\n- Unit Dimensions: 22 × 65\n- 4 Bedrooms | 2 Bathrooms\n- Facing Direction: West\n\n*Feature Highlights*\n- 🔥🔥Price Dropped🔥🔥, Newly renovated and well-maintained unit, Land Size: 22' x 60', Tenure: Freehold, Land Title: Non-Bumi Lot, Facing Direction: West\n\nContact\nHS ONG\n60163132865\nWTS0017\n\n🤝 Co-broke welcome\n🏠 Listing details & photos in:\nhttps://property.myeviv.com/i/WTS0017?src=c1",
-      "updated_at": "2026-11-18T00:03:36Z",
+      "updated_at": "2026-11-18T04:38:18Z",
       "cover_photo": "/inventory/WTS0017/ad-page.webp",
       "photos": [
         "/inventory/WTS0017/ad-page.webp",
@@ -2620,7 +2623,7 @@
       "created_at": "2026-06-14T04:55:49Z",
       "listed_at": "2026-06-01T00:00:00Z",
       "posting_copy": "*WTS*\n\n*Parkhill Residence, Bukit Jalil*\nSelling Price: *RM600,000*\n\n*Sell with tenancy worth RM3,000/month\"\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Bukit Jalil, Puchong, Kinrara\n- Furnishing: Full\n- Size Approx. 1100 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Lot Type: Non Bumi Lot\n- Tenure: Leasehold\n\n*Feature Highlights*\n- Floor: High Floor (26th)\n- Carpark: 2 (Low Floor)\n- Occupancy: Currently Tenanted\n- Shuttle service to APU\n- Next to Astro & Asia Pacific University (APU)\n- 5 minutes covered walkway to STAR LRT\n- 5 minutes walking distance to Bukit Jalil Stadium\n- 10 minutes drive to Pavilion Bukit Jalil\n- Stunning stadium view from the balcony\n\nContact\nHS ONG\n60163132865\nWTS1001\n\n🤝 Co-broke welcome\n🏠 Listing details & photos in:\nhttps://property.myeviv.com/i/WTS1001?src=c1",
-      "updated_at": "2026-11-18T00:03:36Z",
+      "updated_at": "2026-11-18T04:40:26Z",
       "cover_photo": "/inventory/WTS1001/ad-page.webp",
       "photos": [
         "/inventory/WTS1001/ad-page.webp",

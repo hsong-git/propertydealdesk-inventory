@@ -1,5 +1,5 @@
 import { AlertTriangle, ExternalLink, Handshake, LoaderCircle, X } from "lucide-react";
-import { campaignUrl } from "../utils/trafficAttribution";
+import { createSearchLink, searchShareTarget } from "../utils/searchShare.js";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { agentProfile } from "../config/agentProfile";
 import { CatalogueFilters } from "../components/CatalogueFilters";
@@ -10,7 +10,7 @@ import { Seo } from "../components/Seo";
 import { homeShareSeo } from "../utils/seo.js";
 import { useInventory } from "../hooks";
 import { compareRecentlyUpdated, formatDateTime, normalizeInventoryFilter } from "../utils/listing";
-import { COMBINED_CATALOGUE, CATALOGUE_ORIGIN } from "../config/catalogueSite.js";
+import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
 import { buildLocationOptions, buildLocationCounts } from "../utils/locationFilter";
 import { normalizeMultiFilters, readFilterParams, writeFilterParams } from "../utils/multiSelect.js";
 import { matchesCatalogueFilters, normalizeCatalogueIntent, offerForIntent } from "../utils/catalogueFilter.js";
@@ -80,6 +80,9 @@ export function HomePage() {
   const [visible, setVisible] = useState(initialCatalogueState.visible);
   const [agentToolsPreviewOpen, setAgentToolsPreviewOpen] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
+  const [shortSearch, setShortSearch] = useState(null);
+  const [shareBusy, setShareBusy] = useState(false);
+  const [shareError, setShareError] = useState("");
   const loadMoreRef = useRef(null);
   const analyticsReady = useRef(false);
   const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && key !== "intent" && (Array.isArray(value) ? value.length : value)).length
@@ -122,26 +125,35 @@ export function HomePage() {
   };
   const shareUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
-    const url = new URL(window.location.pathname, CATALOGUE_ORIGIN);
-    url.search = catalogueSearchParams(filters, catalogueMode).toString();
-    return campaignUrl(url.toString(), { source: "catalogue_search", medium: "share", campaign: "shared_search" });
+    return searchShareTarget(catalogueSearchParams(filters, catalogueMode), window.location.origin).href;
   }, [filters, catalogueMode]);
+  useEffect(() => { setShareCopied(false); setShareError(""); }, [shareUrl]);
   const shareSearch = async () => {
-    if (!shareUrl) return;
+    if (!shareUrl || shareBusy) return;
+    setShareError("");
     try {
+      let shortUrl = shortSearch?.target === shareUrl ? shortSearch.url : "";
+      if (!shortUrl) {
+        setShareBusy(true);
+        shortUrl = await createSearchLink(new URL(shareUrl));
+        setShortSearch({ target: shareUrl, url: shortUrl });
+        // Native sharing needs a fresh tap after the network request.
+        if (typeof navigator.share === "function") return;
+      }
       if (typeof navigator.share === "function") {
-        await navigator.share({ title: "Property search", url: shareUrl });
+        await navigator.share({ title: "Property search", url: shortUrl });
         trackEvent("catalogue_search_shared", { intent: filters.intent, properties: { method: "native", result_count: results.length } });
         return;
       }
-      await navigator.clipboard.writeText(shareUrl);
+      try { await navigator.clipboard.writeText(shortUrl); }
+      catch { window.prompt("Copy this short search link:", shortUrl); }
       trackEvent("catalogue_search_shared", { intent: filters.intent, properties: { method: "clipboard", result_count: results.length } });
       setShareCopied(true);
       window.setTimeout(() => setShareCopied(false), 1800);
     } catch (error) {
       if (error?.name === "AbortError") return;
-      window.prompt("Copy this shareable search link:", shareUrl);
-    }
+      setShareError(error.message || "Unable to share search. Please try again.");
+    } finally { setShareBusy(false); }
   };
   useEffect(() => {
     try { window.sessionStorage.setItem(CATALOGUE_STATE_KEY, JSON.stringify({ intentDefaultVersion: 2, filters, catalogueMode, visible })); } catch { /* storage may be unavailable */ }
@@ -218,7 +230,7 @@ export function HomePage() {
             <div><span className="eyebrow">Public property listings</span><h2>{agentProfile.catalogueHeading}</h2><p>Explore current opportunities and contact me directly to confirm details or arrange a viewing.</p></div>
             <div className="catalogue-count"><strong>{results.length}</strong><span>matching {results.length === 1 ? "property" : "properties"}</span>{meta ? <small>Inventory {meta.inventoryVersion} · {meta.isMockData ? "generated" : "published"} {formatDateTime(meta.publishedAt || meta.generatedAt)}</small> : null}</div>
           </div>
-          <CatalogueFilters filters={filters} setFilters={setFilters} options={options} activeCount={activeCount} onReset={reset} onShare={shareSearch} shareCopied={shareCopied} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} catalogueMode={catalogueMode} setCatalogueMode={updateCatalogueMode} />
+          <CatalogueFilters filters={filters} setFilters={setFilters} options={options} activeCount={activeCount} onReset={reset} onShare={shareSearch} shareCopied={shareCopied} shareBusy={shareBusy} shareError={shareError} shareReady={shortSearch?.target === shareUrl && typeof navigator.share === "function"} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} catalogueMode={catalogueMode} setCatalogueMode={updateCatalogueMode} />
           {loading ? <div className="state-card"><LoaderCircle className="spin" /><strong>Loading public inventory…</strong></div> : null}
           {error ? <div className="state-card error"><strong>{error}</strong><span>Please refresh the page or contact HS Ong directly.</span></div> : null}
           {!loading && !error && results.length ? <div className="property-grid">{results.slice(0, visible).map((listing) => <PropertyCard key={listing.publicId} listing={listing} displayIntent={filters.intent} />)}</div> : null}

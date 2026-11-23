@@ -22,6 +22,7 @@ export async function onRequest(context) {
   let unlisted = false;
   if (!["GET", "HEAD"].includes(context.request.method) || pathname.startsWith("/api/")) return context.next();
   if (pathname.startsWith("/i/")) return withEntryAttribution(await context.next(), context.request);
+  if (pathname.startsWith("/s/")) return context.next();
   if (["/about", "/contact", "/requirements"].includes(pathname)) {
     return Response.redirect(new URL(pathname === "/requirements" ? "/inquiries" : "/", url), 301);
   }

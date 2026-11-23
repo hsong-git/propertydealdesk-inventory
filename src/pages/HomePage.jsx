@@ -13,10 +13,10 @@ import { compareRecentlyUpdated, formatDateTime, normalizeInventoryFilter } from
 import { COMBINED_CATALOGUE, CATALOGUE_ORIGIN } from "../config/catalogueSite.js";
 import { buildLocationOptions, buildLocationCounts } from "../utils/locationFilter";
 import { normalizeMultiFilters, readFilterParams, writeFilterParams } from "../utils/multiSelect.js";
-import { matchesCatalogueFilters, offerForIntent } from "../utils/catalogueFilter.js";
+import { matchesCatalogueFilters, normalizeCatalogueIntent, offerForIntent } from "../utils/catalogueFilter.js";
 import { analyticsSource, trackEvent } from "../utils/analytics.js";
 
-const defaultIntent = "WTL";
+const defaultIntent = "";
 const INITIAL_VISIBLE_COUNT = 12;
 const LOAD_MORE_COUNT = 6;
 const defaults = { keyword: "", intent: defaultIntent, propertyType: [], location: [], minPrice: "", maxPrice: "", bedrooms: "", furnishing: [], sort: "recent", classification: "" };
@@ -41,6 +41,7 @@ function readSharedCatalogueState() {
   const hasSharedFilters = Object.values(shareableFilterKeys).some((key) => params.has(key)) || params.has("view");
   if (!hasSharedFilters) return null;
   const filters = readFilterParams(params, shareableFilterKeys, defaults);
+  filters.intent = normalizeCatalogueIntent(filters.intent);
   filters.classification = COMBINED_CATALOGUE ? normalizeInventoryFilter(filters.classification) : "";
   return {
     filters: { ...defaults, ...filters },
@@ -62,7 +63,7 @@ function readCatalogueState() {
   try {
     const saved = JSON.parse(window.sessionStorage.getItem(CATALOGUE_STATE_KEY) || "null");
     return {
-      filters: saved?.filters && typeof saved.filters === "object" ? normalizeMultiFilters({ ...defaults, ...saved.filters, classification: COMBINED_CATALOGUE ? normalizeInventoryFilter(saved.filters.classification) : "" }) : defaults,
+      filters: saved?.filters && typeof saved.filters === "object" ? normalizeMultiFilters({ ...defaults, ...saved.filters, intent: saved.intentDefaultVersion === 2 ? normalizeCatalogueIntent(saved.filters.intent) : defaultIntent, classification: COMBINED_CATALOGUE ? normalizeInventoryFilter(saved.filters.classification) : "" }) : defaults,
       catalogueMode: saved?.catalogueMode === "featured" ? "featured" : "all",
       visible: Number.isInteger(saved?.visible) && saved.visible >= INITIAL_VISIBLE_COUNT ? saved.visible : INITIAL_VISIBLE_COUNT,
     };
@@ -143,7 +144,7 @@ export function HomePage() {
     }
   };
   useEffect(() => {
-    try { window.sessionStorage.setItem(CATALOGUE_STATE_KEY, JSON.stringify({ filters, catalogueMode, visible })); } catch { /* storage may be unavailable */ }
+    try { window.sessionStorage.setItem(CATALOGUE_STATE_KEY, JSON.stringify({ intentDefaultVersion: 2, filters, catalogueMode, visible })); } catch { /* storage may be unavailable */ }
   }, [filters, catalogueMode, visible]);
   useEffect(() => {
     if (loading || error) return;

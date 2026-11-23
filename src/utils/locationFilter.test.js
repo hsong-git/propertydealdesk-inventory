@@ -2,7 +2,28 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { matchesSelection, normalizeMultiFilters, readFilterParams, selectedValues, writeFilterParams, filterMultiSelectOptions } from "./multiSelect.js";
 import { buildLocationOptions, buildLocationCounts, canonicalLocationsForListing, matchesKeywordSearch, matchesLocationFilter, normalizeLocationDictionary } from "./locationFilter.js";
-import { matchesCatalogueFilters } from "./catalogueFilter.js";
+import { matchesCatalogueFilters, normalizeCatalogueIntent, offerForIntent } from "./catalogueFilter.js";
+
+test("All intent includes sale, rental and dual offers once and sorts on the displayed primary price", () => {
+  const rent = { code: "WTL1", intent: "WTL", price: 2000, title: "Rent", location: "Klang" };
+  const sale = { code: "WTS1", intent: "WTS", price: 500000, title: "Sale", location: "Klang" };
+  const dual = { ...sale, code: "WTSL1", alternateIntent: "WTL", alternatePrice: 1800 };
+  const items = [sale, rent, dual];
+  const filter = intent => items.filter(item => matchesCatalogueFilters(item, { intent }, "all"));
+  assert.deepEqual(filter(""), items);
+  assert.deepEqual(filter("WTL"), [rent, dual]);
+  assert.deepEqual(filter("WTS"), [sale, dual]);
+  assert.deepEqual(offerForIntent(dual, ""), { intent: "WTS", price: 500000 });
+  assert.deepEqual(offerForIntent(dual, "WTL"), { intent: "WTL", price: 1800 });
+  assert.deepEqual([...filter("")].sort((a,b) => offerForIntent(a, "").price - offerForIntent(b, "").price), [rent, sale, dual]);
+  assert.equal(matchesCatalogueFilters(sale, { intent: "", maxPrice: 3000 }, "all"), false);
+  assert.equal(normalizeCatalogueIntent("All"), "");
+  assert.equal(normalizeCatalogueIntent(undefined), "");
+  assert.equal(normalizeCatalogueIntent("WTS"), "WTS");
+  const keys = { intent: "intent" }, defaults = { intent: "" };
+  assert.equal(writeFilterParams(defaults, keys, defaults).toString(), "");
+  assert.equal(readFilterParams(new URLSearchParams("intent=WTL"), keys, defaults).intent, "WTL");
+});
 
 test("counted dropdowns hide zero and missing counts without affecting uncounted filters", () => {
   const options = ["Botanic", "Bukit Tinggi", "Klang", "Selected old location"];

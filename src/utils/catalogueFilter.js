@@ -2,8 +2,10 @@ import { matchesInventoryFilter } from "./listing.js";
 import { matchesKeywordSearch, matchesLocationFilter } from "./locationFilter.js";
 import { matchesSelection, selectedValues } from "./multiSelect.js";
 
+export const normalizeCatalogueIntent = (intent) => ["WTL", "WTS"].includes(intent) ? intent : "";
+
 export const offerForIntent = (listing, intent) => (
-  listing.intent === intent
+  !normalizeCatalogueIntent(intent) || listing.intent === intent
     ? { intent: listing.intent, price: listing.price }
     : listing.alternateIntent === intent
       ? { intent: listing.alternateIntent, price: listing.alternatePrice }
@@ -11,7 +13,7 @@ export const offerForIntent = (listing, intent) => (
 );
 
 export function matchesCatalogueFilters(item, filters, mode, dictionary, { ignoreLocation = false } = {}) {
-  const offer = filters.intent ? offerForIntent(item, filters.intent) : { price: item.price };
+  const offer = offerForIntent(item, filters.intent);
   const locations = selectedValues(filters.location);
   return (mode !== "featured" || item.featured)
     && matchesInventoryFilter(item, filters.classification)

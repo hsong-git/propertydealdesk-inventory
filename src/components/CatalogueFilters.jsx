@@ -3,6 +3,7 @@ import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
 import { MultiSelectFilter } from "./MultiSelectFilter.jsx";
 
 const intentOptions = [
+  { key: "", label: "All" },
   { key: "WTL", label: "WTL" },
   { key: "WTS", label: "WTS" },
 ];

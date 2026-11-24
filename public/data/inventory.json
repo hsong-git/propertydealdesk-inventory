@@ -1,9 +1,9 @@
 {
   "schema": "propertydealdesk-public-inventory",
   "schema_version": "1.3",
-  "inventoryVersion": "2026.11.24.1",
-  "generated_at": "2026-11-24T02:25:07Z",
-  "publishedAt": "2026-11-24T02:25:07Z",
+  "inventoryVersion": "2026.11.24.2",
+  "generated_at": "2026-11-24T02:31:29Z",
+  "publishedAt": "2026-11-24T02:31:29Z",
   "isMockData": false,
   "notice": "Generated from SMI explicitly approved for public catalogue publication.",
   "listings": [
@@ -1431,6 +1431,49 @@
       "amenities": [],
       "why_this_property": [],
       "ad_page": "/inventory/WTL0113/ad-page.webp"
+    },
+    {
+      "public_id": "pub_0b488be18c157157b30171fe",
+      "code": "WTL0114",
+      "intent": "WTL",
+      "visibility": "listed",
+      "slug": "wtl0114-4r3b-double-storey-house-bukit-tinggi-2-klang-bukit-tinggi-2-klang",
+      "title": "4R3B Double Storey House @ Bukit Tinggi 2 Klang",
+      "property_type": "Terrace House - 2 Storey",
+      "location": "Bukit Tinggi 2 Klang",
+      "price": 2000,
+      "alternate_intent": null,
+      "alternate_price": null,
+      "accept_all_races": null,
+      "description": "Terrace House - 2 Storey at Bukit Tinggi 2 Klang. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 4,
+      "bathroom_count": 3,
+      "built_up_sqft": 2140,
+      "land_size": "22 × 70 ft",
+      "furnishing": "Partial",
+      "facing_direction": "North East",
+      "unit_type": "Intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-11-24T01:38:32Z",
+      "listed_at": "2026-11-24T09:38:32Z",
+      "posting_copy": "*WTL*\n\n*4R3B Double Storey House @ Bukit Tinggi 2 Klang*\nRental *RM2,000*\n\n*Property Details*\n- Property Type : Terrace House - 2 Storey\n- Property Unit Type: Intermediate\n- Location: Bukit Tinggi 2\n- Furnishing: Partial\n- Unit Dimensions: 22 × 70\n- Size Approx. 2140 sqft\n- 4 Bedrooms | 3 Bathrooms\n- Facing Direction: North East\n\n*Furnishing Included*\n- Dining Set\n- Lighting and Ceiling Fans\n- Air Conditioners\n- Water Heater\n- Table top and Cabinet\n- Cooking Hob and Hood\n\n*Feature Highlights*\n- Fully extended kitchen\n- Gated Guarded community\n- Auto Gate\n- Facing open\n\n*AVAILABLE FROM 01/01/2027*\n\n*Tenant eligibility*: Subject to the owner’s review of the tenant profile.\n\nContact\nHS ONG\n60163132865\nWTL0114\n\n🤝 Co-broke welcome\n🏠 Listing details & photos in:\nhttps://property.myeviv.com/i/WTL0114?src=c1",
+      "updated_at": "2026-11-24T01:41:27Z",
+      "cover_photo": "/inventory/WTL0114/ad-page.webp",
+      "photos": [
+        "/inventory/WTL0114/ad-page.webp",
+        "/inventory/WTL0114/cover.webp",
+        "/inventory/WTL0114/photo-02.webp",
+        "/inventory/WTL0114/photo-03.webp",
+        "/inventory/WTL0114/photo-04.webp",
+        "/inventory/WTL0114/photo-05.webp"
+      ],
+      "features": [
+        "Fully extended kitchen Gated Guarded community Auto Gate Facing open"
+      ],
+      "amenities": [],
+      "why_this_property": [],
+      "ad_page": "/inventory/WTL0114/ad-page.webp"
     },
     {
       "public_id": "pub_503eacf5b432174dca5e0833",
@@ -4360,6 +4403,49 @@
       "videos": [
         "/inventory/WTS1049/video-79202e4bad7f5c33c709.mp4"
       ]
+    },
+    {
+      "public_id": "pub_50feabf94f71f8c6f5a97ef7",
+      "code": "WTS1050",
+      "intent": "WTS",
+      "visibility": "listed",
+      "slug": "wts1050-3r2b-repainted-looks-like-new-seri-mutiara-apartment-setia-alam-seri-mutiara-apartment-setia-alam",
+      "title": "3R2B Repainted Looks Like New @ Seri Mutiara Apartment, Setia Alam",
+      "property_type": "Condominium/Apartment",
+      "location": "Seri Mutiara Apartment, Setia Alam",
+      "price": 330000,
+      "alternate_intent": null,
+      "alternate_price": null,
+      "accept_all_races": null,
+      "description": "Condominium/Apartment at Seri Mutiara Apartment, Setia Alam. Contact HS Ong to confirm current availability and viewing details.",
+      "bedroom_count": 3,
+      "bathroom_count": 2,
+      "built_up_sqft": 939,
+      "land_size": null,
+      "furnishing": "",
+      "facing_direction": null,
+      "unit_type": "Intermediate",
+      "availability": "Available",
+      "featured": false,
+      "created_at": "2026-11-24T02:02:13Z",
+      "listed_at": "2026-11-24T10:02:13Z",
+      "posting_copy": "*WTS*\n\n*3R2B Repainted Looks Like New @ Seri Mutiara Apartment, Setia Alam*\nSelling Price: *RM330,000*\n\n*Property Details*\n- Property Type : Condominium/Apartment\n- Property Unit Type: Intermediate\n- Location: Seri Mutiara Apartment, Setia Alam\n- Size Approx. 939 sqft\n- 3 Bedrooms | 2 Bathrooms\n- Car Parks: 2\n- Lot Type: Non Bumi Lot\n- Tenure: Freehold\n\n*Feature Highlights*\n- The 2 car park at the ground, side by side\n- Just got repainted the whole house and grills\n- Looks like new\n\nContact\nHS ONG\n60163132865\nWTS1050\n\n🤝 Co-broke welcome\n🏠 Listing details & photos in:\nhttps://property.myeviv.com/i/WTS1050?src=c1",
+      "updated_at": "2026-11-24T02:30:05Z",
+      "cover_photo": "/inventory/WTS1050/ad-page.webp",
+      "photos": [
+        "/inventory/WTS1050/ad-page.webp",
+        "/inventory/WTS1050/cover.webp",
+        "/inventory/WTS1050/photo-02.webp",
+        "/inventory/WTS1050/photo-03.webp",
+        "/inventory/WTS1050/photo-04.webp",
+        "/inventory/WTS1050/photo-05.webp"
+      ],
+      "features": [
+        "The 2 car park at the ground, side by side Just got repainted the whole house and grills Looks like new"
+      ],
+      "amenities": [],
+      "why_this_property": [],
+      "ad_page": "/inventory/WTS1050/ad-page.webp"
     },
     {
       "public_id": "pub_350167e72f692941a86449e3",

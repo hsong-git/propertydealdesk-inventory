@@ -6,6 +6,13 @@ import { withEntryAttribution } from "./_lib/entryAttribution.js";
 
 export async function onRequest(context) {
   const url = new URL(context.request.url);
+  // Fixed destination: preserve old paths/attribution without an open redirect.
+  if (url.hostname === "scmi.myeviv.com") {
+    url.protocol = "https:";
+    url.hostname = "www.myeviv.com";
+    url.port = "";
+    return Response.redirect(url, 308);
+  }
   const pathname = url.pathname.replace(/\/+$/, "") || "/";
   // Use one canonical URL for SPA routes so Cloudflare analytics and search
   // engines do not split the same page between slash and non-slash paths.
@@ -13,7 +20,7 @@ export async function onRequest(context) {
     url.pathname = pathname;
     return Response.redirect(url, 308);
   }
-  const combined = url.hostname === "scmi.myeviv.com" || context.env.VITE_CATALOGUE_MODE === "scmi";
+  const combined = url.hostname === "www.myeviv.com" || context.env.VITE_CATALOGUE_MODE === "scmi";
   if (combined && pathname === "/cmi") return Response.redirect(new URL("/", url), 302);
   // Keep administration on the existing Access-protected site.
   if (combined && (pathname === "/admin" || pathname.startsWith("/admin/"))) {

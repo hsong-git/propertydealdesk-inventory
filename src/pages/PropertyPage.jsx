@@ -9,7 +9,7 @@ import { PublicPropertyImage } from "../components/PublicPropertyImage";
 import { ShareSelectedPhotosButton } from "../components/ShareSelectedPhotosButton";
 import { Seo } from "../components/Seo";
 import { ListingUnavailableState } from "../components/ListingUnavailableState";
-import { propertyBreadcrumbs, propertyJsonLd, propertySeoDescription, SITE_ORIGIN } from "../utils/seo";
+import { propertyBreadcrumbs, propertyJsonLd, propertySeoDescription, propertySeoTitle, SITE_ORIGIN } from "../utils/seo";
 import { COMBINED_CATALOGUE } from "../config/catalogueSite.js";
 import { photoSwipeDirection } from "../utils/photoSwipe";
 import { getRelatedListings } from "../utils/relatedListings";
@@ -45,7 +45,7 @@ export function PropertyPage() {
   const displayPrice = displayIntent === listing?.alternateIntent ? listing?.alternatePrice : listing?.price;
   const otherIntent = displayIntent === listing?.alternateIntent ? listing?.intent : listing?.alternateIntent;
   const otherPrice = displayIntent === listing?.alternateIntent ? listing?.price : listing?.alternatePrice;
-  const seoTitle = listing ? `${listing.title} | ${listing.displayCode || listing.code} | HS Ong Property Inventory` : "Property Details | HS Ong Property Inventory";
+  const seoTitle = listing ? propertySeoTitle(listing) : "Property Details | HS Ong Property Inventory";
   const seoDescription = listing ? propertySeoDescription(listing, formatPrice(displayPrice, displayIntent)) : "Public property details from HS Ong Property Inventory.";
   const seoCanonical = `${SITE_ORIGIN}/property/${slug}`;
   function movePhoto(direction) {

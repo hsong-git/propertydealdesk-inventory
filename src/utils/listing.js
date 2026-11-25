@@ -29,10 +29,8 @@ export const matchesInventoryFilter = (listing, value) => {
   return !filter || (listing.visibility === "unlisted" ? "cmi" : "smi") === filter;
 };
 
-// Sharing follows the inventory classification, not the catalogue being browsed.
-export const listingPublicOrigin = (listing) => listing.visibility === "unlisted"
-  ? "https://scmi.myeviv.com"
-  : "https://property.myeviv.com";
+// New public shares use the preferred domain for both inventory classifications.
+export const listingPublicOrigin = () => "https://www.myeviv.com";
 
 export const formatPrice = (value, intent) => {
   if (!value) return "Price on request";
@@ -130,7 +128,7 @@ const postingHosts = new Set(["property.myeviv.com", "scmi.myeviv.com", "www.mye
 
 export const postingFootnoteOrigin = (locationRef = globalThis.location) => {
   const hostname = String(locationRef?.hostname || "").trim().toLowerCase();
-  return postingHosts.has(hostname) ? `https://${hostname}` : CATALOGUE_ORIGIN;
+  return hostname === "scmi.myeviv.com" ? "https://www.myeviv.com" : postingHosts.has(hostname) ? `https://${hostname}` : CATALOGUE_ORIGIN;
 };
 
 export const postingFootnoteUrl = (listing, origin = postingFootnoteOrigin()) => {

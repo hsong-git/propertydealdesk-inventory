@@ -19,7 +19,7 @@ const EVENT_LABELS = {
   session_engaged: "Engaged visits",
 };
 
-const hostLabel = (host) => host === "property.myeviv.com" ? "Property" : host === "scmi.myeviv.com" ? "SCMI" : host;
+const hostLabel = (host) => host === "property.myeviv.com" ? "Property" : host === "www.myeviv.com" ? "WWW" : host === "scmi.myeviv.com" ? "SCMI (legacy)" : host;
 
 function AnalyticsListingLink({ code, listing }) {
   const photo = listing?.photos?.[0];
@@ -108,7 +108,7 @@ export function AnalyticsAdminPage() {
   return <main className="page-width admin-analytics-page">
     <Seo title="Traffic analytics | HS Ong Property Inventory" />
     <header className="admin-page-heading"><AdminBackLink /><span className="eyebrow"><ShieldCheck size={15} /> Private administration</span><h1>Traffic and lead analytics</h1><p>First-party, privacy-conscious funnel activity separated by website. A session lasts for the visitor&apos;s current browser tab and does not identify a person.</p></header>
-    <section className="analytics-controls"><div className="catalogue-mode-toggle">{["property.myeviv.com", "scmi.myeviv.com"].map((item) => <button key={item} className={host === item ? "active" : ""} type="button" onClick={() => setHost(item)}>{hostLabel(item)}</button>)}</div><label>Period<select value={days} onChange={(event) => setDays(Number(event.target.value))}><option value="7">7 days</option><option value="30">30 days</option><option value="90">90 days</option></select></label><button className="button secondary" type="button" onClick={load}><RefreshCw size={16} /> Refresh</button></section>
+    <section className="analytics-controls"><div className="catalogue-mode-toggle">{["property.myeviv.com", "www.myeviv.com", "scmi.myeviv.com"].map((item) => <button key={item} className={host === item ? "active" : ""} type="button" onClick={() => setHost(item)}>{hostLabel(item)}</button>)}</div><label>Period<select value={days} onChange={(event) => setDays(Number(event.target.value))}><option value="7">7 days</option><option value="30">30 days</option><option value="90">90 days</option></select></label><button className="button secondary" type="button" onClick={load}><RefreshCw size={16} /> Refresh</button></section>
     {state.error ? <p className="requirement-alert error">{state.error}</p> : null}
     <section className="analytics-kpis" aria-label={`${hostLabel(host)} performance`}><article><span>Sessions</span><strong>{sessionCount}</strong></article><article><span>Listing views</span><strong>{eventCount("listing_view")}</strong></article><article><span>WhatsApp clicks</span><strong>{eventCount("whatsapp_click")}</strong></article><article><span>Inquiries</span><strong>{eventCount("inquiry_submitted")}</strong></article><article><span>Inquiry/session</span><strong>{inquiryRate}%</strong></article></section>
     <section className="analytics-card analytics-traffic-quality" aria-label="Traffic quality">

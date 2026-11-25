@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { SITE_ORIGIN } from "../src/utils/seo.js";
+import { COMBINED_CATALOGUE } from "../src/config/catalogueSite.js";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, "..");
@@ -28,7 +29,7 @@ const fallbackLastMod = meta.publishedAt || meta.generatedAt;
 const urls = [
   { loc: `${SITE_ORIGIN}/`, priority: "1.0", changefreq: "daily", lastmod: asDate(fallbackLastMod) },
   { loc: `${SITE_ORIGIN}/inquiries`, priority: "0.6", changefreq: "monthly", lastmod: asDate(fallbackLastMod) },
-  ...Array.from({ length: Math.max(1, Math.ceil(items.length / 12)) }, (_, index) => ({
+  ...Array.from({ length: COMBINED_CATALOGUE ? Math.max(1, Math.ceil(items.length / 12)) : 0 }, (_, index) => ({
     loc: `${SITE_ORIGIN}/catalogue/page/${index + 1}/`, priority: "0.6", changefreq: "weekly", lastmod: asDate(fallbackLastMod),
   })),
   ...items.map((listing) => ({

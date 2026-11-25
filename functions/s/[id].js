@@ -7,7 +7,11 @@ export async function onRequest(context) {
   if (!SEARCH_LINK_ID.test(context.params.id || "")) return unavailable();
   try {
     const url = new URL(context.request.url);
-    const row = await context.env.REQUIREMENTS_DB.prepare("SELECT search_query FROM shared_search_links WHERE id=? AND site_host=?").bind(context.params.id, url.host).first();
+    const db = context.env.REQUIREMENTS_DB;
+    let row = await db.prepare("SELECT search_query FROM shared_search_links WHERE id=? AND site_host=?").bind(context.params.id, url.host).first();
+    // Old SCMI links are forwarded to WWW. Only that explicit legacy host is
+    // accepted as a fallback; never resolve another site's saved searches.
+    if (!row && url.host === "www.myeviv.com") row = await db.prepare("SELECT search_query FROM shared_search_links WHERE id=? AND site_host=?").bind(context.params.id, "scmi.myeviv.com").first();
     if (!row) return unavailable();
     const destination = new URL("/", url);
     destination.search = row.search_query;

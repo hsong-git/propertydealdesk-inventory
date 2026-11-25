@@ -1,5 +1,6 @@
-import { CATALOGUE_ORIGIN } from "../config/catalogueSite.js";
-export const SITE_ORIGIN = CATALOGUE_ORIGIN;
+// Shared public pages consolidate search signals on WWW. Property remains
+// independently usable; private/unlisted pages retain their noindex rules.
+export const SITE_ORIGIN = "https://www.myeviv.com";
 
 export const defaultSeo = {
   title: "HS Ong Property Inventory | Klang & Shah Alam Listings",
@@ -118,12 +119,12 @@ export function applyJsonLd(id, payload) {
 
 export const agentJsonLd = (profile) => ({
   "@context": "https://schema.org",
-  "@type": ["Person", "RealEstateAgent"],
+  "@type": "Person",
   name: profile.profilePanelName || profile.name,
   alternateName: profile.displayName,
   jobTitle: profile.title,
   worksFor: {
-    "@type": "Organization",
+    "@type": "RealEstateAgent",
     name: profile.agency,
   },
   url: SITE_ORIGIN,
@@ -142,6 +143,12 @@ export const propertySeoDescription = (listing, priceText) => [
   priceText && `for ${priceText}`,
   listing.availability && `- ${listing.availability}`,
 ].filter(Boolean).join(" ");
+
+export function propertySeoTitle(listing) {
+  const title = String(listing.title || listing.propertyType || "Property").replace(/\s+/g, " ").trim();
+  const shortened = title.length > 52 ? title.slice(0, 53).replace(/\s+\S*$/, "").trim() + "…" : title;
+  return `${shortened} | ${listing.displayCode || listing.code} | HS Ong`;
+}
 
 export const propertyJsonLd = (listing) => ({
   "@context": "https://schema.org",

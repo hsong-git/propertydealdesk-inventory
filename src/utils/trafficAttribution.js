@@ -25,7 +25,7 @@ export function detectAttribution({ search = "", referrer = "", hostname = "", s
       const [source, medium] = apps[host];
       return { source, medium, campaign: "", content: "", method: "app_referrer" };
     }
-    if (["http:", "https:"].includes(url.protocol) && host !== hostname.replace(/^www\./, "") && !["property.myeviv.com", "scmi.myeviv.com"].includes(host)) {
+    if (["http:", "https:"].includes(url.protocol) && host !== hostname.replace(/^www\./, "") && !["property.myeviv.com", "scmi.myeviv.com", "myeviv.com"].includes(host)) {
       let source = host, medium = "referral";
       if (hostMatches(host, "cloudflareaccess.com") || ["accounts.google.com", "login.microsoftonline.com"].includes(host)) {
         return { source: "authentication_return", medium: "authentication", campaign: "", content: "", method: "referrer" };
@@ -74,7 +74,7 @@ export function attributionSearch(search) {
 
 export function campaignUrl(destination, { source, medium = "", campaign = "", content = "" }) {
   const url = new URL(destination);
-  if (url.protocol !== "https:" || url.username || url.password || !["property.myeviv.com", "scmi.myeviv.com"].includes(url.host) || !/^\/(?:$|i\/[A-Za-z0-9-]+\/?$|property\/[A-Za-z0-9-]+\/?$)/.test(url.pathname)) throw new Error("Use a Property or SCMI homepage or listing link.");
+  if (url.protocol !== "https:" || url.username || url.password || !["property.myeviv.com", "scmi.myeviv.com", "www.myeviv.com"].includes(url.host) || !/^\/(?:$|i\/[A-Za-z0-9-]+\/?$|property\/[A-Za-z0-9-]+\/?$)/.test(url.pathname)) throw new Error("Use a Property or WWW homepage or listing link.");
   if (!trafficLabel(source)) throw new Error("Enter a source using letters, numbers, underscores or hyphens.");
   for (const key of TRAFFIC_KEYS) url.searchParams.delete(key);
   for (const [key, value] of Object.entries({ utm_source: source, utm_medium: medium, utm_campaign: campaign, utm_content: content })) {

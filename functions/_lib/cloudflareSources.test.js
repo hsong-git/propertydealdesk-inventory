@@ -32,6 +32,16 @@ test("90-day API queries have non-overlapping 30-day slices", async () => {
   assert.equal(bounds[2][0],bounds[1][1]+1);
 });
 
+test("WWW is a supported analytics host and owned-domain referrals are not new acquisition", async () => {
+  const report = await readCloudflareSources({ token: "test", host: "www.myeviv.com", days: 30, period, fetcher: async (_url, options) => {
+    assert.match(JSON.parse(options.body).query, /requestHost: "www.myeviv.com"/);
+    return result([group("scmi.myeviv.com", 2), group("m.facebook.com", 3)]);
+  } });
+  assert.equal(report.site_host, "www.myeviv.com");
+  assert.equal(report.rows.find(row => row.source === "direct_unknown").visits, 2);
+  assert.equal(report.rows.find(row => row.source === "facebook").visits, 3);
+});
+
 test("invalid selections and API errors do not fabricate zero traffic", async () => {
   await assert.rejects(readCloudflareSources({token:"test",host:"evil.test",days:30,period}));
   await assert.rejects(readCloudflareSources({token:"test",host:"property.myeviv.com",days:30,period,fetcher:async()=>Response.json({errors:[{message:"private API failure"}]})}),/unavailable/);

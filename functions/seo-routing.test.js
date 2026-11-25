@@ -51,12 +51,24 @@ test("private HTML is excluded from indexing without changing API or static asse
 
 test("SCMI keeps admin on the existing protected origin and uses its combined catalogue", async () => {
   const runScmi = (path) => onRequest({
-    request: new Request(`https://scmi.myeviv.com${path}`),
+    request: new Request(`https://www.myeviv.com${path}`),
     env: { ASSETS: { fetch: async () => Response.json({ properties: ["cmi-unit"], cataloguePages: 1 }) } },
     next: async () => new Response("page", { headers: { "content-type": "text/html" } }),
   });
-  assert.equal((await runScmi("/cmi")).headers.get("location"), "https://scmi.myeviv.com/");
+  assert.equal((await runScmi("/cmi")).headers.get("location"), "https://www.myeviv.com/");
   assert.equal((await runScmi("/admin/inquiries")).headers.get("location"), "https://property.myeviv.com/admin/inquiries");
   assert.equal((await runScmi("/property/cmi-unit")).status, 200);
   assert.equal((await runScmi("/property/cmi-unit")).headers.get("x-robots-tag"), null);
+});
+
+test("legacy SCMI permanently redirects to WWW with exact paths, parameters and methods", async () => {
+  for (const path of ["/", "/inquiries?lang=zh", "/property/active-property/?src=c2&intent=WTS", "/i/WTL0070?src=c1", "/s/abcdefghijklmnop", "/robots.txt", "/sitemap.xml", "/api/search-links"]) {
+    for (const method of ["GET", "HEAD", "POST"]) {
+      const response = await onRequest({ request: new Request(`https://scmi.myeviv.com${path}`, { method }), env: {}, next: () => { throw new Error("Legacy host must not serve content"); } });
+      assert.equal(response.status, 308);
+      assert.equal(response.headers.get("location"), `https://www.myeviv.com${path}`);
+    }
+  }
+  const response = await onRequest({ request: new Request("https://scmi.myeviv.com//evil.example/?url=https://evil.example"), env: {} });
+  assert.equal(new URL(response.headers.get("location")).host, "www.myeviv.com");
 });

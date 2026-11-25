@@ -8,6 +8,7 @@ import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { listingShortUrl } from "../src/utils/listing.js";
 import { propertyOgDescription, renderPropertyRouteHtml, summarizePostingCopy, prerenderPropertyOgRoutes } from "./property-og.mjs";
 import { renderCatalogueContent } from "./catalogue-html.mjs";
+import { propertySeoTitle, SITE_ORIGIN } from "../src/utils/seo.js";
 
 const chunk = (type, data) => {
   const header = Buffer.alloc(8);
@@ -33,19 +34,19 @@ const shell = `<!doctype html>
   <head>
     <title>Default</title>
     <meta name="description" content="Default description" />
-    <link rel="canonical" href="https://property.myeviv.com/" />
+    <link rel="canonical" href="https://www.myeviv.com/" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://property.myeviv.com/" />
+    <meta property="og:url" content="https://www.myeviv.com/" />
     <meta property="og:title" content="Default OG" />
     <meta property="og:description" content="Default OG description" />
-    <meta property="og:image" content="https://property.myeviv.com/og/property-inventory-card-white.png" />
+    <meta property="og:image" content="https://www.myeviv.com/og/property-inventory-card-white.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:type" content="image/png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Default Twitter" />
     <meta name="twitter:description" content="Default Twitter description" />
-    <meta name="twitter:image" content="https://property.myeviv.com/og/property-inventory-card-white.png" />
+    <meta name="twitter:image" content="https://www.myeviv.com/og/property-inventory-card-white.png" />
   </head>
   <body><div id="root"></div></body>
 </html>`;
@@ -75,6 +76,16 @@ const feed = {
   }],
 };
 
+test("public SEO consolidates on WWW and keeps shortened listing titles identifiable", () => {
+  assert.equal(SITE_ORIGIN, "https://www.myeviv.com");
+  const listing = { code: "WTS1004", title: "  Beautiful   renovated family home with spacious rooms and a long description in Klang  " };
+  const title = propertySeoTitle(listing);
+  assert.match(title, /^Beautiful renovated family home/);
+  assert.match(title, /… \| WTS1004 \| HS Ong$/);
+  assert(title.length < 80);
+  assert.notEqual(title, propertySeoTitle({ ...listing, code: "WTS1005" }));
+});
+
 test("unlisted detail and shortcut HTML retains details but opts out of indexing", () => {
   const { items, allItems } = normalizeInventoryFeed({ ...feed, listings: [{ ...feed.listings[0], visibility: "unlisted", photos: [], cover_photo: null }] });
   assert.equal(items.length, 0);
@@ -97,16 +108,19 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
     fs.writeFileSync(path.join(publicRoot, "data", "inventory.json"), JSON.stringify({ ...feed, listings: [visible, hidden] }));
     fs.writeFileSync(path.join(distRoot, "index.html"), shell);
     await prerenderPropertyOgRoutes({ projectRoot: root, publicRoot, distRoot });
+    const pagination = fs.readFileSync(path.join(distRoot, "catalogue", "page", "1", "index.html"), "utf8");
+    assert.match(pagination, /name="robots" content="noindex, follow"/);
+    assert.match(pagination, /rel="canonical" href="https:\/\/property\.myeviv\.com\/catalogue\/page\/1\//);
     assert.equal(fs.existsSync(path.join(distRoot, "inquiries.html")), true);
     assert.equal(fs.existsSync(path.join(distRoot, "inquiries", "index.html")), false);
     assert.match(fs.readFileSync(path.join(distRoot, "inquiries.html"), "utf8"), /Find a Property for Me/);
-    const nameCardUrl = "https://property.myeviv.com/og/hs-ong-name-card-v2.png";
+    const nameCardUrl = "https://www.myeviv.com/og/hs-ong-name-card-v2.png";
     for (const [file, route, title] of [
       ["index.html", "/", "HS Ong Property Inventory"],
       ["inquiries.html", "/inquiries", "Find a Property for Me | HS Ong"],
     ]) {
       const html = fs.readFileSync(path.join(distRoot, file), "utf8");
-      assert.ok(html.includes(`<meta property="og:url" content="https://property.myeviv.com${route}"`));
+      assert.ok(html.includes(`<meta property="og:url" content="https://www.myeviv.com${route}"`));
       assert.ok(html.includes(`<meta property="og:title" content="${title}"`));
       assert.ok(html.includes(`<meta property="og:image" content="${nameCardUrl}"`));
       assert.ok(html.includes(`<meta name="twitter:image" content="${nameCardUrl}"`));
@@ -133,12 +147,12 @@ test("prerender keeps CMI detail links but hides them from home, catalogue and S
       assert.match(html, /noindex, nofollow/);
     }
     const shortcutHtml = fs.readFileSync(path.join(distRoot, "i", hidden.code, "index.html"), "utf8");
-    assert.match(shortcutHtml, /<link rel="canonical" href="https:\/\/scmi\.myeviv\.com\/i\/WTL0099\?v=2026\.07\.29\.1&amp;preview=8" \/>/);
-    assert.match(shortcutHtml, /<meta property="og:url" content="https:\/\/scmi\.myeviv\.com\/i\/WTL0099\?v=2026\.07\.29\.1&amp;preview=8" \/>/);
-    assert.doesNotMatch(shortcutHtml, /property\.myeviv\.com\/i\/CMI-WTL0099/);
+    assert.match(shortcutHtml, /<link rel="canonical" href="https:\/\/www\.myeviv\.com\/property\/cmi-unlisted-only" \/>/);
+    assert.match(shortcutHtml, /<meta property="og:url" content="https:\/\/www\.myeviv\.com\/i\/WTL0099\?v=2026\.07\.29\.1&amp;preview=8" \/>/);
+    assert.doesNotMatch(shortcutHtml, /www\.myeviv\.com\/i\/CMI-WTL0099/);
     const visibleShortcutHtml = fs.readFileSync(path.join(distRoot, "i", visible.code, "index.html"), "utf8");
-    assert.match(visibleShortcutHtml, /<link rel="canonical" href="https:\/\/property\.myeviv\.com\/i\/WTS1004\?v=2026\.07\.29\.1&amp;preview=8" \/>/);
-    assert.match(visibleShortcutHtml, /<meta property="og:url" content="https:\/\/property\.myeviv\.com\/i\/WTS1004\?v=2026\.07\.29\.1&amp;preview=8" \/>/);
+    assert.match(visibleShortcutHtml, /<link rel="canonical" href="https:\/\/www\.myeviv\.com\/property\/wts1004-family-home-bukit-tinggi" \/>/);
+    assert.match(visibleShortcutHtml, /<meta property="og:url" content="https:\/\/www\.myeviv\.com\/i\/WTS1004\?v=2026\.07\.29\.1&amp;preview=8" \/>/);
     const manifest = JSON.parse(fs.readFileSync(path.join(distRoot, "data", "seo-routes.json"), "utf8"));
     assert.deepEqual(manifest.properties, [visible.slug]);
     assert.deepEqual(manifest.unlistedProperties, [hidden.slug]);
@@ -161,21 +175,21 @@ test("renders crawler-visible property OG tags from public listing data", () => 
     const { items } = normalizeInventoryFeed(feed);
     const html = renderPropertyRouteHtml(shell, items[0], directory);
     const shortHtml = renderPropertyRouteHtml(shell, items[0], directory, {
-      canonicalOverride: "https://property.myeviv.com/i/WTS1004",
-      ogUrlOverride: "https://property.myeviv.com/i/WTS1004",
+      canonicalOverride: "https://www.myeviv.com/i/WTS1004",
+      ogUrlOverride: "https://www.myeviv.com/i/WTS1004",
     });
-    assert.match(html, /<title>WTS1004 Family Home in Bukit Tinggi \| HS Ong Property Inventory<\/title>/);
+    assert.match(html, /<title>Family Home in Bukit Tinggi \| WTS1004 \| HS Ong<\/title>/);
     assert.match(html, /<meta property="og:type" content="article" \/>/);
-    assert.match(html, /<meta property="og:url" content="https:\/\/property\.myeviv\.com\/property\/wts1004-family-home-bukit-tinggi" \/>/);
-    assert.match(html, /<meta property="og:image" content="https:\/\/property\.myeviv\.com\/inventory\/WTS1004\/cover\.webp" \/>/);
+    assert.match(html, /<meta property="og:url" content="https:\/\/www\.myeviv\.com\/property\/wts1004-family-home-bukit-tinggi" \/>/);
+    assert.match(html, /<meta property="og:image" content="https:\/\/www\.myeviv\.com\/inventory\/WTS1004\/cover\.webp" \/>/);
     assert.match(html, /<meta property="og:image:width" content="1200" \/>/);
     assert.match(html, /<meta property="og:image:height" content="630" \/>/);
     assert.match(html, /<meta property="og:image:type" content="image\/webp" \/>/);
-    assert.match(html, /<meta property="og:image:secure_url" content="https:\/\/property\.myeviv\.com\/inventory\/WTS1004\/cover\.webp" \/>/);
+    assert.match(html, /<meta property="og:image:secure_url" content="https:\/\/www\.myeviv\.com\/inventory\/WTS1004\/cover\.webp" \/>/);
     assert.match(html, /<meta property="og:image:alt" content="WTS1004 Family Home in Bukit Tinggi property photo" \/>/);
     assert.doesNotMatch(html, /database_id|raw_json|internal_note|60163132865/);
-    assert.match(shortHtml, /<link rel="canonical" href="https:\/\/property\.myeviv\.com\/i\/WTS1004" \/>/);
-    assert.match(shortHtml, /<meta property="og:url" content="https:\/\/property\.myeviv\.com\/i\/WTS1004" \/>/);
+    assert.match(shortHtml, /<link rel="canonical" href="https:\/\/www\.myeviv\.com\/i\/WTS1004" \/>/);
+    assert.match(shortHtml, /<meta property="og:url" content="https:\/\/www\.myeviv\.com\/i\/WTS1004" \/>/);
   } finally {
     fs.rmSync(directory, { recursive: true, force: true });
   }
@@ -193,7 +207,7 @@ test("uses AdPage for crawler OG image and visible main image", () => {
       listings: [{ ...feed.listings[0], cover_photo: adPage, photos: [adPage, ...feed.listings[0].photos], ad_page: adPage }],
     });
     const html = renderPropertyRouteHtml(shell, items[0], directory);
-    assert.match(html, /<meta property="og:image" content="https:\/\/property\.myeviv\.com\/inventory\/WTS1004\/ad-page\.webp" \/>/);
+    assert.match(html, /<meta property="og:image" content="https:\/\/www\.myeviv\.com\/inventory\/WTS1004\/ad-page\.webp" \/>/);
     assert.match(html, /<img src="\/inventory\/WTS1004\/ad-page\.webp"/);
   } finally {
     fs.rmSync(directory, { recursive: true, force: true });
@@ -225,7 +239,7 @@ test("preserves the complete AdPage inside Facebook's 1200 by 630 preview", asyn
     await prerenderPropertyOgRoutes({ projectRoot: root, publicRoot, distRoot });
 
     const html = fs.readFileSync(path.join(distRoot, "i", "WTS1004", "index.html"), "utf8");
-    const match = html.match(/<meta property="og:image" content="https:\/\/property\.myeviv\.com(\/og\/properties\/[^"]+)" \/>/);
+    const match = html.match(/<meta property="og:image" content="https:\/\/www\.myeviv\.com(\/og\/properties\/[^"]+)" \/>/);
     assert.ok(match);
     assert.match(match[1], /-v8\.jpg$/);
     const socialImagePath = path.join(distRoot, match[1].replace(/^\//, ""));
@@ -247,10 +261,10 @@ test("preserves the complete AdPage inside Facebook's 1200 by 630 preview", asyn
 
 test("uses stable short URL format for share actions", () => {
   const { items } = normalizeInventoryFeed(feed);
-  assert.equal(listingShortUrl(items[0]), "https://property.myeviv.com/i/WTS1004");
+  assert.equal(listingShortUrl(items[0]), "https://www.myeviv.com/i/WTS1004");
   assert.equal(
     listingShortUrl({ ...items[0], adPage: "/inventory/WTS1004/AdPage/poster.jpg" }),
-    "https://property.myeviv.com/i/WTS1004?v=2026.07.29.1&preview=8",
+    "https://www.myeviv.com/i/WTS1004?v=2026.07.29.1&preview=8",
   );
   assert.match(propertyOgDescription(items[0]), /Family Home/);
 });
@@ -262,7 +276,7 @@ test("versions CMI short URLs so social crawlers fetch a fresh preview", () => {
   }, { includeCmi: true });
   assert.equal(
     listingShortUrl(allItems[0]),
-    "https://scmi.myeviv.com/i/WTS1004?v=2026.07.29.1&preview=8",
+    "https://www.myeviv.com/i/WTS1004?v=2026.07.29.1&preview=8",
   );
 });
 

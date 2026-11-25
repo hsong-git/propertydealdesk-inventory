@@ -9,7 +9,7 @@ export async function onRequestGet(context) {
   const params = new URL(context.request.url).searchParams;
   const host = params.get("host") || "property.myeviv.com";
   const days = Number(params.get("days") || 30);
-  if (!["property.myeviv.com","scmi.myeviv.com"].includes(host) || ![7,30,90].includes(days)) return json({error:"Invalid analytics selection."},400);
+  if (!["property.myeviv.com","scmi.myeviv.com","www.myeviv.com"].includes(host) || ![7,30,90].includes(days)) return json({error:"Invalid analytics selection."},400);
   const snapshot = cloudflareReferrerSnapshots.find(item => item.site_host === host && item.days === days);
   // Never deploy a CLI OAuth credential here. Only a separately provisioned,
   // account-scoped, read-only Analytics API token belongs in this binding.

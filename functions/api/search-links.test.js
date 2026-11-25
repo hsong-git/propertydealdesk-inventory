@@ -55,8 +55,25 @@ test("invalid, cross-origin and oversized short-link requests do not write", asy
 });
 test("storage failures are explicit and short routes pass through SEO middleware", async()=>{
   assert.equal((await create({request:request("scmi.myeviv.com",""),env:{}})).status,503);
-  const response=await middleware({request:new Request("https://scmi.myeviv.com/s/abcdefghijklmnop"),env:{},next:async()=>new Response(null,{status:302,headers:{location:"https://scmi.myeviv.com/?intent=WTS"}})});
+  const response=await middleware({request:new Request("https://www.myeviv.com/s/abcdefghijklmnop"),env:{},next:async()=>new Response(null,{status:302,headers:{location:"https://www.myeviv.com/?intent=WTS"}})});
   assert.equal(response.status,302);
+});
+
+test("legacy SCMI saved searches resolve on WWW without changing records or leaking to Property", async () => {
+  const db = database();
+  try {
+    const created = await create({ request: request("scmi.myeviv.com", "intent=WTS&location=Setia+Alam"), env: { REQUIREMENTS_DB: db } });
+    const { path } = await created.json();
+    const params = { id: path.slice(3) };
+    const redirect = await resolve({ request: new Request("https://www.myeviv.com" + path), params, env: { REQUIREMENTS_DB: db } });
+    assert.equal(redirect.status, 302);
+    const destination = new URL(redirect.headers.get("location"));
+    assert.equal(destination.host, "www.myeviv.com");
+    assert.equal(destination.searchParams.get("intent"), "WTS");
+    assert.equal(destination.searchParams.get("location"), "Setia Alam");
+    assert.equal((await resolve({ request: new Request("https://property.myeviv.com" + path), params, env: { REQUIREMENTS_DB: db } })).status, 404);
+    assert.equal(db.sqlite.prepare("SELECT site_host FROM shared_search_links").get().site_host, "scmi.myeviv.com");
+  } finally { db.sqlite.close(); }
 });
 
 test("All searches explicitly override saved filters and creation is bounded without blocking existing links", async()=>{

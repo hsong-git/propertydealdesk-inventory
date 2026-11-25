@@ -2,7 +2,7 @@ import { detectAttribution } from "../../src/utils/trafficAttribution.js";
 
 const ACCOUNT = "3875db6c85889be41a227aec1e74777e";
 const SITE = "1714bc0e4faf42ffb77bd003bdb25dac";
-const HOSTS = new Set(["property.myeviv.com", "scmi.myeviv.com"]);
+const HOSTS = new Set(["property.myeviv.com", "scmi.myeviv.com", "www.myeviv.com"]);
 
 export async function readCloudflareSources({ token, host, period, days, fetcher = fetch }) {
   if (!token || !HOSTS.has(host)) throw new Error("Cloudflare analytics access is not configured.");

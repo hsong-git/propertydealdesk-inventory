@@ -332,7 +332,7 @@ test("normalizes request-side posting footers to the universal homepage", () => 
 
 test("posting footer URLs follow the current site and always track WhatsApp", () => {
   assert.equal(postingFootnoteOrigin({ hostname: "property.myeviv.com" }), "https://property.myeviv.com");
-  assert.equal(postingFootnoteOrigin({ hostname: "scmi.myeviv.com" }), "https://scmi.myeviv.com");
+  assert.equal(postingFootnoteOrigin({ hostname: "scmi.myeviv.com" }), "https://www.myeviv.com");
   assert.equal(postingFootnoteOrigin({ hostname: "www.myeviv.com" }), "https://www.myeviv.com");
   assert.equal(postingFootnoteUrl({ code: "WTL0098", intent: "WTL" }, "https://property.myeviv.com"), "https://property.myeviv.com/i/WTL0098?src=c1");
   assert.equal(postingFootnoteUrl({ code: "WTS1039", intent: "WTS" }, "https://scmi.myeviv.com"), "https://scmi.myeviv.com/i/WTS1039?src=c1");

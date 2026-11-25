@@ -49,6 +49,7 @@ test("curated pages render useful crawler-visible listings, real contact details
     assert.match(contact, /REN 81340/); assert.match(contact, /mailto:hsong@myeviv.com/); assert.match(contact, /tel:\+60163132865/);
     assert.match(fs.readFileSync(path.join(root, "about.html"), "utf8"), /The Roof Realty/);
     assert.match(discoveryLinks(items), /\/areas\/bukit-tinggi/);
+    assert.match(discoveryLinks(items), /Browse by popular area/);
     assert.equal(areaStructuredData(area, [item], "https://www.myeviv.com")[1]["@type"], "BreadcrumbList");
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });

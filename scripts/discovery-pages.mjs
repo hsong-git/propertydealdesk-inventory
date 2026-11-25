@@ -11,7 +11,7 @@ const escape = value => String(value ?? "").replaceAll("&", "&amp;").replaceAll(
 
 export function discoveryLinks(items, dictionary, listing) {
   const areas = publishedAreas(listing ? [listing] : items, dictionary, { includeCmi: COMBINED_CATALOGUE });
-  return areas.length ? `<nav class="area-discovery-links" aria-label="Browse properties by area"><span>${listing ? "More properties in:" : "Browse by area:"}</span>${areas.map(area => `<a href="${areaPath(area)}">${escape(area.name)}${listing ? "" : ` (${area.listings.length})`}</a>`).join("")}</nav>` : "";
+  return areas.length ? `<nav class="area-discovery-links" aria-label="Browse properties by area"><span>${listing ? "More properties in:" : "Browse by popular area"}</span>${areas.map(area => `<a href="${areaPath(area)}">${escape(area.name)}${listing ? "" : ` (${area.listings.length})`}</a>`).join("")}</nav>` : "";
 }
 
 const shell = content => renderCatalogueContent([], { heading: "Properties" }).replace(/<main[\s\S]*?<\/main>/, content).replace('<div class="footer-links">', '<div class="footer-links"><a href="/about">About HS Ong</a><a href="/contact">Contact</a>');

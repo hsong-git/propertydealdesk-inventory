@@ -15,6 +15,7 @@ import { buildLocationOptions, buildLocationCounts } from "../utils/locationFilt
 import { normalizeMultiFilters, readFilterParams, writeFilterParams } from "../utils/multiSelect.js";
 import { matchesCatalogueFilters, normalizeCatalogueIntent, offerForIntent } from "../utils/catalogueFilter.js";
 import { analyticsSource, trackEvent } from "../utils/analytics.js";
+import { AreaLinks } from "../components/AreaLinks";
 
 const defaultIntent = "";
 const INITIAL_VISIBLE_COUNT = 12;
@@ -219,6 +220,7 @@ export function HomePage() {
       <Seo {...homeShareSeo} />
       <div className="page-width home-stack">
         <ProfilePanel />
+        <AreaLinks items={items} dictionary={locationDictionary} />
         {meta?.isMockData ? (
           <section className="development-data-notice" role="status">
             <AlertTriangle size={20} />

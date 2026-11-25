@@ -1,16 +1,21 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { lazy } from "react";
 import { Layout } from "./components/Layout";
 import { HomePage } from "./pages/HomePage";
-import { CmiPage } from "./pages/CmiPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
-import { PropertyPage } from "./pages/PropertyPage";
-import { DownloadGrantPage } from "./pages/DownloadGrantPage";
-import { ShortListingRedirect } from "./pages/ShortListingRedirect";
-import { RequirementPage } from "./pages/RequirementPage";
-import { RequirementsAdminPage } from "./pages/RequirementsAdminPage";
-import { PhotoDownloadsAdminPage } from "./pages/PhotoDownloadsAdminPage";
-import { AdminLandingPage } from "./pages/AdminLandingPage";
-import { AnalyticsAdminPage } from "./pages/AnalyticsAdminPage";
+
+const CmiPage = lazy(() => import("./pages/CmiPage").then(module => ({ default: module.CmiPage })));
+const PropertyPage = lazy(() => import("./pages/PropertyPage").then(module => ({ default: module.PropertyPage })));
+const DownloadGrantPage = lazy(() => import("./pages/DownloadGrantPage").then(module => ({ default: module.DownloadGrantPage })));
+const ShortListingRedirect = lazy(() => import("./pages/ShortListingRedirect").then(module => ({ default: module.ShortListingRedirect })));
+const RequirementPage = lazy(() => import("./pages/RequirementPage").then(module => ({ default: module.RequirementPage })));
+const RequirementsAdminPage = lazy(() => import("./pages/RequirementsAdminPage").then(module => ({ default: module.RequirementsAdminPage })));
+const PhotoDownloadsAdminPage = lazy(() => import("./pages/PhotoDownloadsAdminPage").then(module => ({ default: module.PhotoDownloadsAdminPage })));
+const AdminLandingPage = lazy(() => import("./pages/AdminLandingPage").then(module => ({ default: module.AdminLandingPage })));
+const AnalyticsAdminPage = lazy(() => import("./pages/AnalyticsAdminPage").then(module => ({ default: module.AnalyticsAdminPage })));
+const AreaPage = lazy(() => import("./pages/AreaPage").then(module => ({ default: module.AreaPage })));
+const AboutPage = lazy(() => import("./pages/AboutPage").then(module => ({ default: module.AboutPage })));
+const ContactPage = lazy(() => import("./pages/ContactPage").then(module => ({ default: module.ContactPage })));
 
 export default function App() {
   return (
@@ -19,8 +24,9 @@ export default function App() {
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="cmi" element={<CmiPage />} />
-          <Route path="about" element={<Navigate to="/" replace />} />
-          <Route path="contact" element={<Navigate to="/" replace />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="areas/:area" element={<AreaPage />} />
           <Route path="inquiries" element={<RequirementPage />} />
           <Route path="requirements" element={<Navigate to="/inquiries" replace />} />
           <Route path="admin" element={<AdminLandingPage />} />

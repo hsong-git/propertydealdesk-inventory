@@ -8,6 +8,7 @@ import { absoluteUrl, defaultSeo, homeShareSeo, inquiryShareSeo, propertyBreadcr
 import { inspectPublicImage } from "./image-policy.mjs";
 import { propertyPhotoWatermark } from "../src/config/watermark.js";
 import { renderCatalogueContent } from "./catalogue-html.mjs";
+import { discoveryLinks, writeDiscoveryPages } from "./discovery-pages.mjs";
 
 const OG_DESCRIPTION_LIMIT = 210;
 const OG_IMAGE_RENDER_VERSION = "8";
@@ -131,7 +132,7 @@ export function propertyOgMeta(listing, publicRoot) {
   };
 }
 
-export function renderPropertyRouteHtml(indexHtml, listing, publicRoot, { canonicalOverride, ogUrlOverride, imageOverride } = {}) {
+export function renderPropertyRouteHtml(indexHtml, listing, publicRoot, { canonicalOverride, ogUrlOverride, imageOverride, dictionary } = {}) {
   const meta = propertyOgMeta(listing, publicRoot);
   if (imageOverride) meta.image = imageOverride;
   if (canonicalOverride) meta.canonical = canonicalOverride;
@@ -156,7 +157,8 @@ export function renderPropertyRouteHtml(indexHtml, listing, publicRoot, { canoni
   html = replaceTag(html, /<meta name="twitter:image" content="[^"]*"\s*\/?>/i, `<meta name="twitter:image" content="${htmlEscape(meta.image.url)}" />`);
   const photo = listing.photos[0];
   const content = `<main class="page-width property-page"><a href="${listing.visibility === "unlisted" && !COMBINED_CATALOGUE ? "/cmi" : "/"}">${listing.visibility === "unlisted" && !COMBINED_CATALOGUE ? "Back to CMI Catalogue" : "Back to Catalogue"}</a><section class="detail-title-block"><p>${htmlEscape(listing.displayCode || listing.code)} · ${htmlEscape(listing.availability)}</p><h1>${htmlEscape(listing.title)}</h1><p>${htmlEscape(listing.location)}</p><div class="detail-price-row"><strong class="detail-price">${htmlEscape(formatPrice(listing.price, listing.intent))}</strong>${listing.cmiAgentName ? `<small class="detail-cmi-agent">Agent: ${htmlEscape(listing.cmiAgentName)}</small>` : ""}</div>${listing.alternateIntent && listing.alternatePrice != null ? `<p>Also available to ${listing.alternateIntent === "WTL" ? "rent" : "buy"}: ${htmlEscape(formatPrice(listing.alternatePrice, listing.alternateIntent))}</p>` : ""}</section>${photo ? `<img src="${htmlEscape(photo)}" alt="${htmlEscape(listing.title)}" style="max-width:100%;height:auto">` : ""}<section class="detail-section"><h2>Property overview</h2><p>${htmlEscape(listing.description)}</p><dl>${[["Property type", listing.propertyType], ["Bedrooms", listing.bedrooms], ["Bathrooms", listing.bathrooms], ["Built-up (sq ft)", listing.builtUpSqFt], ["Land size", listing.landSize], ["Furnishing", listing.furnishing]].filter(([, value]) => value != null).map(([label, value]) => `<dt>${label}</dt><dd>${htmlEscape(value)}</dd>`).join("")}</dl><h2>Property features</h2><ul>${listing.features.map((feature) => `<li>${htmlEscape(feature)}</li>`).join("")}</ul><a href="/inquiries">Find a property for me</a></section></main>`;
-  html = html.replace('<div id="root"></div>', `<div id="root">${photo ? content.replace(`<img src="${htmlEscape(photo)}" alt="${htmlEscape(listing.title)}" style="max-width:100%;height:auto">`, staticPhoto(photo, listing.title)) : content}</div>`);
+  const linkedContent = content.replace('<section class="detail-section">', `${discoveryLinks([], dictionary, listing)}<section class="detail-section">`);
+  html = html.replace('<div id="root"></div>', `<div id="root">${photo ? linkedContent.replace(`<img src="${htmlEscape(photo)}" alt="${htmlEscape(listing.title)}" style="max-width:100%;height:auto">`, staticPhoto(photo, listing.title)) : linkedContent}</div>`);
   const structuredData = JSON.stringify([propertyJsonLd(listing), propertyBreadcrumbs(listing)]).replaceAll("<", "\\u003c");
   html = html.replace("</head>", `<script id="page-jsonld" type="application/ld+json">${structuredData}</script></head>`);
   return html;
@@ -196,6 +198,8 @@ async function createPropertyOgImage(listing, publicRoot, distRoot, inventoryVer
 export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distRoot }) {
   const inventory = JSON.parse(fs.readFileSync(path.join(publicRoot, "data", "inventory.json"), "utf8"));
   const { items, allItems, meta } = normalizeInventoryFeed(inventory);
+  const dictionaryPath = path.join(publicRoot, "data", "location_dictionary.json");
+  const dictionary = fs.existsSync(dictionaryPath) ? JSON.parse(fs.readFileSync(dictionaryPath, "utf8")) : undefined;
   const indexHtml = fs.readFileSync(path.join(distRoot, "index.html"), "utf8").replace(/<!--seo-content-start-->[\s\S]*?<!--seo-content-end-->/g, "").replaceAll("https://property.myeviv.com", SITE_ORIGIN);
 
   for (const listing of allItems) {
@@ -207,7 +211,7 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
     // production canonical redirect removes it. Emit slug.html so both forms
     // resolve to one canonical URL instead of redirecting into a loop.
     fs.rmSync(legacyPropertyRouteDirectory, { recursive: true, force: true });
-    const listingHtml = renderPropertyRouteHtml(indexHtml, listing, publicRoot, { imageOverride });
+    const listingHtml = renderPropertyRouteHtml(indexHtml, listing, publicRoot, { imageOverride, dictionary });
     fs.writeFileSync(
       path.join(propertyRouteRoot, `${listing.slug}.html`),
       listingHtml,
@@ -220,6 +224,7 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
       path.join(shortRouteDirectory, "index.html"),
       renderPropertyRouteHtml(indexHtml, listing, publicRoot, {
         imageOverride,
+        dictionary,
         // The shortcut route is keyed by the stored listing code. CMI is a
         // display-only prefix, so publishing it in og:url creates a URL that
         // the Pages shortcut function cannot resolve.
@@ -233,11 +238,12 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
 
   // Visible HTML for visitors and crawlers before the interactive app starts.
   const pageCount = Math.max(1, Math.ceil(items.length / 12));
+  const areaSlugs = writeDiscoveryPages({ indexHtml, distRoot, items, dictionary, meta });
   // Direct-link routes are kept separate from discoverable SEO properties.
-  fs.writeFileSync(path.join(distRoot, "data", "seo-routes.json"), JSON.stringify({ properties: items.map((item) => item.slug), unlistedProperties: COMBINED_CATALOGUE ? [] : allItems.filter((item) => item.visibility === "unlisted").map((item) => item.slug), cataloguePages: pageCount }));
+  fs.writeFileSync(path.join(distRoot, "data", "seo-routes.json"), JSON.stringify({ properties: items.map((item) => item.slug), unlistedProperties: COMBINED_CATALOGUE ? [] : allItems.filter((item) => item.visibility === "unlisted").map((item) => item.slug), cataloguePages: pageCount, areas: areaSlugs }));
   const cards = (listings) => listings.map((listing) => `<article class="property-card"><a class="property-photo" href="/property/${htmlEscape(listing.slug)}">${listing.photos[0] ? staticPhoto(listing.photos[0], listing.title, true) : ""}</a><div class="property-content"><h2><a href="/property/${htmlEscape(listing.slug)}">${htmlEscape(listing.title)}</a></h2><p>${htmlEscape(listing.location)}</p><strong>${htmlEscape(formatPrice(listing.price, listing.intent))}</strong><p>${htmlEscape(listing.propertyType)} · ${htmlEscape(listing.furnishing)}</p></div></article>`).join("");
   const pages = Array.from({ length: pageCount }, (_, index) => `<a href="/catalogue/page/${index + 1}/">Page ${index + 1}</a>`).join(" · ");
-  const catalogueContent = (listings, heading) => `<main class="page-width home-stack"><header><a href="/">Properties</a> · <a href="/inquiries">Find a Property</a><h1>${heading}</h1><p>Properties for sale and rent in Klang Valley, listed by HS Ong, Real Estate Negotiator at The Roof Realty Sdn Bhd.</p></header><div class="property-grid">${cards(listings)}</div><nav aria-label="Catalogue pages">${pages}</nav></main>`;
+  const catalogueContent = (listings, heading) => `<main class="page-width home-stack"><header><a href="/">Properties</a> · <a href="/inquiries">Find a Property</a> · <a href="/about">About HS Ong</a> · <a href="/contact">Contact</a><h1>${heading}</h1><p>Properties for sale and rent in Klang Valley, listed by HS Ong, Real Estate Negotiator at The Roof Realty Sdn Bhd.</p></header>${discoveryLinks(items, dictionary)}<div class="property-grid">${cards(listings)}</div><nav aria-label="Catalogue pages">${pages}</nav></main>`;
   fs.writeFileSync(path.join(distRoot, "index.html"), renderPublicShareHtml(indexHtml, homeShareSeo).replace('<div id="root"></div>', `<div id="root"><!--seo-content-start-->${catalogueContent(items.slice(0, 12), "HS Ong Property Inventory — Klang Valley")}<!--seo-content-end--></div>`));
   for (let page = 1; page <= pageCount; page++) {
     // Property's SMI-only pagination differs from WWW's combined pagination.

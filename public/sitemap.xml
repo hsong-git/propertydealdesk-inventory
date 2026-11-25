@@ -13,6 +13,34 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://www.myeviv.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.myeviv.com/contact</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.myeviv.com/areas/bukit-tinggi</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.myeviv.com/areas/bandar-botanic</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.myeviv.com/areas/setia-alam</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.myeviv.com/property/wtl0009-4r2b-newly-refurbished-1-storey-terrace-house-taman-sentosa-next-to-nsk-taman-sri-sentosa-perdana-klang</loc>
     <lastmod>2026-11-24</lastmod>
     <changefreq>weekly</changefreq>

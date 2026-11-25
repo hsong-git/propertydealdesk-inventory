@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { SITE_ORIGIN } from "../src/utils/seo.js";
 import { COMBINED_CATALOGUE } from "../src/config/catalogueSite.js";
+import { publishedAreas, areaPath } from "../src/utils/areaDiscovery.js";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(scriptDir, "..");
@@ -25,10 +26,15 @@ const asDate = (value, fallback) => {
 const payload = JSON.parse(await readFile(inventoryPath, "utf8"));
 const { items, meta } = normalizeInventoryFeed(payload);
 const fallbackLastMod = meta.publishedAt || meta.generatedAt;
+const dictionary = JSON.parse(await readFile(path.join(projectRoot, "public", "data", "location_dictionary.json"), "utf8"));
+const areas = publishedAreas(items, dictionary, { includeCmi: COMBINED_CATALOGUE });
 
 const urls = [
   { loc: `${SITE_ORIGIN}/`, priority: "1.0", changefreq: "daily", lastmod: asDate(fallbackLastMod) },
   { loc: `${SITE_ORIGIN}/inquiries`, priority: "0.6", changefreq: "monthly", lastmod: asDate(fallbackLastMod) },
+  { loc: `${SITE_ORIGIN}/about`, priority: "0.5", changefreq: "monthly" },
+  { loc: `${SITE_ORIGIN}/contact`, priority: "0.5", changefreq: "monthly" },
+  ...areas.map(area => ({ loc: SITE_ORIGIN + areaPath(area), priority: "0.7", changefreq: "weekly", lastmod: asDate(fallbackLastMod) })),
   ...Array.from({ length: COMBINED_CATALOGUE ? Math.max(1, Math.ceil(items.length / 12)) : 0 }, (_, index) => ({
     loc: `${SITE_ORIGIN}/catalogue/page/${index + 1}/`, priority: "0.6", changefreq: "weekly", lastmod: asDate(fallbackLastMod),
   })),
@@ -43,7 +49,7 @@ const urls = [
 const body = urls.map((url) => [
   "  <url>",
   `    <loc>${xmlEscape(url.loc)}</loc>`,
-  `    <lastmod>${xmlEscape(url.lastmod)}</lastmod>`,
+  ...(url.lastmod ? [`    <lastmod>${xmlEscape(url.lastmod)}</lastmod>`] : []),
   `    <changefreq>${xmlEscape(url.changefreq)}</changefreq>`,
   `    <priority>${xmlEscape(url.priority)}</priority>`,
   "  </url>",

@@ -40,6 +40,17 @@ main { flex: 1; }
 .menu-button { display: none; width: 42px; height: 42px; border: 1px solid var(--color-border); border-radius: var(--radius-small); place-items: center; background: #fff; color: var(--color-text); }
 
 .home-stack, .content-page { padding-block: 26px 54px; display: grid; gap: 26px; }
+.area-discovery-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: 13px; }
+.area-discovery-links > span { color: var(--color-text-muted); }
+.area-discovery-links a { color: var(--color-primary); text-decoration: underline; text-underline-offset: 3px; }
+.area-page-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.area-page h1 { overflow-wrap: anywhere; }
+.area-page .section-heading h1 { margin: 8px 0; font-size: clamp(26px,4vw,36px); line-height: 1.18; }
+.area-page .section-heading p { display: block; }
+.area-summary { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.area-summary .content-card { padding: 16px; }
+.area-summary .content-card h2 { font-size: 18px; }
+@media (max-width: 340px) { .area-summary { grid-template-columns: 1fr; } }
 .profile-panel { min-height: 250px; padding: 22px 28px 0; border: 1px solid var(--color-border); border-radius: var(--radius-large); display: grid; grid-template-columns: 220px minmax(0,1fr); gap: 26px; overflow: hidden; background: linear-gradient(118deg, #fff 0%, #fff 62%, var(--color-primary-soft) 100%); box-shadow: var(--shadow-card); }
 .portrait-wrap { align-self: end; height: 226px; overflow: hidden; }
 .portrait-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }

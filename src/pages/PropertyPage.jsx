@@ -21,6 +21,7 @@ import { PortraitModal } from "../components/PortraitModal";
 import { PropertyVideo } from "../components/PropertyVideo";
 import { initialListingGallery } from "../utils/listingMedia";
 import { trackEvent } from "../utils/analytics";
+import { AreaLinks } from "../components/AreaLinks";
 
 const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false";
 
@@ -126,6 +127,7 @@ export function PropertyPage() {
         structuredData={[propertyJsonLd(listing), propertyBreadcrumbs(listing)]}
       />
       <Link className="back-link" to={listing.visibility === "unlisted" && !COMBINED_CATALOGUE ? "/cmi" : "/"}><ArrowLeft size={17} /> {listing.visibility === "unlisted" && !COMBINED_CATALOGUE ? "Back to CMI Catalogue" : "Back to Catalogue"}</Link>
+      <AreaLinks items={items} dictionary={locationDictionary} listing={listing} />
       <div className="detail-layout">
         <div className="detail-main">
           <section className="gallery" aria-label="Property photos, layouts and videos">

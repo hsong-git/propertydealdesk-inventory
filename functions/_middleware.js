@@ -30,21 +30,22 @@ export async function onRequest(context) {
   if (!["GET", "HEAD"].includes(context.request.method) || pathname.startsWith("/api/")) return context.next();
   if (pathname.startsWith("/i/")) return withEntryAttribution(await context.next(), context.request);
   if (pathname.startsWith("/s/")) return context.next();
-  if (["/about", "/contact", "/requirements"].includes(pathname)) {
-    return Response.redirect(new URL(pathname === "/requirements" ? "/inquiries" : "/", url), 301);
+  if (pathname === "/requirements") {
+    return Response.redirect(new URL("/inquiries", url), 301);
   }
-  if (pathname.startsWith("/property/") || pathname.startsWith("/catalogue/")) {
+  if (pathname.startsWith("/property/") || pathname.startsWith("/catalogue/") || pathname.startsWith("/areas/")) {
     const manifestResponse = await context.env.ASSETS.fetch(new URL("/data/seo-routes.json", url));
     if (!manifestResponse.ok) return new Response("Temporarily unavailable", { status: 503 });
     const manifest = await manifestResponse.json();
     const property = /^\/property\/([^/]+)$/.exec(pathname);
     unlisted = Boolean(property && (manifest.unlistedProperties || []).includes(property[1]));
     const page = /^\/catalogue\/page\/([1-9]\d*)$/.exec(pathname);
-    if (!unlisted && !(property && manifest.properties.includes(property[1])) && !(page && Number(page[1]) <= manifest.cataloguePages)) return notFound(context.request.method);
+    const area = /^\/areas\/([a-z0-9-]+)$/.exec(pathname);
+    if (!unlisted && !(property && manifest.properties.includes(property[1])) && !(page && Number(page[1]) <= manifest.cataloguePages) && !(area && (manifest.areas || []).includes(area[1]))) return notFound(context.request.method);
   }
   const response = await context.next();
   if (!(response.headers.get("content-type") || "").includes("text/html")) return response;
-  const known = appRoutes.has(pathname) || /^\/(property|catalogue)\//.test(pathname) || /^\/download\/[^/]+$/.test(pathname);
+  const known = appRoutes.has(pathname) || ["/about", "/contact"].includes(pathname) || /^\/(property|catalogue|areas)\//.test(pathname) || /^\/download\/[^/]+$/.test(pathname);
   if (!known) return notFound(context.request.method);
   if ((unlisted && !combined) || pathname === "/cmi" || pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/download/")) {
     const privateResponse = new Response(response.body, response);

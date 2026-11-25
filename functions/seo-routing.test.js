@@ -5,7 +5,7 @@ import { onRequest } from "./_middleware.js";
 
 const run = (path, contentType = "text/html") => onRequest({
   request: new Request(`https://property.myeviv.com${path}`),
-  env: { ASSETS: { fetch: async () => Response.json({ properties: ["active-property"], cataloguePages: 2 }) } },
+  env: { ASSETS: { fetch: async () => Response.json({ properties: ["active-property"], cataloguePages: 2, areas: ["bukit-tinggi"] }) } },
   next: async () => new Response("page", { headers: { "content-type": contentType } }),
 });
 test("SEO routing preserves valid properties and rejects removed properties and unknown pages", async () => {
@@ -35,10 +35,11 @@ test("unlisted direct-link routes work with noindex without entering discoverabl
   assert.equal(response.status, 200);
   assert.equal(response.headers.get("x-robots-tag"), "noindex, nofollow");
 });
-test("SEO routing permanently redirects removed contact and legacy requirement routes", async () => {
-  const contact = await run("/contact");
-  assert.equal(contact.status, 301);
-  assert.equal(contact.headers.get("location"), "https://property.myeviv.com/");
+test("public contact, about and curated area routes work; legacy requirements redirect", async () => {
+  assert.equal((await run("/contact")).status, 200);
+  assert.equal((await run("/about")).status, 200);
+  assert.equal((await run("/areas/bukit-tinggi")).status, 200);
+  assert.equal((await run("/areas/not-published")).status, 404);
   assert.equal((await run("/requirements")).headers.get("location"), "https://property.myeviv.com/inquiries");
 });
 test("private HTML is excluded from indexing without changing API or static asset responses", async () => {

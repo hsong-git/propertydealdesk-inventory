@@ -6,6 +6,6 @@ export function AreaLinks({ items, dictionary, listing }) {
   if (!areas.length) return null;
   return <nav className="area-discovery-links" aria-label={listing ? "Explore this area" : "Browse properties by area"}>
     <span>{listing ? "More properties in:" : "Browse by popular area"}</span>
-    {areas.map(area => <a key={area.slug} href={areaPath(area)}>{area.name}{listing ? "" : ` (${area.listings.length})`}</a>)}
+    <div className="area-discovery-pills">{areas.map(area => <a key={area.slug} href={areaPath(area)}>{area.name}{listing ? "" : ` (${area.listings.length})`}</a>)}</div>
   </nav>;
 }

@@ -50,6 +50,7 @@ test("curated pages render useful crawler-visible listings, real contact details
     assert.match(fs.readFileSync(path.join(root, "about.html"), "utf8"), /The Roof Realty/);
     assert.match(discoveryLinks(items), /\/areas\/bukit-tinggi/);
     assert.match(discoveryLinks(items), /Browse by popular area/);
+    assert.match(discoveryLinks(items), /class="area-discovery-pills"/);
     assert.equal(areaStructuredData(area, [item], "https://www.myeviv.com")[1]["@type"], "BreadcrumbList");
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });

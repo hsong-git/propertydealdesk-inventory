@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import fs from "node:fs";
 import { onRequest } from "./_middleware.js";
 
 const run = (path, contentType = "text/html") => onRequest({
@@ -62,6 +63,10 @@ test("SCMI keeps admin on the existing protected origin and uses its combined ca
 });
 
 test("legacy SCMI permanently redirects to WWW with exact paths, parameters and methods", async () => {
+  const routes = JSON.parse(fs.readFileSync(new URL("../public/_routes.json", import.meta.url), "utf8"));
+  assert(routes.include.includes("/*"));
+  assert(!routes.exclude.includes("/robots.txt"));
+  assert(!routes.exclude.includes("/sitemap.xml"));
   for (const path of ["/", "/inquiries?lang=zh", "/property/active-property/?src=c2&intent=WTS", "/i/WTL0070?src=c1", "/s/abcdefghijklmnop", "/robots.txt", "/sitemap.xml", "/api/search-links"]) {
     for (const method of ["GET", "HEAD", "POST"]) {
       const response = await onRequest({ request: new Request(`https://scmi.myeviv.com${path}`, { method }), env: {}, next: () => { throw new Error("Legacy host must not serve content"); } });

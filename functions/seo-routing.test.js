@@ -8,6 +8,21 @@ const run = (path, contentType = "text/html") => onRequest({
   env: { ASSETS: { fetch: async () => Response.json({ properties: ["active-property"], cataloguePages: 2, areas: ["bukit-tinggi"] }) } },
   next: async () => new Response("page", { headers: { "content-type": contentType } }),
 });
+
+test("Google ownership proof is served exactly on WWW without redirects or wider route access", async () => {
+  const path = "/google87aacc93a16a296d.html";
+  const invoke = (host, method = "GET") => onRequest({ request: new Request(`https://${host}${path}`, { method }), env: {}, next: async () => new Response("not a public route", { headers: { "content-type": "text/html" } }) });
+  const response = await invoke("www.myeviv.com");
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("location"), null);
+  assert.equal(response.headers.get("x-robots-tag"), "noindex");
+  assert.equal(await response.text(), fs.readFileSync(new URL("../public/google87aacc93a16a296d.html", import.meta.url), "utf8").replace(/\r\n/g, "\n"));
+  const head = await invoke("www.myeviv.com", "HEAD"); assert.equal(head.status, 200); assert.equal(await head.text(), "");
+  assert.equal((await invoke("www.myeviv.com", "POST")).status, 405);
+  assert.equal((await invoke("property.myeviv.com")).status, 404);
+  assert.equal((await invoke("scmi.myeviv.com")).headers.get("location"), "https://www.myeviv.com" + path);
+  assert.equal((await onRequest({ request: new Request("https://www.myeviv.com/google-other.html"), env: {}, next: async () => new Response("unknown", { headers: { "content-type": "text/html" } }) })).status, 404);
+});
 test("SEO routing preserves valid properties and rejects removed properties and unknown pages", async () => {
   const canonical = await run("/property/active-property/");
   assert.equal(canonical.status, 308);

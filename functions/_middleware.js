@@ -14,6 +14,12 @@ export async function onRequest(context) {
     return Response.redirect(url, 308);
   }
   const pathname = url.pathname.replace(/\/+$/, "") || "/";
+  // Google's ownership check needs this exact filename without Pages' normal
+  // .html clean-URL redirect. This is a public proof, not an authentication key.
+  if (url.hostname === "www.myeviv.com" && pathname === "/google87aacc93a16a296d.html") {
+    if (!["GET", "HEAD"].includes(context.request.method)) return new Response(null, { status: 405, headers: { allow: "GET, HEAD" } });
+    return new Response(context.request.method === "HEAD" ? null : "google-site-verification: google87aacc93a16a296d.html\n", { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300", "x-robots-tag": "noindex" } });
+  }
   // Use one canonical URL for SPA routes so Cloudflare analytics and search
   // engines do not split the same page between slash and non-slash paths.
   if (["GET", "HEAD"].includes(context.request.method) && url.pathname !== "/" && url.pathname.endsWith("/") && !pathname.startsWith("/catalogue/")) {

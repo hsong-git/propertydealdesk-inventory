@@ -3,6 +3,19 @@ import test from "node:test";
 import { matchesSelection, normalizeMultiFilters, readFilterParams, selectedValues, writeFilterParams, filterMultiSelectOptions } from "./multiSelect.js";
 import { buildLocationOptions, buildLocationCounts, canonicalLocationsForListing, matchesKeywordSearch, matchesLocationFilter, normalizeLocationDictionary } from "./locationFilter.js";
 import { matchesCatalogueFilters, normalizeCatalogueIntent, offerForIntent } from "./catalogueFilter.js";
+import { topLocationsByCount } from "./locationFilter.js";
+
+test("popular locations rank by descending count, use alphabetical ties and show at most ten", () => {
+  const counts = new Map(Array.from({ length: 12 }, (_, i) => [`Area ${i + 1}`, i + 1]));
+  counts.set("Zero", 0);
+  const before = [...counts];
+  const ranked = topLocationsByCount(counts);
+  assert.equal(ranked.length, 10);
+  assert.deepEqual(ranked.map(([, count]) => count), [12,11,10,9,8,7,6,5,4,3]);
+  assert.deepEqual(topLocationsByCount(new Map([["Beta", 2], ["Alpha", 2], ["Empty", 0]])), [["Alpha", 2], ["Beta", 2]]);
+  assert.deepEqual([...counts], before);
+  assert.deepEqual(topLocationsByCount(), []);
+});
 
 test("All intent includes sale, rental and dual offers once and sorts on the displayed primary price", () => {
   const rent = { code: "WTL1", intent: "WTL", price: 2000, title: "Rent", location: "Klang" };

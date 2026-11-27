@@ -136,3 +136,10 @@ export function matchesKeywordSearch(listing, keyword) {
   ].join(" ").toLowerCase();
   return searchable.includes(term);
 }
+
+export function topLocationsByCount(counts, limit = 10) {
+  return [...(counts || new Map())]
+    .filter(([, count]) => count > 0)
+    .sort(([a, countA], [b, countB]) => countB - countA || a.localeCompare(b, "en", { sensitivity: "base", numeric: true }))
+    .slice(0, limit);
+}

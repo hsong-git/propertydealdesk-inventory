@@ -41,6 +41,28 @@ test("validates the exact required Rent fields", () => {
   assert.equal(result.value.requirements.propertyUsage, "Residential");
 });
 
+test("pet Yes requires type and a positive whole quantity; No discards stale pet details", () => {
+  const payload = validBase("rent");
+  Object.assign(payload.requirements, { moveInDate: "2026-12-01", peopleStaying: 1, pet: "Yes", furnishing: "Basic", tenancy: "Individual", tenancyPeriod: "1 year", depositAgreement: "Yes" });
+  const missing = validateRequirementPayload(payload);
+  assert.ok(missing.errors["requirements.petType"]);
+  assert.ok(missing.errors["requirements.petQuantity"]);
+  Object.assign(payload.requirements, { petType: "Cats", petQuantity: "2" });
+  const valid = validateRequirementPayload(payload);
+  assert.equal(valid.valid, true);
+  assert.equal(valid.value.requirements.petType, "Cats");
+  assert.equal(valid.value.requirements.petQuantity, 2);
+  for (const quantity of ["", 0, -1, 1.5, 101, "two"]) {
+    payload.requirements.petQuantity = quantity;
+    assert.ok(validateRequirementPayload(payload).errors["requirements.petQuantity"], String(quantity));
+  }
+  Object.assign(payload.requirements, { pet: "No", petType: "Cats", petQuantity: 2 });
+  const noPet = validateRequirementPayload(payload);
+  assert.equal(noPet.valid, true);
+  assert.equal(noPet.value.requirements.petType, "");
+  assert.equal(noPet.value.requirements.petQuantity, null);
+});
+
 test("Other relationship requires bounded details and discards them for other choices", () => {
   const payload = validBase("rent");
   Object.assign(payload.requirements, { moveInDate: "2026-12-01", peopleStaying: 2, pet: "No", furnishing: "Basic", tenancy: "Individual", tenancyPeriod: "1 year", depositAgreement: "Yes", relationship: "Other" });

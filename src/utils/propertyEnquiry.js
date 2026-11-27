@@ -14,5 +14,5 @@ export function propertyInterest(items, slug, intent, origin) {
 }
 
 export function propertyInterestLines(requirements) {
-  return requirements.interestCode ? ["", `*Property code:* ${requirements.interestCode}`, `*Property title:* ${requirements.interestTitle}`, `*Property URL:* ${requirements.interestUrl}`] : [];
+  return requirements.interestCode ? [`*Property code:* ${requirements.interestCode}`, `*Property title:* ${requirements.interestTitle}`, `*Property URL:* ${requirements.interestUrl}`] : [];
 }

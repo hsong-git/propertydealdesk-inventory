@@ -2,6 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { inquiryPostingText } from "./requirementPosting.js";
 
+test("posting includes pet type and quantity only when pets are selected", () => {
+  const submission = { intent: "rent", requirements: { pet: "Yes", petType: "Cats", petQuantity: 2 } };
+  assert.match(inquiryPostingText(submission), /\*Pet:\* Yes\n\*Pet type:\* Cats\n\*Pet quantity:\* 2/);
+  submission.requirements.pet = "No";
+  assert.doesNotMatch(inquiryPostingText(submission), /Pet type|Pet quantity|Cats/);
+});
+
 test("posting includes Other relationship details and ignores stale details for Family", () => {
   const submission = { intent: "rent", requirements: { relationship: "Other", relationshipOther: "Colleagues" } };
   assert.match(inquiryPostingText(submission), /\*Relationship:\* Other \(Colleagues\)/);

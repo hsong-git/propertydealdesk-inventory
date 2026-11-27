@@ -111,7 +111,7 @@ export const emptyRequirement = (intent = "") => ({
   profile: { name: "", mobile: "", race: "", raceOther: "", country: "Malaysia", countryOther: "", occupation: "", companyName: "" },
   requirements: {
     propertyType: "Terrace House", hasStoreys: true, storeys: 1, area: "", budget: "", bedrooms: 1, bathrooms: 1, relationship: intent === "rent" ? "Family" : "", relationshipOther: "", propertyUsage: intent === "rent" ? "Residential" : "", commercialActivity: "", otherNeeds: "",
-    moveInDate: "", peopleStaying: intent === "rent" ? 1 : "", pet: intent === "rent" ? "No" : "", furnishing: intent === "rent" ? "Basic" : "", tenancy: intent === "rent" ? "Individual" : "", tenancyPeriod: intent === "rent" ? "1 year" : "", depositAgreement: "",
+    moveInDate: "", peopleStaying: intent === "rent" ? 1 : "", pet: intent === "rent" ? "No" : "", petType: "", petQuantity: "", furnishing: intent === "rent" ? "Basic" : "", tenancy: intent === "rent" ? "Individual" : "", tenancyPeriod: intent === "rent" ? "1 year" : "", depositAgreement: "",
     purchaseTimeline: "", purpose: intent === "buy" ? "Own Stay" : "", loan: intent === "buy" ? "Loan Required" : "", occupants: intent === "buy" ? 1 : "",
   },
   consent: false,
@@ -152,6 +152,8 @@ export function normalizeRequirementPayload(raw) {
       moveInDate: parseRequirementDate(requirements.moveInDate) || cleanText(requirements.moveInDate, 16),
       peopleStaying: cleanNumber(requirements.peopleStaying, { min: 1, max: 100, integer: true }),
       pet: cleanText(requirements.pet, 3),
+      petType: intent === "rent" && requirements.pet === "Yes" ? cleanText(requirements.petType, 120) : "",
+      petQuantity: intent === "rent" && requirements.pet === "Yes" && Number.isInteger(Number(requirements.petQuantity)) ? cleanNumber(requirements.petQuantity, { min: 1, max: 100, integer: true }) : null,
       furnishing: cleanText(requirements.furnishing, 30),
       tenancy: cleanText(requirements.tenancy, 20),
       tenancyPeriod: cleanText(requirements.tenancyPeriod, 80),
@@ -198,6 +200,10 @@ export function validateRequirementPayload(raw) {
     required("requirements.relationship", value.requirements.relationship);
     if (requirementHasOtherRelationship(value.requirements.relationship)) required("requirements.relationshipOther", value.requirements.relationshipOther);
     if (!new Set(["Yes", "No"]).has(value.requirements.pet)) errors["requirements.pet"] = "Choose Yes or No.";
+    if (value.requirements.pet === "Yes") {
+      required("requirements.petType", value.requirements.petType);
+      if (value.requirements.petQuantity === null) errors["requirements.petQuantity"] = "Enter a whole number from 1 to 100.";
+    }
     if (!FURNISHING.has(value.requirements.furnishing)) errors["requirements.furnishing"] = "Choose a furnishing preference.";
     if (!TENANCIES.has(value.requirements.tenancy)) errors["requirements.tenancy"] = "Choose a tenancy type.";
     required("requirements.tenancyPeriod", value.requirements.tenancyPeriod);

@@ -20,6 +20,9 @@ export function preferredInquiryLanguage(savedLanguage, languages = [], language
 
 // English key → Malay, Simplified Chinese.
 export const INQUIRY_TRANSLATIONS = {
+  "Pet type": ["Jenis haiwan peliharaan", "宠物种类"],
+  "Pet quantity": ["Bilangan haiwan peliharaan", "宠物数量"],
+  "Enter a whole number from 1 to 100.": ["Masukkan nombor bulat dari 1 hingga 100.", "请输入1至100之间的整数。"],
   "Property you're enquiring about": ["Hartanah yang anda tanyakan", "您正在咨询的房产"],
   "View property": ["Lihat hartanah", "查看房产"],
   "The selected property could not be loaded. Please return to the property page and try again.": ["Hartanah pilihan tidak dapat dimuatkan. Sila kembali ke halaman hartanah dan cuba lagi.", "无法加载所选房产，请返回房产页面重试。"],

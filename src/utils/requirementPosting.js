@@ -52,6 +52,7 @@ export function inquiryPostingText(submission) {
       detailLine("People Staying", requirements.peopleStaying),
       detailLine("Relationship", formatRequirementRelationship(requirements)),
       detailLine("Pet", requirements.pet),
+      ...(requirements.pet === "Yes" ? [detailLine("Pet type", requirements.petType), detailLine("Pet quantity", requirements.petQuantity)] : []),
       detailLine("Tenancy", requirements.tenancy),
       detailLine("Deposits and Fees", requirements.depositAgreement),
     );

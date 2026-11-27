@@ -69,6 +69,13 @@ test("first-time enquiries carry trusted inventory details through saved require
   assert.equal(normalized.requirements.interestTitle, listing.title);
   assert.equal(normalized.requirements.interestUrl, "https://www.myeviv.com/property/example-home?intent=WTS");
   assert.ok(propertyInterestLines(normalized.requirements).join("\n").includes(interest.interestUrl));
+  assert.deepEqual(propertyInterestLines(normalized.requirements), [
+    "*Property code:* WTL0116",
+    "*Property title:* Example home",
+    "*Property URL:* https://www.myeviv.com/property/example-home?intent=WTS",
+  ]);
+  const workflow = fs.readFileSync(new URL("../pages/RequirementPage.jsx", import.meta.url), "utf8");
+  assert.match(workflow, /\*Looking to:[\s\S]*?\.\.\.propertyInterestLines\(requirements\),\s*"",\s*`\*Name:\*/);
   assert.equal(propertyInterest([listing], "missing", "WTL", "https://property.myeviv.com"), null);
   assert.equal(normalizeRequirementPayload({ requirements: { ...interest, interestUrl: "javascript:alert(1)" } }).requirements.interestUrl, "");
 });

@@ -33,6 +33,7 @@ const detailLabels = {
   moveInDate: "Move-in Date",
   peopleStaying: "People Staying",
   pet: "Pet",
+  petType: "Pet type", petQuantity: "Pet quantity",
   furnishing: "Furnishing",
   tenancy: "Tenancy",
   tenancyPeriod: "Tenancy Period",

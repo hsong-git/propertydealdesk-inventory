@@ -3,6 +3,7 @@ import { translateInquiry, normalizeInquiryLanguage } from "./inquiryLanguage.js
 // Interface translations only. Original listing names, descriptions and posting
 // copy are kept as supplied rather than silently machine-translated.
 export const SITE_TRANSLATIONS = {
+  "Upfront cash breakdown": ["Pecahan tunai awal", "前期现金明细"],
   "TA stamping": ["Setem TA", "租约盖章费"],
   "Show more": ["Lihat lagi", "显示更多"],
   "Property made simple": ["Urusan hartanah dipermudah", "让置业更简单"], "Three steps closer to home.": ["Tiga langkah lebih dekat ke rumah impian.", "三步，离理想家更近。"],

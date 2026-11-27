@@ -32,6 +32,12 @@ test("newly added sorting is newest-first, stable and handles missing dates", ()
   const rows = [{code:"old",createdAt:"2026-01-01"},{code:"unknown"},{code:"new",createdAt:"2026-11-27"}];
   assert.deepEqual(rows.sort(compareNewlyAdded).map(x=>x.code),["new","old","unknown"]);
 });
+test("mortgage cash group contains only upfront costs, not the financed loan or income", () => {
+  const source = readFileSync(new URL("../components/PropertyTools.jsx",import.meta.url),"utf8");
+  const group = source.split('<section className="mortgage-cash-group"')[1].split('</section>')[0];
+  for (const label of ["Down payment","Stamp duty (transfer)","Stamp duty (loan, 0.5%)","Legal fee SPA (est.)","Legal fee loan (est.)","Estimated cash upfront"]) assert.ok(group.includes(label));
+  assert.doesNotMatch(group,/Loan amount|Illustrative income/);
+});
 test("rental move-in cash separates 2+1 deposits, first month and current agreement costs", () => {
   assert.deepEqual(rentalMoveInEstimate(1500), { rentalDeposit:3000, utilityDeposit:1500, advance:1500, deposits:4500, rentalSubtotal:6000, stampDuty:72, copyDuty:10, stampingTotal:82, legalFee:500, otherCharges:0, agreementCosts:582, upfront:6582 });
   assert.equal(rentalMoveInEstimate(1500,24).stampDuty,216);

@@ -4,7 +4,25 @@ import fs from "node:fs";
 import { parse } from "@babel/parser";
 import traverseModule from "@babel/traverse";
 import { COUNTRY_OPTIONS, INQUIRY_PROPERTY_TYPE_OPTIONS, FURNISHING_OPTIONS, RACE_OPTIONS, DEPOSIT_OPTIONS, TENANCY_OPTIONS, PROPERTY_USAGE_OPTIONS, PURPOSE_OPTIONS, LOAN_OPTIONS, emptyRequirement, validateRequirementPayload } from "../data/requirementContract.js";
-import { INQUIRY_LANGUAGES, INQUIRY_TRANSLATIONS, normalizeInquiryLanguage, translateInquiry, translateInquiryValue } from "./inquiryLanguage.js";
+import { INQUIRY_LANGUAGES, INQUIRY_TRANSLATIONS, normalizeInquiryLanguage, preferredInquiryLanguage, translateInquiry, translateInquiryValue } from "./inquiryLanguage.js";
+
+test("first visits match supported browser preferences including regional variants", () => {
+  assert.equal(preferredInquiryLanguage(null, ["zh-CN", "en-MY"]), "zh");
+  assert.equal(preferredInquiryLanguage(null, ["zh-Hant-TW"]), "zh");
+  assert.equal(preferredInquiryLanguage(null, ["ms-MY", "en-US"]), "ms");
+  assert.equal(preferredInquiryLanguage(null, ["en-GB", "ms-MY"]), "en");
+  assert.equal(preferredInquiryLanguage(null, ["fr-FR", "ms-MY"]), "ms");
+  assert.equal(preferredInquiryLanguage(null, [], "MS-my"), "ms");
+});
+
+test("saved manual choices win and unsupported or absent preferences fall back to English", () => {
+  assert.equal(preferredInquiryLanguage("en", ["zh-CN"]), "en");
+  assert.equal(preferredInquiryLanguage("ms", ["en-US"]), "ms");
+  assert.equal(preferredInquiryLanguage("zh", ["ms-MY"]), "zh");
+  assert.equal(preferredInquiryLanguage("invalid", ["zh-CN"]), "zh");
+  for (const preferences of [[], ["fr-FR", "ja"], [null, 123, ""]]) assert.equal(preferredInquiryLanguage(null, preferences), "en");
+  assert.equal(preferredInquiryLanguage(undefined, null), "en");
+});
 
 test("English is the default and all supported languages have complete dictionary entries", () => {
   for (const value of [null, undefined, "", "fr", "<script>"]) assert.equal(normalizeInquiryLanguage(value), "en");

@@ -1,15 +1,18 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { INQUIRY_LANGUAGES, normalizeInquiryLanguage } from "../utils/inquiryLanguage";
+import { INQUIRY_LANGUAGES, normalizeInquiryLanguage, preferredInquiryLanguage } from "../utils/inquiryLanguage";
 import { translateSite } from "../utils/siteLanguage.js";
 
 const LanguageContext = createContext({ language: "en", t: text => text });
 const STORAGE_KEY = "propertydealdesk-inquiry-language";
+const browserLanguage = saved => preferredInquiryLanguage(saved, globalThis.navigator?.languages, globalThis.navigator?.language);
 export const useInquiryLanguage = () => useContext(LanguageContext);
 export const useSiteLanguage = useInquiryLanguage;
 
 export function InquiryLanguageProvider({ children }) {
   const [language, setLanguage] = useState(() => {
-    try { return normalizeInquiryLanguage(localStorage.getItem(STORAGE_KEY)); } catch { return "en"; }
+    let saved;
+    try { saved = localStorage.getItem(STORAGE_KEY); } catch { /* Device preference still works when storage is blocked. */ }
+    return browserLanguage(saved);
   });
   const changeLanguage = value => {
     const next = normalizeInquiryLanguage(value);
@@ -17,7 +20,7 @@ export function InquiryLanguageProvider({ children }) {
     try { localStorage.setItem(STORAGE_KEY, next); } catch { /* Switching still works when storage is blocked. */ }
   };
   useEffect(() => { document.documentElement.lang = language === "zh" ? "zh-Hans" : language; }, [language]);
-  useEffect(() => { const sync = event => { if (event.key === STORAGE_KEY) setLanguage(normalizeInquiryLanguage(event.newValue)); }; window.addEventListener("storage", sync); return () => window.removeEventListener("storage", sync); }, []);
+  useEffect(() => { const sync = event => { if (event.key === STORAGE_KEY || event.key === null) setLanguage(browserLanguage(event.newValue)); }; window.addEventListener("storage", sync); return () => window.removeEventListener("storage", sync); }, []);
   const t = (text, values) => translateSite(language, text, values);
   return <LanguageContext.Provider value={{ language, setLanguage: changeLanguage, t }}>{children}</LanguageContext.Provider>;
 }

@@ -6,6 +6,18 @@ export const INQUIRY_LANGUAGES = [
 ];
 export const normalizeInquiryLanguage = value => INQUIRY_LANGUAGES.some(item => item.value === value) ? value : "en";
 
+// A deliberate site selection wins; otherwise use the first supported browser preference.
+export function preferredInquiryLanguage(savedLanguage, languages = [], language = "") {
+  if (INQUIRY_LANGUAGES.some(item => item.value === savedLanguage)) return savedLanguage;
+  const preferences = Array.isArray(languages) && languages.length ? languages : [language];
+  for (const preference of preferences) {
+    if (typeof preference !== "string") continue;
+    const base = preference.trim().toLowerCase().split(/[-_]/)[0];
+    if (INQUIRY_LANGUAGES.some(item => item.value === base)) return base;
+  }
+  return "en";
+}
+
 // English key → Malay, Simplified Chinese.
 export const INQUIRY_TRANSLATIONS = {
   "Property you're enquiring about": ["Hartanah yang anda tanyakan", "您正在咨询的房产"],

@@ -46,6 +46,12 @@ test("location pills cannot force a second flex column on mobile", () => {
   assert.match(css, /\.all-location-links a \{ max-width: 100%; white-space: normal; overflow-wrap: anywhere;/);
 });
 
+test("location pills use equal-width columns and equal-height rows with wrapped labels", () => {
+  assert.match(css, /\.all-location-links \.area-discovery-pills \{ display: grid;[^}]*grid-auto-rows: 1fr;/);
+  assert.match(css, /\.all-location-links \.area-discovery-pills \{ min-width: 0; max-width: 100%; grid-template-columns: repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(css, /\.all-location-links \.area-discovery-pills > a \{[^}]*min-height: 56px;[^}]*white-space: normal;/);
+});
+
 test("property enquiry dock reserves bottom space and uses the current listing enquiry", () => {
   const page = fs.readFileSync(new URL("../pages/PropertyPage.jsx", import.meta.url), "utf8");
   assert.match(page, /enquireOnWhatsApp\("detail_floating"\)/);

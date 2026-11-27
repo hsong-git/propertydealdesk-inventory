@@ -118,6 +118,10 @@ export function PropertyPage() {
     swipeStart.current = null;
     if (direction && galleryPhotos.length > 1) movePhoto(direction);
   };
+  const enquireOnWhatsApp = (placement) => {
+    trackEvent("whatsapp_click", { listingCode: listing.code, intent: displayIntent, properties: { placement } });
+    openWhatsApp({ phone: agentProfile.whatsapp, message: enquiryText(listing, agentProfile.displayName, { intent: displayIntent }), onError: (error) => window.alert(error) });
+  };
   return (
     <main className="page-width property-page">
       <Seo
@@ -165,7 +169,7 @@ export function PropertyPage() {
         </div>
         <aside className="agent-contact-card">
           <button className="agent-portrait-trigger" type="button" onClick={() => setAgentPortraitOpen(true)} aria-label={tSite("Enlarge agent portrait")}><img src={agentProfile.portrait} alt={tSite(agentProfile.displayName)} /></button><div><span className="eyebrow">{tSite("Enquire directly")}</span><h2>{tSite(agentProfile.displayName)}</h2><p>{tSite(agentProfile.title)}</p><small>{tSite(agentProfile.agency)}</small></div>
-          <button className="button primary" type="button" onClick={() => { trackEvent("whatsapp_click", { listingCode: listing.code, intent: displayIntent, properties: { placement: "detail" } }); openWhatsApp({ phone: agentProfile.whatsapp, message: enquiryText(listing, agentProfile.displayName, { intent: displayIntent }), onError: (error) => window.alert(error) }); }}><MessageCircle size={18} />{tSite(" WhatsApp enquiry")}</button>
+          <button className="button primary" type="button" onClick={() => enquireOnWhatsApp("detail")}><MessageCircle size={18} />{tSite(" WhatsApp enquiry")}</button>
           <a className="button secondary mobile-call" href={`tel:+${agentProfile.phone}`}><Phone size={18} />{tSite(" Call ")}{tSite(agentProfile.phoneDisplay)}</a>
           <button className="button tertiary" type="button" onClick={onShare}><Share2 size={18} /> {tSite(copied ? "Link copied" : "Share property")}</button>
           <SavePropertyButton listing={listing} />
@@ -173,6 +177,7 @@ export function PropertyPage() {
         </aside>
       </div>
       <RelatedListings listings={relatedListings} />
+      {!lightboxOpen && !agentPortraitOpen ? <div className="property-whatsapp-dock"><button className="button primary" type="button" onClick={() => enquireOnWhatsApp("detail_floating")}><MessageCircle size={20} /><span>{tSite("WhatsApp enquiry")} · {listing.displayCode || listing.code}</span></button></div> : null}
       {tSite(lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={tSite(`${listing.title} photo viewer`)}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label={tSite("Close full photo view")} autoFocus><X size={24} /></button>{tSite(galleryPhotos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label={tSite("Previous photo")}><ChevronLeft size={32} /></button> : null)}<div className={`lightbox-image${lightboxSlide ? ` slide-${lightboxSlide}` : ""}`} onTouchStart={onLightboxTouchStart} onTouchEnd={onLightboxTouchEnd} onTouchCancel={() => { swipeStart.current = null; }} onAnimationEnd={() => setLightboxSlide("")}><PublicPropertyImage allowIndividualSave key={galleryPhotos[activePhoto]} src={galleryPhotos[activePhoto]} alt={tSite(`${listing.title} photo ${activePhoto + 1} fullscreen`)} /><span className="lightbox-counter">{tSite(activePhoto + 1)}{tSite(" / ")}{tSite(galleryPhotos.length)}</span></div>{tSite(galleryPhotos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label={tSite("Next photo")}><ChevronRight size={32} /></button> : null)}</div> : null)}
       <PortraitModal open={agentPortraitOpen} src={agentProfile.portrait} alt={tSite(`${agentProfile.displayName}, ${agentProfile.title}`)} onClose={() => setAgentPortraitOpen(false)} />
     </main>

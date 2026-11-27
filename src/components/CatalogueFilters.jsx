@@ -19,6 +19,7 @@ export function CatalogueFilters({ filters, setFilters, options, activeCount, on
         <button className="button secondary mobile-filter-button" type="button" onClick={() => setMobileOpen(true)}><SlidersHorizontal size={18} />{tSite(" Filters ")}{tSite(activeCount ? <b>{tSite(activeCount)}</b> : null)}</button>
         <label className="sort-field"><span>{tSite("Sort")}</span><select value={filters.sort} onChange={(event) => update("sort", event.target.value)}><option value="recent">{tSite("Recently listed")}</option><option value="newest">{tSite("Newest")}</option><option value="price-asc">{tSite("Price low to high")}</option><option value="price-desc">{tSite("Price high to low")}</option><option value="title">{tSite("Property title")}</option></select><ChevronDown size={16} /></label>
       </div>
+      <button className="reset-button home-reset-filters" type="button" onClick={onReset} disabled={!activeCount}><RotateCcw size={16} />{tSite(" Reset Filters")}</button>
       <div className="primary-filter-toggles">
       <fieldset className="filter-toggle-field persistent-intent-filter">
         <legend>{tSite("Intent")}</legend>

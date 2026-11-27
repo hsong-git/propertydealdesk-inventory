@@ -22,3 +22,31 @@ test("folded phones use one large tile and retain the full enquiry action", () =
   assert.match(folded, /\.property-photo \{ width: 100%; height: auto; aspect-ratio: 16\/10; \}/);
   assert.match(folded, /\.icon-only-mobile span \{ display: inline; \}/);
 });
+
+test("mobile filters shrink controls and wrap actions instead of widening the drawer", () => {
+  assert.match(css, /\.filter-grid > \*, \.filter-grid input, \.filter-grid select \{ min-width: 0;/);
+  assert.match(mobile, /\.filter-footer \{[^}]*flex-wrap: wrap/);
+  assert.match(mobile, /\.advanced-filter-shell \{[^}]*max-height: 88dvh/);
+  const filters = fs.readFileSync(new URL("../components/CatalogueFilters.jsx", import.meta.url), "utf8");
+  assert.match(filters, /className="reset-button home-reset-filters"[^>]*onClick=\{onReset\}/);
+});
+
+test("photo viewer resizes with the viewport and expands photos without cropping on rotation", () => {
+  assert.match(css, /\.photo-lightbox \{[^}]*height: 100dvh/);
+  assert.match(css, /\.lightbox-image \.watermarked-image > img \{ width: 100%; height: 100%; object-fit: contain;/);
+  assert.match(css, /@media \(orientation: landscape\) and \(max-height: 600px\)/);
+  assert.doesNotMatch(css, /max-height: calc\(100vh - 138px\)/);
+});
+
+test("location pills cannot force a second flex column on mobile", () => {
+  assert.match(css, /\.all-location-links > span \{ flex-basis: auto; \}/);
+  assert.match(css, /\.area-discovery-links\.all-location-links \{ display: grid; grid-template-columns: minmax\(0,1fr\)/);
+  assert.match(css, /\.all-location-links a \{ max-width: 100%; white-space: normal; overflow-wrap: anywhere;/);
+});
+
+test("property enquiry dock reserves bottom space and uses the current listing enquiry", () => {
+  const page = fs.readFileSync(new URL("../pages/PropertyPage.jsx", import.meta.url), "utf8");
+  assert.match(page, /enquireOnWhatsApp\("detail_floating"\)/);
+  assert.match(page, /message: enquiryText\(listing, agentProfile.displayName, \{ intent: displayIntent \}\)/);
+  assert.match(css, /body:has\(\.property-page\) \{ padding-bottom: calc\(76px/);
+});

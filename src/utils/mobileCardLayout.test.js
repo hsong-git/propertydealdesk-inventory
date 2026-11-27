@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
+import { propertyEnquiryTarget, propertyInterest, propertyInterestLines } from "./propertyEnquiry.js";
+import { normalizeRequirementPayload } from "../data/requirementContract.js";
 
 const css = fs.readFileSync(new URL("../styles/site.css", import.meta.url), "utf8");
 const responsive760Start = css.lastIndexOf("@media (max-width: 760px)");
@@ -49,4 +51,18 @@ test("property enquiry dock reserves bottom space and uses the current listing e
   assert.match(page, /enquireOnWhatsApp\("detail_floating"\)/);
   assert.match(page, /message: enquiryText\(listing, agentProfile.displayName, \{ intent: displayIntent \}\)/);
   assert.match(css, /body:has\(\.property-page\) \{ padding-bottom: calc\(76px/);
+});
+
+test("first-time enquiries carry trusted inventory details through saved requirements and messages", () => {
+  const listing = { code: "WTL0116", title: "Example home", slug: "example-home", intent: "WTL", alternateIntent: "WTS" };
+  const target = propertyEnquiryTarget(listing, "WTS");
+  assert.equal(target, "/inquiries?property=example-home&intent=WTS");
+  const interest = propertyInterest([listing], "example-home", "WTS", "https://www.myeviv.com");
+  const normalized = normalizeRequirementPayload({ requirements: interest });
+  assert.equal(normalized.requirements.interestCode, listing.code);
+  assert.equal(normalized.requirements.interestTitle, listing.title);
+  assert.equal(normalized.requirements.interestUrl, "https://www.myeviv.com/property/example-home?intent=WTS");
+  assert.ok(propertyInterestLines(normalized.requirements).join("\n").includes(interest.interestUrl));
+  assert.equal(propertyInterest([listing], "missing", "WTL", "https://property.myeviv.com"), null);
+  assert.equal(normalizeRequirementPayload({ requirements: { ...interest, interestUrl: "javascript:alert(1)" } }).requirements.interestUrl, "");
 });

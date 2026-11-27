@@ -64,6 +64,7 @@ export function inquiryPostingText(submission) {
     );
   }
 
+  if (requirements.interestCode) lines.push("", detailLine("Property code", requirements.interestCode), detailLine("Property title", requirements.interestTitle), detailLine("Property URL", requirements.interestUrl));
   if (hasValue(otherNeeds)) lines.push("", "*Other Needs:*", clean(otherNeeds));
   return lines.filter((line) => line !== null).join("\n").replace(/\n{3,}/g, "\n\n").trim();
 }

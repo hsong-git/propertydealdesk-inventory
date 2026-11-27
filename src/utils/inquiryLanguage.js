@@ -8,6 +8,9 @@ export const normalizeInquiryLanguage = value => INQUIRY_LANGUAGES.some(item => 
 
 // English key → Malay, Simplified Chinese.
 export const INQUIRY_TRANSLATIONS = {
+  "Property you're enquiring about": ["Hartanah yang anda tanyakan", "您正在咨询的房产"],
+  "View property": ["Lihat hartanah", "查看房产"],
+  "The selected property could not be loaded. Please return to the property page and try again.": ["Hartanah pilihan tidak dapat dimuatkan. Sila kembali ke halaman hartanah dan cuba lagi.", "无法加载所选房产，请返回房产页面重试。"],
   "Language": ["Bahasa", "语言"],
   "Property requirement": ["Keperluan hartanah", "房产需求"],
   "Find a Property for Me": ["Carikan Hartanah untuk Saya", "帮我找房"],

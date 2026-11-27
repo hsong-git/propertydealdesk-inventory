@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight, Calendar, Check, CheckCircle2, Copy, Home, LoaderCircle, MessageCircle, Pencil, Search } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { propertyInterest, propertyInterestLines } from "../utils/propertyEnquiry.js";
 import { PropertyCard } from "../components/PropertyCard";
 import { Seo } from "../components/Seo";
 import { agentProfile } from "../config/agentProfile";
@@ -64,6 +65,7 @@ function requirementWhatsAppMessage(submission, reference) {
     "",
     `*Reference:* ${reference}`,
     `*Looking to:* ${submission.intent === "rent" ? "WTR" : "WTB"}`,
+    ...propertyInterestLines(requirements),
     `*Name:* ${profile.name}`,
     `*Race:* ${profile.race}${profile.race === "Others" && profile.raceOther ? ` (${profile.raceOther})` : ""}`,
     `*Country:* ${profile.country}${profile.country === "Other" && profile.countryOther ? ` (${profile.countryOther})` : ""}`,
@@ -287,6 +289,10 @@ export function RequirementPage() {
 function RequirementWorkflow() {
   const { language, t } = useInquiryLanguage();
   const inventory = useInventory();
+  const [searchParams] = useSearchParams();
+  const sourceSlug = searchParams.get("property") || "";
+  const interest = propertyInterest(inventory.allItems || inventory.items, sourceSlug, searchParams.get("intent"), window.location.origin);
+  const interestBanner = interest ? <aside className="requirement-property-context"><span className="eyebrow">{t("Property you're enquiring about")}</span><strong>{interest.interestCode} · {interest.interestTitle}</strong><a href={interest.interestUrl} target="_blank" rel="noopener noreferrer">{t("View property")}</a></aside> : null;
   const [form, setForm] = useState(() => emptyRequirement());
   const [step, setStep] = useState(0);
   const [reviewEditStep, setReviewEditStep] = useState(null);
@@ -367,7 +373,8 @@ function RequirementWorkflow() {
   };
 
   const submit = async () => {
-    const payload = { ...form, idempotencyKey: submissionKey.current };
+    if (sourceSlug && !interest) { setSubmitError(t("The selected property could not be loaded. Please return to the property page and try again.")); return; }
+    const payload = { ...form, requirements: { ...form.requirements, ...interest }, idempotencyKey: submissionKey.current };
     const validation = validateRequirementPayload(payload);
     if (!validation.valid) {
       setErrors(validation.errors);
@@ -441,6 +448,7 @@ function RequirementWorkflow() {
     return (
     <main className="requirement-page" lang={INQUIRY_LANGUAGES.find(item => item.value === language).locale}><Seo title={`Requirement ${result.reference}`} canonical={`${SITE_ORIGIN}/inquiries`} robots="noindex, follow" />
       <div className="page-width requirement-result">
+        {interestBanner}
         <section className="requirement-success"><span className="success-sparkle">✦</span><CheckCircle2 size={36} /><span className="eyebrow"><InquiryText text={"Your search is underway"} /></span><h1>{t("We've got you, {name}.", { name: result.submission.profile.name })}</h1><p><InquiryText text={"Your reference is"} />{" "}<strong>{result.reference}</strong><InquiryText text={". We found a few places to get you started."} /></p></section>
         {result.matchingError ? <div className="requirement-alert warning">{t(result.matchingError)}</div> : null}
         <section className="requirement-whatsapp requirement-next-step" aria-labelledby="requirement-whatsapp-title"><MessageCircle size={28} aria-hidden="true" /><div><span className="eyebrow"><InquiryText text={"Next step"} /></span><h2 id="requirement-whatsapp-title"><InquiryText text={"Send this requirement to HS Ong"} /></h2><p><InquiryText text={"The destination is fixed to the configured PropertyDealDesk agent number."} /></p></div><div className="requirement-whatsapp-actions"><a className="button primary" href={resultWhatsAppUrl || undefined} target={resultWhatsAppDesktop ? "propertydealdesk-whatsapp-business" : "_self"} rel={resultWhatsAppDesktop ? undefined : undefined} onClick={() => { setWhatsAppError(""); trackEvent("inquiry_whatsapp_click", { intent: result.submission.intent, properties: { reference: result.reference } }); }}><MessageCircle size={17} aria-hidden="true" />{" "}<InquiryText text={"WhatsApp Agent"} /></a><button className="button secondary" type="button" onClick={copyWhatsAppMessage}>{messageCopied ? <Check size={17} aria-hidden="true" /> : <Copy size={17} aria-hidden="true" />} {t(messageCopied ? "Copied" : "Copy message")}</button></div></section>
@@ -458,6 +466,7 @@ function RequirementWorkflow() {
     <main className="requirement-page" lang={INQUIRY_LANGUAGES.find(item => item.value === language).locale}><Seo {...inquiryShareSeo} />
       <div className="page-width requirement-shell">
         <header className="requirement-intro"><span className="eyebrow"><Search size={14} />{" "}<InquiryText text={"Property requirement"} /></span><h1><InquiryText text={"Find a Property for Me"} /></h1><p><InquiryText text={"Let's find a place that feels right. A few quick choices, then we'll do the searching for you."} /></p></header>
+        {interestBanner}
         <div className="requirement-progress-meta"><span>{step === 0 ? t("Let's get started") : t("Step {step} of {total}", { step, total: finalStep })}</span><strong>{step === 0 ? "0%" : t("{percent}% complete", { percent: Math.round((step / finalStep) * 100) })}</strong></div>
         <ol className="requirement-progress" aria-label={t("Form progress")}>{steps.map((label, index) => <li className={index === step ? "active" : index < step ? "complete" : ""} key={label}><span>{index < step ? "✓" : index + 1}</span><small>{t(label)}</small></li>)}</ol>
         <section className="requirement-card">

@@ -18,6 +18,7 @@ const request = async (url, options) => {
 };
 
 const detailLabels = {
+  interestCode: "Property code", interestTitle: "Property title", interestUrl: "Property URL",
   propertyType: "Property Type",
   storeys: "Number of Storeys",
   area: "Area / Location",

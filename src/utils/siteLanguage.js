@@ -3,6 +3,12 @@ import { translateInquiry, normalizeInquiryLanguage } from "./inquiryLanguage.js
 // Interface translations only. Original listing names, descriptions and posting
 // copy are kept as supplied rather than silently machine-translated.
 export const SITE_TRANSLATIONS = {
+  "Is this your first enquiry with HS Ong?": ["Adakah ini pertanyaan pertama anda kepada HS Ong?", "这是您第一次向HS Ong咨询吗？"],
+  "If yes, share your requirements first. This property's details will be included with your submission.": ["Jika ya, kongsikan keperluan anda dahulu. Butiran hartanah ini akan disertakan dalam penghantaran anda.", "如果是，请先填写您的需求。此房产的资料将随表格一起提交。"],
+  "Yes, first time": ["Ya, kali pertama", "是，首次咨询"],
+  "No, open WhatsApp": ["Tidak, buka WhatsApp", "否，打开WhatsApp"],
+  "Property you're enquiring about": ["Hartanah yang anda tanyakan", "您正在咨询的房产"],
+  "The selected property could not be loaded. Please return to the property page and try again.": ["Hartanah pilihan tidak dapat dimuatkan. Sila kembali ke halaman hartanah dan cuba lagi.", "无法加载所选房产，请返回房产页面重试。"],
   "Upfront cash breakdown": ["Pecahan tunai awal", "前期现金明细"],
   "TA stamping": ["Setem TA", "租约盖章费"],
   "Show more": ["Lihat lagi", "显示更多"],

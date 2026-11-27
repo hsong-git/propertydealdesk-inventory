@@ -1,7 +1,9 @@
 import { useSiteLanguage } from "../components/InquiryLanguage";
 import { ArrowLeft, Bath, BedDouble, Building2, CalendarDays, Check, ChevronLeft, ChevronRight, Compass, Copy, Expand, ImageOff, MapPin, Maximize2, MessageCircle, Phone, Share2, Sofa, Warehouse, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { FirstTimeEnquiryDialog } from "../components/FirstTimeEnquiryDialog";
+import { propertyEnquiryTarget } from "../utils/propertyEnquiry.js";
 import { agentProfile } from "../config/agentProfile";
 import { useInventory } from "../hooks";
 import { enquiryText, formatDate, formatPrice, intentLabels, postingText, shareListing, tenantEligibilityDescription } from "../utils/listing";
@@ -29,6 +31,8 @@ import { SavePropertyButton } from "../components/Shortlist";
 const photoSharingEnabled = import.meta.env.VITE_ENABLE_PHOTO_SHARING !== "false";
 
 export function PropertyPage() {
+  const navigate = useNavigate();
+  const [enquiryPromptOpen, setEnquiryPromptOpen] = useState(false);
   const { t: tSite } = useSiteLanguage();
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
@@ -177,7 +181,8 @@ export function PropertyPage() {
         </aside>
       </div>
       <RelatedListings listings={relatedListings} />
-      {!lightboxOpen && !agentPortraitOpen ? <div className="property-whatsapp-dock"><button className="button primary" type="button" onClick={() => enquireOnWhatsApp("detail_floating")}><MessageCircle size={20} /><span>{tSite("WhatsApp enquiry")} · {listing.displayCode || listing.code}</span></button></div> : null}
+      {!lightboxOpen && !agentPortraitOpen ? <div className="property-whatsapp-dock"><button className="button primary" type="button" onClick={() => setEnquiryPromptOpen(true)}><MessageCircle size={20} /><span>{tSite("WhatsApp enquiry")} · {listing.displayCode || listing.code}</span></button></div> : null}
+      <FirstTimeEnquiryDialog open={enquiryPromptOpen} onClose={() => setEnquiryPromptOpen(false)} onFirstTime={() => { setEnquiryPromptOpen(false); navigate(propertyEnquiryTarget(listing, displayIntent)); }} onReturning={() => { setEnquiryPromptOpen(false); enquireOnWhatsApp("detail_floating"); }} />
       {tSite(lightboxOpen ? <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label={tSite(`${listing.title} photo viewer`)}><button className="lightbox-close" type="button" onClick={() => setLightboxOpen(false)} aria-label={tSite("Close full photo view")} autoFocus><X size={24} /></button>{tSite(galleryPhotos.length > 1 ? <button className="lightbox-arrow previous" type="button" onClick={() => movePhoto(-1)} aria-label={tSite("Previous photo")}><ChevronLeft size={32} /></button> : null)}<div className={`lightbox-image${lightboxSlide ? ` slide-${lightboxSlide}` : ""}`} onTouchStart={onLightboxTouchStart} onTouchEnd={onLightboxTouchEnd} onTouchCancel={() => { swipeStart.current = null; }} onAnimationEnd={() => setLightboxSlide("")}><PublicPropertyImage allowIndividualSave key={galleryPhotos[activePhoto]} src={galleryPhotos[activePhoto]} alt={tSite(`${listing.title} photo ${activePhoto + 1} fullscreen`)} /><span className="lightbox-counter">{tSite(activePhoto + 1)}{tSite(" / ")}{tSite(galleryPhotos.length)}</span></div>{tSite(galleryPhotos.length > 1 ? <button className="lightbox-arrow next" type="button" onClick={() => movePhoto(1)} aria-label={tSite("Next photo")}><ChevronRight size={32} /></button> : null)}</div> : null)}
       <PortraitModal open={agentPortraitOpen} src={agentProfile.portrait} alt={tSite(`${agentProfile.displayName}, ${agentProfile.title}`)} onClose={() => setAgentPortraitOpen(false)} />
     </main>

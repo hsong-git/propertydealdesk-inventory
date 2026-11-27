@@ -91,8 +91,11 @@ test("anonymous audit IDs are readable and distinguish browser activity", () => 
   assert.equal(anonymousBrowserLabel(null), "—");
   assert.equal(anonymousBrowserLabel("invalid"), "—");
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PhotoDownloadsAdminPage.jsx"), "utf8");
-  assert.match(source, /event\.anonymous_browser_id === browserFilter/);
-  assert.match(source, /Show all browsers/);
+  assert.match(source, /groupPhotoAudit\(state.events, sort\)/);
+  assert.match(source, /anonymousBrowserLabel\(group.browserId\)/);
+  assert.match(source, /<details className="photo-audit-group"/);
+  assert.match(source, /useState\("latest"\)/);
+  assert.match(source, /may belong to different browsers/);
 });
 
 test("property page does not render a separate Copy short link action", () => {

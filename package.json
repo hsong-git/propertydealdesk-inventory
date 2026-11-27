@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test:photo-audit": "node --test src/utils/photoAudit.test.js scripts/property-page-actions.test.mjs functions/api/photo-share/event.test.js",
     "test:inquiry-language": "node --test src/utils/inquiryLanguage.test.js",
     "test:analytics": "node --test src/utils/engagement.test.js src/utils/analyticsTrend.test.js src/utils/trafficAttribution.test.js src/utils/normalizedTrafficSources.test.js src/utils/listingInterest.test.js functions/_lib/entryAttribution.test.js functions/_lib/cloudflareSources.test.js functions/api/admin/analytics.test.js functions/api/analytics/event.test.js",
     "build:property": "node scripts/build-catalogue.mjs property",

@@ -1,5 +1,4 @@
 const SITE_ORIGIN = "https://property.myeviv.com";
-const AGENT_TOOLS_URL = "https://agenttools.myeviv.com/";
 const WHATSAPP = "60163132865";
 
 function escapeHtml(value) {
@@ -53,7 +52,6 @@ export function renderUnavailableShortcutHtml(code = "", origin = SITE_ORIGIN) {
       .brand small { color: #63716b; font-size: 11px; font-weight: 500; }
       .nav { display: flex; align-items: center; gap: 6px; color: #53615b; font-weight: 700; font-size: 13px; }
       .nav a { min-height: 38px; padding: 0 12px; border-radius: 8px; display: inline-flex; align-items: center; text-decoration: none; }
-      .nav .agent-tools-link { color: #fff; background: #0c8768; box-shadow: 0 8px 18px rgba(17, 124, 91, 0.16); }
       main { min-height: calc(100vh - 166px); display: grid; place-items: center; padding: 52px 0; }
       .card { width: min(760px, 100%); margin-inline: auto; border: 1px solid #cfe5dc; border-radius: 18px; background: linear-gradient(135deg, #ffffff 0%, #f0fbf7 100%); box-shadow: 0 22px 58px rgba(21, 82, 61, 0.11); padding: clamp(28px, 5vw, 52px); text-align: center; box-sizing: border-box; }
       .icon { width: 58px; height: 58px; margin: 0 auto 18px; border-radius: 16px; display: grid; place-items: center; background: #e1f4ed; color: #087a5f; font-size: 28px; }
@@ -93,7 +91,6 @@ export function renderUnavailableShortcutHtml(code = "", origin = SITE_ORIGIN) {
           <a href="/">Properties</a>
           <a href="/about">About Me</a>
           <a href="/contact">Contact</a>
-          <a class="agent-tools-link" href="${AGENT_TOOLS_URL}">Agent Tools</a>
         </nav>
       </div>
     </header>

@@ -24,6 +24,9 @@ test("Google ownership proof is served exactly on WWW without redirects or wider
   assert.equal((await onRequest({ request: new Request("https://www.myeviv.com/google-other.html"), env: {}, next: async () => new Response("unknown", { headers: { "content-type": "text/html" } }) })).status, 404);
 });
 test("SEO routing preserves valid properties and rejects removed properties and unknown pages", async () => {
+  const saved = await run("/saved");
+  assert.equal(saved.status, 200);
+  assert.match(saved.headers.get("x-robots-tag"), /noindex/);
   const canonical = await run("/property/active-property/");
   assert.equal(canonical.status, 308);
   assert.equal(canonical.headers.get("location"), "https://property.myeviv.com/property/active-property");

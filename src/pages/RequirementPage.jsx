@@ -17,7 +17,7 @@ import { inquiryShareSeo, SITE_ORIGIN } from "../utils/seo";
 import { matchRequirements } from "../utils/requirementMatching";
 import { buildWhatsAppUrl, isMobileOrTabletDevice } from "../utils/whatsapp";
 import { trackEvent } from "../utils/analytics";
-import { InquiryLanguageProvider, InquiryLanguagePicker, InquiryText, useInquiryLanguage } from "../components/InquiryLanguage";
+import { InquiryText, useInquiryLanguage } from "../components/InquiryLanguage";
 import { INQUIRY_LANGUAGES, translateInquiryValue } from "../utils/inquiryLanguage";
 
 const makeSubmissionKey = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}_${Math.random().toString(36).slice(2)}`;
@@ -281,7 +281,7 @@ function ReviewSection({ title, values, labels, onEdit, intent }) {
 }
 
 export function RequirementPage() {
-  return <InquiryLanguageProvider><RequirementWorkflow /></InquiryLanguageProvider>;
+  return <RequirementWorkflow />;
 }
 
 function RequirementWorkflow() {
@@ -441,7 +441,6 @@ function RequirementWorkflow() {
     return (
     <main className="requirement-page" lang={INQUIRY_LANGUAGES.find(item => item.value === language).locale}><Seo title={`Requirement ${result.reference}`} canonical={`${SITE_ORIGIN}/inquiries`} robots="noindex, follow" />
       <div className="page-width requirement-result">
-        <InquiryLanguagePicker />
         <section className="requirement-success"><span className="success-sparkle">✦</span><CheckCircle2 size={36} /><span className="eyebrow"><InquiryText text={"Your search is underway"} /></span><h1>{t("We've got you, {name}.", { name: result.submission.profile.name })}</h1><p><InquiryText text={"Your reference is"} />{" "}<strong>{result.reference}</strong><InquiryText text={". We found a few places to get you started."} /></p></section>
         {result.matchingError ? <div className="requirement-alert warning">{t(result.matchingError)}</div> : null}
         <section className="requirement-whatsapp requirement-next-step" aria-labelledby="requirement-whatsapp-title"><MessageCircle size={28} aria-hidden="true" /><div><span className="eyebrow"><InquiryText text={"Next step"} /></span><h2 id="requirement-whatsapp-title"><InquiryText text={"Send this requirement to HS Ong"} /></h2><p><InquiryText text={"The destination is fixed to the configured PropertyDealDesk agent number."} /></p></div><div className="requirement-whatsapp-actions"><a className="button primary" href={resultWhatsAppUrl || undefined} target={resultWhatsAppDesktop ? "propertydealdesk-whatsapp-business" : "_self"} rel={resultWhatsAppDesktop ? undefined : undefined} onClick={() => { setWhatsAppError(""); trackEvent("inquiry_whatsapp_click", { intent: result.submission.intent, properties: { reference: result.reference } }); }}><MessageCircle size={17} aria-hidden="true" />{" "}<InquiryText text={"WhatsApp Agent"} /></a><button className="button secondary" type="button" onClick={copyWhatsAppMessage}>{messageCopied ? <Check size={17} aria-hidden="true" /> : <Copy size={17} aria-hidden="true" />} {t(messageCopied ? "Copied" : "Copy message")}</button></div></section>
@@ -458,7 +457,6 @@ function RequirementWorkflow() {
   return (
     <main className="requirement-page" lang={INQUIRY_LANGUAGES.find(item => item.value === language).locale}><Seo {...inquiryShareSeo} />
       <div className="page-width requirement-shell">
-        <InquiryLanguagePicker />
         <header className="requirement-intro"><span className="eyebrow"><Search size={14} />{" "}<InquiryText text={"Property requirement"} /></span><h1><InquiryText text={"Find a Property for Me"} /></h1><p><InquiryText text={"Let's find a place that feels right. A few quick choices, then we'll do the searching for you."} /></p></header>
         <div className="requirement-progress-meta"><span>{step === 0 ? t("Let's get started") : t("Step {step} of {total}", { step, total: finalStep })}</span><strong>{step === 0 ? "0%" : t("{percent}% complete", { percent: Math.round((step / finalStep) * 100) })}</strong></div>
         <ol className="requirement-progress" aria-label={t("Form progress")}>{steps.map((label, index) => <li className={index === step ? "active" : index < step ? "complete" : ""} key={label}><span>{index < step ? "✓" : index + 1}</span><small>{t(label)}</small></li>)}</ol>

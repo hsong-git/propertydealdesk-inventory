@@ -40,6 +40,10 @@ export function openWhatsApp({ phone, message, opener = globalThis.open, deviceC
   const features = desktop ? undefined : "noopener,noreferrer";
   const popup = opener?.(url, target, features);
   if (!popup) {
+    // Mobile uses noopener/noreferrer, which deliberately returns null even
+    // when the tab opens. Do not mistake that for a failed share or claim a
+    // confirmed handoff. https://developer.mozilla.org/docs/Web/API/Window/open
+    if (!desktop && opener) return { opened: null, desktop, url };
     onError?.(desktop
       ? "Unable to open WhatsApp Business Web. Please allow pop-ups for PropertyDealDesk and try again."
       : "Unable to open WhatsApp. Please allow pop-ups for PropertyDealDesk and try again.");

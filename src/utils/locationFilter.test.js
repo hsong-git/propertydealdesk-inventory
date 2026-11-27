@@ -67,7 +67,7 @@ test("location facets respect every other filter, alternate prices and inventory
     [{ furnishing: ["Full"] }, "all", ["WTL1"]],
     [{ propertyType: ["Room"] }, "all", ["WTL4"]],
     [{ keyword: "Jenaris" }, "all", ["CMI2"]],
-    [{}, "featured", ["WTL1"]],
+    [{}, "featured", ["WTL1", "CMI2", "WTL4"]],
     [{ keyword: "no matches" }, "all", []],
   ];
   for (const [overrides, mode, expected] of cases) {

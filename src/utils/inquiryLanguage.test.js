@@ -67,8 +67,10 @@ test("workflow's static display text and translatable attributes are covered", (
     },
   });
   assert.ok(checked.size > 50);
-  assert.match(source, /<InquiryLanguageProvider><RequirementWorkflow \/><\/InquiryLanguageProvider>/);
-  assert.equal((source.match(/<InquiryLanguagePicker \/>/g) || []).length, 2);
+  assert.match(source, /return <RequirementWorkflow \/>/);
+  assert.match(fs.readFileSync(new URL("../App.jsx", import.meta.url), "utf8"), /<InquiryLanguageProvider><ShortlistProvider><BrowserRouter>/);
+  assert.equal((source.match(/<InquiryLanguagePicker \/>/g) || []).length, 0);
+  assert.match(fs.readFileSync(new URL("../components/Header.jsx", import.meta.url), "utf8"), /<SiteLanguagePicker \/>/);
   assert.match(source, /<option value=\{name\} key=\{name\}>\{t\(name\)\}/);
   assert.doesNotMatch(source, /value=\{t\(/);
 });

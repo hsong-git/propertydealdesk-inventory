@@ -3,7 +3,7 @@ import path from "node:path";
 import sharp from "sharp";
 import { normalizeInventoryFeed } from "../src/data/inventoryContract.js";
 import { COMBINED_CATALOGUE } from "../src/config/catalogueSite.js";
-import { formatPrice, listingPreviewObjectUrl } from "../src/utils/listing.js";
+import { formatPrice, listingPreviewObjectUrl, compareNewlyAdded } from "../src/utils/listing.js";
 import { absoluteUrl, defaultSeo, homeShareSeo, inquiryShareSeo, propertyBreadcrumbs, propertyJsonLd, propertySeoDescription, propertySeoTitle, SITE_ORIGIN } from "../src/utils/seo.js";
 import { inspectPublicImage } from "./image-policy.mjs";
 import { propertyPhotoWatermark } from "../src/config/watermark.js";
@@ -245,16 +245,17 @@ export async function prerenderPropertyOgRoutes({ projectRoot, publicRoot, distR
   const pages = Array.from({ length: pageCount }, (_, index) => `<a href="/catalogue/page/${index + 1}/">Page ${index + 1}</a>`).join(" · ");
   const catalogueContent = (listings, heading) => `<main class="page-width home-stack"><header><a href="/">Properties</a> · <a href="/inquiries">Find a Property</a> · <a href="/about">About HS Ong</a> · <a href="/contact">Contact</a><h1>${heading}</h1><p>Properties for sale and rent in Klang Valley, listed by HS Ong, Real Estate Negotiator at The Roof Realty Sdn Bhd.</p></header>${discoveryLinks(items, dictionary)}<div class="property-grid">${cards(listings)}</div><nav aria-label="Catalogue pages">${pages}</nav></main>`;
   fs.writeFileSync(path.join(distRoot, "index.html"), renderPublicShareHtml(indexHtml, homeShareSeo).replace('<div id="root"></div>', `<div id="root"><!--seo-content-start-->${catalogueContent(items.slice(0, 12), "HS Ong Property Inventory — Klang Valley")}<!--seo-content-end--></div>`));
+  const catalogueItems = [...items].sort(compareNewlyAdded);
   for (let page = 1; page <= pageCount; page++) {
     // Property's SMI-only pagination differs from WWW's combined pagination.
     // Keep its own URL, but do not submit/index it as a competing catalogue.
     const canonical = `${COMBINED_CATALOGUE ? SITE_ORIGIN : "https://property.myeviv.com"}/catalogue/page/${page}/`;
-    let html = indexHtml.replace(/<script[^>]*type="module"[^>]*>[\s\S]*?<\/script>/g, "");
+    let html = indexHtml;
     html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>Property Catalogue — Page ${page} | HS Ong</title>`);
     html = html.replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${canonical}">`);
     html = html.replace(/<meta property="og:url"[^>]*>/, `<meta property="og:url" content="${canonical}">`);
     if (!COMBINED_CATALOGUE) html = replaceTag(html, /<meta name="robots"[^>]*>/i, '<meta name="robots" content="noindex, follow">');
-    html = html.replace('<div id="root"></div>', `<div id="root">${renderCatalogueContent(items.slice((page - 1) * 12, page * 12), { heading: `Property Inventory Catalogue — Page ${page}`, page, pageCount, total: items.length })}</div>`);
+    html = html.replace('<div id="root"></div>', `<div id="root">${renderCatalogueContent(catalogueItems.slice((page - 1) * 12, page * 12), { heading: `Property Inventory Catalogue — Page ${page}`, page, pageCount, total: items.length })}</div>`);
     const directory = path.join(distRoot, "catalogue", "page", String(page));
     fs.mkdirSync(directory, { recursive: true });
     fs.writeFileSync(path.join(directory, "index.html"), html);

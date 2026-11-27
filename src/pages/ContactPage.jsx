@@ -1,3 +1,4 @@
+import { useSiteLanguage } from "../components/InquiryLanguage";
 import { CreditCard, MapPin } from "lucide-react";
 import { useState } from "react";
 import { agentProfile } from "../config/agentProfile";
@@ -7,6 +8,7 @@ import { Seo } from "../components/Seo";
 import { SITE_ORIGIN } from "../utils/seo";
 
 export function ContactPage() {
+  const { t: tSite } = useSiteLanguage();
   const [cardOpen, setCardOpen] = useState(false);
   return (
     <main className="page-width content-page">
@@ -16,11 +18,11 @@ export function ContactPage() {
         canonical={`${SITE_ORIGIN}/contact`}
         ogTitle="Contact HS Ong"
       />
-      <section className="contact-hero"><div><span className="eyebrow">Direct contact</span><h1>Let&apos;s discuss your property enquiry</h1><p>When contacting me, include the listing code, your preferred viewing time, or a short description of the property you need.</p><ContactActions includeEmail includeWhatsApp /></div><img src={agentProfile.portrait} alt={agentProfile.displayName} /></section>
+      <section className="contact-hero"><div><span className="eyebrow">{tSite("Direct contact")}</span><h1>{tSite("Let's discuss your property enquiry")}</h1><p>{tSite("When contacting me, include the listing code, your preferred viewing time, or a short description of the property you need.")}</p><ContactActions includeEmail includeWhatsApp /></div><img src={agentProfile.portrait} alt={tSite(agentProfile.displayName)} /></section>
       <div className="contact-grid">
-        <section className="content-card"><h2>Contact details</h2><p>{agentProfile.name} · {agentProfile.renNumber}</p><p>{agentProfile.agency}</p><p><a href={`tel:+${agentProfile.phone}`}>{agentProfile.phoneDisplay}</a></p><p><a href={`mailto:${agentProfile.email}`}>{agentProfile.email}</a></p><p>Please confirm an appointment and meeting location directly with HS Ong.</p></section>
-        <section className="content-card"><span className="eyebrow">Enquiry guidance</span><h2>Details to include</h2><p>Share the listing code and whether you are enquiring as a buyer, tenant, owner, or co-broke agent. For a viewing request, include a preferred date and time.</p></section>
-        <section className="content-card"><span className="eyebrow">Areas served</span><h2>Klang and nearby areas</h2><div className="service-area-grid">{agentProfile.serviceAreas.map((area) => <span key={area}><MapPin size={16} /> {area}</span>)}</div><button className="button tertiary" type="button" onClick={() => setCardOpen(true)}><CreditCard size={18} /> View Name Card</button></section>
+        <section className="content-card"><h2>{tSite("Contact details")}</h2><p>{tSite(agentProfile.name)}{tSite(" · ")}{tSite(agentProfile.renNumber)}</p><p>{tSite(agentProfile.agency)}</p><p><a href={`tel:+${agentProfile.phone}`}>{tSite(agentProfile.phoneDisplay)}</a></p><p><a href={`mailto:${agentProfile.email}`}>{tSite(agentProfile.email)}</a></p><p>{tSite("Please confirm an appointment and meeting location directly with HS Ong.")}</p></section>
+        <section className="content-card"><span className="eyebrow">{tSite("Enquiry guidance")}</span><h2>{tSite("Details to include")}</h2><p>{tSite("Share the listing code and whether you are enquiring as a buyer, tenant, owner, or co-broke agent. For a viewing request, include a preferred date and time.")}</p></section>
+        <section className="content-card"><span className="eyebrow">{tSite("Areas served")}</span><h2>{tSite("Klang and nearby areas")}</h2><div className="service-area-grid">{tSite(agentProfile.serviceAreas.map((area) => <span key={area}><MapPin size={16} /> {tSite(area)}</span>))}</div><button className="button tertiary" type="button" onClick={() => setCardOpen(true)}><CreditCard size={18} />{tSite(" View Name Card")}</button></section>
       </div>
       <NameCardModal open={cardOpen} onClose={() => setCardOpen(false)} />
     </main>

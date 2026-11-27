@@ -6,6 +6,7 @@ const EVENT_NAMES = new Set([
   "listing_view", "listing_open", "whatsapp_click", "share_property", "copy_posting",
   "media_open", "photo_view", "photo_share", "inquiry_started", "inquiry_step_completed",
   "inquiry_submitted", "inquiry_whatsapp_click", "session_engaged",
+  "shortlist_save", "shortlist_remove", "shortlist_whatsapp",
 ]);
 const CODE_PATTERN = /^(WTS|WTL)[A-Z0-9-]+$/;
 const SESSION_PATTERN = /^[a-z0-9-]{8,80}$/i;

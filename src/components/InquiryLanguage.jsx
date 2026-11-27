@@ -1,9 +1,11 @@
-import { createContext, useContext, useState } from "react";
-import { INQUIRY_LANGUAGES, normalizeInquiryLanguage, translateInquiry } from "../utils/inquiryLanguage";
+import { createContext, useContext, useEffect, useState } from "react";
+import { INQUIRY_LANGUAGES, normalizeInquiryLanguage } from "../utils/inquiryLanguage";
+import { translateSite } from "../utils/siteLanguage.js";
 
 const LanguageContext = createContext({ language: "en", t: text => text });
 const STORAGE_KEY = "propertydealdesk-inquiry-language";
 export const useInquiryLanguage = () => useContext(LanguageContext);
+export const useSiteLanguage = useInquiryLanguage;
 
 export function InquiryLanguageProvider({ children }) {
   const [language, setLanguage] = useState(() => {
@@ -14,8 +16,17 @@ export function InquiryLanguageProvider({ children }) {
     setLanguage(next);
     try { localStorage.setItem(STORAGE_KEY, next); } catch { /* Switching still works when storage is blocked. */ }
   };
-  const t = (text, values) => translateInquiry(language, text, values);
+  useEffect(() => { document.documentElement.lang = language === "zh" ? "zh-Hans" : language; }, [language]);
+  useEffect(() => { const sync = event => { if (event.key === STORAGE_KEY) setLanguage(normalizeInquiryLanguage(event.newValue)); }; window.addEventListener("storage", sync); return () => window.removeEventListener("storage", sync); }, []);
+  const t = (text, values) => translateSite(language, text, values);
   return <LanguageContext.Provider value={{ language, setLanguage: changeLanguage, t }}>{children}</LanguageContext.Provider>;
+}
+
+export function SiteLanguagePicker() {
+  const { language, setLanguage, t } = useInquiryLanguage();
+  return <label className="site-language-picker"><span className="sr-only">{t("Language")}</span><select aria-label={t("Language")} value={language} onChange={event => setLanguage(event.target.value)}>
+    <option value="en">English</option><option value="ms">Bahasa Melayu</option><option value="zh">中文</option>
+  </select></label>;
 }
 
 export function InquiryLanguagePicker() {

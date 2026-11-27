@@ -1,4 +1,4 @@
-const appRoutes = new Set(["/", "/cmi", "/inquiries", "/admin", "/admin/analytics", "/admin/inquiries", "/admin/inquiries/manage", "/admin/photo-downloads", "/admin/photo-downloads/audit", "/admin/requirements"]);
+const appRoutes = new Set(["/", "/saved", "/cmi", "/inquiries", "/admin", "/admin/analytics", "/admin/inquiries", "/admin/inquiries/manage", "/admin/photo-downloads", "/admin/photo-downloads/audit", "/admin/requirements"]);
 
 const notFound = (method) => new Response(method === "HEAD" ? null : '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex, follow"><title>Property or page not found | HS Ong</title></head><body><main><h1>This page is no longer available</h1><p>The property may have been sold, rented, withdrawn or removed.</p><a href="/">Browse current properties</a></main></body></html>', { status: 404, headers: { "content-type": "text/html; charset=utf-8", "x-robots-tag": "noindex, follow" } });
 
@@ -53,7 +53,7 @@ export async function onRequest(context) {
   if (!(response.headers.get("content-type") || "").includes("text/html")) return response;
   const known = appRoutes.has(pathname) || ["/about", "/contact"].includes(pathname) || /^\/(property|catalogue|areas)\//.test(pathname) || /^\/download\/[^/]+$/.test(pathname);
   if (!known) return notFound(context.request.method);
-  if ((unlisted && !combined) || pathname === "/cmi" || pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/download/")) {
+  if (pathname === "/saved" || (unlisted && !combined) || pathname === "/cmi" || pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/download/")) {
     const privateResponse = new Response(response.body, response);
     privateResponse.headers.set("X-Robots-Tag", "noindex, nofollow");
     return privateResponse;

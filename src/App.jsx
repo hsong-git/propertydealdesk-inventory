@@ -3,6 +3,10 @@ import { lazy } from "react";
 import { Layout } from "./components/Layout";
 import { HomePage } from "./pages/HomePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import { InquiryLanguageProvider } from "./components/InquiryLanguage";
+import { ShortlistProvider } from "./components/Shortlist";
+const SavedPropertiesPage = lazy(() => import("./pages/SavedPropertiesPage").then(module => ({ default: module.SavedPropertiesPage })));
+const CataloguePage = lazy(() => import("./pages/CataloguePage").then(module => ({ default: module.CataloguePage })));
 
 const CmiPage = lazy(() => import("./pages/CmiPage").then(module => ({ default: module.CmiPage })));
 const PropertyPage = lazy(() => import("./pages/PropertyPage").then(module => ({ default: module.PropertyPage })));
@@ -19,13 +23,15 @@ const ContactPage = lazy(() => import("./pages/ContactPage").then(module => ({ d
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <InquiryLanguageProvider><ShortlistProvider><BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="cmi" element={<CmiPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="contact" element={<ContactPage />} />
+          <Route path="saved" element={<SavedPropertiesPage />} />
+          <Route path="catalogue/page/:page" element={<CataloguePage />} />
           <Route path="areas/:area" element={<AreaPage />} />
           <Route path="inquiries" element={<RequirementPage />} />
           <Route path="requirements" element={<Navigate to="/inquiries" replace />} />
@@ -42,6 +48,6 @@ export default function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </BrowserRouter></ShortlistProvider></InquiryLanguageProvider>
   );
 }

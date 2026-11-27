@@ -13,6 +13,17 @@ function request(payload, origin = "https://property.myeviv.com") {
   });
 }
 
+test("shortlist events work on WWW and Property without requiring customer identity", async () => {
+  for (const origin of ["https://property.myeviv.com", "https://www.myeviv.com"]) {
+    for (const eventName of ["shortlist_save", "shortlist_remove", "shortlist_whatsapp"]) {
+      const database = db();
+      const response = await onRequest({ request: request({ eventName, sessionId:"12345678", pagePath:"/saved", properties:{listing_count:2} },origin), env:{REQUIREMENTS_DB:database} });
+      assert.equal(response.status,204);
+      assert.equal(database.calls[0].values[3],new URL(origin).hostname);
+    }
+  }
+});
+
 test("records a privacy-safe event with its site host", async () => {
   const database = db();
   const response = await onRequest({ request: request({ eventName: "whatsapp_click", sessionId: "12345678-abcd", source: "facebook_oct", pagePath: "/property/example", listingCode: "wtl0092", intent: "WTL", properties: { placement: "detail", ignored: { private: true } } }), env: { REQUIREMENTS_DB: database } });

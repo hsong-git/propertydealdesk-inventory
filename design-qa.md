@@ -1,82 +1,48 @@
-# Design QA — Catalogue annotation pass
+# Three-step home section — visual check
 
-## Comparison target
-
-- Source visual truth: browser annotation screenshots supplied in the current task for the Property detail, About, and Contact pages at a 970 × 912 viewport.
-- Implementation screenshots:
-  - `docs/qa/property-lightbox-970x912.png`
-  - `docs/qa/property-posting-970x912.png`
-  - `docs/qa/about-970x912.png`
-  - `docs/qa/contact-970x912.png`
-  - `docs/qa/contact-gradient-970x912.png`
-  - `docs/qa/home-profile-970x912.png`
-  - `docs/qa/home-featured-order-970x912.png`
-  - `docs/qa/name-card-modal-970x912.png`
-  - `docs/qa/property-photo-download-970x912.png`
-  - `docs/qa/property-mobile-390x844.png`
-- Desktop viewport: 970 × 912 CSS pixels, device scale factor 1.
-- Mobile viewport: 390 × 844 CSS pixels, device scale factor 1.
-- State: Stable catalogue snapshot 2026.07.27.5, WTL0010 property detail, About, and Contact.
-
-## Full-view comparison evidence
-
-- The existing Catalogue typography, spacing, white/green palette, cards, radii, shadows, navigation, agent panel, and responsive structure were preserved.
-- About and Contact retain the original composition while both portrait images now anchor to `50% 0%`; the full hairline is visible and the necessary crop falls at the bottom.
-- Setia Alam appears as a sixth service-area chip without changing the existing chip treatment.
-- The Contact hero now fades from primary-soft green on the left to white on the right. Its desktop portrait frame is exactly 310 × 335 pixels, matching About Me.
-- The homepage portrait uses a 210-pixel column and a 294-pixel frame at this viewport, matching the measured 294-pixel right-hand content block and displaying the full head-to-foot image with `object-fit: contain`.
-- The default catalogue order groups Featured listings first, then applies the existing recently-updated ordering within each group.
-- Stable publication version 2026.07.27.5 explicitly promotes a case-insensitive `CoverPage` source filename to `cover.webp` and `photos[0]`; the catalogue therefore uses the same intended cover on cards and detail pages.
-- The name-card modal contains the complete front-and-back card image within the viewport without horizontal or vertical scrolling.
-- Property detail keeps the existing gallery and content hierarchy. The empty Nearby amenities and Why this property cards are absent, so no empty vertical space remains.
-- Posting details uses the existing detail-card language and provides a compact primary copy action plus selectable, wrapped posting content.
-- The property agent card includes a compact WhatsApp photo-download request action with the code, title, location, and displayed price prefilled.
-
-## Focused comparison evidence
-
-- Gallery: `docs/qa/property-lightbox-970x912.png` confirms a contained full-photo view with visible close, previous, next, and count controls.
-- Posting content: `docs/qa/property-posting-970x912.png` confirms readable copy, correct hierarchy, and no overflow.
-- Portrait crops: About and Contact captures confirm the top of the hair is no longer clipped.
-- Homepage portrait: `docs/qa/home-profile-970x912.png` confirms the larger full-body treatment aligns with the right-hand profile content.
-- Homepage ordering: `docs/qa/home-featured-order-970x912.png` confirms Featured cards precede non-Featured cards.
-- Name card: `docs/qa/name-card-modal-970x912.png` confirms the complete image is visible without scrollbars.
-- Photo request: `docs/qa/property-photo-download-970x912.png` confirms the action is present in the agent card.
-- Mobile: `docs/qa/property-mobile-390x844.png` confirms the gallery and detail card remain within the viewport; measured document scroll width does not exceed the client viewport.
-
-## Required fidelity surfaces
-
-- Fonts and typography: unchanged site font family and hierarchy; posting text uses the site font at a compact 12px/1.65 line height.
-- Spacing and layout rhythm: existing 16px detail-card rhythm retained; lightbox controls maintain safe edge spacing; mobile copy action stacks to full width.
-- Colors and visual tokens: only existing primary, surface, border, text, radius, and shadow tokens are used.
-- Image quality and asset fidelity: original sanitized WebP assets are shown with `object-fit: contain` in fullscreen; no replacement or generated imagery is used. Portraits preserve their original asset and aspect treatment.
-- Copy and content: Nearby amenities and Why this property are removed. Posting details uses Stable-provided public `posting_copy` verbatim when exported, with the normalized public listing fallback retained for older snapshots.
-
-## Interaction verification
-
-- Clicking the main property photo opens the fullscreen dialog.
-- Left/Right keyboard navigation changes the active image; Escape closes the dialog.
-- Thumbnail selection remains intact.
-- Copy posting reaches the visible `Copied` success state.
-- The photo-download WhatsApp URL contains the expected WTL0010 code, title, location, and `RM 1,800 / month` price.
-- Featured listing order begins WTL0010, WTL0027, WTL0036 before non-Featured WTL0011.
-- Name-card image bounds remain within the 970 × 912 viewport and the modal uses hidden overflow rather than scrollbars.
-- Home, About, and Contact profile/hero sections validate cleanly at 390 × 844, 506 × 912, and 970 × 912 with no horizontal overflow, no action overlap, and the expected mobile action order.
-- Nearby amenities and Why this property heading counts are both zero.
-- Browser console: zero warnings and zero errors.
-
-## Comparison history
-
-1. Initial source findings: no fullscreen viewer, empty Nearby amenities and Why this property sections, no copyable posting details, Setia Alam omitted, and portrait tops cropped.
-2. Fixes: added fullscreen gallery and keyboard controls; removed both empty sections; added public-safe posting copy; added Setia Alam; top-anchored both portrait crops.
-3. Follow-up fixes: reversed the Contact gradient, matched its portrait to About Me at 310 × 335, and resized the homepage portrait to align precisely with the adjacent profile content while retaining the full head-to-foot treatment.
-4. Post-fix evidence: desktop, mobile, lightbox, posting, homepage, About, and Contact captures above. No remaining P0, P1, or P2 findings.
+- Source visual: `.runtime/journey-reference.png` (802 × 290 pixels).
+- Implementation: `.runtime/journey-preview.jpg` (1280 × 720 viewport, desktop).
+- Combined comparison: `.runtime/journey-comparison.png`. Source retained at 802px wide; implementation section (1201 × 253 CSS pixels) scaled to 802px for composition comparison. Not a 1:1 typography comparison.
+- State: English catalogue, six cards loaded; new section directly above Co-broke box.
 
 ## Findings
 
-- No actionable P0/P1/P2 differences remain for the requested annotations.
+No actionable P0/P1/P2 findings in the desktop section.
 
-## Follow-up polish
+- Typography: uses existing site font, bold heading and card titles, readable body copy. Intentional adaptation to the existing theme rather than a pixel-identical copy.
+- Spacing/layout: three equal cards with consistent padding and gaps, ordered heading/icon/body content, directly above the existing Co-broke panel.
+- Colors: existing green primary and soft-green surface tokens replace reference gold/grey as requested.
+- Assets: library search, house and key icons match the reference meanings; no raster artwork or generated assets required.
+- Copy: all supplied English copy retained, with Malay and Chinese translations.
+- Full-view and focused evidence: the source and implementation section appear together in the comparison image; all section details are readable there. Additional crop not required.
 
-- None required for this scoped pass.
+## Comparison history
+
+First comparison passed. No P0/P1/P2 visual correction loop required.
+
+## Verification and remaining test gaps
+
+- Property tools/translation checks and local production build passed.
+- Desktop preview inspected at 1280px and existing 832px layout; no horizontal overflow observed at 832px.
+- CSS stacks cards below 640px. A requested browser viewport override did not change the observed 832px viewport, so narrow-mobile visual verification remains unconfirmed; override reset afterward.
+- New section is informational and adds no interactive controls.
+
+## Implementation checklist
+
+- [x] Section and three steps above Co-broke.
+- [x] Existing theme and icon system reused.
+- [x] Copy translations supplied.
+- [x] Desktop browser comparison completed.
+- [ ] Narrow-mobile visual check when a resizable preview is available.
+
+## Requested redesign — 27 November 2026
+
+- Source: prior rendered section in `.runtime/journey-preview.jpg`, plus the user's browser annotations requesting a cleaner design and a Find a Property link.
+- Updated implementation: `.runtime/journey-redesign.jpg` (1280 × 720 CSS viewport); section crop is 1201 × 374 pixels, density 1.
+- Same-input before/after comparison: `.runtime/journey-redesign-comparison.png`, both crops scaled equally to 802px wide.
+- Intentional redesign: one white container, soft-green first step, subtle dividers, numbered steps and consistent library icon tiles. Existing type, palette and section placement retained. All copy retained, with visible numerical prefixes moved into step markers.
+- Typography, spacing, token colors, icon quality and copy reviewed together in the comparison. No actionable P0/P1/P2 findings.
+- First-step Find a Property link clicked and verified to navigate to `/inquiries`; returned to the section afterward. Keyboard-focus styling provided.
+- Targeted tests and production build passed. Narrow-mobile visual check remains a residual test gap as noted above; CSS uses one stacked column below 640px.
 
 final result: passed

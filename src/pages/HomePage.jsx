@@ -1,4 +1,6 @@
-import { AlertTriangle, ExternalLink, Handshake, LoaderCircle, X } from "lucide-react";
+import { useSiteLanguage } from "../components/InquiryLanguage";
+import { AlertTriangle, ArrowDown, ArrowRight, Handshake, House, KeyRound, LoaderCircle, Search } from "lucide-react";
+import { Link } from "react-router-dom";
 import { createSearchLink, searchShareTarget } from "../utils/searchShare.js";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { agentProfile } from "../config/agentProfile";
@@ -16,11 +18,13 @@ import { normalizeMultiFilters, readFilterParams, writeFilterParams } from "../u
 import { matchesCatalogueFilters, normalizeCatalogueIntent, offerForIntent } from "../utils/catalogueFilter.js";
 import { analyticsSource, trackEvent } from "../utils/analytics.js";
 import { AreaLinks } from "../components/AreaLinks";
+import { compareNewlyAdded } from "../utils/listing.js";
 
 const defaultIntent = "";
-const INITIAL_VISIBLE_COUNT = 12;
+const INITIAL_VISIBLE_COUNT = 6;
 const LOAD_MORE_COUNT = 6;
-const defaults = { keyword: "", intent: defaultIntent, propertyType: [], location: [], minPrice: "", maxPrice: "", bedrooms: "", furnishing: [], sort: "recent", classification: "" };
+const NEW_LISTING_COUNT = 12;
+const defaults = { keyword: "", intent: defaultIntent, propertyType: [], location: [], minPrice: "", maxPrice: "", bedrooms: "", furnishing: [], sort: "newest", classification: "" };
 const CATALOGUE_STATE_KEY = "pdd-catalogue-state";
 const CATALOGUE_SCROLL_KEY = "pdd-catalogue-scroll-y";
 const shareableFilterKeys = {
@@ -46,14 +50,13 @@ function readSharedCatalogueState() {
   filters.classification = COMBINED_CATALOGUE ? normalizeInventoryFilter(filters.classification) : "";
   return {
     filters: { ...defaults, ...filters },
-    catalogueMode: params.get("view") === "featured" ? "featured" : "all",
+    catalogueMode: "all",
     visible: INITIAL_VISIBLE_COUNT,
   };
 }
 
 function catalogueSearchParams(filters, catalogueMode) {
   const params = writeFilterParams(filters, shareableFilterKeys, defaults);
-  if (catalogueMode === "featured") params.set("view", catalogueMode);
   return params;
 }
 
@@ -65,30 +68,28 @@ function readCatalogueState() {
     const saved = JSON.parse(window.sessionStorage.getItem(CATALOGUE_STATE_KEY) || "null");
     return {
       filters: saved?.filters && typeof saved.filters === "object" ? normalizeMultiFilters({ ...defaults, ...saved.filters, intent: saved.intentDefaultVersion === 2 ? normalizeCatalogueIntent(saved.filters.intent) : defaultIntent, classification: COMBINED_CATALOGUE ? normalizeInventoryFilter(saved.filters.classification) : "" }) : defaults,
-      catalogueMode: saved?.catalogueMode === "featured" ? "featured" : "all",
-      visible: Number.isInteger(saved?.visible) && saved.visible >= INITIAL_VISIBLE_COUNT ? saved.visible : INITIAL_VISIBLE_COUNT,
+      catalogueMode: "all",
+      visible: INITIAL_VISIBLE_COUNT,
     };
   } catch { return { filters: defaults, catalogueMode: "all", visible: INITIAL_VISIBLE_COUNT }; }
 }
 
 export function HomePage() {
+  const { t: tSite } = useSiteLanguage();
   const { items, meta, locationDictionary, loading, error } = useInventory();
   const trafficSource = useMemo(analyticsSource, []);
   const initialCatalogueState = useMemo(readCatalogueState, []);
   const [filters, setFilters] = useState(initialCatalogueState.filters);
-  const [catalogueMode, setCatalogueMode] = useState(initialCatalogueState.catalogueMode);
+  const catalogueMode = "all";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [visible, setVisible] = useState(initialCatalogueState.visible);
-  const [agentToolsPreviewOpen, setAgentToolsPreviewOpen] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
   const [shortSearch, setShortSearch] = useState(null);
   const [shareBusy, setShareBusy] = useState(false);
   const [shareError, setShareError] = useState("");
-  const loadMoreRef = useRef(null);
   const analyticsReady = useRef(false);
   const activeCount = Object.entries(filters).filter(([key, value]) => key !== "sort" && key !== "intent" && (Array.isArray(value) ? value.length : value)).length
-    + (filters.intent !== defaultIntent ? 1 : 0)
-    + (catalogueMode === "featured" ? 1 : 0);
+    + (filters.intent !== defaultIntent ? 1 : 0);
   const options = useMemo(() => ({
     propertyTypes: [...new Set(items.map((item) => item.propertyType))].sort(),
     locations: buildLocationOptions(items, locationDictionary),
@@ -98,14 +99,15 @@ export function HomePage() {
   const results = useMemo(() => {
     const filtered = items.filter(item => matchesCatalogueFilters(item, filters, catalogueMode, locationDictionary));
     return [...filtered].sort((a, b) => {
-      if (filters.sort === "newest") return new Date(b.createdAt) - new Date(a.createdAt);
+      if (filters.sort === "newest") return compareNewlyAdded(a, b);
       if (filters.sort === "price-asc") return offerForIntent(a, filters.intent).price - offerForIntent(b, filters.intent).price;
       if (filters.sort === "price-desc") return offerForIntent(b, filters.intent).price - offerForIntent(a, filters.intent).price;
       if (filters.sort === "title") return a.title.localeCompare(b.title);
       return compareRecentlyUpdated(a, b);
     });
   }, [items, filters, catalogueMode, locationDictionary]);
-  const reset = () => { setFilters(defaults); setCatalogueMode("all"); setVisible(INITIAL_VISIBLE_COUNT); };
+  const newListingIds = useMemo(() => new Set([...results].sort(compareNewlyAdded).slice(0, NEW_LISTING_COUNT).map(item => item.publicId)), [results]);
+  const reset = () => { setFilters(defaults); setVisible(INITIAL_VISIBLE_COUNT); };
   const loadMore = (method) => {
     setVisible((count) => {
       const next = Math.min(count + LOAD_MORE_COUNT, results.length);
@@ -113,17 +115,9 @@ export function HomePage() {
       return next;
     });
   };
-  const previousClassification = useRef(filters.classification);
   useEffect(() => {
-    if (previousClassification.current !== filters.classification) {
-      previousClassification.current = filters.classification;
-      setVisible(INITIAL_VISIBLE_COUNT);
-    }
-  }, [filters.classification]);
-  const updateCatalogueMode = (mode) => {
-    setCatalogueMode(mode);
     setVisible(INITIAL_VISIBLE_COUNT);
-  };
+  }, [filters, catalogueMode]);
   const shareUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
     return searchShareTarget(catalogueSearchParams(filters, catalogueMode), window.location.origin).href;
@@ -193,100 +187,56 @@ export function HomePage() {
     });
     return () => window.cancelAnimationFrame(frame);
   }, [loading]);
-  useEffect(() => {
-    const sentinel = loadMoreRef.current;
-    if (!sentinel || loading || visible >= results.length || typeof IntersectionObserver === "undefined") return undefined;
-    const observer = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) loadMore("automatic");
-    }, { rootMargin: "320px 0px" });
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [loading, results.length, visible]);
-  useEffect(() => {
-    if (!agentToolsPreviewOpen) return undefined;
-    document.body.classList.add("modal-open");
-    const onKeyDown = (event) => {
-      if (event.key === "Escape") setAgentToolsPreviewOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.body.classList.remove("modal-open");
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [agentToolsPreviewOpen]);
 
   return (
     <main>
       <Seo {...homeShareSeo} />
       <div className="page-width home-stack">
         <ProfilePanel />
-        <AreaLinks items={items} dictionary={locationDictionary} />
-        {meta?.isMockData ? (
+        {tSite(meta?.isMockData ? (
           <section className="development-data-notice" role="status">
             <AlertTriangle size={20} />
-            <div><strong>Development preview — mock inventory</strong><span>{meta.notice}</span></div>
+            <div><strong>{tSite("Development preview — mock inventory")}</strong><span>{tSite(meta.notice)}</span></div>
           </section>
-        ) : null}
+        ) : null)}
         <section id="properties" className="catalogue-section">
           <div className="section-heading">
-            <div><span className="eyebrow">Public property listings</span><h2>{agentProfile.catalogueHeading}</h2><p>Explore current opportunities and contact me directly to confirm details or arrange a viewing.</p></div>
-            <div className="catalogue-count"><strong>{results.length}</strong><span>matching {results.length === 1 ? "property" : "properties"}</span>{meta ? <small>Inventory {meta.inventoryVersion} · {meta.isMockData ? "generated" : "published"} {formatDateTime(meta.publishedAt || meta.generatedAt)}</small> : null}</div>
+            <div><span className="eyebrow">{tSite("Public property listings")}</span><h2>{tSite(agentProfile.catalogueHeading)}</h2><p>{tSite("Explore current opportunities and contact me directly to confirm details or arrange a viewing.")}</p></div>
+            <div className="catalogue-count"><strong>{tSite(results.length)}</strong><span>{tSite("matching ")}{tSite(results.length === 1 ? "property" : "properties")}</span>{tSite(meta ? <small>{tSite("Inventory ")}{tSite(meta.inventoryVersion)}{tSite(" · ")}{tSite(meta.isMockData ? "generated" : "published")} {tSite(formatDateTime(meta.publishedAt || meta.generatedAt))}</small> : null)}</div>
           </div>
-          <CatalogueFilters filters={filters} setFilters={setFilters} options={options} activeCount={activeCount} onReset={reset} onShare={shareSearch} shareCopied={shareCopied} shareBusy={shareBusy} shareError={shareError} shareReady={shortSearch?.target === shareUrl && typeof navigator.share === "function"} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} catalogueMode={catalogueMode} setCatalogueMode={updateCatalogueMode} />
-          {loading ? <div className="state-card"><LoaderCircle className="spin" /><strong>Loading public inventory…</strong></div> : null}
-          {error ? <div className="state-card error"><strong>{error}</strong><span>Please refresh the page or contact HS Ong directly.</span></div> : null}
-          {!loading && !error && results.length ? <div className="property-grid">{results.slice(0, visible).map((listing) => <PropertyCard key={listing.publicId} listing={listing} displayIntent={filters.intent} />)}</div> : null}
-          {!loading && !error && !results.length ? <div className="state-card"><strong>{items.length ? "No properties match these filters." : "No published properties are currently available."}</strong><span>{items.length ? "Try clearing one or more filters to see other opportunities." : "Please check back after the next approved inventory publication."}</span>{items.length ? <button className="button secondary" type="button" onClick={reset}>Reset Filters</button> : null}</div> : null}
-          {visible < results.length ? <div className="load-more" ref={loadMoreRef}><button className="button secondary" type="button" onClick={() => loadMore("button")}>Load more properties</button></div> : null}
-          <p className="load-more"><a className="button secondary" href="/catalogue/page/1/">Browse all properties by page</a></p>
+          <CatalogueFilters filters={filters} setFilters={setFilters} options={options} activeCount={activeCount} onReset={reset} onShare={shareSearch} shareCopied={shareCopied} shareBusy={shareBusy} shareError={shareError} shareReady={shortSearch?.target === shareUrl && typeof navigator.share === "function"} mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
+          {tSite(loading ? <div className="state-card"><LoaderCircle className="spin" /><strong>{tSite("Loading public inventory…")}</strong></div> : null)}
+          {tSite(error ? <div className="state-card error"><strong>{tSite(error)}</strong><span>{tSite("Please refresh the page or contact HS Ong directly.")}</span></div> : null)}
+          {tSite(!loading && !error && results.length ? <div className="property-grid">{tSite(results.slice(0, visible).map((listing) => <PropertyCard key={listing.publicId} listing={listing} displayIntent={filters.intent} isNew={newListingIds.has(listing.publicId)} />))}</div> : null)}
+          {tSite(!loading && !error && !results.length ? <div className="state-card"><strong>{tSite(items.length ? "No properties match these filters." : "No published properties are currently available.")}</strong><span>{tSite(items.length ? "Try clearing one or more filters to see other opportunities." : "Please check back after the next approved inventory publication.")}</span>{tSite(items.length ? <button className="button secondary" type="button" onClick={reset}>{tSite("Reset Filters")}</button> : null)}</div> : null)}
+          {!loading && !error && visible < results.length ? <div className="load-more"><button className="button primary catalogue-show-more" type="button" onClick={() => loadMore("button")}><span>{tSite("Show more")}</span><ArrowDown size={18} aria-hidden="true" /></button></div> : null}
+          <AreaLinks allLocations counts={options.locationCounts} searchParams={catalogueSearchParams(filters, catalogueMode)} />
+        </section>
+        <section className="home-journey" aria-labelledby="home-journey-heading">
+          <span className="eyebrow">{tSite("Property made simple")}</span>
+          <h2 id="home-journey-heading">{tSite("Three steps closer to home.")}</h2>
+          <ol className="home-journey-grid">
+            {[
+              [Search, "1. Find your property", "Share your requirements and receive matching properties directly via WhatsApp."],
+              [House, "2. View & negotiate", "View your preferred properties at your convenience. I'll help negotiate the price and terms."],
+              [KeyRound, "3. Secure & collect keys", "From booking and paperwork to key handover, I'll guide you every step of the way."],
+            ].map(([Icon, title, description], index) => <li key={title} className={index === 0 ? "journey-start" : ""}>
+              <div className="journey-step-heading"><span className="journey-icon"><Icon size={22} strokeWidth={1.8} aria-hidden="true" /></span><span className="journey-step-number" aria-hidden="true">0{index + 1}</span></div>
+              <h3>{tSite(title).replace(/^\d+\.\s*/, "")}</h3><p>{tSite(description)}</p>
+              {index === 0 ? <Link className="journey-start-link" to="/inquiries">{tSite("Find a Property")}<ArrowRight size={16} aria-hidden="true" /></Link> : null}
+            </li>)}
+          </ol>
         </section>
         <section className="co-broke-panel">
           <span className="co-broke-icon"><Handshake size={27} /></span>
-          <div><span className="eyebrow">Working together</span><h2>Co-broke agents are welcome</h2><p>{agentProfile.coBrokeMessage}</p></div>
+          <div><span className="eyebrow">{tSite("Working together")}</span><h2>{tSite("Co-broke agents are welcome")}</h2><p>{tSite(agentProfile.coBrokeMessage)}</p></div>
           <ContactActions
             includeCall={false}
             includeWhatsApp
-            whatsappLabel="Contact HS Ong"
+            whatsappLabel={tSite("Contact HS Ong")}
             message={`Hi ${agentProfile.displayName}, I am a real estate agent and would like to ask about current co-broke opportunities, available listings and viewing arrangements.`}
           />
         </section>
-        <section className="agent-tools-panel" aria-labelledby="agent-tools-heading">
-          <div className="agent-tools-copy">
-            <span className="eyebrow">For active co-broke agents</span>
-            <h2 id="agent-tools-heading">Never Miss a Match Again</h2>
-            <p>PropertyDealDesk Match Edition automatically scans WhatsApp property messages and alerts you when it finds a matching buyer, seller, landlord, tenant or property.</p>
-            <ul className="agent-tools-points">
-              <li>Works while you focus on your clients</li>
-              <li>Get notified only when there&apos;s a match</li>
-              <li>Spend less time searching, more time closing</li>
-            </ul>
-            <a className="button primary" href="https://agenttools.myeviv.com/" target="_blank" rel="noopener noreferrer">
-              <ExternalLink size={18} /> Learn about Agent Tools
-            </a>
-          </div>
-          <figure className="agent-tools-visual">
-            <button className="agent-tools-visual-button" type="button" onClick={() => setAgentToolsPreviewOpen(true)} aria-label="Open larger PropertyDealDesk Match Edition workflow illustration">
-              <img src="/agent-tools/match-edition-infographic.png" alt="PropertyDealDesk Match Edition workflow illustration" loading="lazy" />
-              <span>Tap to enlarge</span>
-            </button>
-          </figure>
-        </section>
-        {agentToolsPreviewOpen ? (
-          <div className="agent-tools-lightbox" role="presentation" onMouseDown={() => setAgentToolsPreviewOpen(false)}>
-            <section className="agent-tools-lightbox-card" role="dialog" aria-modal="true" aria-labelledby="agent-tools-preview-title" onMouseDown={(event) => event.stopPropagation()}>
-              <div className="agent-tools-lightbox-heading">
-                <div>
-                  <span className="eyebrow">Agent Tools preview</span>
-                  <h2 id="agent-tools-preview-title">PropertyDealDesk Match Edition workflow</h2>
-                </div>
-                <button className="icon-button" type="button" onClick={() => setAgentToolsPreviewOpen(false)} aria-label="Close Agent Tools infographic preview" autoFocus>
-                  <X size={20} />
-                </button>
-              </div>
-              <img src="/agent-tools/match-edition-infographic.png" alt="PropertyDealDesk Match Edition workflow illustration enlarged preview" />
-            </section>
-          </div>
-        ) : null}
       </div>
     </main>
   );

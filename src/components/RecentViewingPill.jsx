@@ -1,3 +1,4 @@
+import { useSiteLanguage } from "./InquiryLanguage";
 import { Eye, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -29,6 +30,7 @@ export function rememberListingView(code) {
 }
 
 export function RecentViewingPill() {
+  const { t: tSite } = useSiteLanguage();
   const location = useLocation();
   const [listings, setListings] = useState([]);
   const [recentCodes, setRecentCodes] = useState(() => typeof window === "undefined" ? [] : readRecentCodes());
@@ -81,10 +83,10 @@ export function RecentViewingPill() {
 
   if (!current || location.pathname.startsWith("/admin") || location.pathname === "/inquiries" || !visible) return null;
   return <aside className={`recent-viewing-pill${leaving ? " is-leaving" : ""}`} role="status">
-    <Link to={`/property/${current.slug}`} aria-label={`Open recently viewed listing ${current.displayCode || current.code}`}>
-      {coverPhoto(current) ? <PublicPropertyImage className="recent-viewing-thumb" src={coverPhoto(current)} alt="" loading="lazy" /> : <Eye size={16} />}
-      <span><strong>{current.displayCode || current.code}</strong> — {current.title} was recently viewed</span>
+    <Link to={`/property/${current.slug}`} aria-label={tSite(`Open recently viewed listing ${current.displayCode || current.code}`)}>
+      {tSite(coverPhoto(current) ? <PublicPropertyImage className="recent-viewing-thumb" src={coverPhoto(current)} alt={tSite("")} loading="lazy" /> : <Eye size={16} />)}
+      <span><strong>{tSite(current.displayCode || current.code)}</strong>{tSite(" — ")}{tSite(current.title)}{tSite(" was recently viewed")}</span>
     </Link>
-    <button type="button" onClick={() => { setDismissed(true); setLeaving(true); window.setTimeout(() => setVisible(false), 2000); }} aria-label="Dismiss recently viewed notice"><X size={15} /></button>
+    <button type="button" onClick={() => { setDismissed(true); setLeaving(true); window.setTimeout(() => setVisible(false), 2000); }} aria-label={tSite("Dismiss recently viewed notice")}><X size={15} /></button>
   </aside>;
 }

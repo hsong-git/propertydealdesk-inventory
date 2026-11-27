@@ -15,8 +15,7 @@ export const offerForIntent = (listing, intent) => (
 export function matchesCatalogueFilters(item, filters, mode, dictionary, { ignoreLocation = false } = {}) {
   const offer = offerForIntent(item, filters.intent);
   const locations = selectedValues(filters.location);
-  return (mode !== "featured" || item.featured)
-    && matchesInventoryFilter(item, filters.classification)
+  return matchesInventoryFilter(item, filters.classification)
     && matchesKeywordSearch(item, filters.keyword)
     && Boolean(offer)
     && matchesSelection(item.propertyType, filters.propertyType)

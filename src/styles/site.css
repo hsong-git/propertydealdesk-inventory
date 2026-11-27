@@ -46,6 +46,9 @@ main { flex: 1; }
 .area-discovery-links a { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; border: 1px solid var(--color-border); border-radius: 999px; background: #fff; color: var(--color-primary); font-weight: 600; line-height: 1.2; text-decoration: none; }
 .area-discovery-links a:hover { background: var(--color-primary-soft); border-color: var(--color-primary); }
 .area-discovery-links a:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+.all-location-links { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--color-border); }
+.all-location-links > span { flex-basis: 100%; font-weight: 650; }
+.all-location-links .area-discovery-pills { display: flex; flex-wrap: wrap; gap: 8px; overflow: visible; width: 100%; margin: 0; padding: 0; }
 @media (max-width: 640px) {
   .area-discovery-links { min-width: 0; flex-direction: column; align-items: stretch; gap: 3px; }
   .area-discovery-links > span { font-size: 11px; line-height: 1.25; }
@@ -164,7 +167,9 @@ main { flex: 1; }
 .property-photo-placeholder small { font-size: 10px; font-weight: 750; }
 .property-photo-placeholder.detail-placeholder { position: absolute; inset: 0; }
 .property-card:hover .property-photo img { transform: scale(1.025); }
-.property-photo .watermarked-image.is-ad-page > img { object-fit: contain; }
+.property-photo:has(.watermarked-image.is-ad-page) { aspect-ratio: auto; }
+.property-photo .watermarked-image.is-ad-page { height: auto; }
+.property-photo .watermarked-image.is-ad-page > img { width: 100%; height: auto; object-fit: contain; }
 .property-card:hover .property-photo .watermarked-image.is-ad-page > img { transform: none; }
 .intent { min-height: 24px; padding: 0 8px; border-radius: 7px; display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 900; }
 .intent small { font-size: 9px; font-weight: 750; opacity: .86; }
@@ -172,6 +177,8 @@ main { flex: 1; }
 .intent-wts { color: var(--color-primary); background: #ecf7e8; }
 .intent-wtl { color: #215a9b; background: var(--color-info-soft); }
 .featured-badge { position: absolute; right: 11px; top: 11px; padding: 5px 8px; border: 1px solid #dc2626; border-radius: var(--radius-pill); color: #b91c1c; background: #ffe4ec; font-size: 10px; font-weight: 850; backdrop-filter: blur(8px); }
+.new-badge { position: absolute; right: 11px; top: 11px; padding: 5px 8px; border: 1px solid var(--color-primary); border-radius: var(--radius-pill); color: var(--color-primary); background: var(--color-primary-soft); font-size: 10px; font-weight: 850; backdrop-filter: blur(8px); }
+.featured-badge.below-new { top: 42px; }
 .property-content { padding: 14px; display: grid; gap: 8px; }
 .property-reference { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--color-primary); font-size: 11px; font-weight: 850; letter-spacing: .03em; }
 .property-code { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 6px; }
@@ -239,6 +246,32 @@ main { flex: 1; }
 .co-broke-icon { width: 54px; height: 54px; border-radius: 13px; display: grid; place-items: center; color: #fff; background: var(--color-primary); }
 .co-broke-panel h2 { margin: 5px 0; font-size: 21px; }
 .co-broke-panel p { margin: 0; color: var(--color-text-muted); font-size: 13px; line-height: 1.5; }
+.home-journey { padding: 18px; border: 1px solid var(--color-border); border-radius: var(--radius-large); background: #fff; box-shadow: var(--shadow-card); }
+.home-journey h2 { margin: 5px 0 14px; font-size: clamp(21px, 2.4vw, 26px); line-height: 1.25; }
+.home-journey-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; padding: 0; margin: 0; list-style: none; }
+.home-journey-grid li { display: flex; flex-direction: column; min-width: 0; padding: 12px 14px; }
+.home-journey-grid li + li { border-left: 1px solid var(--color-border); }
+.home-journey-grid .journey-start { border-radius: var(--radius-medium); background: var(--color-primary-soft); }
+.journey-step-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.journey-icon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid var(--color-border); border-radius: 9px; background: #fff; color: var(--color-primary); }
+.journey-step-number { color: var(--color-primary); font-size: 13px; font-weight: 750; letter-spacing: .08em; opacity: .65; }
+.home-journey-grid h3 { margin: 0 0 6px; font-size: 15px; line-height: 1.4; }
+.home-journey-grid p { margin: 0; color: var(--color-text-muted); font-size: 13px; line-height: 1.55; }
+.journey-start-link { display: inline-flex; align-self: flex-start; align-items: center; gap: 8px; min-height: 36px; margin-top: 4px; color: var(--color-primary); font-size: 13px; font-weight: 750; }
+.journey-start-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.journey-start-link:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: 5px; }
+.catalogue-show-more { min-width: 158px; min-height: 46px; padding: 11px 22px; border-radius: var(--radius-pill); gap: 12px; box-shadow: 0 7px 18px rgba(17,124,91,.22); }
+.catalogue-show-more > svg { animation: catalogue-more-nudge 2.4s ease-in-out 2; }
+.catalogue-show-more:hover { box-shadow: 0 9px 22px rgba(17,124,91,.3); }
+.catalogue-show-more:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 4px; }
+@keyframes catalogue-more-nudge { 0%, 60%, 100% { transform: translateY(0); } 72%, 90% { transform: translateY(3px); } 81% { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .catalogue-show-more > svg { animation: none; } }
+@media (max-width: 640px) {
+  .home-journey-grid { grid-template-columns: 1fr; gap: 8px; }
+  .home-journey-grid li { padding: 12px; }
+  .home-journey-grid li + li { border-left: 0; border-top: 1px solid var(--color-border); }
+  .journey-step-heading { margin-bottom: 8px; }
+}
 .agent-tools-panel { margin-top: -8px; padding: clamp(18px,2.8vw,30px); border: 1px solid var(--color-border); border-radius: var(--radius-large); display: grid; grid-template-columns: minmax(0,.9fr) minmax(320px,1.1fr); align-items: center; gap: clamp(18px,3vw,34px); background: #fff; box-shadow: var(--shadow-card); }
 .agent-tools-copy { min-width: 0; display: grid; justify-items: start; gap: 12px; }
 .agent-tools-panel h2 { margin: 5px 0 7px; font-size: 20px; }
@@ -437,6 +470,10 @@ main { flex: 1; }
 .gallery-open .watermarked-image { width: 100%; height: 100%; position: absolute; inset: 0; }
 .gallery-open .watermarked-image > img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
 .gallery-open:hover .watermarked-image > img { transform: none; }
+.gallery-main.is-landscape { aspect-ratio: auto; min-height: 0; }
+.gallery-main.is-landscape .gallery-open { position: relative; height: auto; }
+.gallery-main.is-landscape .watermarked-image { position: relative; height: auto; }
+.gallery-main.is-landscape .watermarked-image > img { width: 100%; height: auto; }
 .gallery-open-label { position: absolute; right: 11px; bottom: 11px; z-index: 2; min-height: 34px; padding: 0 10px; border-radius: var(--radius-pill); display: inline-flex; align-items: center; gap: 6px; color: #fff; background: rgba(15,31,26,.78); font-size: 11px; font-weight: 750; backdrop-filter: blur(8px); }
 .gallery-thumbnails { margin-top: 8px; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }
 .gallery-thumbnails button { aspect-ratio: 16/10; padding: 0; border: 2px solid transparent; border-radius: var(--radius-small); overflow: hidden; background: var(--color-surface-muted); }
@@ -688,6 +725,77 @@ main { flex: 1; }
   .analytics-listing-preview:hover .analytics-listing-tooltip, .analytics-listing-preview:focus-within .analytics-listing-tooltip { transform: scale(1); }
 }
 .photo-audit-table-wrap { overflow-x: auto; }
+.site-language-picker { margin-left: auto; flex: 0 0 auto; }
+.site-language-picker select { width: auto; max-width: 140px; min-height: 40px; padding: 6px 24px 6px 8px; font: inherit; font-size: 12px; border: 1px solid var(--color-border); border-radius: 9px; color: var(--color-text); background: #fff; }
+.header-inner { gap: 12px; }
+.property-actions > .save-property-button { min-width: 0; grid-column: 1 / -1; }
+.save-property-button.is-saved { color: var(--color-primary); background: var(--color-primary-soft); }
+.property-price-row .property-price { margin-right: auto; }
+.save-property-button.is-compact { width: 34px; height: 34px; min-height: 34px; padding: 0; flex: 0 0 34px; }
+.property-tool { min-width: 0; }
+.property-tool > summary { cursor: pointer; color: var(--color-primary); font-weight: 750; padding: 8px 0; }
+.property-tool label { display: grid; gap: 6px; font-size: 13px; }
+.property-tool input, .property-tool select, .property-tool textarea { width: 100%; min-width: 0; min-height: 44px; box-sizing: border-box; padding: 10px; border: 1px solid var(--color-border); border-radius: 9px; background: #fff; color: var(--color-text); font: inherit; }
+.viewing-request { grid-column: 1 / -1; width: 100%; border-top: 1px solid var(--color-border); padding-top: 10px; scroll-margin-top: 90px; }
+.agent-contact-card:has(.viewing-request) { position: static; }
+.viewing-shortcut { justify-self: start; }
+.viewing-request form { display: grid; gap: 12px; }
+.viewing-request p { margin: 4px 0; font-size: 12px; line-height: 1.6; }
+.viewing-request button { width: 100%; white-space: normal; }
+.mortgage-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.mortgage-results { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.mortgage-results dt { color: var(--color-text-muted); font-size: 12px; }
+.mortgage-results dd { margin: 6px 0 0; font-size: 20px; font-weight: 750; color: var(--color-primary); }
+.property-tool-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.site-language-picker select { border-radius: var(--radius-pill); border-color: var(--color-border); background-color: var(--color-primary-soft); color: var(--color-primary); font-weight: 750; padding-inline: 14px; cursor: pointer; }
+.site-language-picker select:focus-visible, .property-tool input:focus-visible, .property-tool textarea:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.viewing-request { padding: 18px 14px 14px; border: 1px solid var(--color-border); border-radius: var(--radius-medium); background: linear-gradient(145deg, #fff, var(--color-primary-soft)); }
+.viewing-request h2 { margin: 0 0 8px; color: var(--color-primary); font-size: 18px; }
+.viewing-request label { font-weight: 650; }
+.viewing-request label small { font-weight: 400; color: var(--color-text-muted); }
+.viewing-request input, .viewing-request textarea { border-radius: var(--radius-small); }
+.property-map-embed { display: block; width: 100%; height: 280px; border: 1px solid var(--color-border); border-radius: var(--radius-medium); background: var(--color-primary-soft); }
+.mortgage-breakdown { margin-top: 18px; padding: 18px; border-radius: var(--radius-medium); background: var(--color-primary-soft); }
+.mortgage-monthly { display: grid; gap: 5px; margin: 0 0 14px; }
+.mortgage-monthly span { color: var(--color-text-muted); font-size: 12px; }
+.mortgage-monthly strong { font-size: 25px; color: var(--color-primary); }
+.mortgage-breakdown dl { margin: 0; display: grid; gap: 12px; }
+.mortgage-breakdown dl > div { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; font-size: 13px; }
+.mortgage-breakdown dd { margin: 0; text-align: right; font-weight: 750; white-space: nowrap; }
+.mortgage-upfront { border-top: 1px solid var(--color-border); padding-top: 14px; font-weight: 750; }
+.mortgage-sources { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 14px; margin-top: 4px; font-size: 12px; }
+.mortgage-sources a { display: inline-flex; align-items: center; min-height: 36px; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-pill); background: var(--color-primary-soft); color: var(--color-primary); font-weight: 650; line-height: 1.3; }
+.mortgage-sources a:hover { border-color: var(--color-primary); }
+.mortgage-sources a:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+.rental-estimate .rental-booking-note { margin-top: 0; padding-top: 18px; }
+.mortgage-estimate .estimate-description { margin-top: 0; padding-top: 18px; }
+.dsr-info-button { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; margin: -7px 0 -7px 4px; padding: 0; vertical-align: middle; border: 0; border-radius: 50%; color: var(--color-primary); background: transparent; }
+.dsr-info-button:hover, .dsr-info-button[aria-expanded="true"] { background: #fff; }
+.dsr-help { margin: 16px 0 0; padding: 12px; border: 1px solid var(--color-border); border-radius: var(--radius-small); background: #fff; font-size: 12px; line-height: 1.6; }
+.rental-cost-group + .rental-cost-group { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--color-border); }
+.rental-cost-group h3 { margin: 0 0 14px; font-size: 14px; color: var(--color-primary); }
+.refundable-label { display: block; margin-top: 3px; font-size: 11px; color: var(--color-primary); }
+.mortgage-fields { padding: 16px; border: 1px solid var(--color-border); border-radius: var(--radius-medium); background: linear-gradient(145deg, #fff, var(--color-primary-soft)); }
+.mortgage-fields label { color: var(--color-text); font-weight: 650; }
+.mortgage-fields input, .mortgage-fields select { border-radius: var(--radius-small); background-color: #fff; }
+.viewing-date-field { display: grid; gap: 6px; }
+.viewing-date-inputs { display: grid; grid-template-columns: minmax(0,1fr) 44px; gap: 8px; }
+.viewing-calendar { display: grid; place-items: center; position: relative; border: 1px solid var(--color-border); border-radius: var(--radius-small); color: var(--color-primary); background: #fff; }
+.viewing-calendar input { position: absolute; inset: 0; opacity: 0; padding: 0; cursor: pointer; }
+.viewing-calendar:focus-within { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.viewing-date-error { color: #a52a24; font-size: 12px; }
+.viewing-date-inputs input[aria-invalid="true"] { border-color: #a52a24; }
+.saved-properties-page { padding-top: 28px; padding-bottom: 40px; }
+.saved-unavailable { display: flex; align-items: center; gap: 15px; justify-content: space-between; padding: 14px; border: 1px solid var(--color-border); border-radius: 12px; }
+.saved-unavailable span { overflow-wrap: anywhere; }
+.shortlist-send { align-self: flex-start; white-space: normal; }
+@media (max-width: 640px) {
+  .header-inner { gap: 7px; }
+  .site-language-picker select { max-width: 90px; min-height: 40px; font-size: 11px; }
+  .brand-link span strong { font-size: 11px; }
+  .mortgage-results { grid-template-columns: 1fr; }
+  .property-actions > .save-property-button { padding-inline: 10px; }
+}
 .photo-audit-toolbar { flex-wrap: wrap; }
 .photo-audit-toolbar label { display: flex; align-items: center; gap: 7px; margin-left: auto; font-size: 12px; }
 .photo-audit-toolbar select { width: auto; min-height: 36px; font-size: 12px; }

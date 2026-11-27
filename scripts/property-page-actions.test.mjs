@@ -70,9 +70,9 @@ test("photo and video switches sit below the main picture and above thumbnails",
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "PropertyPage.jsx"), "utf8");
   assert.ok(source.indexOf('gallery-main') < source.indexOf('className="gallery-video-controls"'));
   assert.ok(source.indexOf('className="gallery-video-controls"') < source.indexOf('className="gallery-thumbnails"'));
-  const controls = source.slice(source.indexOf('aria-label="Property media"'), source.indexOf('aria-label="Choose video"'));
-  assert.ok(controls.indexOf('>Photos</button>') < controls.indexOf('>Layout</button>'));
-  assert.ok(controls.indexOf('>Layout</button>') < controls.indexOf('>Videos</button>'));
+  const controls = source.slice(source.indexOf('aria-label={tSite("Property media")}'), source.indexOf('aria-label={tSite("Choose video")}'));
+  assert.ok(controls.indexOf('tSite("Photos")') < controls.indexOf('tSite("Layout")'));
+  assert.ok(controls.indexOf('tSite("Layout")') < controls.indexOf('tSite("Videos")'));
 });
 
 test("detail-page photos preserve their complete image while reserving stable gallery space", () => {
@@ -200,7 +200,7 @@ test("property cards expose a compact Copy posting action", () => {
   assert.match(source, /copy-posting-control/);
   assert.match(source, /copy-posting-icon-button/);
   assert.match(source, /copy-posting-prompt/);
-  assert.match(source, />Copied</);
+  assert.match(source, /tSite\("Copied"\)/);
   assert.match(source, /Copy posting/);
   assert.match(css, /\.property-price-row/);
   assert.match(css, /\.copy-posting-control/);
@@ -224,14 +224,14 @@ test("intent pills are shown in listing headers and never cover catalogue or gal
   assert.match(related, /property-reference[\s\S]{0,400}<span className=\{`intent/);
   assert.match(page, /property-reference[\s\S]{0,400}<span className=\{`intent/);
   assert.match(staticCards, /property-reference[\s\S]{0,300}<span class="intent/);
-  assert.match(css, /\.property-photo \.watermarked-image\.is-ad-page > img \{ object-fit: contain; \}/);
+  assert.match(css, /\.property-photo \.watermarked-image\.is-ad-page > img \{ width: 100%; height: auto; object-fit: contain; \}/);
 });
 
 test("intent selection remains outside the collapsible mobile filter drawer", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "components", "CatalogueFilters.jsx"), "utf8");
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
   assert.ok(source.indexOf('className="filter-toggle-field persistent-intent-filter"') < source.indexOf("advanced-filter-shell"));
-  assert.equal((source.match(/<legend>Intent<\/legend>/g) || []).length, 1);
+  assert.equal((source.match(/<legend>\{tSite\("Intent"\)\}<\/legend>/g) || []).length, 1);
   assert.match(css, /\.persistent-intent-filter \{[^}]*width: min\(100%,240px\);/);
   assert.ok(source.indexOf('className="primary-filter-toggles"') < source.indexOf("advanced-filter-shell"));
   assert.match(css, /\.primary-filter-toggles \{[^}]*display: flex;[^}]*flex-wrap: wrap;/);
@@ -244,7 +244,7 @@ test("homepage profile keeps a compact mobile action row", () => {
   const css = fs.readFileSync(path.join(projectRoot, "src", "styles", "site.css"), "utf8");
   assert.doesNotMatch(source, /mobile-browse-properties/);
   assert.doesNotMatch(source, /profile-requirement-link|Find me a property/);
-  assert.match(source, /profile-name-card-icon[\s\S]*aria-label="View Name Card"/);
+  assert.match(source, /profile-name-card-icon[\s\S]*aria-label=\{tSite\("View Name Card"\)\}/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \{[^}]*grid-template-columns: clamp\(140px, 30vw, 180px\) minmax\(0,1fr\)/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.area-list,[\s\S]*\.profile-actions > \.button\.tertiary,[\s\S]*display: none;/);
   assert.match(css, /\.profile-panel:not\(\.expanded\) \.profile-name-card-icon \{[^}]*width: 42px;[^}]*height: 36px;/);
@@ -287,7 +287,7 @@ test("footer omits CMI Units while the bookmarked separate page stays available"
   assert.doesNotMatch(layout, /to="\/cmi">CMI Units/);
   assert.match(page, /listing.visibility === "unlisted"/);
   assert.match(page, /robots="noindex, nofollow"/);
-  assert.match(page, /aria-label="Search CMI units"/);
+  assert.match(page, /aria-label=\{tSite\("Search CMI units"\)\}/);
   assert.doesNotMatch(home, /allItems/);
 });
 

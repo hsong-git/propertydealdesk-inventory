@@ -1,9 +1,11 @@
+import { useSiteLanguage } from "./InquiryLanguage";
 import { ArrowLeft, MessageCircle, SearchX } from "lucide-react";
 import { Link } from "react-router-dom";
 import { agentProfile } from "../config/agentProfile";
 import { whatsappUrl } from "../utils/listing";
 
 export function ListingUnavailableState({ code, error }) {
+  const { t: tSite } = useSiteLanguage();
   const normalizedCode = String(code || "").trim().toUpperCase();
   const message = [
     `Hi ${agentProfile.displayName}, I opened ${normalizedCode ? `listing ${normalizedCode}` : "a property listing"} on your Property Inventory, but it appears to be no longer available.`,
@@ -14,22 +16,18 @@ export function ListingUnavailableState({ code, error }) {
     <main className="page-width page-state listing-unavailable-state">
       <div className="listing-unavailable-card">
         <span className="listing-unavailable-icon" aria-hidden="true"><SearchX size={28} /></span>
-        <span className="eyebrow">Listing unavailable</span>
-        <h1>This property is no longer available</h1>
+        <span className="eyebrow">{tSite("Listing unavailable")}</span>
+        <h1>{tSite("This property is no longer available")}</h1>
         <p>
-          {error ||
-            "This property may already be sold, rented, withdrawn, or no longer available in the public catalogue."}
+          {tSite(error ||
+            "This property may already be sold, rented, withdrawn, or no longer available in the public catalogue.")}
         </p>
-        <p className="listing-unavailable-note">
-          You can browse the latest active listings or contact HS Ong for similar options.
-        </p>
+        <p className="listing-unavailable-note">{tSite("You can browse the latest active listings or contact HS Ong for similar options.")}</p>
         <div className="listing-unavailable-actions">
           <Link className="button primary" to="/">
-            <ArrowLeft size={18} /> Browse current listings
-          </Link>
+            <ArrowLeft size={18} />{tSite(" Browse current listings")}</Link>
           <a className="button secondary" href={whatsappUrl(agentProfile.whatsapp, message)} target="_blank" rel="noopener noreferrer">
-            <MessageCircle size={18} /> Contact HS Ong
-          </a>
+            <MessageCircle size={18} />{tSite(" Contact HS Ong")}</a>
         </div>
       </div>
     </main>

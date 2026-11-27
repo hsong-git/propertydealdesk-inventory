@@ -95,6 +95,10 @@ export const photoDownloadRequestText = (listing, displayName) => [
 export const whatsappUrl = (number, message) => `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 
 export const listingDetailUrl = (listing, origin = listingPublicOrigin(listing)) => `${origin}/property/${listing.slug}`;
+export function compareNewlyAdded(a, b) {
+  const time = item => { const value = Date.parse(item.createdAt || item.listedAt || ""); return Number.isFinite(value) ? value : 0; };
+  return time(b) - time(a) || String(b.code || "").localeCompare(String(a.code || ""), "en", { numeric:true });
+}
 
 export const SOCIAL_PREVIEW_REVISION = "8";
 

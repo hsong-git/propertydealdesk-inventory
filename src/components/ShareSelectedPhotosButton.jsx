@@ -1,3 +1,4 @@
+import { useSiteLanguage } from "./InquiryLanguage";
 import { Check, Download, LoaderCircle, MessageCircle, Monitor, Smartphone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -8,6 +9,7 @@ import { trackEvent } from "../utils/analytics";
 const initialState = { open: false, stage: "options", openWhatsApp: false, busy: false, message: "", error: "" };
 
 export function ShareSelectedPhotosButton({ listing, selectedPhotos = [], layoutIndex }) {
+  const { t: tSite } = useSiteLanguage();
   const [state, setState] = useState(initialState);
   const [layoutFile, setLayoutFile] = useState(null);
   const sharingLayout = Number.isInteger(layoutIndex);
@@ -154,39 +156,39 @@ export function ShareSelectedPhotosButton({ listing, selectedPhotos = [], layout
     }
   };
 
-  const whatsappCheckbox = <><label className="photo-share-checkbox"><input type="checkbox" checked={state.openWhatsApp} onChange={(event) => patchState({ openWhatsApp: event.target.checked })} /><span>Open WhatsApp after downloading</span></label>{state.openWhatsApp ? <p className="photo-share-remark">Reminder: WhatsApp cannot attach these files automatically on desktop. Please attach the downloaded JPG photos separately in the WhatsApp conversation.</p> : null}</>;
+  const whatsappCheckbox = <><label className="photo-share-checkbox"><input type="checkbox" checked={state.openWhatsApp} onChange={(event) => patchState({ openWhatsApp: event.target.checked })} /><span>{tSite("Open WhatsApp after downloading")}</span></label>{tSite(state.openWhatsApp ? <p className="photo-share-remark">{tSite("Reminder: WhatsApp cannot attach these files automatically on desktop. Please attach the downloaded JPG photos separately in the WhatsApp conversation.")}</p> : null)}</>;
 
   let modalContent;
   if (sharingLayout) {
     const canShareLayout = mobile && layoutFile && navigator.share && navigator.canShare?.({ files: [layoutFile] });
     modalContent = <div className="photo-share-client-choice">
-      <span className="eyebrow">Floor plan</span><h2>Share layout</h2>
-      <p>{canShareLayout ? "Choose WhatsApp in your share menu to attach the watermarked JPG." : "Download the watermarked JPG and attach it in WhatsApp."}</p>
-      {canShareLayout ? <button className="button primary" type="button" onClick={shareLayoutNative} disabled={state.busy}><MessageCircle size={18} /> Open share menu</button> : null}
-      <button className="button secondary" type="button" onClick={downloadSelected} disabled={state.busy}><Download size={18} /> Download layout JPG</button>
-      {!mobile ? <>
-        <button className="button primary" type="button" onClick={() => openDesktopClient("app")} disabled={state.busy}><Smartphone size={18} /> WhatsApp App</button>
-        <button className="button secondary" type="button" onClick={() => openDesktopClient("web")} disabled={state.busy}><Monitor size={18} /> WhatsApp Web</button>
-      </> : null}
-      {state.busy && state.message ? <p className="photo-share-progress" role="status"><LoaderCircle className="spin" size={16} /> {state.message}</p> : null}
-      {state.error ? <p className="form-error" role="alert">{state.error}</p> : null}
-      {state.message && !state.busy ? <p className="photo-share-success" role="status"><Check size={16} /> {state.message}</p> : null}
+      <span className="eyebrow">{tSite("Floor plan")}</span><h2>{tSite("Share layout")}</h2>
+      <p>{tSite(canShareLayout ? "Choose WhatsApp in your share menu to attach the watermarked JPG." : "Download the watermarked JPG and attach it in WhatsApp.")}</p>
+      {tSite(canShareLayout ? <button className="button primary" type="button" onClick={shareLayoutNative} disabled={state.busy}><MessageCircle size={18} />{tSite(" Open share menu")}</button> : null)}
+      <button className="button secondary" type="button" onClick={downloadSelected} disabled={state.busy}><Download size={18} />{tSite(" Download layout JPG")}</button>
+      {tSite(!mobile ? <>
+        <button className="button primary" type="button" onClick={() => openDesktopClient("app")} disabled={state.busy}><Smartphone size={18} />{tSite(" WhatsApp App")}</button>
+        <button className="button secondary" type="button" onClick={() => openDesktopClient("web")} disabled={state.busy}><Monitor size={18} />{tSite(" WhatsApp Web")}</button>
+      </> : null)}
+      {tSite(state.busy && state.message ? <p className="photo-share-progress" role="status"><LoaderCircle className="spin" size={16} /> {tSite(state.message)}</p> : null)}
+      {tSite(state.error ? <p className="form-error" role="alert">{tSite(state.error)}</p> : null)}
+      {tSite(state.message && !state.busy ? <p className="photo-share-success" role="status"><Check size={16} /> {tSite(state.message)}</p> : null)}
     </div>;
   } else if (state.stage === "options") {
-    modalContent = <div className="photo-share-client-choice"><span className="eyebrow">Selected photos</span><h2>Download JPGs</h2><p>Download your selected watermarked JPG photos. No personal details required.</p>{whatsappCheckbox}<button className="button primary" type="button" onClick={continueDesktopOptions} disabled={state.busy}><Download size={18} /> {state.openWhatsApp ? "Continue" : "Download selected photos"}</button>{state.busy ? <p className="photo-share-progress"><LoaderCircle className="spin" size={16} /> {state.message}</p> : null}{state.error ? <p className="form-error" role="alert">{state.error}</p> : null}</div>;
+    modalContent = <div className="photo-share-client-choice"><span className="eyebrow">{tSite("Selected photos")}</span><h2>{tSite("Download JPGs")}</h2><p>{tSite("Download your selected watermarked JPG photos. No personal details required.")}</p>{tSite(whatsappCheckbox)}<button className="button primary" type="button" onClick={continueDesktopOptions} disabled={state.busy}><Download size={18} /> {tSite(state.openWhatsApp ? "Continue" : "Download selected photos")}</button>{tSite(state.busy ? <p className="photo-share-progress"><LoaderCircle className="spin" size={16} /> {tSite(state.message)}</p> : null)}{tSite(state.error ? <p className="form-error" role="alert">{tSite(state.error)}</p> : null)}</div>;
   } else {
-    modalContent = <div className="photo-share-client-choice"><span className="eyebrow">Selected photos</span><h2>Choose WhatsApp</h2><p>The JPG files will download first. Please attach those downloaded photos separately after WhatsApp opens.</p><button className="button primary" type="button" onClick={() => openDesktopClient("app")} disabled={state.busy}><Smartphone size={18} /> WhatsApp App</button><button className="button secondary" type="button" onClick={() => openDesktopClient("web")} disabled={state.busy}><Monitor size={18} /> WhatsApp Web</button>{state.busy ? <p className="photo-share-progress"><LoaderCircle className="spin" size={16} /> {state.message}</p> : null}{state.error ? <p className="form-error" role="alert">{state.error}</p> : null}{state.message && !state.busy ? <p className="photo-share-success"><Check size={16} /> {state.message}</p> : null}</div>;
+    modalContent = <div className="photo-share-client-choice"><span className="eyebrow">{tSite("Selected photos")}</span><h2>{tSite("Choose WhatsApp")}</h2><p>{tSite("The JPG files will download first. Please attach those downloaded photos separately after WhatsApp opens.")}</p><button className="button primary" type="button" onClick={() => openDesktopClient("app")} disabled={state.busy}><Smartphone size={18} />{tSite(" WhatsApp App")}</button><button className="button secondary" type="button" onClick={() => openDesktopClient("web")} disabled={state.busy}><Monitor size={18} />{tSite(" WhatsApp Web")}</button>{tSite(state.busy ? <p className="photo-share-progress"><LoaderCircle className="spin" size={16} /> {tSite(state.message)}</p> : null)}{tSite(state.error ? <p className="form-error" role="alert">{tSite(state.error)}</p> : null)}{tSite(state.message && !state.busy ? <p className="photo-share-success"><Check size={16} /> {tSite(state.message)}</p> : null)}</div>;
   }
 
-  const modal = state.open ? <div className="photo-request-backdrop" role="dialog" aria-modal="true" aria-label={sharingLayout ? "Share property layout" : "Selected property photos"} onMouseDown={(event) => { if (event.target === event.currentTarget && !state.busy) close(); }}><div className="photo-request-modal"><button className="modal-close" type="button" onClick={close} aria-label="Close" disabled={state.busy}><X size={20} /></button>{modalContent}</div></div> : null;
+  const modal = state.open ? <div className="photo-request-backdrop" role="dialog" aria-modal="true" aria-label={tSite(sharingLayout ? "Share property layout" : "Selected property photos")} onMouseDown={(event) => { if (event.target === event.currentTarget && !state.busy) close(); }}><div className="photo-request-modal"><button className="modal-close" type="button" onClick={close} aria-label={tSite("Close")} disabled={state.busy}><X size={20} /></button>{tSite(modalContent)}</div></div> : null;
 
   const hasSelection = selectedPhotos.length > 0;
 
   return <div className="selected-photo-share">
-    {!sharingLayout ? <span className="photo-selection-limit">Select up to {PHOTO_SELECTION_LIMIT} photos at a time.</span> : null}
-    {state.error && !state.open ? <span className="form-error" role="alert">{state.error}</span> : null}
-    {state.message && !state.open && !state.busy ? <span role="status"><Check size={14} /> {state.message}</span> : null}
-    <button className={`button photo-share-trigger ${sharingLayout || hasSelection ? "primary is-ready" : "secondary"}`} type="button" onClick={begin} disabled={state.busy}>{mobile || sharingLayout ? <MessageCircle className="photo-share-trigger-icon" size={17} /> : <Download className="photo-share-trigger-icon" size={17} />} {state.busy && !state.open ? state.message : sharingLayout ? "Share layout to WhatsApp" : mobile ? "Share selected photos to WhatsApp" : "Download selected photos"}</button>
-    {typeof document !== "undefined" ? createPortal(modal, document.body) : null}
+    {tSite(!sharingLayout ? <span className="photo-selection-limit">{tSite("Select up to ")}{tSite(PHOTO_SELECTION_LIMIT)}{tSite(" photos at a time.")}</span> : null)}
+    {tSite(state.error && !state.open ? <span className="form-error" role="alert">{tSite(state.error)}</span> : null)}
+    {tSite(state.message && !state.open && !state.busy ? <span role="status"><Check size={14} /> {tSite(state.message)}</span> : null)}
+    <button className={`button photo-share-trigger ${sharingLayout || hasSelection ? "primary is-ready" : "secondary"}`} type="button" onClick={begin} disabled={state.busy}>{tSite(mobile || sharingLayout ? <MessageCircle className="photo-share-trigger-icon" size={17} /> : <Download className="photo-share-trigger-icon" size={17} />)} {tSite(state.busy && !state.open ? state.message : sharingLayout ? "Share layout to WhatsApp" : mobile ? "Share selected photos to WhatsApp" : "Download selected photos")}</button>
+    {tSite(typeof document !== "undefined" ? createPortal(modal, document.body) : null)}
   </div>;
 }

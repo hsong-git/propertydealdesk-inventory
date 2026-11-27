@@ -17,6 +17,7 @@ const EVENT_LABELS = {
   inquiry_step_completed: "Inquiry steps", inquiry_submitted: "Inquiry submissions", inquiry_whatsapp_click: "Inquiry WhatsApp clicks",
   media_open: "Media opens", photo_view: "Full photo views", catalogue_search_shared: "Shared searches", catalogue_more_loaded: "More results loaded",
   session_engaged: "Engaged visits",
+  shortlist_save: "Shortlist saves", shortlist_remove: "Shortlist removals", shortlist_whatsapp: "Shortlist WhatsApp clicks",
 };
 
 const hostLabel = (host) => host === "property.myeviv.com" ? "Property" : host === "www.myeviv.com" ? "WWW" : host === "scmi.myeviv.com" ? "SCMI (legacy)" : host;

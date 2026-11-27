@@ -49,3 +49,11 @@ test("reports invalid numbers and popup blocking", () => {
   assert.equal(openWhatsApp({ phone: "0163132865", deviceContext: { navigator: { userAgent: "Mozilla/5.0 Windows", platform: "Win32" } }, opener: () => null, onError: (message) => errors.push(message) }).opened, false);
   assert.equal(errors.length, 2);
 });
+
+test("mobile noopener null handle is not falsely reported as a blocked popup", () => {
+  const errors=[];
+  const result=openWhatsApp({phone:"0163132865",message:"Viewing request",deviceContext:{navigator:{userAgent:"iPhone Mobile",maxTouchPoints:5}},opener:()=>null,onError:message=>errors.push(message)});
+  assert.equal(result.opened,null);
+  assert.equal(result.desktop,false);
+  assert.equal(errors.length,0);
+});

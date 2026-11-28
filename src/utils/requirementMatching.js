@@ -1,6 +1,7 @@
 import { compareRecentlyUpdated } from "./listing.js";
 import { canonicalLocationsForListing } from "./locationFilter.js";
 import { requirementPropertyChoices, requirementHasStoreys } from "../data/requirementContract.js";
+import { requirementHasFloorPreference } from "../data/requirementContract.js";
 
 const normalizeType = (value) => {
   const text = String(value || "").toLowerCase();
@@ -38,6 +39,7 @@ const matchesChoices = (requirements, listing) => {
   if (!Array.isArray(requirements.propertyTypes)) return matchesRequestedType(requirements.propertyType, listing);
   return requirementPropertyChoices(requirements).some(choice => {
     if (!matchesRequestedType(choice.propertyType, listing)) return false;
+    if (requirementHasFloorPreference(choice.propertyType)) return !listing.floorPreference || !choice.floorPreference || String(listing.floorPreference).toLowerCase() === String(choice.floorPreference).toLowerCase();
     if (!requirementHasStoreys(choice.propertyType)) return true;
     // Missing inventory attributes must not be invented or treated as a mismatch.
     const known = listing.storeys ?? String(listing.propertyType || "").match(/(\d+(?:\.\d+)?)\s*storeys?\b/i)?.[1];

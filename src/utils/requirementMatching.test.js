@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+test("floor bands filter only declared floor preferences without inventing unknown floors", () => {
+  const submission = { intent: "rent", requirements: { propertyTypes: [{ propertyType: "Condominium/Apartment", floorPreference: "High" }] } };
+  const found = matchRequirements(submission, [listing("HIGH", "WTL", { floorPreference: "High", storeys: 20 }), listing("LOW", "WTL", { floorPreference: "Low" }), listing("UNKNOWN", "WTL")]);
+  assert.deepEqual(found.map(item => item.code).sort(), ["HIGH", "UNKNOWN"]);
+});
+
 test("multiple requested types match either type and retain their own storey constraints", () => {
   const submission = { intent: "rent", requirements: { propertyTypes: [{ propertyType: "Terrace House", storeys: 2 }, { propertyType: "Room", storeys: null }] } };
   const found = matchRequirements(submission, [listing("TWO", "WTL", { propertyType: "Terrace House - 2 Storey" }), listing("ONE", "WTL", { propertyType: "Terrace House - 1 Storey" }), listing("ROOM", "WTL", { propertyType: "Room" }), listing("CONDO", "WTL", { propertyType: "Condominium" }), listing("UNKNOWN", "WTL", { propertyType: "Terrace House" })]);

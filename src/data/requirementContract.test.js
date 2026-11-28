@@ -4,13 +4,14 @@ import { requirementPropertyChoices, formatRequirementPropertyChoices, requireme
 
 test("multi-type requests preserve independent counts and exempt Room", () => {
   const raw = validBase("buy");
-  Object.assign(raw.requirements, { purchaseTimeline: "Within 3 months", purpose: "Own Stay", loan: "Loan Required", propertyTypes: [{ propertyType: "Terrace House", storeys: 2 }, { propertyType: "Condominium/Apartment", storeys: 1 }, { propertyType: "Room", storeys: 99 }] });
+  Object.assign(raw.requirements, { purchaseTimeline: "Within 3 months", purpose: "Own Stay", loan: "Loan Required", propertyTypes: [{ propertyType: "Terrace House", storeys: 2 }, { propertyType: "Condominium/Apartment", floorPreference: "High", storeys: 9 }, { propertyType: "Room", storeys: 99 }] });
   const result = validateRequirementPayload(raw);
   assert.equal(result.valid, true);
-  assert.deepEqual(result.value.requirements.propertyTypes.map(choice => choice.storeys), [2,1,null]);
+  assert.deepEqual(result.value.requirements.propertyTypes.map(choice => choice.storeys), [2,null,null]);
+  assert.equal(result.value.requirements.propertyTypes[1].floorPreference, "High");
   const persisted = JSON.parse(JSON.stringify(result.value.requirements));
   assert.equal(requirementPropertyChoices(persisted).length, 3);
-  assert.equal(formatRequirementPropertyChoices(persisted), "Terrace House (Storeys: 2)\nCondominium/Apartment (Levels: 1)\nRoom");
+  assert.equal(formatRequirementPropertyChoices(persisted), "Terrace House (Storeys: 2)\nCondominium/Apartment (Floor preference: High floor)\nRoom");
   assert.ok(requirementPropertyMessageLines(persisted).join("\n").includes("- Room"));
   for (const invalid of [[], [{ propertyType: "Terrace House", storeys: 1.5 }], [{ propertyType: "Office Lot", storeys: 0 }], [{ propertyType: "", storeys: 1 }], [{ propertyType: "Room" }, { propertyType: "Room" }]]) {
     raw.requirements.propertyTypes = invalid;
@@ -23,6 +24,26 @@ const validBase = (intent) => ({
   ...emptyRequirement(), intent, consent: true, idempotencyKey: "12345678-1234-1234-1234-123456789012",
   profile: { name: "Test User", mobile: "012-345 6789", race: "Chinese", raceOther: "", country: "Malaysia", occupation: "Manager", companyName: "Example Sdn Bhd" },
   requirements: { ...emptyRequirement().requirements, propertyType: "Condominium", area: "Klang", budget: "2500", bedrooms: "3", bathrooms: "2", relationship: "Family", otherNeeds: "Near school" },
+});
+
+test("condos use required floor bands instead of numeric levels, while other types retain counts", () => {
+  const raw = validBase("buy");
+  Object.assign(raw.requirements, { purchaseTimeline: "Within 3 months", purpose: "Own Stay", loan: "Loan Required" });
+  for (const floorPreference of ["Low", "Medium", "High"]) {
+    raw.requirements.propertyTypes = [{ propertyType: "Condominium/Apartment", floorPreference, storeys: 12 }, { propertyType: "Office Lot", storeys: 2 }];
+    const result = validateRequirementPayload(raw);
+    assert.equal(result.valid, true);
+    assert.equal(result.value.requirements.hasStoreys, false);
+    assert.equal(result.value.requirements.storeys, null);
+    assert.equal(result.value.requirements.propertyTypes[0].floorPreference, floorPreference);
+    assert.equal(result.value.requirements.propertyTypes[1].storeys, 2);
+    assert.deepEqual(requirementPropertyMessageLines({ propertyTypes: [result.value.requirements.propertyTypes[0]] }), ["*Property type:* Condominium/Apartment", `*Floor preference:* ${floorPreference} floor`]);
+  }
+  for (const floorPreference of ["", "Penthouse", undefined]) {
+    raw.requirements.propertyTypes = [{ propertyType: "Condominium/Apartment", storeys: 1, floorPreference }];
+    assert.ok(validateRequirementPayload(raw).errors["requirements.propertyTypes"]);
+  }
+  assert.equal(formatRequirementPropertyChoices({ propertyTypes: [{ propertyType: "Condominium/Apartment", storeys: 2 }] }), "Condominium/Apartment (Levels: 2)");
 });
 
 test("inquiry property choices replace Factory with Room and preserve saved type values", () => {

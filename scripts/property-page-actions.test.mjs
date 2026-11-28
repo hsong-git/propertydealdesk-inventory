@@ -14,7 +14,7 @@ test("Room enquiry UI skips storeys in the picker, next-step guard, review and m
   const page = fs.readFileSync(path.join(projectRoot,"src/pages/RequirementPage.jsx"),"utf8");
   const picker = fs.readFileSync(path.join(projectRoot,"src/components/RequirementPropertyTypes.jsx"),"utf8");
   assert.match(picker,/requirementHasStoreys\(choice.propertyType\) \? <section/);
-  assert.match(page,/requirementPropertyChoices\(form.requirements\)\.some\(choice => requirementHasStoreys\(choice.propertyType\)/);
+  assert.match(page,/requirementPropertyChoices\(form.requirements\)\.some\(choice => requirementNeedsStoreys\(choice.propertyType\)/);
   assert.match(page,/key !== "storeys" \|\| requirementHasStoreys\(values.propertyType\)/);
   assert.match(page,/requirements.storeys = requirements.hasStoreys \? \(current.requirements.storeys \|\| 1\) : null/);
   assert.deepEqual(requirementPropertyMessageLines({ propertyTypes: [{ propertyType: "Room", storeys: null }] }), ["*Property type:* Room"]);

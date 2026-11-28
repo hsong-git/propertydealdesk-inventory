@@ -7,6 +7,9 @@ export const PURPOSE_OPTIONS = ["Own Stay", "Investment", "Both", "Others"];
 export const LOAN_OPTIONS = ["Loan Required", "Cash Purchase", "Not Sure"];
 export const INQUIRY_PROPERTY_TYPE_OPTIONS = ["Condominium/Apartment", "Room", "Terrace House", "Office Lot", "Semi-Detached House", "Shoplot", "Bungalow"];
 export const requirementHasStoreys = (propertyType) => String(propertyType || "").trim().toLowerCase() !== "room";
+export const FLOOR_PREFERENCES = ["Low", "Medium", "High"];
+export const requirementHasFloorPreference = type => /condo|apartment|serviced/i.test(String(type || ""));
+export const requirementNeedsStoreys = type => requirementHasStoreys(type) && !requirementHasFloorPreference(type);
 export const requirementHasOtherRelationship = (relationship) => ["other", "others"].includes(String(relationship || "").trim().toLowerCase());
 export function formatRequirementRelationship(requirements = {}) {
   const relationship = String(requirements.relationship || "").trim();
@@ -118,18 +121,18 @@ export const emptyRequirement = (intent = "") => ({
 });
 
 export function requirementPropertyChoices(requirements = {}) {
-  return Array.isArray(requirements.propertyTypes) ? requirements.propertyTypes : requirements.propertyType ? [{ propertyType: requirements.propertyType, storeys: requirements.storeys }] : [];
+  return Array.isArray(requirements.propertyTypes) ? requirements.propertyTypes : requirements.propertyType ? [{ propertyType: requirements.propertyType, storeys: requirements.storeys, floorPreference: requirements.floorPreference }] : [];
 }
 
 export function formatRequirementPropertyChoices(requirements, t = value => value) {
-  return requirementPropertyChoices(requirements).map(choice => `${t(choice.propertyType)}${requirementHasStoreys(choice.propertyType) ? ` (${t(requirementStoreysLabel(choice.propertyType, true))}: ${choice.storeys ?? "—"})` : ""}`).join("\n");
+  return requirementPropertyChoices(requirements).map(choice => `${t(choice.propertyType)}${requirementHasFloorPreference(choice.propertyType) && choice.floorPreference ? ` (${t("Floor preference")}: ${t(`${choice.floorPreference} floor`)})` : requirementHasStoreys(choice.propertyType) ? ` (${t(requirementStoreysLabel(choice.propertyType, true))}: ${choice.storeys ?? "—"})` : ""}`).join("\n");
 }
 
 export function requirementPropertyMessageLines(requirements) {
   const choices = requirementPropertyChoices(requirements);
   if (choices.length > 1) return ["*Property types:*", ...formatRequirementPropertyChoices(requirements).split("\n").map(line => `- ${line}`)];
   const first = choices[0] || {};
-  return [`*Property type:* ${first.propertyType || ""}`, ...(requirementHasStoreys(first.propertyType) && first.storeys != null ? [`*${requirementStoreysLabel(first.propertyType, true)}:* ${first.storeys}`] : [])];
+  return [`*Property type:* ${first.propertyType || ""}`, ...(requirementHasFloorPreference(first.propertyType) && first.floorPreference ? [`*Floor preference:* ${first.floorPreference} floor`] : requirementHasStoreys(first.propertyType) && first.storeys != null ? [`*${requirementStoreysLabel(first.propertyType, true)}:* ${first.storeys}`] : [])];
 }
 
 export function normalizeRequirementPayload(raw) {
@@ -139,7 +142,8 @@ export function normalizeRequirementPayload(raw) {
   const multiple = Array.isArray(requirements.propertyTypes);
   const propertyTypes = multiple ? requirements.propertyTypes.slice(0, 8).map(choice => ({
     propertyType: cleanText(choice?.propertyType, 120),
-    storeys: requirementHasStoreys(choice?.propertyType) && Number.isInteger(Number(choice?.storeys)) ? cleanNumber(choice?.storeys, { min: 1, max: 20, integer: true }) : null,
+    storeys: requirementNeedsStoreys(choice?.propertyType) && Number.isInteger(Number(choice?.storeys)) ? cleanNumber(choice?.storeys, { min: 1, max: 20, integer: true }) : null,
+    floorPreference: requirementHasFloorPreference(choice?.propertyType) && FLOOR_PREFERENCES.includes(choice?.floorPreference) ? choice.floorPreference : "",
   })) : null;
   const primary = multiple ? propertyTypes[0] || {} : requirements;
   return {
@@ -156,8 +160,8 @@ export function normalizeRequirementPayload(raw) {
     },
     requirements: {
       propertyType: cleanText(primary.propertyType, 120),
-      hasStoreys: requirementHasStoreys(primary.propertyType),
-      storeys: requirementHasStoreys(primary.propertyType) ? cleanNumber(primary.storeys, { min: 1, max: 20, integer: true }) : null,
+      hasStoreys: multiple ? requirementNeedsStoreys(primary.propertyType) : requirementHasStoreys(primary.propertyType),
+      storeys: (multiple ? requirementNeedsStoreys(primary.propertyType) : requirementHasStoreys(primary.propertyType)) ? cleanNumber(primary.storeys, { min: 1, max: 20, integer: true }) : null,
       ...(multiple ? { propertyTypes } : {}),
       area: cleanText(requirements.area, 160),
       budget: cleanNumber(normalizeBudgetAmount(intent, requirements.budget), { min: 1, max: 1_000_000_000 }),
@@ -195,8 +199,8 @@ export function validateRequirementPayload(raw) {
   const errors = {};
   if (Array.isArray(raw?.requirements?.propertyTypes)) {
     const choices = value.requirements.propertyTypes;
-    if (!choices.length || raw.requirements.propertyTypes.length > 8 || choices.some(choice => !choice.propertyType || (requirementHasStoreys(choice.propertyType) && choice.storeys === null)) || new Set(choices.map(choice => choice.propertyType.toLowerCase())).size !== choices.length) {
-      errors["requirements.propertyTypes"] = "Choose property types and a valid storey or level count for each.";
+    if (!choices.length || raw.requirements.propertyTypes.length > 8 || choices.some(choice => !choice.propertyType || (requirementNeedsStoreys(choice.propertyType) && choice.storeys === null) || (requirementHasFloorPreference(choice.propertyType) && !choice.floorPreference)) || new Set(choices.map(choice => choice.propertyType.toLowerCase())).size !== choices.length) {
+      errors["requirements.propertyTypes"] = "Choose property types and complete each type's preferences.";
     }
   }
   const required = (path, fieldValue) => { if (fieldValue === "" || fieldValue === null) errors[path] = "This field is required."; };

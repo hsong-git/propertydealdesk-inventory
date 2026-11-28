@@ -20,6 +20,9 @@ export function preferredInquiryLanguage(savedLanguage, languages = [], language
 
 // English key → Malay, Simplified Chinese.
 export const INQUIRY_TRANSLATIONS = {
+  "Floor preference": ["Pilihan aras", "楼层偏好"],
+  "Low floor": ["Aras rendah", "低楼层"], "Medium floor": ["Aras pertengahan", "中楼层"], "High floor": ["Aras tinggi", "高楼层"],
+  "Choose property types and complete each type's preferences.": ["Pilih jenis hartanah dan lengkapkan pilihan bagi setiap jenis.", "请选择房产类型，并填写每种类型的偏好。"],
   "Select one or more property types.": ["Pilih satu atau lebih jenis hartanah.", "请选择一种或多种房产类型。"],
   "Choose property types and a valid storey or level count for each.": ["Pilih jenis hartanah dan bilangan tingkat yang sah bagi setiap jenis.", "请选择房产类型，并为每种类型填写有效的楼层数量。"],
   "Pet type": ["Jenis haiwan peliharaan", "宠物种类"],

@@ -1,5 +1,22 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { requirementPropertyChoices, formatRequirementPropertyChoices, requirementPropertyMessageLines } from "./requirementContract.js";
+
+test("multi-type requests preserve independent counts and exempt Room", () => {
+  const raw = validBase("buy");
+  Object.assign(raw.requirements, { purchaseTimeline: "Within 3 months", purpose: "Own Stay", loan: "Loan Required", propertyTypes: [{ propertyType: "Terrace House", storeys: 2 }, { propertyType: "Condominium/Apartment", storeys: 1 }, { propertyType: "Room", storeys: 99 }] });
+  const result = validateRequirementPayload(raw);
+  assert.equal(result.valid, true);
+  assert.deepEqual(result.value.requirements.propertyTypes.map(choice => choice.storeys), [2,1,null]);
+  const persisted = JSON.parse(JSON.stringify(result.value.requirements));
+  assert.equal(requirementPropertyChoices(persisted).length, 3);
+  assert.equal(formatRequirementPropertyChoices(persisted), "Terrace House (Storeys: 2)\nCondominium/Apartment (Levels: 1)\nRoom");
+  assert.ok(requirementPropertyMessageLines(persisted).join("\n").includes("- Room"));
+  for (const invalid of [[], [{ propertyType: "Terrace House", storeys: 1.5 }], [{ propertyType: "Office Lot", storeys: 0 }], [{ propertyType: "", storeys: 1 }], [{ propertyType: "Room" }, { propertyType: "Room" }]]) {
+    raw.requirements.propertyTypes = invalid;
+    assert.ok(validateRequirementPayload(raw).errors["requirements.propertyTypes"]);
+  }
+});
 import { COUNTRY_OPTIONS, emptyRequirement, formatRequirementDate, formatRequirementReference, formatRoomSummary, isValidBudgetAmount, isValidMobileNumber, normalizeBudgetAmount, normalizeMobileNumber, parseRequirementDate, validateRequirementPayload, INQUIRY_PROPERTY_TYPE_OPTIONS, requirementStoreysLabel } from "./requirementContract.js";
 
 const validBase = (intent) => ({

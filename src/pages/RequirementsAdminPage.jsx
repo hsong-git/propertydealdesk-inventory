@@ -2,7 +2,7 @@ import { Archive, ArchiveRestore, Check, Copy, Eye, LoaderCircle, MailOpen, Tras
 import { useEffect, useState } from "react";
 import { Seo } from "../components/Seo";
 import { AdminBackLink } from "../components/AdminBackLink";
-import { formatRoomSummary, requirementStoreysLabel, requirementHasStoreys } from "../data/requirementContract";
+import { formatRoomSummary, requirementStoreysLabel, requirementHasStoreys, formatRequirementPropertyChoices } from "../data/requirementContract";
 import { formatDateTime, formatPrice } from "../utils/listing";
 import { inquiryPostingText } from "../utils/requirementPosting";
 
@@ -18,6 +18,7 @@ const request = async (url, options) => {
 };
 
 const detailLabels = {
+  propertyTypes: "Property types",
   interestCode: "Property code", interestTitle: "Property title", interestUrl: "Property URL",
   propertyType: "Property Type",
   storeys: "Number of Storeys",
@@ -264,7 +265,7 @@ export function RequirementsAdminPage() {
               {selected.archivedAt ? <div><dt>Archived</dt><dd>{formatDateTime(selected.archivedAt)}</dd></div> : null}
               <div><dt>Rent / Buy</dt><dd>{selected.intent === "rent" ? "Rent" : "Buy"}</dd></div>
               {Object.entries(selected.profile || {}).filter(([, value]) => value).map(([key, value]) => <div key={key}><dt>{profileLabels[key] || key}</dt><dd>{value}</dd></div>)}
-              {Object.entries(selected.requirements || {}).filter(([key, value]) => (!(["storeys", "hasStoreys"].includes(key)) || requirementHasStoreys(selected.requirements?.propertyType)) && value !== "" && value !== null).map(([key, value]) => <div key={key}><dt>{key === "storeys" ? requirementStoreysLabel(selected.requirements?.propertyType) : detailLabels[key] || key}</dt><dd>{key === "budget" ? formatPrice(value, selected.intent === "rent" ? "WTL" : "WTS") : value}</dd></div>)}
+              {Object.entries(selected.requirements || {}).filter(([key, value]) => (!Array.isArray(selected.requirements?.propertyTypes) || !["propertyType", "storeys", "hasStoreys"].includes(key)) && (!(["storeys", "hasStoreys"].includes(key)) || requirementHasStoreys(selected.requirements?.propertyType)) && value !== "" && value !== null).map(([key, value]) => <div key={key}><dt>{key === "storeys" ? requirementStoreysLabel(selected.requirements?.propertyType) : detailLabels[key] || key}</dt><dd>{key === "propertyTypes" ? <span className="review-multiline">{formatRequirementPropertyChoices(selected.requirements)}</span> : key === "budget" ? formatPrice(value, selected.intent === "rent" ? "WTL" : "WTS") : value}</dd></div>)}
               <div><dt>Room Summary</dt><dd>{formatRoomSummary(selected.requirements?.bedrooms, selected.requirements?.bathrooms)}</dd></div>
               <div><dt>Consent recorded</dt><dd>{formatDateTime(selected.consentedAt)}</dd></div>
             </dl>

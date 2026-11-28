@@ -6,16 +6,18 @@ import { fileURLToPath } from "node:url";
 import { enquiryText, shareListing, whatsappUrl } from "../src/utils/listing.js";
 import { anonymousBrowserLabel } from "../src/utils/anonymousBrowser.js";
 import { listingMediaLinks, initialListingGallery } from "../src/utils/listingMedia.js";
+import { requirementPropertyMessageLines } from "../src/data/requirementContract.js";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 test("Room enquiry UI skips storeys in the picker, next-step guard, review and messages", () => {
   const page = fs.readFileSync(path.join(projectRoot,"src/pages/RequirementPage.jsx"),"utf8");
-  assert.match(page,/requirementHasStoreys\(form.requirements.propertyType\) \? <StepperField/);
-  assert.match(page,/step === 1 && requirementHasStoreys\(form.requirements.propertyType\) && !form.requirements.storeys/);
+  const picker = fs.readFileSync(path.join(projectRoot,"src/components/RequirementPropertyTypes.jsx"),"utf8");
+  assert.match(picker,/requirementHasStoreys\(choice.propertyType\) \? <section/);
+  assert.match(page,/requirementPropertyChoices\(form.requirements\)\.some\(choice => requirementHasStoreys\(choice.propertyType\)/);
   assert.match(page,/key !== "storeys" \|\| requirementHasStoreys\(values.propertyType\)/);
   assert.match(page,/requirements.storeys = requirements.hasStoreys \? \(current.requirements.storeys \|\| 1\) : null/);
-  assert.match(page,/requirementHasStoreys\(requirements.propertyType\) \? \[`\*/);
+  assert.deepEqual(requirementPropertyMessageLines({ propertyTypes: [{ propertyType: "Room", storeys: null }] }), ["*Property type:* Room"]);
 });
 
 test("enquiry messages include the catalogue listing URL and selected offer intent", () => {
@@ -328,7 +330,7 @@ test("Share property falls back to copying the public short URL", async () => {
 test("enquiry shortcuts keep the requested locations regardless of inventory order", () => {
   const source = fs.readFileSync(path.join(projectRoot, "src", "pages", "RequirementPage.jsx"), "utf8");
   const start = source.indexOf("  const quickLocations = ");
-  const end = source.indexOf("  const selectType", start);
+  const end = source.indexOf("  return <form", start);
   const expression = source.slice(start, end).trim().replace(/^const quickLocations = /, "").replace(/;$/, "");
   const getShortcuts = new Function("locations", `return (${expression});`);
   const locations = ["Bandar Botanic", "Bandar Bukit Raja", "Bandar Parklands", "Bandar Puteri Klang", "Banting", "Bayu Perdana", "Bukit Tinggi", "Klang"];

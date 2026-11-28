@@ -3,6 +3,12 @@ import test from "node:test";
 import fs from "node:fs";
 import { parse } from "@babel/parser";
 import traverseModule from "@babel/traverse";
+
+test("multi-type property picker is valid JSX and exposes pressed states", () => {
+  const source = fs.readFileSync(new URL("../components/RequirementPropertyTypes.jsx", import.meta.url), "utf8");
+  assert.doesNotThrow(() => parse(source, { sourceType: "module", plugins: ["jsx"] }));
+  assert.match(source, /aria-pressed=\{selected\}/);
+});
 import { COUNTRY_OPTIONS, INQUIRY_PROPERTY_TYPE_OPTIONS, FURNISHING_OPTIONS, RACE_OPTIONS, DEPOSIT_OPTIONS, TENANCY_OPTIONS, PROPERTY_USAGE_OPTIONS, PURPOSE_OPTIONS, LOAN_OPTIONS, emptyRequirement, validateRequirementPayload } from "../data/requirementContract.js";
 import { INQUIRY_LANGUAGES, INQUIRY_TRANSLATIONS, normalizeInquiryLanguage, preferredInquiryLanguage, translateInquiry, translateInquiryValue } from "./inquiryLanguage.js";
 

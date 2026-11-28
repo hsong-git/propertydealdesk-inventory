@@ -1,5 +1,6 @@
 import { compareRecentlyUpdated } from "./listing.js";
 import { canonicalLocationsForListing } from "./locationFilter.js";
+import { requirementPropertyChoices, requirementHasStoreys } from "../data/requirementContract.js";
 
 const normalizeType = (value) => {
   const text = String(value || "").toLowerCase();
@@ -7,7 +8,9 @@ const normalizeType = (value) => {
   if (/terrace|link|superlink/.test(text)) return "terrace";
   if (/semi/.test(text)) return "semi-detached";
   if (/bungalow|detached/.test(text)) return "detached";
-  if (/shop|office|retail|commercial/.test(text)) return "commercial";
+  if (/office/.test(text)) return "office";
+  if (/shop|retail/.test(text)) return "shop";
+  if (/commercial/.test(text)) return "commercial";
   if (/factory|warehouse|industrial/.test(text)) return "industrial";
   return text.replace(/[^a-z0-9]+/g, " ").trim();
 };
@@ -31,13 +34,24 @@ const matchesRequestedType = (propertyType, listing) => {
   return normalizeType(propertyType) === normalizeType(listing.propertyType);
 };
 
+const matchesChoices = (requirements, listing) => {
+  if (!Array.isArray(requirements.propertyTypes)) return matchesRequestedType(requirements.propertyType, listing);
+  return requirementPropertyChoices(requirements).some(choice => {
+    if (!matchesRequestedType(choice.propertyType, listing)) return false;
+    if (!requirementHasStoreys(choice.propertyType)) return true;
+    // Missing inventory attributes must not be invented or treated as a mismatch.
+    const known = listing.storeys ?? String(listing.propertyType || "").match(/(\d+(?:\.\d+)?)\s*storeys?\b/i)?.[1];
+    return known == null || Number(known) === Number(choice.storeys);
+  });
+};
+
 export function requirementMatchScore(submission, listing, dictionary) {
   const requirements = submission?.requirements || {};
   const expectedIntent = submission?.intent === "rent" ? "WTL" : "WTS";
   if (!listing || listing.intent !== expectedIntent) return -1;
   let score = 1_000_000;
   score += locationScore(requirements.area, listing, dictionary);
-  if (normalizeType(requirements.propertyType) === normalizeType(listing.propertyType)) score += 1_000;
+  if (matchesChoices(requirements, listing)) score += 1_000;
   const budget = Number(requirements.budget);
   const price = Number(listing.price);
   if (budget > 0 && price > 0) {
@@ -57,7 +71,7 @@ export function matchRequirements(submission, listings, dictionary, limit = 6) {
     .map((listing) => ({ listing, score: requirementMatchScore(submission, listing, dictionary) }))
     .filter(({ listing, score }) => score >= 0
       && matchesRequestedLocation(submission.requirements?.area, listing, dictionary)
-      && matchesRequestedType(submission.requirements?.propertyType, listing))
+      && matchesChoices(submission.requirements || {}, listing))
     .sort((a, b) => b.score - a.score || compareRecentlyUpdated(a.listing, b.listing) || String(a.listing.code).localeCompare(String(b.listing.code)))
     .slice(0, Math.min(6, Math.max(0, limit)))
     .map(({ listing }) => listing);

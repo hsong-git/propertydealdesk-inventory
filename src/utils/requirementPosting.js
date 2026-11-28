@@ -1,5 +1,6 @@
 import { formatRequirementDate, formatRoomSummary, requirementStoreysLabel, requirementHasStoreys, formatRequirementRelationship } from "../data/requirementContract.js";
 import { formatPrice } from "./listing.js";
+import { requirementPropertyMessageLines } from "../data/requirementContract.js";
 
 const clean = (value) => String(value ?? "").trim();
 const hasValue = (value) => value !== undefined && value !== null && clean(value) !== "";
@@ -39,8 +40,7 @@ export function inquiryPostingText(submission) {
     detailLine("Company Name", profile.companyName),
     ...(highlightedLines.length ? ["", ...highlightedLines] : []),
     "",
-    detailLine("Property type", requirements.propertyType),
-    requirementHasStoreys(requirements.propertyType) ? detailLine(requirementStoreysLabel(requirements.propertyType, true), requirements.storeys) : null,
+    ...requirementPropertyMessageLines(requirements),
     detailLine("Area / Location", requirements.area || submission?.area),
     detailLine("Rooms", roomSummary),
     detailLine("Usage", requirements.propertyUsage),

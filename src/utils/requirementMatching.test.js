@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+
+test("multiple requested types match either type and retain their own storey constraints", () => {
+  const submission = { intent: "rent", requirements: { propertyTypes: [{ propertyType: "Terrace House", storeys: 2 }, { propertyType: "Room", storeys: null }] } };
+  const found = matchRequirements(submission, [listing("TWO", "WTL", { propertyType: "Terrace House - 2 Storey" }), listing("ONE", "WTL", { propertyType: "Terrace House - 1 Storey" }), listing("ROOM", "WTL", { propertyType: "Room" }), listing("CONDO", "WTL", { propertyType: "Condominium" }), listing("UNKNOWN", "WTL", { propertyType: "Terrace House" })]);
+  assert.deepEqual(found.map(item => item.code).sort(), ["ROOM", "TWO", "UNKNOWN"]);
+});
 import { matchRequirements } from "./requirementMatching.js";
 
 const listing = (code, intent, overrides = {}) => ({ code, publicId: code, slug: code.toLowerCase(), intent, location: "Klang", propertyType: "Condominium", price: 2000, bedrooms: 3, bathrooms: 2, furnishing: "Partial", updatedAt: "2026-08-01", createdAt: "2026-08-01", ...overrides });

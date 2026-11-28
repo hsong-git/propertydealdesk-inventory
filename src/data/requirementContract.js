@@ -117,10 +117,31 @@ export const emptyRequirement = (intent = "") => ({
   consent: false,
 });
 
+export function requirementPropertyChoices(requirements = {}) {
+  return Array.isArray(requirements.propertyTypes) ? requirements.propertyTypes : requirements.propertyType ? [{ propertyType: requirements.propertyType, storeys: requirements.storeys }] : [];
+}
+
+export function formatRequirementPropertyChoices(requirements, t = value => value) {
+  return requirementPropertyChoices(requirements).map(choice => `${t(choice.propertyType)}${requirementHasStoreys(choice.propertyType) ? ` (${t(requirementStoreysLabel(choice.propertyType, true))}: ${choice.storeys ?? "—"})` : ""}`).join("\n");
+}
+
+export function requirementPropertyMessageLines(requirements) {
+  const choices = requirementPropertyChoices(requirements);
+  if (choices.length > 1) return ["*Property types:*", ...formatRequirementPropertyChoices(requirements).split("\n").map(line => `- ${line}`)];
+  const first = choices[0] || {};
+  return [`*Property type:* ${first.propertyType || ""}`, ...(requirementHasStoreys(first.propertyType) && first.storeys != null ? [`*${requirementStoreysLabel(first.propertyType, true)}:* ${first.storeys}`] : [])];
+}
+
 export function normalizeRequirementPayload(raw) {
   const intent = cleanText(raw?.intent, 8).toLowerCase();
   const profile = raw?.profile || {};
   const requirements = raw?.requirements || {};
+  const multiple = Array.isArray(requirements.propertyTypes);
+  const propertyTypes = multiple ? requirements.propertyTypes.slice(0, 8).map(choice => ({
+    propertyType: cleanText(choice?.propertyType, 120),
+    storeys: requirementHasStoreys(choice?.propertyType) && Number.isInteger(Number(choice?.storeys)) ? cleanNumber(choice?.storeys, { min: 1, max: 20, integer: true }) : null,
+  })) : null;
+  const primary = multiple ? propertyTypes[0] || {} : requirements;
   return {
     intent,
     profile: {
@@ -134,9 +155,10 @@ export function normalizeRequirementPayload(raw) {
       companyName: cleanText(profile.companyName, 160),
     },
     requirements: {
-      propertyType: cleanText(requirements.propertyType, 120),
-      hasStoreys: requirementHasStoreys(requirements.propertyType),
-      storeys: requirementHasStoreys(requirements.propertyType) ? cleanNumber(requirements.storeys, { min: 1, max: 20, integer: true }) : null,
+      propertyType: cleanText(primary.propertyType, 120),
+      hasStoreys: requirementHasStoreys(primary.propertyType),
+      storeys: requirementHasStoreys(primary.propertyType) ? cleanNumber(primary.storeys, { min: 1, max: 20, integer: true }) : null,
+      ...(multiple ? { propertyTypes } : {}),
       area: cleanText(requirements.area, 160),
       budget: cleanNumber(normalizeBudgetAmount(intent, requirements.budget), { min: 1, max: 1_000_000_000 }),
       bedrooms: cleanNumber(requirements.bedrooms, { min: 0, max: 100, integer: true }),
@@ -171,6 +193,12 @@ export function normalizeRequirementPayload(raw) {
 export function validateRequirementPayload(raw) {
   const value = normalizeRequirementPayload(raw);
   const errors = {};
+  if (Array.isArray(raw?.requirements?.propertyTypes)) {
+    const choices = value.requirements.propertyTypes;
+    if (!choices.length || raw.requirements.propertyTypes.length > 8 || choices.some(choice => !choice.propertyType || (requirementHasStoreys(choice.propertyType) && choice.storeys === null)) || new Set(choices.map(choice => choice.propertyType.toLowerCase())).size !== choices.length) {
+      errors["requirements.propertyTypes"] = "Choose property types and a valid storey or level count for each.";
+    }
+  }
   const required = (path, fieldValue) => { if (fieldValue === "" || fieldValue === null) errors[path] = "This field is required."; };
 
   if (!INTENTS.has(value.intent)) errors.intent = "Choose Rent or Buy.";
